@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./css/wbbase.css" type="text/css" />
+<link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./js/wbcommanager.js" type="text/javascript"></script>
+<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
+<script src="./app-js/wbbackuprestore.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Application settings </a> </li>
+			<li > <a href="./weburis.html" > Urls </a> </li>
+			<li > <a href="./webpages.html" > Web Pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li > <a href="./webmessages.html"> Messages </a> </li>
+			<li > <a href="./webimages.html"> Images </a> </li>
+			<li > <a href=""> Bulk load content </a> <li>
+			<li class="active"> <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+
+	<div>
+		<a href="./wbexport.zip"> Backup </a> 
+	</div>
+	<div>
+		<button class="btn btn-primary restoreBtnClass"> Restore </button>
+	</div>
+	
+	<div class="modal hide" id="wbModalRestoreUpload">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Replace image </h3>
+		</div>
+		<form class="form-inline" id="wbModalRestoreUploadForm" enctype="multipart/form-data">	
+			<div class="modal-body">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="wbfilename">File name</label>
+						<div class="controls">
+							<input id="wbfilename" name="file" class="input-xlarge" type="file">
+							<span id="errfilename" class="help-inline"></span>
+						</div>										
+					</div>				
+				</fieldset>	
+			</div>
+			<div class="modal-footer">
+					<button class="btn btn-primary restoreUploadSubmit" type="submit">Upload</button>
+					<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+			</div>
+		</form>
+    </div>
+
+</body>
+</html>

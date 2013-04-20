@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./css/wbbase.css" type="text/css" />
+<link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./js/wbcommanager.js" type="text/javascript"></script>
+<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
+<script src="./js/wbtable.js" type="text/javascript"></script>
+<script src="./js/wbsearchbox.js" type="text/javascript"></script>
+<script src="./app-js/wburis.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Application settings </a> </li>
+			<li class="active"> <a href="./weburis.html" > Urls </a> </li>
+			<li > <a href="./webpages.html" > Web Pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li > <a href="./webmessages.html"> Messages </a> </li>
+			<li > <a href="./webimages.html"> Images </a> </li>
+			<li > <a href=""> Bulk load content </a> <li>
+			<li> <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+	
+	<div class="wbcolorcontent">
+		<div class="wbinnercontent">
+			<div class="marginv">
+				<button class="btn btn-primary" id="wbaddnewpage"><i class="icon-plus icon-white"> </i> Add new URI </button> 
+			</div>
+			<div id="wbtable"></div>
+		</div>
+	</div>
+	
+	<div class="modal hide" id="wbModalUriAdd">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Create new relative web uri</h3>
+		</div>
+		<form class="form-inline" id="wburiadd">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errageneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="uri">Web relative url</label>
+					<div class="controls">
+						<input id="wbauri" class="input-xlarge" type="text">
+						<span id="errauri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Make the url live <input id="wbaenabled" type="radio" name="enabled" value="1"> YES
+										  <input type="radio" name="enabled" value="0"> NO
+						<span id="errenabled" class="help-inline"></span>
+					</div>										
+				</div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Controller class</label>
+                    <div class="controls">
+                        <input id="wbacontrollerClass" class="input-xlarge" type="text">
+						<span id="erracontrollerClass" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="wbapageName"> Web page name </label>
+                    <div class="controls">
+                        <input id="wbapageName" class="input-xlarge" type="text">
+						<span id="errapageName" class="help-inline"></span>
+					</div>
+                </div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select id="wbahttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="errahttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriAddSave" type="submit">Save changes</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbModalUriDuplicate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Duplicate web uri</h3>
+		</div>
+		<form class="form-inline" id="wburiduplicate">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="uri">Web relative uri</label>
+					<div class="controls">
+						<input id="wbcuri" name="uri" class="input-xlarge" type="text">
+						<span id="errcuri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Make the url live <input id="wbcenabled" type="radio" name="enabled" value="1"> YES
+										  <input type="radio" name="enabled" value="0"> NO
+						<span id="errcenabled" class="help-inline"></span>
+					</div>										
+				</div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Controller class</label>
+                    <div class="controls">
+                        <input id="wbccontrollerClass" name="controllerClass" class="input-xlarge" type="text">
+						<span id="errccontrollerClass" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="pageName"> Web page name </label>
+                    <div class="controls">
+                        <input id="wbcpageName" name="pageName" class="input-xlarge" type="text">
+						<span id="errcpageName" class="help-inline"></span>
+					</div>
+                </div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select name="controllerClass" id="wbchttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="errchttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriDuplicateSave" type="submit">Duplicate uri</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+	
+	<div class="modal hide" id="wbModalUriUpdate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Update relative web url </h3>
+		</div>
+		<form class="form-inline" id="wburiupdate">
+		
+		<div class="modal-body">
+			<input id="wbukey" type="hidden">
+			<input id="wbuexternalKey" type="hidden">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errugeneral" class="help-inline"></span>
+					</div>										
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="uri">Web relative url</label>
+					<div class="controls">
+						<input id="wbuuri" class="input-xlarge" type="text">
+						<span id="erruuri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Make the url live <input id="wbuenabled" type="radio" name="enabled" value="1"> YES
+										  <input type="radio" name="enabled" value="0"> NO
+						<span id="erruenabled" class="help-inline"></span>
+					</div>										
+				</div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Controller class</label>
+                    <div class="controls">
+                        <input id="wbucontrollerClass" class="input-xlarge" type="text">
+						<span id="errucontrollerClass" class="help-inline"></span>
+					</div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Web page name</label>
+                    <div class="controls">
+                        <input id="wbupageName" class="input-xlarge" type="text">
+						<span id="errupageName" class="help-inline"></span>
+					</div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select id="wbuhttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="erruhttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriUpdateSave" type="submit">Save changes</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbModalUriDelete">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Delete relative web url? </h3>
+		</div>
+
+		<form class="form-inline" id="wburidelete">
+		<div class="modal-body">
+			<fieldset>
+				<input id="wbdkey" type="hidden">
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="uri">Web relative url</label>
+					<div class="controls">
+						<input id="wbduri" class="input-xlarge" type="text" readonly >
+						<span id="errduri" class="help-inline"></span>
+					</div>										
+				</div>
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriDeleteSave" type="submit">Delete</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+</body>
+</html>

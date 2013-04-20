@@ -1,0 +1,45 @@
+.wbsearchcontainer
+{
+position: relative;
+width: 400px;
+}
+.wbsearchbox 
+{
+position: absolute;
+top: 0px;
+left: 0px;
+width: 100%;
+}
+.wbsearchlist
+{
+list-style-type: none;
+font-size: 1.5em;
+width: 100%;
+padding: 0px !important;
+margin: 0px !important;
+}
+.wbsearchlist li
+{
+padding: 4px;
+}
+
+.wbsearchlist .wbselected
+{
+background-color: #EEEEEE;
+}
+.wbsearchWrapTable
+{
+display:none;
+z-index: 1;
+position: absolute;
+top: 30px;
+left: 0px;
+width: 100%;
+border: 1px solid #CCCCCC;
+background-color: #FEFEFE;
+}
+
+.wbsearchlist 
+{
+padding: 8px 5px;
+}

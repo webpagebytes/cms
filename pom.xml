@@ -1,0 +1,147 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.webbricks.cms</groupId>
+  <artifactId>wbgae</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>wbgae</name>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gae.version>1.6.1</gae.version>
+    <datanucleus.version>1.1.5</datanucleus.version>
+    <cobertura.version>2.5.1</cobertura.version>
+  </properties>
+
+   <dependencies>
+   
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-testing</artifactId>
+        <version>${gae.version}</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-stubs</artifactId>
+        <version>${gae.version}</version>
+        <scope>test</scope>
+    </dependency>
+            
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.4</version>
+      <scope>test</scope>
+    </dependency>
+ 
+     <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>1.4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-test-easymock-junit4</artifactId>
+        <version>1.4.12</version>
+        <scope>test</scope>
+      </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>3.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.0.1</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20090211</version>
+    </dependency>    
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-labs</artifactId>
+        <version>${gae.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-1.0-sdk</artifactId>
+        <version>${gae.version}</version>
+        <scope>provided</scope>
+    </dependency>    
+    
+     <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-core</artifactId>
+            <version>${datanucleus.version}</version>
+            <scope>provided</scope>
+     </dependency>
+     
+      <dependency>
+            <groupId>com.google.appengine.orm</groupId>
+            <artifactId>datanucleus-appengine</artifactId>
+            <version>1.0.10</version>
+            <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-jsr107cache</artifactId>
+            <version>${gae.version}</version>
+            <scope>provided</scope>
+      </dependency>    
+      
+      <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.14</version>
+            <scope>provided</scope>
+      </dependency>
+                    
+  </dependencies>
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>${cobertura.version}</version>
+            <configuration>
+                <instrumentation>
+                    <excludes>
+                        <exclude>com/webbricks/cms/DefaultController.class</exclude>
+                        <exclude>com/webbricks/utility/WBIOFactory.class</exclude>
+                        <exclude>com/webbricks/controllers/WBErrors.class</exclude>
+                        <exclude>com/webbricks/cms/URLMatcherResult.class</exclude>
+                        <exclude>com/webbricks/exception/*.class</exclude>
+                        <exclude>com/webbricks/cmsdata/*.class</exclude>
+                    </excludes>
+                </instrumentation>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>clean</goal>
+                    </goals>
+                </execution>
+            </executions>
+         </plugin>   
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>2.0</version>
+        </plugin>
+    </plugins>
+  </build>
+</project>

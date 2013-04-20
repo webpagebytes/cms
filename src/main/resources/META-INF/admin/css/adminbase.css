@@ -1,0 +1,137 @@
+body
+{
+margin: 10px;
+}
+
+.h2-underline
+{
+border-bottom: 1px solid #eeeeee;
+width: 200px;
+padding: 0px 0px 2px 10px;
+}
+
+
+.breadcrumb-line
+{
+margin-bottom: 4px;
+list-style-type: none;
+margin: 4px 0px 10px 4px;
+font-size: 16px;
+}
+.breadcrumb-line > li
+{
+display: inline-block;
+}
+
+.breadcrumb-line .divider
+{
+color: #999999;
+padding: 0px 2px;
+}
+
+[class^="aicon-"], [class*=" aicon-"]
+{
+	background-image: url("../img/icons.png");
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: text-top;
+    width: 14px;
+}
+.aicon-duplicate
+{
+background-position: 0px 0px;
+}
+
+.breadcrumb-line .help
+{
+padding-left: 10px;
+}
+.modal-backdrop
+{
+background-color: #444444;
+}
+
+.marginv
+{
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+.nav-wb-horizontal
+{
+padding-left: 10px;
+}
+
+.nav-wb-vertical
+{
+margin: 0px !important;
+position:relative;
+padding-bottom: 10px;
+padding-top: 10px;
+z-index: 2;
+}
+.nav-wb-vertical > .active > a, .nav-wb-vertical > .active > a:hover
+{
+background-color: #F7F7F7;
+}
+
+.tabbable-wb
+{
+position: relative;
+height: auto;
+z-index:
+}
+.wbmessages
+{
+position: relative;
+}
+
+.wbinnercontent
+{
+padding: 10px;
+}
+
+.wbmessagescontent
+{
+height: 100%;
+position:relative;
+left: -1px;
+z-index:1px;
+}
+
+.wbcolorcontent
+{
+background-color: #F7F7F7;
+border: 1px solid #DDDDDD;
+}
+
+.wbmessagestable .diffcurrent
+{
+color: #833939;
+}
+
+.wbmessagestable .diffdefault
+{
+color: #87800c;
+}
+
+
+.hr-wb
+{
+margin: 5px 0px;
+}
+.errorvalidationlabel
+{
+color: #7F0000;
+}
+.errorvalidationinput
+{
+border: 1px solid #7F0000 !important;
+}
+.clear
+{
+clear: both;
+}
