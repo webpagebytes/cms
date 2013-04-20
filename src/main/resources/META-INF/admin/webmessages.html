@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link  rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link  rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./js/wbcommanager.js" type="text/javascript"></script>
+<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
+<script src="./js/wbtable.js" type="text/javascript"></script>
+<script src="./js/wbdisplayobject.js" type="text/javascript"></script>
+<script src="./app-js/wbmessages.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Application settings </a> </li>
+			<li > <a href="./weburis.html" > Urls </a> </li>
+			<li > <a href="./webpages.html" > Web Pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li class="active"> <a href="./webmessages.html"> Messages </a> </li>
+			<li > <a href="./webimages.html"> Images </a> </li>
+			<li > <a href=""> Bulk load content </a> <li>
+			<li> <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+
+	<div class="">
+		View messages:  Only supported languages | <a href=""> All languages </a>
+	</div>
+
+	<hr class="hr-wb">
+	<div class="nav-content">
+		<div class="tabbable tabs-left tabbable-wb wbmessages" id="wbmessagesid">
+			<ul class="nav nav-tabs nav-filled nav-wb-vertical nav-wb-supportedlanguages" id="wbsupportedlanguages">
+				<li class="active"> <a href="#"> Loading....</a>  </li>
+			</ul>
+			<div class="tab-content wbmessagescontent wbcolorcontent">
+					<div class="wbinnercontent">
+						<div class="marginv">
+							<button class="btn btn-primary wbCreateMessageBtnClass"> Add message string</button>
+						</div>
+						<div id="wbmessagestable" class="wbmessagestable">
+						</div>
+					</div>
+			</div>		
+		</div>
+	</div>
+	
+	<div class="modal hide" id="wbAddMessageModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Create a new message</h3>
+		</div>
+		<form class="form-inline" id="wbAddMessageForm">	
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errageneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="wbaname">Message Key</label>
+					<div class="controls">
+						<input id="wbaname" class="input-xlarge" type="text">
+						<span id="erraname" class="help-inline"></span>
+					</div>										
+				</div>           				
+				
+				<div class="control-group">
+					<label class="control-label" for="wbavalue">Message Value</label>
+					<div class="controls">
+						<textarea id="wbavalue" class="input-xlarge"> </textarea>
+						<span id="erravalue" class="help-inline"></span>
+					</div>										
+				</div>           				
+
+				<div class="control-group">
+					<label class="control-label" for="wbaname">Is message translated?</label>
+					<div class="controls">
+						<input id="wbaisTranslated" type="radio" name="isTranslated" value="1"> YES
+										  <input type="radio" name="isTranslated" value="0" checked> NO
+						<span id="erraisTranslated" class="help-inline"></span>
+					</div>										
+				</div>           						
+			</fieldset>		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveAddMessageBtnClass" type="submit">Save</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbUpdateMessageModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Modify message</h3>
+		</div>
+		<form class="form-inline" id="wbUpdateMessageForm">	
+		<div class="modal-body">
+			<fieldset>
+				<input id="wbukey" class="input-xlarge" type="hidden">
+				<input id="wbuexternalKey" class="input-xlarge" type="hidden">
+						
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="wbulcid">LCID</label>
+					<div class="controls">
+						<input id="wbulcid" class="input-xlarge" type="text" readonly>
+						<span id="errulcid" class="help-inline"></span>
+					</div>										
+				</div>           								
+				<div class="control-group">
+					<label class="control-label" for="wbuname">Message Key</label>
+					<div class="controls">
+						<input id="wbuname" class="input-xlarge" type="text" readonly>
+						<span id="erruname" class="help-inline"></span>
+					</div>										
+				</div>           				
+				
+				<div class="control-group">
+					<label class="control-label" for="wbuvalue">Message Value</label>
+					<div class="controls">
+						<textarea id="wbuvalue" class="input-xlarge"> </textarea>
+						<span id="erruvalue" class="help-inline"></span>
+					</div>										
+				</div>           				
+
+				<div class="control-group">
+					<label class="control-label" for="wbuname">Is message translated?</label>
+					<div class="controls">
+						<input id="wbuisTranslated" type="radio" name="isTranslated" value="1"> YES
+										  <input type="radio" name="isTranslated" value="0" checked> NO
+						<span id="erruisTranslated" class="help-inline"></span>
+					</div>										
+				</div>           						
+			</fieldset>		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveUpdateMessageBtnClass" type="submit">Save</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbDeleteMessageModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Delete message?</h3>
+		</div>
+		<form class="form-inline" id="wbDeleteMessageForm">	
+		<div class="modal-body">
+			<fieldset>
+				<input id="wbdkey" class="input-xlarge" type="hidden">
+						
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="wbdname">Message Key</label>
+					<div class="controls">
+						<input id="wbdname" class="input-xlarge" type="text" readonly>
+						<span id="errdname" class="help-inline"></span>
+					</div>										
+				</div>           				
+				
+			</fieldset>		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveDeleteMessageBtnClass" type="submit">Delete</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+</body>
+</html>

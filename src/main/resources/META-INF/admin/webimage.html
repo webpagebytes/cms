@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./css/wbbase.css" type="text/css" />
+<link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./js/wbcommanager.js" type="text/javascript"></script>
+<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
+<script src="./js/wbtable.js" type="text/javascript"></script>
+<script src="./js/wbdisplayobject.js" type="text/javascript"></script>
+<script src="./app-js/wbimageview.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Application settings </a> </li>
+			<li > <a href="./weburis.html" > Urls </a> </li>
+			<li > <a href="./webpages.html" > Web Pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li > <a href="./webmessages.html"> Messages </a> </li>
+			<li class="active"> <a href="./webimages.html"> Images </a> </li>
+			<li > <a href=""> Bulk load content </a> <li>
+			<li > <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+
+	<div id="wbImageView">
+		<ul class="breadcrumb" >
+			<li> <a href="./webimages.html"> Web Images </a> <span class="divider">/</span> </li>
+			<li > <span id="wbimagename"></span> (last modified <span id="wbimagelastModified"></span>) </li>
+		</ul>	
+		<form class="form-inline">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit image data </button>
+						<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace image</button>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">			
+					<input type="text" name="imagesize" class="input-medium wbImageSizeInputClass" placeholder="Empty for default size (px)">
+					<button class="btn wbGetServingUrlBtnClass" type="submit"> Get serving url </button>
+					<span id="servingurl"> </span>
+					</div>
+				</div>
+		</form>
+		<div id="wbimageblobKey">
+		</div>
+	</div>
+	
+	<div class="modal hide" id="wbModalImageDataUpdate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Update image data </h3>
+		</div>
+		<form class="form-inline" id="wbuImageDataUpdateForm">	
+			<div class="modal-body">
+				<input id="wbudkey" type="hidden">
+				<fieldset>
+					<div class="control-group">
+						<div class="controls">
+							<span id="errudgeneral" class="help-inline"></span>
+						</div>										
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="wbudname">Image name</label>
+						<div class="controls">
+							<input id="wbudname" class="input-xlarge" type="text">
+							<span id="errudname" class="help-inline"></span>
+						</div>										
+					</div>				
+				</fieldset>	
+			</div>
+			<div class="modal-footer">
+					<button class="btn btn-primary wbImageDataSaveBtnClass" type="submit">Save changes</button>
+					<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+			</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbModalImageUploadUpdate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Replace image </h3>
+		</div>
+		<form class="form-inline" id="wbuImageUploadUpdateForm" enctype="multipart/form-data">	
+			<div class="modal-body">
+				<input id="wbuukey" name="key" type="hidden">
+				<fieldset>
+					<div class="control-group">
+						<div class="controls">
+							<span id="erruugeneral" class="help-inline"></span>
+						</div>										
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="wbuufilename">File name</label>
+						<div class="controls">
+							<input id="wbuufilename" name="file" class="input-xlarge" type="file">
+							<span id="erruufilename" class="help-inline"></span>
+						</div>										
+					</div>				
+				</fieldset>	
+			</div>
+			<div class="modal-footer">
+					<button class="btn btn-primary imageUploadUpdateSave" type="submit">Save changes</button>
+					<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+			</div>
+		</form>
+    </div>
+
+</body>
+</html>
