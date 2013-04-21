@@ -35,7 +35,7 @@ public class WBUriValidator {
 			errors.put("uri", WBErrors.ERROR_URI_LENGTH);
 		} else
 		{
-			if (! wbUri.getUri().matches("/([0-9a-zA-Z_~.-]*/?[0-9a-zA-Z_~.-]*)*"))
+			if (! wbUri.getUri().matches("/([0-9a-zA-Z_~.-]*(\\{[0-9a-zA-Z_.*-]+\\})*[0-9a-zA-Z_~.-]*/?)*"))
 			{
 				errors.put("uri", WBErrors.ERROR_URI_BAD_FORMAT);
 			}
@@ -89,7 +89,7 @@ public class WBUriValidator {
 			errors.put("uri", WBErrors.ERROR_URI_LENGTH);
 		} else
 		{
-			if (! wbUri.getUri().matches("/([0-9a-zA-Z_~.-]*/?[0-9a-zA-Z_~.-]*)*"))
+			if (! wbUri.getUri().matches("/([0-9a-zA-Z_~.-]*(\\{[0-9a-zA-Z_.*-]+\\})*[0-9a-zA-Z_~.-]*/?)*"))
 			{
 				errors.put("uri", WBErrors.ERROR_URI_BAD_FORMAT);
 			}
