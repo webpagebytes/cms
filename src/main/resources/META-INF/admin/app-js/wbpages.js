@@ -1,16 +1,19 @@
 var errorsGeneral = {
+	'ERROR_PAGENAME_LENGTH': 'Web page name length must be between 1 and 250 characters ',
+	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)'
 };
 
 $().ready( function () {
+	var wbPageValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}]
+	};
 	$('#wbAddPageForm').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
 									  fieldsDefaults: { isTemplateSource: 0 },
-									  validationRules: {
-										'name': { rangeLength: { 'min': 1, 'max': 100 } }
-									  }
+									  validationRules: wbPageValidations
 									});
 	$('#wbDuplicatePageForm').wbObjectManager( { fieldsPrefix:'wbc',
 								  errorLabelsPrefix: 'errc',
@@ -18,9 +21,7 @@ $().ready( function () {
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
 								  fieldsDefaults: { isTemplateSource: 0 },
-								  validationRules: {
-									'name': { rangeLength: { 'min': 1, 'max': 100 } }
-								  }
+								  validationRules: wbPageValidations
 								});
 
 	$('#wbDeletePageForm').wbObjectManager( { fieldsPrefix: 'wbd',
@@ -31,9 +32,9 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webpage.html?key=' + escapehtml(record['key']) + '&externalKey=' + escapehtml(record['externalKey']) + '"><i class="icon-pencil"></i> Edit </a>' + 
-				 '| <a href="#" class="wbDeletePageClass" id="wbDeletePage_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>' +
-				 '| <a href="#" class="wbDuplicatePageClass" id="wbDuplicatePage_' +record['key']+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
+			return '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-pencil"></i> Edit </a>' + 
+				 '| <a href="#" class="wbDeletePageClass" id="wbDeletePage_' + encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>' +
+				 '| <a href="#" class="wbDuplicatePageClass" id="wbDuplicatePage_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -42,7 +43,7 @@ $().ready( function () {
 	}
 				
 	$('#wbPagesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, 
-									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+									{display:"Last modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination"
@@ -93,7 +94,7 @@ $().ready( function () {
 		$('#wbPagesTable').wbTable().insertRow(data);	
 		var fromOwnerExternalKey = $('#wbcexternalKey').val();
 		var ownerExternalKey = data['externalKey'];
-		$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbparameter?fromOwnerExternalKey={0}&ownerExternalKey={1}".format(fromOwnerExternalKey, ownerExternalKey),
+		$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbparameter?fromOwnerExternalKey={0}&ownerExternalKey={1}".format(encodeURIComponent(fromOwnerExternalKey), encodeURIComponent(ownerExternalKey)),
 															 httpOperation:"POST", 
 															 payloadData:"",
 															 wbObjectManager : $('#wbDuplicatePageForm').wbObjectManager(),
@@ -151,7 +152,7 @@ $().ready( function () {
 	$('.webSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeletePageForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeletePageForm').wbCommunicationManager().ajax ( { url: "./wbpage/" + escapehtml(object['key']),
+		$('#wbDeletePageForm').wbCommunicationManager().ajax ( { url: "./wbpage/" + encodeURIComponent(object['key']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,

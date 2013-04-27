@@ -63,7 +63,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			
 			if (errors.size()>0)
 			{
-				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);
+				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
@@ -76,7 +76,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
 		}
 	}
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -107,7 +107,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
 		}		
 	}
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -126,7 +126,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
 		}		
 	}
 
@@ -142,7 +142,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			
 			if (errors.size()>0)
 			{
-				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);
+				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
@@ -155,7 +155,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
 		}		
 	}
 

@@ -125,7 +125,7 @@ public void test_create_errors()
 		
 		errors.put("uri", "error");
 		
-		String returnJson = ""; //really doesn't matter
+		String returnJson = "{}";
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();
@@ -172,7 +172,7 @@ public void test_create_exception()
 		controllerForTest.create(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_CREATE_RECORD) == 0);
-		assertTrue (captureData.getValue().length() == 0);
+		assertTrue (captureData.getValue().equals("{}"));
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
 		assertTrue (captureExternalKey.getValue().equals(2L));
@@ -273,7 +273,7 @@ public void test_get_exception()
 {
 	try
 	{
-		String json = "";
+		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
 		EasyMock.expect(adminStorageMock.get(123L, WBWebPage.class)).andThrow(new WBIOException(""));
 
@@ -302,7 +302,7 @@ public void test_get_noKey()
 {
 	try
 	{
-		String json = "";
+		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn(null);		
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -381,7 +381,7 @@ public void test_update_errors()
 		errors.put("uri", WBErrors.ERROR_URI_LENGTH);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 				
-		String returnJson = ""; //really doesn't matter
+		String returnJson = "{}"; 
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();
@@ -421,7 +421,7 @@ public void test_update_nokey()
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
 		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_UPDATE_RECORD) == 0);
-		assertTrue (captureData.getValue().compareTo("") == 0);
+		assertTrue (captureData.getValue().compareTo("{}") == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		
 	} catch (Exception e)
@@ -474,7 +474,7 @@ public void test_delete_exception()
 		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
 		EasyMock.expectLastCall().andThrow(new WBIOException(""));
 		
-		String returnJson = ""; //really doesn't matter
+		String returnJson = "{}"; //really doesn't matter
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();
@@ -501,7 +501,7 @@ public void test_delete_noKey()
 	{
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn(null);
 		
-		String returnJson = ""; //really doesn't matter
+		String returnJson = "{}";
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();
