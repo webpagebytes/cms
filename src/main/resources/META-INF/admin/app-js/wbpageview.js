@@ -1,17 +1,24 @@
 var errorsGeneral = {
+	ERROR_PARAM_NAME_LENGTH: 'Parameter name length must be between 1 and 250 characters',
+	ERROR_PARAM_NAME_BAD_FORMAT: 'Invalid name format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
+	ERROR_PARAM_INVALID_OVERWRITE: 'Operation on overwrite not supported',
+	ERROR_PARAM_INVALID_LOCALETYPE: 'Operation on locale not supported'
 };
 
 $().ready( function () {
-	
+	var wbParameterValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PARAM_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PARAM_NAME_BAD_FORMAT"}],
+			overwriteFromUrl: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PARAM_INVALID_OVERWRITE" }],
+			localeType: [{rule: { includedInto: ['0','1','2'] }, error: "ERROR_PARAM_INVALID_LOCALETYPE" }]
+	};
+
 	$('#wbAddParameterForm').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
 									  fieldsDefaults: { overwriteFromUrl: 0, localeType: 0 },
-									  validationRules: {
-										'name': { rangeLength: { 'min': 1, 'max': 100 } }
-									  }
+									  validationRules: wbParameterValidations
 									});
 	$('#wbUpdateParameterForm').wbObjectManager( { fieldsPrefix:'wbu',
 									  errorLabelsPrefix: 'erru',
@@ -19,9 +26,7 @@ $().ready( function () {
 									  fieldsDefaults: { overwriteFromUrl: 0, localeType: 0 },
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  validationRules: {
-										'name': { rangeLength: { 'min': 1, 'max': 100 } }
-									  }
+									  validationRules: wbParameterValidations
 									});
 
 	$('#wbDeleteParameterForm').wbObjectManager( { fieldsPrefix: 'wbd',
@@ -32,7 +37,7 @@ $().ready( function () {
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + escapehtml(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + escapehtml(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -41,7 +46,7 @@ $().ready( function () {
 	}
 				
 	$('#wbPageParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External ID", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
-									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
+									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 						 paginationBaseClass: "pagination"
@@ -52,7 +57,7 @@ $().ready( function () {
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpage.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}
 		return record[fieldId];
@@ -94,7 +99,7 @@ $().ready( function () {
 		window.location.href = "./webpageedit.html?key={0}&externalKey={1}".format(encodeURIComponent(pageKey),encodeURIComponent(pageExternalKey));
 	} );
 	
-	$('#wbPageSummary').wbCommunicationManager().ajax ( { url:"./wbpage/" + escapehtml(pageKey),
+	$('#wbPageSummary').wbCommunicationManager().ajax ( { url:"./wbpage/" + encodeURIComponent(pageKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
@@ -146,7 +151,7 @@ $().ready( function () {
 			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
 			object['ownerExternalKey'] = pageExternalKey;
 			var jsonText = JSON.stringify(object);
-			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + escapehtml(object['key']),
+			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
@@ -169,7 +174,7 @@ $().ready( function () {
 		var errors = $('#wbDeleteParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDeleteParameterForm').wbObjectManager().getObjectFromFields();
-			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + escapehtml(object['key']),
+			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
 															 httpOperation:"DELETE", 
 															 payloadData:"",
 															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),
@@ -208,7 +213,7 @@ $().ready( function () {
 	
 	}
 	
-	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + escapehtml(pageExternalKey),
+	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(pageExternalKey),
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetParameters,

@@ -369,8 +369,15 @@ if (!Array.prototype.indexOf) {
 					textValue = $(element).val();
 					break;
 				case 'checkbox':
-					isSelected = 1;
+				case 'radio':
+					var name = $(element).attr('name');
+					var checked = tempThis.thisElement.find('input[name^=' + name + ']:checked');
+					if (checked.length == 1) {
+							textValue = $(checked[0]).attr('value');
+							isSelected = 1;
+					}							
 					break;
+
 			}
 			if (textValue && false  == isNaN(textValue)) {
 				numberValue = new Number(textValue);

@@ -1,14 +1,22 @@
 var errorsGeneral = {
+	ERROR_PAGENAME_LENGTH:'Web page name length must be between 1 and 250 characters ',
+	ERROR_PAGE_INVALID_TYPE: 'Invalid operation type'
+	
 };
 
 $().ready( function () {
-	
+	var wbPageValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
+			isTemplateSource: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PAGE_INVALID_TYPE" }]
+	};
+
 	$('#wbPageEditForm').wbObjectManager( { fieldsPrefix:'wbe',
 									  errorLabelsPrefix: 'erre',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { isTemplateSource: 0 }
+									  fieldsDefaults: { isTemplateSource: 0 },
+									  validationRules: wbPageValidations
 									 });
 
 	var displayHandler = function (fieldId, record) {
@@ -17,7 +25,7 @@ $().ready( function () {
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpage.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}
 
@@ -36,7 +44,7 @@ $().ready( function () {
 
 	var pageKey = getURLParameter('key'); 
 	var externalKey = getURLParameter('externalKey');
-	$('#wbEditPageForm').wbCommunicationManager().ajax ( { url:"./wbpage/" + escapehtml(pageKey),
+	$('#wbEditPageForm').wbCommunicationManager().ajax ( { url:"./wbpage/" + encodeURIComponent(pageKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
@@ -44,7 +52,7 @@ $().ready( function () {
 												} );
 	
 	var fSuccessEdit = function ( data ) {
-		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "?externalKey=" + encodeURIComponent(externalKey);
+		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "&externalKey=" + encodeURIComponent(externalKey);
 	}
 	var fErrorEdit = function (errors, data) {
 		$('#wbEditPageForm').wbObjectManager().setErrors(errors);
@@ -68,7 +76,7 @@ $().ready( function () {
 	
 	$('.wbPageEditCancelBtnClass').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "?externalKey=" + encodeURIComponent(externalKey);
+		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "&externalKey=" + encodeURIComponent(externalKey);
 	});
 
 

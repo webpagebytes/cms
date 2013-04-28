@@ -39,20 +39,30 @@
 	<div class="row-fluid">
 		<form class="form-inline" id="wbPageEditForm">
 			<div class="errageneral"></div>
-			<input id="wbekey" type="hidden">
-			<input id="wbeexternalKey" type="hidden">
-			<input id="wbename" type="hidden">
+			<fieldset>
+				<input id="wbekey" type="hidden">
+				<input id="wbeexternalKey" type="hidden">
 				<div class="well">
-					<div class="marginv">
+					<div class="marginv control-group">
+						<label for="name">Web page name</label>
+						<input class="input-xlarge" type="text" name="name" id="wbename">
+						<span id="errename" class="help-inline"></span>
+					</div>					
+					<div class="marginv control-group">
 						<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
 						<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
+						<span id="erreisTemplateSource" class="help-inline"></span>
 					</div>
-					<textarea rows="20" id="wbehtmlSource" class="input-block-level"> </textarea>					
+					<div class="control-group">
+						<textarea rows="20" id="wbehtmlSource" class="input-block-level"> </textarea>	
+						<span id="errehtmlSource" class="help-inline"></span>
+					</div>
 					<div class="marginv">
 						<button class="btn btn-primary wbPageEditSaveBtnClass" type="submit">Save</button>
 						<button class="btn wbPageEditCancelBtnClass" type="submit">Cancel</button>
 					</div>
 				</div>
+			</fieldset>
 		</form>
 	</div>	
 	
