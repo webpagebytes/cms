@@ -24,30 +24,31 @@ import com.webbricks.controllers.WBPageModuleValidator;
 public class TestWBPageModuleValidator {
 
 private WBPageModuleValidator pageModuleValidator;
-private WBWebPageModule wbPageModuleMock;
+private WBWebPageModule wbPageModule;
 private Map<String,String> noErrors;
 
 @Before
 public void before()
 {
 	pageModuleValidator = new WBPageModuleValidator();
-	wbPageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+	wbPageModule = new WBWebPageModule();
 	noErrors = new HashMap();
 }
 
 @Test
 public void test_validateCreate()
 {
-	PowerMock.replay(wbPageModuleMock);
-	Map errors = pageModuleValidator.validateCreate(wbPageModuleMock);
+	wbPageModule.setName("test");
+	Map errors = pageModuleValidator.validateCreate(wbPageModule);
 	assertTrue(errors.equals(noErrors));
 }
 
 @Test
 public void test_validateUpdate()
 {
-	PowerMock.replay(wbPageModuleMock);
-	Map errors = pageModuleValidator.validateUpdate(wbPageModuleMock);
+	wbPageModule.setName("test");
+	wbPageModule.setKey(1L);
+	Map errors = pageModuleValidator.validateUpdate(wbPageModule);
 	assertTrue(errors.equals(noErrors));
 }
 

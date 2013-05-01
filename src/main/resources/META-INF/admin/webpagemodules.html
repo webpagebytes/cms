@@ -76,6 +76,42 @@
 		</div>
 		</form>
     </div>
+	
+	<div class="modal hide" id="wbDuplicatePageModuleModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Duplicate web page module</h3>
+		</div>
+		<form class="form-inline" id="wbDuplicatePageModuleForm">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="wbcname">Web page module name (internal use only)</label>
+					<div class="controls">
+						<input id="wbcname" class="input-xlarge" type="text" />
+						<input id="wbcisTemplateSource" name="wbaisTemplateSource" type="hidden" value="0" />
+						<input id="wbchtmlSource" type="hidden" value="" />
+						<span id="errcname" class="help-inline"></span>
+					</div>										
+				</div>
+								
+               				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveDuplicatePageModuleBtnClass" type="submit">Save changes</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
 
 	<div class="modal hide" id="wbDeletePageModuleModal">
 		<div class="modal-header">

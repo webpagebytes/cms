@@ -5,12 +5,14 @@ public class WBErrors {
 	public static final String ERROR_URI_LENGTH = "ERROR_URI_LENGTH";
 	public static final String ERROR_URI_START_CHAR = "ERROR_URI_START_CHAR";
 	public static final String ERROR_PAGENAME_LENGTH = "ERROR_PAGENAME_LENGTH";
+	public static final String ERROR_PAGE_MODULENAME_LENGTH = "ERROR_PAGE_MODULENAME_LENGTH";
 	public static final String ERROR_INVALID_HTTP_OPERATION = "ERROR_INVALID_HTTP_OPERATION";
 	public static final String ERROR_CANT_SPECIFY_KEY = "ERROR_CANT_SPECIFY_KEY";
 	public static final String ERROR_CANT_SPECIFY_LAST_MODIFIED = "ERROR_CANT_SPECIFY_LAST_MODIFIED";
 	public static final String ERROR_NO_KEY = "ERROR_NO_KEY";
 	public static final String ERROR_URI_BAD_FORMAT = "ERROR_URI_BAD_FORMAT";
 	public static final String ERROR_PAGE_BAD_FORMAT = "ERROR_PAGE_BAD_FORMAT";
+	public static final String ERROR_PAGE_MODULENAME_BAD_FORMAT = "ERROR_PAGE_MODULENAME_BAD_FORMAT";
 	public static final String ERROR_CONTROLLER_BAD_FORMAT = "ERROR_CONTROLLER_BAD_FORMAT";
 	
 	public static final String WBURI_CANT_SPECIFY_VERSION = "WBURI_CANT_SPECIFY_VERSION";

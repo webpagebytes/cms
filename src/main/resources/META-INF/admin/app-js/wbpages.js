@@ -112,6 +112,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDuplicatePageForm').wbObjectManager().getObjectFromFields();
 			delete object['externalKey'];
+			delete object['key'];
 			var jsonText = JSON.stringify(object);
 			$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbpage",
 															 httpOperation:"POST", 

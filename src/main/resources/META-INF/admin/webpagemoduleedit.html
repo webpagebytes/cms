@@ -43,7 +43,13 @@
 			<input id="wbeexternalKey" type="hidden">
 			<input id="wbename" type="hidden">
 				<div class="well">
-					<div class="marginv">
+					<div class="marginv control-group">
+						<label for="name">Web page module name</label>
+						<input class="input-xlarge" type="text" name="name" id="wbename">
+						<span id="errename" class="help-inline"></span>
+					</div>					
+
+					<div class="marginv control-group">
 						<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
 						<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
 					</div>
