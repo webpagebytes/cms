@@ -1,6 +1,7 @@
 var errorsGeneral = {
 	ERROR_PAGENAME_LENGTH:'Web page name length must be between 1 and 250 characters ',
-	ERROR_PAGE_INVALID_TYPE: 'Invalid operation type'
+	ERROR_PAGE_INVALID_TYPE: 'Invalid operation type',
+	ERROR_PAGE_BAD_FORMAT: 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)'
 	
 };
 
