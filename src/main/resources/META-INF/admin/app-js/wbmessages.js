@@ -1,21 +1,24 @@
 var errorsGeneral = {
-	'WBMESSAGE_EMPTY_NAME': 'Key cannot be empty string',
+	'ERROR_MESSAGE_NAME_LENGTH': 'Message name length must be between 1 and 250 characters',
 	'WBMESSAGE_DUPLICATE_NAME': 'Key already exists for this locale',
-	'WBMESSAGE_EMPTY_LCID': 'Locale identifier cannot be empty'
+	'WBMESSAGE_EMPTY_LCID': 'Locale identifier cannot be empty',
+	'ERROR_MESSAGE_NAME_BAD_FORMAT':'Invalid format for message name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)'
 };
 
 $().ready( function () {
-	
+	var wbMessagesValidations = { 
+		name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_MESSAGE_NAME_LENGTH" }, {rule: { customRegexp: {pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"} }, error: "ERROR_MESSAGE_NAME_BAD_FORMAT" }],
+		value: [{rule: { rangeLength: { 'min': 1, 'max': 2000 }}}],
+		isTranslated: [{rule: { includedInto: ['0', '1']}}]
+	};
+
 	$('#wbAddMessageForm').wbObjectManager( { fieldsPrefix:'wba',
 								  errorLabelsPrefix: 'erra',
 								  errorGeneral:"errageneral",
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
 								  fieldsDefaults: { isTranslated: 0 },
-								  validationRules: {
-									'name': { rangeLength: { 'min': 1, 'max': 100 } },
-									'value': { rangeLength: { 'min': 0, 'max': 2000 } }
-									}
+								  validationRules: wbMessagesValidations
 								});
 	$('#wbUpdateMessageForm').wbObjectManager( { fieldsPrefix:'wbu',
 								  errorLabelsPrefix: 'erru',
@@ -23,10 +26,7 @@ $().ready( function () {
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
 								  fieldsDefaults: { isTranslated: 0 },
-								  validationRules: {
-									'name': { rangeLength: { 'min': 1, 'max': 100 } },
-									'value': { rangeLength: { 'min': 0, 'max': 2000 } }
-									}
+								  validationRules: wbMessagesValidations
 								});
 
 	$('#wbDeleteMessageForm').wbObjectManager( { fieldsPrefix:'wbd',
@@ -38,11 +38,11 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if ((fieldId == '_operations') && (record['diff'] != 'default')) {
-			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> | <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{1}'> <i class='icon-trash'></i> Delete </a>".format(record['key'], record['key']);			
+			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> | <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{1}'> <i class='icon-trash'></i> Delete </a>".format( encodeURIComponent(record['key']), encodeURIComponent(record['key']));			
 			return innerHtml;
 		}
 		if ((fieldId == '_operations') && (record['diff'] == 'default')) {
-			var innerHtml = "<a href='#' class='wbAddMessageLinkClass' id='m_add_id_{0}'> <i class='icon-plus-sign'></i> Add </a>".format(record['key']);			
+			var innerHtml = "<a href='#' class='wbAddMessageLinkClass' id='m_add_id_{0}'> <i class='icon-plus-sign'></i> Add </a>".format(encodeURIComponent(record['key']));			
 			return innerHtml;
 		}
 		
@@ -113,11 +113,11 @@ $().ready( function () {
 			 isSelectedLanguage = true;
 			 selectedLcid = data[i].lcid;
 			}
-			html += "<li class='{0}'> <a href='./webmessages.html?lcid={1}'> {2} ({3}) {4} </a> </li>".format(isSelectedLanguage?"active":"", escapehtml(data[i].lcid), escapehtml(data[i].name), escapehtml(data[i].lcid), isDefaultLanguage?"*":"");
+			html += "<li class='{0}'> <a href='./webmessages.html?lcid={1}'> {2} ({3}) {4} </a> </li>".format(isSelectedLanguage?"active":"", encodeURIComponent(data[i].lcid), escapehtml(data[i].name), escapehtml(data[i].lcid), isDefaultLanguage?"*":"");
 		}
 		$("#wbsupportedlanguages").html(html);
 		var param = (selectedLanguage.length > 0) ? ("?lcid=" + escapehtml(selectedLanguage)): "";
-		$("#wbmessagestable").wbCommunicationManager().ajax( { url:"./wbmessagecompare?lcid=" + escapehtml(selectedLcid) + "&dlcid=" + escapehtml(defaultLcid),
+		$("#wbmessagestable").wbCommunicationManager().ajax( { url:"./wbmessagecompare?lcid=" + encodeURIComponent(selectedLcid) + "&dlcid=" + encodeURIComponent(defaultLcid),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetMessages,
@@ -183,7 +183,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var obj = $('#wbUpdateMessageForm').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(obj);
-			$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + obj['key'],
+			$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['key']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),
@@ -205,7 +205,7 @@ $().ready( function () {
 	$(".wbSaveDeleteMessageBtnClass").click(function (e) {
 		e.preventDefault();
 		var obj = $('#wbDeleteMessageForm').wbObjectManager().getObjectFromFields();
-		$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + obj['key'],
+		$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['key']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),

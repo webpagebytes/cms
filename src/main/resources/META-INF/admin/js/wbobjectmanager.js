@@ -142,6 +142,7 @@ if (!Array.prototype.indexOf) {
 				var key = $(value).attr('id').substring( tempThis.getOptions().fieldsPrefix.length );
 				switch (value.type) {
 					case 'text':
+					case 'file':
 					case 'hidden':
 					case 'password':
 					case 'textarea':
@@ -169,6 +170,7 @@ if (!Array.prototype.indexOf) {
 				var key = $(value).attr('id').substring( tempThis.getOptions().fieldsPrefix.length );
 				switch (value.type) {
 					case 'text':
+					case 'file':
 					case 'hidden':
 					case 'password':
 					case 'textarea':
@@ -212,6 +214,7 @@ if (!Array.prototype.indexOf) {
 				var key = $(value).attr('id').substring( tempThis.getOptions().fieldsPrefix.length );
 				switch (value.type) {
 					case 'text':
+					case 'file':
 					case 'hidden':
 					case 'password':
 					case 'textarea':
@@ -361,6 +364,7 @@ if (!Array.prototype.indexOf) {
 			var type = element.type || $(element).attr('type');
 			switch (type) {
 				case 'text':
+				case 'file':
 				case 'hidden':
 				case 'password':
 				case 'textarea':

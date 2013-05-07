@@ -1,16 +1,23 @@
 var errorsGeneral = {
+	'ERROR_IMAGE_NAME_LENGTH': 'Image name length must be between 1 and 250 characters',
+	'ERROR_IMAGE_NAME_BAD_FORMAT': 'Invalid format for image name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
+	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty',
+	'ERROR_IMAGE_ENABLED_BAD_FORMAT': 'Invalid image live value'
 };
 
 $().ready( function () {
+	var wbImageValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_IMAGE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_IMAGE_NAME_BAD_FORMAT"}],
+			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }],
+			enabled: [{rule: { includedInto: ['0', '1']}, error: "ERROR_IMAGE_ENABLED_BAD_FORMAT" }]
+	};
 	$('#wbAddImageForm').wbObjectManager( { fieldsPrefix:'wb',
 									  errorLabelsPrefix: 'err',
 									  errorGeneral:"errgeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
 									  fieldsDefaults: { enabled: 0 },
-									  validationRules: {
-										'name': { rangeLength: { 'min': 1, 'max': 100 } }
-									  }
+									  validationRules: wbImageValidations
 									});
 	$('#wbDeleteImageForm').wbObjectManager( { fieldsPrefix: 'wbd',
 									 errorGeneral:"errdgeneral",
@@ -20,14 +27,14 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webimage.html?key=' + escapehtml(record['key']) + '"><i class="icon-pencil"></i> View </a> | <a href="#" class="wbDeleteImageClass" id="wbDeleteImage_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webimage.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteImageClass" id="wbDeleteImage_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
 		} else
 		if (fieldId=="blobKey"){
-			return '<img src="./wbserveimage?size=50&blobKey=' + escapehtml(record['blobKey']) + '">';
+			return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
 		}
 		
 	}
@@ -35,7 +42,7 @@ $().ready( function () {
 	$('#wbImagesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
 									{display:"Image", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
-									{display: "View/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+									{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination"
@@ -76,14 +83,7 @@ $().ready( function () {
 		e.preventDefault();
 		var errors = $('#wbAddImageForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
-			var jsonText = JSON.stringify($('#wbAddImageForm').wbObjectManager().getObjectFromFields());
-			$('#wbAddImageForm').wbCommunicationManager().ajax ( { url: "./wbimage",
-															 httpOperation:"POST", 
-															 payloadData:jsonText,
-															 wbObjectManager : $('#wbAddPageModuleForm').wbObjectManager(),
-															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
-															 } );
+			$('#wbAddImageForm').submit();
 		}
 	});
 
@@ -107,7 +107,7 @@ $().ready( function () {
 	$('.webSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeleteImageForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeleteImageForm').wbCommunicationManager().ajax ( { url: "./wbimage/" + escapehtml(object['key']),
+		$('#wbDeleteImageForm').wbCommunicationManager().ajax ( { url: "./wbimage/" + encodeURIComponent(object['key']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
