@@ -1,13 +1,18 @@
 var errorsGeneral = {
+	'ERROR_ARTICLETITLE_LENGTH': 'Article title length must be between 1 and 250 characters '
 };
 
 $().ready( function () {
+	var wbArticlesValidations = { 
+			title: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_ARTICLETITLE_LENGTH" }]
+	};
 	
 	$('#wbArticleEditForm').wbObjectManager( { fieldsPrefix:'wbe',
 									  errorLabelsPrefix: 'erre',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
+									  validationRules: wbArticlesValidations
 									 });
 
 	var displayHandler = function (fieldId, record) {
@@ -16,7 +21,7 @@ $().ready( function () {
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
 		} 
 		if (fieldId == 'title') {
-			var innerHtml = '<a href="./webarticle.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['title']) + '</a>';
+			var innerHtml = '<a href="./webarticle.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['title']) + '</a>';
 			return innerHtml;
 		}
 
@@ -34,7 +39,7 @@ $().ready( function () {
 	}
 
 	var pageKey = getURLParameter('key'); 
-	$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url:"./wbarticle/" + escapehtml(pageKey),
+	$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url:"./wbarticle/" + encodeURIComponent(pageKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetArticle,
@@ -42,7 +47,7 @@ $().ready( function () {
 												} );
 	
 	var fSuccessEdit = function ( data ) {
-		window.location.href = "./webarticle.html?key=" + escapehtml(pageKey);
+		window.location.href = "./webarticle.html?key=" + encodeURIComponent(pageKey);
 	}
 	var fErrorEdit = function (errors, data) {
 		$('#wbEditPageModuleForm').wbObjectManager().setErrors(errors);
@@ -55,7 +60,7 @@ $().ready( function () {
 			var article = $('#wbArticleEditForm').wbObjectManager().getObjectFromFields();
 			article['htmlSource'] = tinyMCE.get("wbehtmlSource").getContent();
 			var jsonText = JSON.stringify(article);
-			$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + escapehtml(pageKey),
+			$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(pageKey),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbArticleEditForm').wbObjectManager(),
@@ -67,7 +72,7 @@ $().ready( function () {
 	
 	$('.wbArticleEditCancelBtnClass').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webarticle.html?key=" + escapehtml(pageKey);
+		window.location.href = "./webarticle.html?key=" + encodeURIComponent(pageKey);
 	});
 
 

@@ -61,7 +61,8 @@
 					<label class="control-label" for="wbaname">Article title </label>
 					<div class="controls">
 						<input id="wbatitle" class="input-xlarge" type="text" />
-					</div>										
+						<span id="erratitle" class="help-inline"></span>
+				</div>										
 				</div>				
 				<input id="wbahtmlSource" type="hidden" value="" />
 
@@ -76,27 +77,62 @@
 		</form>
     </div>
 
+	<div class="modal hide" id="wbDuplicateArticleModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3>Duplicate article</h3>
+		</div>
+		<form class="form-inline" id="wbDuplicateArticleForm">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="wbctitle">Article title </label>
+					<div class="controls">
+						<input id="wbctitle" name="wbctitle" class="input-xlarge" type="text" />
+						<span id="errctitle" class="help-inline"></span>
+					</div>										
+				</div>				
+				<input id="wbchtmlSource" type="hidden" value="" />
+			</fieldset>		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveDuplicateArticleBtnClass" type="submit">Duplicate article</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
 	<div class="modal hide" id="wbDeleteArticleModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
 			<h3> Delete Article?</h3>
 		</div>
 		<form class="form-inline" id="wbDeleteArticleForm">
-				<input id="wbdkey" type="hidden">
-				<div class="control-group">
-					<div class="controls">
-						<span id="errdgeneral" class="help-inline"></span>
-					</div>										
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="wbdname">Article title </label>
-					<div class="controls">
-						<input id="wbdtitle" class="input-xlarge" type="text" readonly />
-					</div>										
-				</div>				
-
+			<div class="modal-body">
+				<fieldset>
+					<input id="wbdkey" type="hidden">
+					<div class="control-group">
+						<div class="controls">
+							<span id="errdgeneral" class="help-inline"></span>
+						</div>										
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="wbdname">Article title </label>
+						<div class="controls">
+							<input id="wbdtitle" class="input-xlarge" type="text" readonly />
+						</div>										
+					</div>		
+				</fieldset>
+			</div>
 		<div class="modal-footer">
-				<button class="btn btn-primary webSaveDeleteBtnClass" type="submit">Delete</button>
+				<button class="btn btn-primary wbSaveDeleteBtnClass" type="submit">Delete</button>
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>

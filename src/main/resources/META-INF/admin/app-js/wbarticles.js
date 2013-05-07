@@ -1,17 +1,27 @@
 var errorsGeneral = {
+	'ERROR_ARTICLETITLE_LENGTH': 'Article title length must be between 1 and 250 characters '
 };
 
 $().ready( function () {
+	var wbArticlesValidations = { 
+			title: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_ARTICLETITLE_LENGTH" }]
+	};
+
 	$('#wbAddArticleForm').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { },
-									  validationRules: {
-										'title': { rangeLength: { 'min': 1, 'max': 300 } }
-									  }
+									  validationRules: wbArticlesValidations
 									});
+	$('#wbDuplicateArticleForm').wbObjectManager( { fieldsPrefix:'wbc',
+									  errorLabelsPrefix: 'errc',
+									  errorGeneral:"errcgeneral",
+									  errorLabelClassName: 'errorvalidationlabel',
+									  errorInputClassName: 'errorvalidationinput',
+									  validationRules: wbArticlesValidations
+									});
+
 	$('#wbDeleteArticleForm').wbObjectManager( { fieldsPrefix: 'wbd',
 									 errorGeneral:"errdgeneral",
 									 errorLabelsPrefix: 'errd',
@@ -20,7 +30,9 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webarticle.html?key=' + escapehtml(record['key']) + '&externalKey=' + escapehtml(record['externalKey']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteArticleClass" id="wbDeleteArticle_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webarticle.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
+			      +'| <a href="#" class="wbDeleteArticleClass" id="wbDeleteArticle_' + encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'
+				  +'| <a href="#" class="wbDuplicateArticleClass" id="wbDupArticle_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a>';				  
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -29,13 +41,14 @@ $().ready( function () {
 	}
 				
 	$('#wbArticlesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External Id", fieldId:"externalKey"}, {display: "Title", fieldId: "title"}, 
-									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination"
 						});
 
 	$('#wbAddArticleForm').wbCommunicationManager();
+	$('#wbDuplicateArticleForm').wbCommunicationManager();
 	$('#wbDeleteArticleForm').wbCommunicationManager();
 
 	$('#wbAddArticleBtn').click( function (e) {
@@ -43,7 +56,7 @@ $().ready( function () {
 		$('#wbAddArticleForm').wbObjectManager().resetFields();
 		$('#wbAddArticleModal').modal('show');
 	});
-
+	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddArticleModal').modal('hide');
 		$('#wbArticlesTable').wbTable().insertRow(data);			
@@ -76,6 +89,15 @@ $().ready( function () {
 		$('#wbDeleteArticleModal').modal('show');		
 	});
 
+	$(document).on ("click", '.wbDuplicateArticleClass', function (e) {
+		e.preventDefault();
+		$('#wbDuplicateArticleForm').wbObjectManager().resetFields();
+		var key = $(this).attr('id').substring("wbDupArticle_".length);
+		var object = $('#wbArticlesTable').wbTable().getRowDataWithKey(key);
+		$('#wbDuplicateArticleForm').wbObjectManager().populateFieldsFromObject(object);
+		$('#wbDuplicateArticleModal').modal('show');		
+	});
+
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteArticleModal').modal('hide');	
 		$('#wbArticlesTable').wbTable().deleteRowWithKey(data["key"]);
@@ -84,10 +106,36 @@ $().ready( function () {
 		$('#wbDeleteArticleForm').wbObjectManager().setErrors(errors);
 	}
 
-	$('.webSaveDeleteBtnClass').click( function (e) {
+	var fSuccessDuplicate = function ( data ) {
+		$('#wbDuplicateArticleModal').modal('hide');
+		$('#wbArticlesTable').wbTable().insertRow(data);			
+	}
+	var fErrorDuplicate = function (errors, data) {
+		$('#wbDuplicateArticleForm').wbObjectManager().setErrors(errors);
+	}
+
+	$('.wbSaveDuplicateArticleBtnClass').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wbDuplicateArticleForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {	
+			var object = $('#wbDuplicateArticleForm').wbObjectManager().getObjectFromFields();
+			delete object['key'];
+			delete object['externalKey'];
+			var jsonText = JSON.stringify(object);
+			$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle",
+														 httpOperation:"POST", 
+														 payloadData: jsonText,
+														 wbObjectManager : $('#wbDuplicateArticleForm').wbObjectManager(),
+														 functionSuccess: fSuccessDuplicate,
+														 functionError: fErrorDuplicate
+													} );
+		}
+	});
+
+	$('.wbSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeleteArticleForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + escapehtml(object['key']),
+		$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(object['key']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
