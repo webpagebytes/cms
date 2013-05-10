@@ -1,30 +1,33 @@
 var errorsGeneral = {
+	'ERROR_IMAGE_NAME_LENGTH': 'Image name length must be between 1 and 250 characters',
+	'ERROR_IMAGE_NAME_BAD_FORMAT': 'Invalid format for image name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
+	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty',
 };
 
 $().ready( function () {
-	
+	var wbImageValidations = { 
+		name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_IMAGE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_IMAGE_NAME_BAD_FORMAT"}],
+		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }],
+	};
+
 	$('#wbuImageDataUpdateForm').wbObjectManager( { fieldsPrefix:'wbud',
 								  errorLabelsPrefix: 'errud',
 								  errorGeneral:"errudgeneral",
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
-								  validationRules: {
-									'name': { rangeLength: { 'min': 1, 'max': 100 } }
-								  }
+								  validationRules: wbImageValidations
 								});
 	$('#wbuImageUploadUpdateForm').wbObjectManager( { fieldsPrefix:'wbuu',
 								  errorLabelsPrefix: 'erruu',
 								  errorGeneral:"erruugeneral",
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
-								  validationRules: {
-									'filename': { rangeLength: { 'min': 1, 'max': 100 } }
-								  }
+								  validationRules: wbImageValidations
 								});
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == "blobKey") {
-			return "<img src='./wbserveimage?blobKey={0}'>".format( escapehtml(record['blobKey']) );
+			return "<img src='./wbserveimage?blobKey={0}'>".format( encodeURIComponent(record['blobKey']) );
 		} else
 		if (fieldId == 'lastModified') {
 			var date = new Date();
@@ -47,7 +50,7 @@ $().ready( function () {
 		alert(data);
 	}
 	
-	$('#wbImageView').wbCommunicationManager().ajax ( { url:"./wbimage/" + imageKey,
+	$('#wbImageView').wbCommunicationManager().ajax ( { url:"./wbimage/" + encodeURIComponent(imageKey),
 											 httpOperation:"GET", 
 											 payloadData:"",
 											 functionSuccess: fSuccessGetImage,
@@ -56,7 +59,7 @@ $().ready( function () {
 											
 	var fSuccessGetServeingUrl = function (data) {
 		$('#wbimageblobKey').html('<img src="' + data['url'] + '">');
-		$('#servingurl').html('<a target="_new" href="' + data['url'] + '">' + escapehtml(data['url']) + '</a>');
+		$('#servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
 	}
 	var fErrorGetServingUrl = function (data) {
 		alert(data);
@@ -65,10 +68,10 @@ $().ready( function () {
 	$('.wbGetServingUrlBtnClass').click ( function (e) {
 		e.preventDefault();
 		var imageSize = parseInt ($('.wbImageSizeInputClass').val());
-		var ajaxUrl = "./wbserveimageurl?blobKey=" + imageBlobKey;
+		var ajaxUrl = "./wbserveimageurl?blobKey=" + encodeURIComponent(imageBlobKey);
 		if (imageSize != Number.NaN && imageSize > 0)
 		{
-			ajaxUrl += ('&size=' + imageSize);
+			ajaxUrl += ('&size=' + encodeURIComponent(imageSize));
 		}
 		
 		$('#wbImageView').wbCommunicationManager().ajax ( { url:ajaxUrl,
@@ -94,7 +97,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var image = $('#wbuImageDataUpdateForm').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(image);
-			$('#wbImageView').wbCommunicationManager().ajax ( { url: "./wbimage/" + imageKey,
+			$('#wbImageView').wbCommunicationManager().ajax ( { url: "./wbimage/" + encodeURIComponent(imageKey),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbuImageDataUpdateForm').wbObjectManager(),
@@ -114,7 +117,7 @@ $().ready( function () {
 	
 	$('.wbUpdateImageDataBtnClass').click ( function (e) {
 		e.preventDefault();
-		$('#wbImageView').wbCommunicationManager().ajax ( { url:"./wbimage/" + imageKey,
+		$('#wbImageView').wbCommunicationManager().ajax ( { url:"./wbimage/" + encodeURIComponent(imageKey),
 										 httpOperation:"GET", 
 										 payloadData:"",
 										 functionSuccess: fSuccessGetImageForUpdate,
@@ -143,6 +146,14 @@ $().ready( function () {
 	var fErrorGetUpload = function (errors, data) {
 		alert(data);
 	}
+
+	$('.imageUploadUpdateSave').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wbuImageUploadUpdateForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			$('#wbuImageUploadUpdateForm').submit();
+		}
+	});
 
 	
 });
