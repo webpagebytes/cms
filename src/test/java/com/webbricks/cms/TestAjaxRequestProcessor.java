@@ -159,7 +159,10 @@ public class TestAjaxRequestProcessor {
 		try
 		{
 			OperationsReader operationsReader = EasyMock.createMock(OperationsReader.class);
+			
 			EasyMock.expect(operationsReader.operationToMethod(EasyMock.anyObject(String.class), EasyMock.anyObject(String.class))).andReturn(null);
+			EasyMock.expect(operationsReader.wildOperationToMethod(EasyMock.anyObject(String.class), EasyMock.anyObject(String.class))).andReturn(null);
+			
 			EasyMock.expect(request.getMethod()).andReturn("GET");
 			ajaxProcessor.setOperationsReader(operationsReader);
 			Capture<Integer> capture = new Capture<Integer>();

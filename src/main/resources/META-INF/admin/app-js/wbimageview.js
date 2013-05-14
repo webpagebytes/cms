@@ -45,8 +45,9 @@ $().ready( function () {
 	var fSuccessGetImage = function (data) {
 		$('#wbImageView').wbDisplayObject().display(data);
 		imageBlobKey = data['blobKey'];
+		getServingUrl(0);
 	}
-	var fErrorGetImage = function (data) {
+	var fErrorGetImage = function (errors, data) {
 		alert(data);
 	}
 	
@@ -58,36 +59,37 @@ $().ready( function () {
 											} );	
 											
 	var fSuccessGetServeingUrl = function (data) {
-		$('#wbimageblobKey').html('<img src="' + data['url'] + '">');
-		$('#servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
+		$('#wbimageblobKey').html('<img src="' + encodeURI(data['url']) + '">');
+		$('.servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
 	}
-	var fErrorGetServingUrl = function (data) {
+	var fErrorGetServingUrl = function (errors, data) {
 		alert(data);
-	}
+	};
 											
-	$('.wbGetServingUrlBtnClass').click ( function (e) {
-		e.preventDefault();
-		var imageSize = parseInt ($('.wbImageSizeInputClass').val());
+	var getServingUrl =  function (imageSize) {
+		//var imageSize = parseInt ($('.wbImageSizeInputClass').val());
 		var ajaxUrl = "./wbserveimageurl?blobKey=" + encodeURIComponent(imageBlobKey);
-		if (imageSize != Number.NaN && imageSize > 0)
-		{
+		if (imageSize != Number.NaN && imageSize > 0) {
 			ajaxUrl += ('&size=' + encodeURIComponent(imageSize));
 		}
-		
 		$('#wbImageView').wbCommunicationManager().ajax ( { url:ajaxUrl,
 										 httpOperation:"GET", 
 										 payloadData:"",
 										 functionSuccess: fSuccessGetServeingUrl,
 										 functionError: fErrorGetServingUrl
 										} );	
+	};
+	
+	$('.wbImageDataSaveBtnClass').click ( function (e) {
+		e.preventDefault();
+		
 	});
-
 	var fSuccessImageUpdate = function (data) {
 		$('#wbModalImageDataUpdate').modal('hide');
 		window.location.reload();
 	};
 	
-	var fErrorImageUpdate = function (data) {
+	var fErrorImageUpdate = function (errors, data) {
 		alert(data);
 	};
 	

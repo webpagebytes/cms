@@ -315,7 +315,6 @@ public class DataStoreImporterExporter {
 
 	public void exportToZip(AdminDataStorage adminStorage, OutputStream os) throws WBIOException
 	{
-		WBJSONToFromObjectConverter objectConverter = new WBJSONToFromObjectConverter();		
 		ZipOutputStream zos = new ZipOutputStream(os);
 		
 		try

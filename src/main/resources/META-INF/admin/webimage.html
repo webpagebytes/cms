@@ -38,18 +38,26 @@
 			<li > <span id="wbimagename"></span> (last modified <span id="wbimagelastModified"></span>) </li>
 		</ul>	
 		<form class="form-inline">
-				<div class="control-group">
-					<div class="controls">
-						<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit image data </button>
-						<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace image</button>
+				<div class="well marginv">
+					<div class="control-group">
+						<div class="controls">
+							<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit image data </button>
+							<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace image</button>
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">			
-					<input type="text" name="imagesize" class="input-medium wbImageSizeInputClass" placeholder="Empty for default size (px)">
-					<button class="btn wbGetServingUrlBtnClass" type="submit"> Get serving url </button>
-					<span id="servingurl"> </span>
+					<div class="control-group">						
+						<div class="controls">			
+						Image via CDN: <span class="servingurl"> </span>
+						</div>						
 					</div>
+					<div class="control-group">						
+						<div class="controls">			
+						Show image resized: <input type="text" name="imagesize" class="input-medium wbImageSizeInputClass" placeholder="Size in pixels">
+						<button class="btn wbGetServingUrlBtnClass" type="submit"> Show </button>
+						<span class="servingurl"> </span>		
+						</div>						
+					</div>
+
 				</div>
 		</form>
 		<div id="wbimageblobKey">

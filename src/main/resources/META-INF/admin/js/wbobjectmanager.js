@@ -60,6 +60,9 @@ Date.prototype.toFormatString = function (time, format) {
 	} else
 	if (format == "mm/dd/yyyy hh:mm:ss") {
 		return "{0}/{1}/{2} {3}:{4}:{5}".format(mo,d,yF,h,mi,s);
+	} else
+		if (format == "ddmmyyyy_hhmm") {
+		return "{0}{1}{2}_{3}{4}".format(d,mo,yF,h,mi);
 	}
 	return "";
 }

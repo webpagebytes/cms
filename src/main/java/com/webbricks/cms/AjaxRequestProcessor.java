@@ -30,7 +30,7 @@ public class AjaxRequestProcessor {
 		operationsReader.initialize(resPath);
 	}
 	
-	//returns a pair of url and a possible key parameter
+	//returns a pair of url and a possible url parameter (i.e. key)
 	public Pair<String, String> matchUrlForController(String reqUri, String httpOperation)
 	{
 		httpOperation = httpOperation.toUpperCase();
@@ -39,7 +39,7 @@ public class AjaxRequestProcessor {
 		{
 			return new Pair(reqUri, null);
 		}
-		// we match to an url like /url/{key}
+		// we match to an url like /url/{key} or /url*
 		int countSlash = 0;
 		for(int i = 0; i< reqUri.length(); i++)
 		{
@@ -58,7 +58,14 @@ public class AjaxRequestProcessor {
 				return new Pair(urlToMatch, param);
 			}
 		}
-		
+		if (countSlash==1)
+		{
+			String wildUrl = operationsReader.wildOperationToMethod(reqUri, httpOperation);
+			if (wildUrl!= null && wildUrl.length()>0)
+			{
+				return new Pair(wildUrl, ""); 
+			}
+		}
 		return null;		
 	}
 	

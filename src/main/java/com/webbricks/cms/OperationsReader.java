@@ -15,6 +15,7 @@ import com.webbricks.exception.WBReadConfigException;
 public class OperationsReader {
 
 	private Map<String, Pair<String, String>> operationsToMethods;
+	private Map<String, Pair<String, String>> wildOperationsToMethods;
 	
 	
 	public OperationsReader()
@@ -30,6 +31,7 @@ public class OperationsReader {
 		httpOperations.add("POST");
 		httpOperations.add("DELETE");
 		operationsToMethods = new HashMap<String, Pair<String, String>>();
+		wildOperationsToMethods = new HashMap<String, Pair<String, String>>();
 		
 		try
 		{
@@ -59,7 +61,11 @@ public class OperationsReader {
 		            	if (strs.length == 2)
 		            	{
 		            		Pair<String, String> pair = new Pair<String, String>(strs[0], strs[1]);
-		            		operationsToMethods.put(key, pair);
+		            		operationsToMethods.put(key, pair);		         
+		            		if (operation.indexOf('*')>0)
+		            		{
+		            			wildOperationsToMethods.put(key, pair);
+		            		}
 		            	}
 	            	}
 	            }
@@ -70,13 +76,34 @@ public class OperationsReader {
 			throw new WBReadConfigException("Coult not read config file:" + configFile, e);
 		}		
 	}
-		
+	
+	// return a pair class and method for the controller
 	public Pair<String,String> operationToMethod(String operation, String httpOperation)
 	{
 		String key = httpOperation.toUpperCase() + "_" + operation;
 		if (operationsToMethods.containsKey(key))
 		{
 			return operationsToMethods.get(key);
+		}
+		return null;
+	}
+	
+	public String wildOperationToMethod(String operation, String httpOperation)
+	{
+		// operation may be /export_12_01_2003.zip and will be matched against /export_*.zip
+		String temp = httpOperation.toUpperCase() + "_";
+		Set<String> keys = wildOperationsToMethods.keySet();
+		for (String key: keys)
+		{
+			if (key.length()>temp.length())
+			{
+				String wildUrl = key.substring(temp.length());
+				String wildUrl_ = (new StringBuffer(wildUrl)).delete(wildUrl.indexOf('*'), wildUrl.length()).toString();
+				if (operation.indexOf(wildUrl_) == 0 && wildUrl.length()>0)
+				{
+					return wildUrl;
+				}
+			}
 		}
 		return null;
 	}

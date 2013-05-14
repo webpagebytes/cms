@@ -41,6 +41,22 @@ public class TestOperationsReader {
 	}
 
 	@Test
+	public void testWildOperation()
+	{
+		try
+		{
+			OperationsReader operationsReader = new OperationsReader();
+			operationsReader.initialize("META-INF/config/ajaxwhitelist.properties");
+			
+			assertTrue(operationsReader.wildOperationToMethod("/export_121201.zip", "GET").compareTo("/export_*.zip") == 0);
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+		
+	}
+	
+	@Test
 	public void testGetOperationsOK()
 	{
 		try
