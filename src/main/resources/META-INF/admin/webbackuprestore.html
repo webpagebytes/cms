@@ -31,10 +31,19 @@
 	</div>
 
 	<div class="well">
-		<a href="#" id="backuplink"> Backup </a> 
+	   <div class="alert alert-info"> Backup takes the snapshot of the current state, changes made during backup may not be included. </div>
+       
+	   <div class="">
+		<a href="#" id="backuplink" class="btn btn-primary"> <i class="icon-download icon-white"></i>Backup </a> 
+	   </div>
+	   <div class="clear"></div>
 	</div>
 	<div class="well">
-		<button class="btn btn-primary restoreBtnClass"> Restore </button>
+	   <div class="alert alert-info"> Import will first erase the current project state and then will recreate the state from saved file. </div>      
+	   <div class=""> 
+		  <button class="btn btn-primary restoreBtnClass"> <i class="icon-upload icon-white"></i> Import </button>
+	   </div> 
+	   
 	</div>
 	
 	<div class="modal hide" id="wbModalRestoreUpload">

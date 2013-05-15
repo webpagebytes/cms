@@ -1,13 +1,13 @@
 var errorsGeneral = {
 	'ERROR_IMAGE_NAME_LENGTH': 'Image name length must be between 1 and 250 characters',
 	'ERROR_IMAGE_NAME_BAD_FORMAT': 'Invalid format for image name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
-	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty',
+	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty'
 };
 
 $().ready( function () {
 	var wbImageValidations = { 
 		name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_IMAGE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_IMAGE_NAME_BAD_FORMAT"}],
-		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }],
+		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }]
 	};
 
 	$('#wbuImageDataUpdateForm').wbObjectManager( { fieldsPrefix:'wbud',
@@ -58,9 +58,14 @@ $().ready( function () {
 											 functionError: fErrorGetImage
 											} );	
 											
-	var fSuccessGetServeingUrl = function (data) {
+	var fSuccessGetServeingUrl = function (data, clientDataValue) {
 		$('#wbimageblobKey').html('<img src="' + encodeURI(data['url']) + '">');
-		$('.servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
+		if (clientDataValue == 0) {
+			$('.servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
+			$('.servingresizeurl').html('');
+		} else {
+			$('.servingresizeurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
+		}
 	}
 	var fErrorGetServingUrl = function (errors, data) {
 		alert(data);
@@ -69,21 +74,20 @@ $().ready( function () {
 	var getServingUrl =  function (imageSize) {
 		//var imageSize = parseInt ($('.wbImageSizeInputClass').val());
 		var ajaxUrl = "./wbserveimageurl?blobKey=" + encodeURIComponent(imageBlobKey);
+		var clientDataValue = 0;
 		if (imageSize != Number.NaN && imageSize > 0) {
 			ajaxUrl += ('&size=' + encodeURIComponent(imageSize));
+			clientDataValue = imageSize;
 		}
 		$('#wbImageView').wbCommunicationManager().ajax ( { url:ajaxUrl,
 										 httpOperation:"GET", 
 										 payloadData:"",
 										 functionSuccess: fSuccessGetServeingUrl,
-										 functionError: fErrorGetServingUrl
+										 functionError: fErrorGetServingUrl,
+										 clientData: clientDataValue
 										} );	
 	};
 	
-	$('.wbImageDataSaveBtnClass').click ( function (e) {
-		e.preventDefault();
-		
-	});
 	var fSuccessImageUpdate = function (data) {
 		$('#wbModalImageDataUpdate').modal('hide');
 		window.location.reload();
@@ -92,6 +96,18 @@ $().ready( function () {
 	var fErrorImageUpdate = function (errors, data) {
 		alert(data);
 	};
+	
+	$('.wbGetServingUrlBtnClass').click ( function (e) {
+		e.preventDefault();
+		var size = $('.wbImageSizeInputClass').val();
+		size = parseInt(size);
+		if (size != Number.NaN && size>0){
+			getServingUrl(size);
+		} else {
+			$('.wbImageSizeInputClass').val("");
+		}
+		
+	});
 	
 	$('.wbImageDataSaveBtnClass').click ( function (e) {
 		e.preventDefault();

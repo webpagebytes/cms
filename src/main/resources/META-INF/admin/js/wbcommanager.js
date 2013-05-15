@@ -9,7 +9,8 @@
 			url: "",
 			functionSuccess: undefined,
 			functionError: undefined,
-			wbObjectManager: undefined
+			wbObjectManager: undefined,
+			clientData: undefined
 		},
 		
 		init: function ( thisElement, options ) {			
@@ -50,12 +51,12 @@
 					var retObject = JSON.parse(data);
 					if (retObject.status == "OK") {							
 						if (options.functionSuccess) {
-							options.functionSuccess(JSON.parse(retObject.data));
+							options.functionSuccess(JSON.parse(retObject.data),options.clientData);
 						}
 					}
 					if (retObject.status == "FAIL") {
 						if (options.functionError) {
-							options.functionError(retObject.errors, JSON.parse(retObject.data));
+							options.functionError(retObject.errors, JSON.parse(retObject.data), options.clientData);
 						}						
 					}
 				  }
