@@ -1,12 +1,11 @@
 var errorsGeneral = {
-	'ERROR_IMAGE_NAME_LENGTH': 'Image name length must be between 1 and 250 characters',
-	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty'
+	'ERROR_PROJECT_FILENAME_LENGTH': 'Upload file path cannot be empty'
 };
 
 $().ready( function () {
 
 	var wbProjectValidations = { 
-		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }]
+		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_PROJECT_FILENAME_LENGTH" }]
 	};
 	$('#wbModalRestoreUploadForm').wbObjectManager( { fieldsPrefix:'wb',
 								  errorLabelsPrefix: 'err',

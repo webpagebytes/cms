@@ -118,14 +118,15 @@ public class AdminServlet extends HttpServlet {
 				{
 					String reqUri = getAdminRelativeUri(req);
 					reqUri = decorateAdminRelativeUri(reqUri);
+					if (ajaxRequestProcssor.isAjaxRequest(req, reqUri))
+					{
+						ajaxRequestProcssor.process(req, resp, reqUri);
+						return;
+					} else
 					if (resourceRequestProcessor.isResourceRequest(reqUri))
 					{
 						resourceRequestProcessor.process(req, resp, reqUri);
 						return;
-					} else
-					if (ajaxRequestProcssor.isAjaxRequest(req, reqUri))
-					{
-						ajaxRequestProcssor.process(req, resp, reqUri);
 					} else
 					{
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

@@ -19,12 +19,15 @@ public class WBImage implements Serializable {
 	
 	@AdminFieldStore
 	private String blobKey;
-
-	@AdminFieldStore
-	private Integer enabled;
 	
 	@AdminFieldStore
 	private Date lastModified;
+	
+	@AdminFieldStore
+	private String contentType;
+
+	@AdminFieldStore
+	private String fileName;
 	
 	public Long getKey() {
 		return key;
@@ -58,20 +61,28 @@ public class WBImage implements Serializable {
 		this.blobKey = blobKey;
 	}
 
-	public Integer getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Integer enabled) {
-		this.enabled = enabled;
-	}
-
 	public Date getLastModified() {
 		return lastModified;
 	}
 
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	

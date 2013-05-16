@@ -17,9 +17,6 @@ public class WBUri implements Serializable {
 
 	@AdminFieldStore
 	private String uri;
-
-	@AdminFieldStore
-	private Long dataSourceKey;
 	
 	@AdminFieldStore
 	private Date lastModified;
@@ -37,7 +34,10 @@ public class WBUri implements Serializable {
 	private Long externalKey;
 	
 	@AdminFieldStore
-	private Long pageKey;
+	private String contentType;
+	
+	@AdminFieldStore
+	private Long contentExternalKey;
 
 	public Long getKey() {
 		return key;
@@ -71,14 +71,6 @@ public class WBUri implements Serializable {
 		this.uri = uri;
 	}
 
-	public Long getDataSourceKey() {
-		return dataSourceKey;
-	}
-
-	public void setDataSourceKey(Long dataSourceKey) {
-		this.dataSourceKey = dataSourceKey;
-	}
-
 	public Date getLastModified() {
 		return lastModified;
 	}
@@ -103,14 +95,6 @@ public class WBUri implements Serializable {
 		this.controllerClass = controllerClass;
 	}
 
-	public Long getPageKey() {
-		return pageKey;
-	}
-
-	public void setPageKey(Long pageKey) {
-		this.pageKey = pageKey;
-	}
-
 	public String getPageName() {
 		return pageName;
 	}
@@ -127,4 +111,20 @@ public class WBUri implements Serializable {
 		this.externalKey = externalKey;
 	}
 
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public Long getContentExternalKey() {
+		return contentExternalKey;
+	}
+
+	public void setContentExternalKey(Long contentExternalKey) {
+		this.contentExternalKey = contentExternalKey;
+	}
+	
 }

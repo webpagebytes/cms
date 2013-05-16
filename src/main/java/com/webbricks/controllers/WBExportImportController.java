@@ -16,6 +16,7 @@ import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.DataStoreImporterExporter;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBBlobInfo;
 import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
@@ -67,14 +68,14 @@ public class WBExportImportController extends WBController {
 			
 	public void importUpload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
-		String blobKey = blobHandler.storeBlob(request);
-		InputStream is = blobHandler.getBlobData(blobKey);
+		WBBlobInfo blobInfo = blobHandler.storeBlob(request);
+		InputStream is = blobHandler.getBlobData(blobInfo.getBlobKey());
 		importerExporter.importfromZip(adminStorage, is);
 		
 		String referer = request.getHeader("Referer");
-		if (blobKey != null)
+		if (blobInfo != null)
 		{
-			blobHandler.deleteBlob(blobKey);
+			blobHandler.deleteBlob(blobInfo.getBlobKey());
 		}
 		if (referer!= null)
 		{

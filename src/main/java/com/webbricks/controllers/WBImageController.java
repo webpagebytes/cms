@@ -23,6 +23,7 @@ import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBBlobInfo;
 import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
@@ -84,9 +85,15 @@ public class WBImageController extends WBController implements AdminDataStorageL
 		}
 		String url = blobHandler.serveBlobUrl(blobKey, size);
 		response.addHeader("Location", url);
-		response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-		
+		response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);		
 	}
+	
+	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		String blobKey = request.getParameter("blobKey");
+		blobHandler.serveBlob(blobKey, response);
+	}
+	
 	public void serveImageUrl(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		int size = 0;
@@ -143,16 +150,14 @@ public class WBImageController extends WBController implements AdminDataStorageL
 				{
 					image.setName(request.getParameter("name"));
 				}
-				if (request.getParameter("enabled") != null)
-				{
-					image.setEnabled(request.getParameter("enabled").equals("1") ? 1 : 0);
-				}				
 			}
 			
-			String blobKey = blobHandler.storeBlob(request);
-			if (blobKey != null)
+			WBBlobInfo blobInfo = blobHandler.storeBlob(request);
+			if (blobInfo != null)
 			{
-				image.setBlobKey(blobKey);
+				image.setBlobKey(blobInfo.getBlobKey());
+				image.setContentType(blobInfo.getContentType());
+				image.setFileName(blobInfo.getFileName());
 				image.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());				
 				WBImage storedImage = adminStorage.add(image);
 				String referer = request.getHeader("Referer");

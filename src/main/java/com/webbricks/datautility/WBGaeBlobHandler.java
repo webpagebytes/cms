@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreInputStream;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -23,12 +25,13 @@ public class WBGaeBlobHandler implements WBBlobHandler {
 	
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	private ImagesService imageService = ImagesServiceFactory.getImagesService();
+	private BlobInfoFactory blobInfoFactory = new BlobInfoFactory();
 	
 	public String storeBlob(byte[] blobBytes)
 	{
 		return null;
 	}
-	public String storeBlob(HttpServletRequest request) throws WBIOException
+	public WBBlobInfo storeBlob(HttpServletRequest request) throws WBIOException
 	{
 		Map<java.lang.String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
 		if (blobs.containsKey(FILE_PARAMETER_NAME))
@@ -36,7 +39,11 @@ public class WBGaeBlobHandler implements WBBlobHandler {
 			List<BlobKey> fileBlob = blobs.get(FILE_PARAMETER_NAME);
 			if (fileBlob.size() == 1)
 			{
-				return fileBlob.get(0).getKeyString();
+				BlobInfo bi = blobInfoFactory.loadBlobInfo(fileBlob.get(0));
+				if (bi != null)
+				{
+					return new WBBlobInfoDefault(bi.getBlobKey().getKeyString(), bi.getSize(), bi.getFilename(), bi.getContentType());					
+				}
 			}
 		}
 		return null;

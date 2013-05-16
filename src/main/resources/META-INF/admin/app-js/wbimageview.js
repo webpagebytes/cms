@@ -45,6 +45,7 @@ $().ready( function () {
 	var fSuccessGetImage = function (data) {
 		$('#wbImageView').wbDisplayObject().display(data);
 		imageBlobKey = data['blobKey'];
+		$('.downloadResource').html("<a href='./wbresource/{0}?blobKey={1}'>Download</a>".format(encodeURIComponent(data['fileName']),encodeURIComponent(imageBlobKey)));
 		getServingUrl(0);
 	}
 	var fErrorGetImage = function (errors, data) {

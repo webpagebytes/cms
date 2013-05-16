@@ -339,6 +339,7 @@ public class TestAdminServlet {
 		{
 			EasyMock.expect(request.getRequestURI()).andReturn("/admin/js/base.js");
 			adminServlet.setAdminURIPart("/admin");		
+			EasyMock.expect(ajaxProcessor.isAjaxRequest(request, "/js/base.js")).andReturn(false);
 			EasyMock.expect(resourceProcessor.isResourceRequest("/js/base.js")).andReturn(true);
 			
 			Capture<HttpServletRequest> captureReq = new Capture<HttpServletRequest>();
@@ -346,7 +347,8 @@ public class TestAdminServlet {
 			Capture<String> captureUri = new Capture<String>();
 			resourceProcessor.process(EasyMock.capture(captureReq), EasyMock.capture(captureResp), EasyMock.capture(captureUri));		
 			adminServlet.setResourceRequestProcessor(resourceProcessor);
-			EasyMock.replay(resourceProcessor, request);
+			adminServlet.setAjaxRequestProcssor(ajaxProcessor);
+			EasyMock.replay(ajaxProcessor, resourceProcessor, request);
 			
 			adminServlet.doGet(request, response);						
 			assertTrue (captureReq.getValue() == request);
@@ -366,7 +368,6 @@ public class TestAdminServlet {
 		{
 			EasyMock.expect(request.getRequestURI()).andReturn("/admin/pages");
 			adminServlet.setAdminURIPart("/admin");		
-			EasyMock.expect(resourceProcessor.isResourceRequest("/pages")).andReturn(false);
 			EasyMock.expect(ajaxProcessor.isAjaxRequest(request, "/pages")).andReturn(true);
 			
 			Capture<HttpServletRequest> captureReq = new Capture<HttpServletRequest>();
