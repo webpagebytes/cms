@@ -25,7 +25,13 @@ public class WBImage implements Serializable {
 	
 	@AdminFieldStore
 	private String contentType;
+	
+	@AdminFieldStore
+	private String shortType;	
 
+	@AdminFieldStore
+	private Long size;
+	
 	@AdminFieldStore
 	private String fileName;
 	
@@ -84,6 +90,23 @@ public class WBImage implements Serializable {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public String getShortType() {
+		return shortType;
+	}
+
+	public void setShortType(String shortType) {
+		this.shortType = shortType;
+	}
+	
 	
 	
 }

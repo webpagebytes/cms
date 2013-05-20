@@ -20,6 +20,7 @@ import com.webbricks.cmsdata.WBImage;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
@@ -40,6 +41,33 @@ public class WBImageController extends WBController implements AdminDataStorageL
 	private WBBlobHandler blobHandler;
 	private WBImageValidator validator;
 	private WBImageCache imageCache;
+	private static final String IMAGE_CONTENT_NAME = "image";
+	private static final String VIDEO_CONTENT_NAME = "video";
+	private static final String AUDIO_CONTENT_NAME = "audio";
+	private static final String APP_CONTENT_NAME   = "application";
+	
+		
+	private String contentTypeToShortType(String contentType)
+	{
+		contentType = contentType.toLowerCase();
+		if (contentType.startsWith(IMAGE_CONTENT_NAME))
+		{
+			return IMAGE_CONTENT_NAME;
+		} else
+		if (contentType.startsWith(VIDEO_CONTENT_NAME))
+		{
+			return VIDEO_CONTENT_NAME;
+		} else
+		if (contentType.startsWith(AUDIO_CONTENT_NAME))
+		{
+			return AUDIO_CONTENT_NAME;
+		} else
+		if (contentType.startsWith(APP_CONTENT_NAME))
+		{
+			return APP_CONTENT_NAME;
+		}
+		return APP_CONTENT_NAME;		
+	}
 	
 	public WBImageController()
 	{
@@ -156,8 +184,10 @@ public class WBImageController extends WBController implements AdminDataStorageL
 			if (blobInfo != null)
 			{
 				image.setBlobKey(blobInfo.getBlobKey());
-				image.setContentType(blobInfo.getContentType());
+				image.setContentType(blobInfo.getContentType().toLowerCase());
+				image.setShortType( contentTypeToShortType(blobInfo.getContentType()) );
 				image.setFileName(blobInfo.getFileName());
+				image.setSize(blobInfo.getSize());
 				image.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());				
 				WBImage storedImage = adminStorage.add(image);
 				String referer = request.getHeader("Referer");
@@ -200,9 +230,17 @@ public class WBImageController extends WBController implements AdminDataStorageL
 	{
 		try
 		{
+			String shortType = request.getParameter("type");
 			List<WBImage> images = null;
-			images = adminStorage.getAllRecords(WBImage.class);
 			
+			if (null == shortType)
+			{
+				images = adminStorage.getAllRecords(WBImage.class);
+			} else
+			{
+				shortType = shortType.toLowerCase();
+				images = adminStorage.query(WBImage.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+			}
 			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(images);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
 			

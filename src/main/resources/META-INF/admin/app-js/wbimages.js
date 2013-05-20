@@ -34,12 +34,16 @@ $().ready( function () {
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
 		} else
 		if (fieldId=="blobKey"){
-			return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
+			if (record["shortType"]=="image") {
+				return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
+			} else
+				return "";
 		}
 		
 	}
 				
 	$('#wbImagesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
+	                                {display:"Content type", fieldId:"contentType"},{display:"Size", fieldId:"size"},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
 									{display:"Image", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
 									{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
@@ -125,8 +129,12 @@ $().ready( function () {
 	var fErrorGetAll = function (errors, data) {
 	
 	}
-	
-	$('#wbAddImageForm').wbCommunicationManager().ajax ( { url:"./wbimage",
+	var shortType = getURLParameter('type');
+	var urlValue = "./wbimage";
+	if (shortType && shortType.length) {
+		urlValue += "?type={0}".format(encodeURIComponent(shortType));
+	}
+	$('#wbAddImageForm').wbCommunicationManager().ajax ( { url: urlValue,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetAll,

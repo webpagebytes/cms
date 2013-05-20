@@ -26,14 +26,31 @@ $().ready( function () {
 								});
 
 	var displayHandler = function (fieldId, record) {
-		if (fieldId == "blobKey") {
-			return "<img src='./wbserveimage?blobKey={0}'>".format( encodeURIComponent(record['blobKey']) );
+		if (fieldId == 'shortType') {
+			var shortType = record['shortType'];
+			if (shortType == 'video') {
+				$('#wbimageshortType').attr('href','./webimages.html?type=video');
+				return "Web Images (Video)";
+			} else
+			if (shortType == 'image') {
+				$('#wbimageshortType').attr('href','./webimages.html?type=image');
+				return "Web Images (Images)";
+			} else
+			if (shortType == 'audio') {
+				$('#wbimageshortType').attr('href','./webimages.html?type=audio');
+				return "Web Images (Sounds)";
+			} else
+			if (shortType == 'application') {
+				$('#wbimageshortType').attr('href','./webimages.html?type=application');
+				return "Web Images (Applications)";
+			} else
+			$('#wbimageshortType').attr('href','./webimages.html');
+			return "Web Images";
 		} else
 		if (fieldId == 'lastModified') {
 			var date = new Date();
 			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
-		} 
-
+		}
 		return escapehtml(record[fieldId]);
 	}
 	
