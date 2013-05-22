@@ -43,7 +43,7 @@ Date.prototype.toFormatString = function (time, format) {
 	} else {
 		this.setTime(time);
 	};
-	
+	var now = new Date();
 	if (format == undefined) 
 		format = "dd/mm/yyyy hh:mm:ss";
 	else
@@ -55,11 +55,18 @@ Date.prototype.toFormatString = function (time, format) {
 	mi = ("0" + mi); mi=mi.substr(mi.length-2);
 	s = ("0" + s); s=s.substr(s.length-2);
 	
+	if (format == "today|dd/mm/yyyy hh:mm") {
+		if (now.getFullYear()==yF && ((now.getMonth()+1)==mo) && now.getDate()==d) {
+			// it's the same date as today
+			return 'Today {0}:{1}'.format (h,mi);
+		} else
+			return "{0}/{1}/{2} {3}:{4}".format(d,mo,yF,h,mi);
+	} else
 	if (format == "dd/mm/yyyy hh:mm:ss") {
-		return "{0}/{1}/{2} {3}:{4}:{5}".format(d,mo,yF,h,mi,s);
+		return "{0}/{1}/{2} {3}:{4}".format(d,mo,yF,h,mi);
 	} else
 	if (format == "mm/dd/yyyy hh:mm:ss") {
-		return "{0}/{1}/{2} {3}:{4}:{5}".format(mo,d,yF,h,mi,s);
+		return "{0}/{1}/{2} {3}:{4}".format(mo,d,yF,h,mi);
 	} else
 		if (format == "ddmmyyyy_hhmm") {
 		return "{0}{1}{2}_{3}{4}".format(d,mo,yF,h,mi);

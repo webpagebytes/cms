@@ -34,17 +34,29 @@ test ("test functions - Date.toFormatString", function () {
 	// month in Date is 0 based index
 	var date1 = new Date(2012,11,13,14,15,16,0);
 	var string1 = date1.toFormatString(date1);
-	equal(string1, "13/12/2012 14:15:16");
+	equal(string1, "13/12/2012 14:15");
 	
 	var string2 = date1.toFormatString(date1 , "mm/dd/yyyy hh:mm:ss");
-	equal(string2, "12/13/2012 14:15:16");
+	equal(string2, "12/13/2012 14:15");
 	
 	var date2 = new Date(2012,0,1,0,0,0,0);
 	var string3 = date2.toFormatString(date2);
-	equal(string3, "01/01/2012 00:00:00");
+	equal(string3, "01/01/2012 00:00");
 	
 	var date3 = new Date(2012,1,1,1,1,1,1);
 	var string4 = date3.toFormatString(date3);
-	equal(string4, "01/02/2012 01:01:01");
+	equal(string4, "01/02/2012 01:01");
+	
+	var dateNow = new Date();
+	dateNow.setMinutes(2);
+	dateNow.setHours(1);
+	var string5 = dateNow.toFormatString(dateNow, "today|dd/mm/yyyy hh:mm");
+	equal(string5, "Today 01:02");
+
+	var dateNow2 = new Date();
+	dateNow2.setMinutes(21);
+	dateNow2.setHours(11);
+	var string6 = dateNow2.toFormatString(dateNow2, "today|dd/mm/yyyy hh:mm");
+	equal(string6, "Today 11:21");
 	
 }); 

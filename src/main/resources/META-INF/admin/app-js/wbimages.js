@@ -31,7 +31,22 @@ $().ready( function () {
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm");
+		} else
+		if (fieldId=="size") {
+			var size = parseInt(record['size']);
+			if (size < 1024) {
+				return size + ' bytes';
+			} else 
+			if (size < 1048576) {
+				var f = size/1024;
+				return (f.toFixed(2)) + ' KB';
+			} else {
+				var f = size/1048576;
+				return (f.toFixed(2)) + ' MB';
+			};
+			
+			return size;
 		} else
 		if (fieldId=="blobKey"){
 			if (record["shortType"]=="image") {
@@ -43,7 +58,8 @@ $().ready( function () {
 	}
 				
 	$('#wbImagesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
-	                                {display:"Content type", fieldId:"contentType"},{display:"Size", fieldId:"size"},
+	                                {display:"Content type", fieldId:"contentType"},
+									{display:"Size", fieldId:"size", customHandling: true, customHandler: displayHandler},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
 									{display:"Image", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
 									{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],

@@ -33,10 +33,54 @@
 	
 	<ul class="nav nav-tabs nav-filled nav-wb-horizontal">
 		<li id="tabresimages"> <a href="./webimages.html?type=image"> Images </a> </li>
-		<li id="tabresmovies"> <a href="./webimages.html?type=video"> Movies </a> </li>
+		<script type="text/javascript">
+			var url = document.location.href;
+			var patt = /(\?type=image|&type=image)/gi;
+			if (patt.test(url)) 
+				document.getElementById('tabresimages').className += ' active';
+			else
+				document.getElementById('tabresimages').className = '';
+		</script>
+		<li id="tabresmovies"> <a href="./webimages.html?type=video"> Video </a> </li>
+		<script type="text/javascript">
+			var url = document.location.href;
+			var patt = /(\?type=video|&type=video)/gi;
+			if (patt.test(url)) 
+				document.getElementById('tabresmovies').className += ' active';
+			else
+				document.getElementById('tabresmovies').className = '';
+		</script>
+
 		<li id="tabresapps"> <a href="./webimages.html?type=application"> Application specific </a> </li>
+		<script type="text/javascript">
+			var url = document.location.href;
+			var patt = /(\?type=application|&type=application)/gi;
+			if (patt.test(url)) 
+				document.getElementById('tabresapps').className += ' active';
+			else
+				document.getElementById('tabresapps').className = '';
+		</script>
+
 		<li id="tabressounds"> <a href="./webimages.html?type=audio"> Sounds </a> </li>
+		<script type="text/javascript">
+			var url = document.location.href;
+			var patt = /(\?type=audio|&type=audio)/gi;
+			if (patt.test(url)) 
+				document.getElementById('tabressounds').className += ' active';
+			else
+				document.getElementById('tabressounds').className = '';
+		</script>
+
 		<li id="tabresall" class="active"> <a href="./webimages.html"> All resources </a> </li>
+		<script type="text/javascript">
+			var url = document.location.href;
+			var patt = /(\?type=|&type=)/gi;
+			if (!patt.test(url)) 
+				document.getElementById('tabresall').className += ' active';
+			else
+				document.getElementById('tabresall').className = '';
+		</script>
+		
 	</ul>
 
 	<div class="wbcolorcontent">
