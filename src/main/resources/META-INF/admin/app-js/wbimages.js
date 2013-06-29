@@ -49,10 +49,12 @@ $().ready( function () {
 			return size;
 		} else
 		if (fieldId=="blobKey"){
-			if (record["shortType"]=="image") {
-				return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
-			} else
-				return "";
+			switch (record["shortType"]) {
+				case "image":
+					return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
+				default:
+					return '<a href="./wbdownload/{0}?blobKey={1}">{2}</a>'.format(encodeURIComponent(record['fileName']),encodeURIComponent(record["blobKey"]),escapehtml(record['fileName']));				
+			}
 		}
 		
 	}
@@ -61,7 +63,7 @@ $().ready( function () {
 	                                {display:"Content type", fieldId:"contentType"},
 									{display:"Size", fieldId:"size", customHandling: true, customHandler: displayHandler},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
-									{display:"Image", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
+									{display:"File", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
 									{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",

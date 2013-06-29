@@ -115,11 +115,21 @@ public class WBImageController extends WBController implements AdminDataStorageL
 		response.addHeader("Location", url);
 		response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);		
 	}
-	
+	//content disposition header
 	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		String blobKey = request.getParameter("blobKey");
 		blobHandler.serveBlob(blobKey, response);
+	}
+	
+	public void downloadResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		String fileName = (String) request.getAttribute("key");
+		String blobKey = request.getParameter("blobKey");
+		
+		blobHandler.serveBlob(blobKey, response);
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		
 	}
 	
 	public void serveImageUrl(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
