@@ -26,6 +26,9 @@ public class ResourceRequestProcessor {
 		resourcesContentType.put("html", "text/html");
 		resourcesContentType.put("htm", "text/html");
 		resourcesContentType.put("jpeg", "text/jpeg");
+		resourcesContentType.put("swf", "application/x-shockwave-flash");
+		resourcesContentType.put("xap", "application/x-silverlight-app");
+		resourcesContentType.put("svg", "image/svg+xml");
 	}
 		
 	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WBException

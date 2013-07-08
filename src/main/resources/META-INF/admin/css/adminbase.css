@@ -135,3 +135,7 @@ border: 1px solid #7F0000 !important;
 {
 clear: both;
 }
+.wbhidden
+{
+display: none;
+}

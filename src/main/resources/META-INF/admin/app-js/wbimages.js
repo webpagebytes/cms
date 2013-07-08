@@ -53,7 +53,7 @@ $().ready( function () {
 				case "image":
 					return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
 				default:
-					return '<a href="./wbdownload/{0}?blobKey={1}">{2}</a>'.format(encodeURIComponent(record['fileName']),encodeURIComponent(record["blobKey"]),escapehtml(record['fileName']));				
+					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['key']),escapehtml(record['fileName']));				
 			}
 		}
 		

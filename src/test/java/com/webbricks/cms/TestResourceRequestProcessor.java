@@ -72,7 +72,7 @@ public class TestResourceRequestProcessor{
 		EasyMock.replay(request);
 		ResourceRequestProcessor processor = new ResourceRequestProcessor();
 		
-		assertTrue(false == processor.addContentType(response, "/path.svg"));
+		assertTrue(false == processor.addContentType(response, "/path.svi"));
 		EasyMock.verify(request);
 	}
 
@@ -229,7 +229,7 @@ public class TestResourceRequestProcessor{
 			ResourceRequestProcessor processor = new ResourceRequestProcessor();
 			processor.setResourcesMap(resourceMap);
 		
-			String resource = "/base.svg";
+			String resource = "/base1.svi";
 			String hash = "1234";
 			String differentHash = "9999";
 			String content = " body { color: #123456; } \n a { color: #567890; }";

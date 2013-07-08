@@ -118,17 +118,31 @@ public class WBImageController extends WBController implements AdminDataStorageL
 	//content disposition header
 	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
-		String blobKey = request.getParameter("blobKey");
-		blobHandler.serveBlob(blobKey, response);
+		try
+		{
+			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBImage wbimage = adminStorage.get(key, WBImage.class);
+			blobHandler.serveBlob(wbimage.getBlobKey(), response);
+						
+		} catch (Exception e)		
+		{
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 	
 	public void downloadResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
-		String fileName = (String) request.getAttribute("key");
-		String blobKey = request.getParameter("blobKey");
-		
-		blobHandler.serveBlob(blobKey, response);
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		try
+		{
+			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBImage wbimage = adminStorage.get(key, WBImage.class);
+			blobHandler.serveBlob(wbimage.getBlobKey(), response);
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbimage.getFileName() + "\"");
+						
+		} catch (Exception e)		
+		{
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 		
 	}
 	

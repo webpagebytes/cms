@@ -38,7 +38,7 @@ $().ready( function () {
 			} else
 			if (shortType == 'audio') {
 				$('#wbimageshortType').attr('href','./webimages.html?type=audio');
-				return "Web Images (Sounds)";
+				return "Web Images (Audio)";
 			} else
 			if (shortType == 'application') {
 				$('#wbimageshortType').attr('href','./webimages.html?type=application');
@@ -61,9 +61,32 @@ $().ready( function () {
 	
 	var fSuccessGetImage = function (data) {
 		$('#wbImageView').wbDisplayObject().display(data);
-		imageBlobKey = data['blobKey'];
-		$('.downloadResource').html("<a href='./wbdownload/{0}?blobKey={1}'>Download</a>".format(encodeURIComponent(data['fileName']),encodeURIComponent(imageBlobKey)));
-		getServingUrl(0);
+		$('.downloadResource').html("<a href='./wbdownload/{0}'>Download</a>".format(encodeURIComponent(data['key'])));
+		
+		switch (data['shortType']) {
+			case "image":
+				$('.wbImageContentType').removeClass('wbhidden');
+				imageBlobKey = data['blobKey'];
+				getServingUrl(0);
+				break;
+			case 'video':
+				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(data['contentType'], encodeURI(data['key']));
+				$('.wbVideoContentType').removeClass('wbhidden');				
+				$("#wbvideocontent").html(videoHtml);
+				
+				var player = new MediaElementPlayer('#idvideocontent');
+				player.load();
+				break;
+			case 'audio':
+				$('.wbAudioContentType').removeClass('wbhidden');
+				$('.wbaudiocontent').html("this is audio");
+				break;
+			case 'video':
+				$('.wbApplicationContentType').removeClass('wbhidden');
+				$('.wbapplicationcontent').html("this is application");
+				break;
+		}
+		
 	}
 	var fErrorGetImage = function (errors, data) {
 		alert(data);
