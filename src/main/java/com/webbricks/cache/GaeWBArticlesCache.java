@@ -11,7 +11,7 @@ import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.exception.WBIOException;
 
-public class GaeWBArticleCache implements WBArticleCache, WBRefreshableCache{
+public class GaeWBArticlesCache implements WBArticlesCache, WBRefreshableCache{
 
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBArticle";
@@ -19,7 +19,7 @@ public class GaeWBArticleCache implements WBArticleCache, WBRefreshableCache{
 	
 	private AdminDataStorage adminDataStorage = null;
 
-	public GaeWBArticleCache()
+	public GaeWBArticlesCache()
 	{
 		memcache = MemcacheServiceFactory.getMemcacheService(memcacheNamespace);
 		adminDataStorage = new GaeAdminDataStorage();

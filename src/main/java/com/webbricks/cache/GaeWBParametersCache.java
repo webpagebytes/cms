@@ -16,16 +16,16 @@ import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.exception.WBIOException;
 
-public class GaeWBParameterCache implements WBParameterCache, WBRefreshableCache {
+public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCache {
 	
-	private static final Logger log = Logger.getLogger(GaeWBParameterCache.class.getName());
+	private static final Logger log = Logger.getLogger(GaeWBParametersCache.class.getName());
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBParameter";
 	private static final String memcacheMapKey = "keyToWBParameter";
 	private static final String memcacheMapOwners = "ownerToWBParameter";
 	private AdminDataStorage adminDataStorage = null;
 	
-	public GaeWBParameterCache() {
+	public GaeWBParametersCache() {
 		memcache = MemcacheServiceFactory.getMemcacheService(memcacheNamespace);
 		adminDataStorage = new GaeAdminDataStorage();
 	}

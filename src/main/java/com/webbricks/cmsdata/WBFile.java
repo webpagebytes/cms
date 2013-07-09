@@ -6,7 +6,7 @@ import java.util.Date;
 import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
 
-public class WBImage implements Serializable {
+public class WBFile implements Serializable {
 
 	@AdminFieldKey
 	private Long key;

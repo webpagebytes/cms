@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBParameterCache;
+import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cache.WBProjectCache;
-import com.webbricks.cache.WBUriCache;
-import com.webbricks.cache.WBWebPageCache;
+import com.webbricks.cache.WBUrisCache;
+import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBWebPage;
@@ -66,13 +66,13 @@ public class PublicContentServlet extends HttpServlet {
 		try
 		{
 			WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-			this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUriCacheInstance(), 
-					wbCacheFactory.createWBWebPageCacheInstance(), 
-					wbCacheFactory.createWBWebPageModuleCacheInstance(), 
-					wbCacheFactory.createWBParameterCacheInstance(),
-					wbCacheFactory.createWBImageCacheInstance(),
-					wbCacheFactory.createWBArticleCacheInstance(),
-					wbCacheFactory.createWBMessageCacheInstance(),
+			this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
+					wbCacheFactory.createWBWebPagesCacheInstance(), 
+					wbCacheFactory.createWBWebPageModulesCacheInstance(), 
+					wbCacheFactory.createWBParametersCacheInstance(),
+					wbCacheFactory.createWBImagesCacheInstance(),
+					wbCacheFactory.createWBArticlesCacheInstance(),
+					wbCacheFactory.createWBMessagesCacheInstance(),
 					wbCacheFactory.createWBProjectCacheInstance());
 
 			Set<String> allUris = cacheInstances.getWBUriCache().getAllUris();

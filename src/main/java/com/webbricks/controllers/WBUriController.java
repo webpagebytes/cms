@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBUriCache;
+import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
@@ -30,7 +30,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBUriValidator uriValidator;
-	private WBUriCache wbUriCache;
+	private WBUrisCache wbUriCache;
 	
 	public WBUriController() {
 		httpServletToolbox = new HttpServletToolbox();
@@ -38,7 +38,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		adminStorage = new GaeAdminDataStorage();
 		uriValidator = new WBUriValidator();
 		WBCacheFactory cacheFactory = new DefaultWBCacheFactory();
-		wbUriCache = cacheFactory.createWBUriCacheInstance();	
+		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
 	
@@ -70,7 +70,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		this.adminStorage = adminStorage;
 	}
 	
-	public void setWbUriCache(WBUriCache wbUriCache) {
+	public void setWbUriCache(WBUrisCache wbUriCache) {
 		this.wbUriCache = wbUriCache;
 	}
 

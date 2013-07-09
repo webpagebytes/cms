@@ -21,7 +21,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webbricks.cache.WBWebPageModuleCache;
+import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.controllers.WBPageModuleValidator;
 import com.webbricks.datautility.AdminDataStorage;
@@ -44,7 +44,7 @@ private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
 private WBPageModuleValidator validatorMock;
 private Map<String, String> errors;
-private WBWebPageModuleCache pageModuleCacheMock;
+private WBWebPageModulesCache pageModuleCacheMock;
 
 @Before
 public void setUp()
@@ -58,7 +58,7 @@ public void setUp()
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
 	validatorMock = PowerMock.createMock(WBPageModuleValidator.class);
 	errors = new HashMap<String, String>();
-	pageModuleCacheMock = PowerMock.createMock(WBWebPageModuleCache.class);
+	pageModuleCacheMock = PowerMock.createMock(WBWebPageModulesCache.class);
 	
 	controllerForTest.setAdminStorage(adminStorageMock);
 	controllerForTest.setHttpServletToolbox(httpServletToolboxMock);

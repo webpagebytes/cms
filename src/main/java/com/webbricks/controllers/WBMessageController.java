@@ -18,9 +18,9 @@ import org.json.JSONObject;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBMessageCache;
+import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cmsdata.WBArticle;
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
@@ -37,7 +37,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBMessageValidator validator;
-	private WBMessageCache wbMessageCache;
+	private WBMessagesCache wbMessageCache;
 
 	public WBMessageController()
 	{
@@ -47,7 +47,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		validator = new WBMessageValidator();
 		validator.setAdminStorage(adminStorage);
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-		wbMessageCache = wbCacheFactory.createWBMessageCacheInstance();
+		wbMessageCache = wbCacheFactory.createWBMessagesCacheInstance();
 	}
 	
 	public void notify (WBMessage t, AdminDataStorageOperation o)

@@ -1,13 +1,13 @@
 package com.webbricks.cache;
 
 public interface WBCacheFactory {
-	public WBUriCache createWBUriCacheInstance();
-	public WBWebPageCache createWBWebPageCacheInstance();
-	public WBWebPageModuleCache createWBWebPageModuleCacheInstance();
-	public WBParameterCache createWBParameterCacheInstance();
-	public WBImageCache createWBImageCacheInstance();
-	public WBArticleCache createWBArticleCacheInstance();
-	public WBMessageCache createWBMessageCacheInstance();
+	public WBUrisCache createWBUrisCacheInstance();
+	public WBWebPagesCache createWBWebPagesCacheInstance();
+	public WBWebPageModulesCache createWBWebPageModulesCacheInstance();
+	public WBParametersCache createWBParametersCacheInstance();
+	public WBFilesCache createWBImagesCacheInstance();
+	public WBArticlesCache createWBArticlesCacheInstance();
+	public WBMessagesCache createWBMessagesCacheInstance();
 	public WBProjectCache createWBProjectCacheInstance();
 	
 }

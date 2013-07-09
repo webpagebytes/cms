@@ -7,33 +7,33 @@ import java.util.Map;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.exception.WBIOException;
 
-public class GaeWBImageCache implements WBImageCache {
+public class GaeWBImagesCache implements WBFilesCache {
 
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBImage";
 	private static final String memcacheMapKey = "externalKeyToWBImage";
 	private AdminDataStorage adminDataStorage = null;
 
-	public GaeWBImageCache()
+	public GaeWBImagesCache()
 	{
 		memcache = MemcacheServiceFactory.getMemcacheService(memcacheNamespace);
 		adminDataStorage = new GaeAdminDataStorage();		
 	}
 	
-	public WBImage get(Long externalKey) throws WBIOException
+	public WBFile get(Long externalKey) throws WBIOException
 	{
-		HashMap<Long, WBImage> mapkeys = (HashMap<Long, WBImage>) memcache.get(memcacheMapKey);
+		HashMap<Long, WBFile> mapkeys = (HashMap<Long, WBFile>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
-			return (WBImage) mapkeys.get(externalKey);
+			return (WBFile) mapkeys.get(externalKey);
 		}
-		Map<Long, WBImage> refreshData = new HashMap<Long, WBImage>(); 
+		Map<Long, WBFile> refreshData = new HashMap<Long, WBFile>(); 
 		RefreshInternal(refreshData);
 		if (refreshData.containsKey(externalKey))
 		{
@@ -47,15 +47,15 @@ public class GaeWBImageCache implements WBImageCache {
 		RefreshInternal(null);
 	}
 	
-	private void RefreshInternal(Map<Long, WBImage> keyMap) throws WBIOException
+	private void RefreshInternal(Map<Long, WBFile> keyMap) throws WBIOException
 	{
 		synchronized (this) {
-			List<WBImage> wbImages = adminDataStorage.getAllRecords(WBImage.class);
+			List<WBFile> wbImages = adminDataStorage.getAllRecords(WBFile.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBImage>();
+				keyMap = new HashMap<Long, WBFile>();
 			}
-			for (WBImage wbImage : wbImages)
+			for (WBFile wbImage : wbImages)
 			{
 				Long aKey = wbImage.getExternalKey();
 				keyMap.put(aKey, wbImage);

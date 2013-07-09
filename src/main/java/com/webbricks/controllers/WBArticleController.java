@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
-import com.webbricks.cache.WBArticleCache;
+import com.webbricks.cache.WBArticlesCache;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBUriCache;
+import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
@@ -29,7 +29,7 @@ public class WBArticleController extends WBController implements AdminDataStorag
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBArticleValidator validator;
-	private WBArticleCache wbArticleCache;
+	private WBArticlesCache wbArticleCache;
 	public WBArticleController()
 	{
 		httpServletToolbox = new HttpServletToolbox();
@@ -37,7 +37,7 @@ public class WBArticleController extends WBController implements AdminDataStorag
 		adminStorage = new GaeAdminDataStorage();
 		validator = new WBArticleValidator();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-		wbArticleCache = wbCacheFactory.createWBArticleCacheInstance();
+		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();
 	}
 	
 	public void notify (WBArticle t, AdminDataStorageOperation o)

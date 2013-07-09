@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBImageCache;
-import com.webbricks.cache.WBWebPageModuleCache;
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cache.WBFilesCache;
+import com.webbricks.cache.WBWebPageModulesCache;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.exception.WBIOException;
@@ -79,7 +79,7 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
         try
         {
         	String serveUrl = "";
-        	WBImage image = cacheInstances.getWBImageCache().get(longExternalKey);
+        	WBFile image = cacheInstances.getWBImageCache().get(longExternalKey);
         	if (image != null)
         	{
         		serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	

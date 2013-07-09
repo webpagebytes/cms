@@ -8,17 +8,17 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.google.appengine.repackaged.com.google.common.base.Fingerprinting;
-import com.webbricks.cache.WBMessageCache;
+import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.exception.WBIOException;
 
 public class WBResourceBundle extends ResourceBundle {
 
-	private WBMessageCache messageCache;
+	private WBMessagesCache messageCache;
 	private Locale wblocale;
 	private Long fingerPrint;
 	private Map<String, String> messages;
 	
-	WBResourceBundle(WBMessageCache messageCache, Locale locale)
+	WBResourceBundle(WBMessagesCache messageCache, Locale locale)
 	{
 		this.messageCache = messageCache;
 		this.wblocale = locale;

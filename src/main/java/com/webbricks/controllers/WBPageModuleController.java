@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBWebPageModuleCache;
+import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
@@ -28,7 +28,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBPageModuleValidator validator;
-	private WBWebPageModuleCache wbPageModuleCache;
+	private WBWebPageModulesCache wbPageModuleCache;
 	public WBPageModuleController()
 	{
 		httpServletToolbox = new HttpServletToolbox();
@@ -37,7 +37,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		validator = new WBPageModuleValidator();
 		
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-		wbPageModuleCache = wbCacheFactory.createWBWebPageModuleCacheInstance(); 
+		wbPageModuleCache = wbCacheFactory.createWBWebPageModulesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 
@@ -183,7 +183,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		this.validator = validator;
 	}
 	
-	public void setPageModuleCache(WBWebPageModuleCache cache)
+	public void setPageModuleCache(WBWebPageModulesCache cache)
 	{
 		this.wbPageModuleCache = cache;
 	}

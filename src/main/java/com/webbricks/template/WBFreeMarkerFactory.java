@@ -4,13 +4,13 @@ import java.util.Locale;
 
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBMessageCache;
+import com.webbricks.cache.WBMessagesCache;
 
 import freemarker.template.Configuration;
 
 public class WBFreeMarkerFactory {
 
-	public WBResourceBundle createResourceBundle(WBMessageCache messageCache, Locale locale)
+	public WBResourceBundle createResourceBundle(WBMessagesCache messageCache, Locale locale)
 	{
 		return new WBResourceBundle(messageCache, locale);
 	}

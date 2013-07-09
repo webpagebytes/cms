@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.exception.WBIOException;
 
-public class GaeWBMessageCache implements WBMessageCache {
-	private static final Logger log = Logger.getLogger(GaeWBMessageCache.class.getName());
+public class GaeWBMessagesCache implements WBMessagesCache {
+	private static final Logger log = Logger.getLogger(GaeWBMessagesCache.class.getName());
 	private AdminDataStorage adminDataStorage;
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBMessage";
@@ -28,7 +28,7 @@ public class GaeWBMessageCache implements WBMessageCache {
 	private static final String memcacheFingerPrint = "fingerprint_";
 	private SecureRandom random;
 	
-	public GaeWBMessageCache()
+	public GaeWBMessagesCache()
 	{
 		memcache = MemcacheServiceFactory.getMemcacheService(memcacheNamespace);
 		adminDataStorage = new GaeAdminDataStorage();		

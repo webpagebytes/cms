@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webbricks.cache.WBUriCache;
+import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.controllers.WBErrors;
 import com.webbricks.controllers.WBUriController;
@@ -43,7 +43,7 @@ private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
 private WBUriValidator validatorMock;
 private Map<String, String> errors;
-private WBUriCache cacheMock;
+private WBUrisCache cacheMock;
 @Before
 public void setUp()
 {
@@ -56,7 +56,7 @@ public void setUp()
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
 	validatorMock = PowerMock.createMock(WBUriValidator.class);
 	errors = new HashMap<String, String>();
-	cacheMock = PowerMock.createMock(WBUriCache.class);
+	cacheMock = PowerMock.createMock(WBUrisCache.class);
 	
 	controllerForTest.setAdminStorage(adminStorageMock);
 	controllerForTest.setHttpServletToolbox(httpServletToolboxMock);

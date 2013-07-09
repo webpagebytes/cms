@@ -8,7 +8,7 @@ import java.util.Set;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.exception.WBIOException;
 
-public interface WBUriCache extends WBRefreshableCache {
+public interface WBUrisCache extends WBRefreshableCache {
 
 	public WBUri get(Long key) throws WBIOException;
 	

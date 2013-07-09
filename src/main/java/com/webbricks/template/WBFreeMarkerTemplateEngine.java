@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBMessageCache;
-import com.webbricks.cache.WBParameterCache;
+import com.webbricks.cache.WBMessagesCache;
+import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBGaeBlobHandler;

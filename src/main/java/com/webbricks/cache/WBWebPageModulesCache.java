@@ -3,7 +3,7 @@ package com.webbricks.cache;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.exception.WBIOException;
 
-public interface WBWebPageModuleCache extends WBRefreshableCache {
+public interface WBWebPageModulesCache extends WBRefreshableCache {
 
 	public WBWebPageModule get(Long key) throws WBIOException;
 	

@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.webbricks.cache.WBMessageCache;
+import com.webbricks.cache.WBMessagesCache;
 
 public class WBFreeMarkerResourceBundleControl extends ResourceBundle.Control {
 
-	protected WBMessageCache messageCache;
+	protected WBMessagesCache messageCache;
 	
-	WBFreeMarkerResourceBundleControl(WBMessageCache messageCache)
+	WBFreeMarkerResourceBundleControl(WBMessagesCache messageCache)
 	{
 		this.messageCache = messageCache;
 	}

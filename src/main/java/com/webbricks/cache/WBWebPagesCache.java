@@ -6,7 +6,7 @@ import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.exception.WBIOException;
 
-public interface WBWebPageCache extends WBRefreshableCache {
+public interface WBWebPagesCache extends WBRefreshableCache {
 
 	public WBWebPage get(Long key) throws WBIOException;
 	

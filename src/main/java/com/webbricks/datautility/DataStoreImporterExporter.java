@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import com.webbricks.cmsdata.WBArticle;
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBUri;
@@ -155,8 +155,8 @@ public class DataStoreImporterExporter {
 		try
 		{
 			String buffer = readFromStream(zis);
-			List<WBImage> records = objectConverter.listObjectsFromJSONString(buffer, WBImage.class);
-			for(WBImage record: records)
+			List<WBFile> records = objectConverter.listObjectsFromJSONString(buffer, WBFile.class);
+			for(WBFile record: records)
 			{
 				record.setKey(null);
 				adminStorage.add(record);
@@ -294,7 +294,7 @@ public class DataStoreImporterExporter {
 		try
 		{
 			zos.putNextEntry(ze);		
-			List<WBImage> records = adminStorage.getAllRecords(WBImage.class);
+			List<WBFile> records = adminStorage.getAllRecords(WBFile.class);
 			String recordsString = objectConverter.JSONStringFromListObjects(records);		
 			zos.write(recordsString.getBytes("UTF-8"));
 			zos.closeEntry();

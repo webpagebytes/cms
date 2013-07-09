@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBWebPageCache;
+import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageListener;
@@ -28,7 +28,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBPageValidator pageValidator;
-	private WBWebPageCache wbWebPageCache;
+	private WBWebPagesCache wbWebPageCache;
 	
 	public WBPageController()
 	{
@@ -37,7 +37,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		adminStorage = new GaeAdminDataStorage();
 		pageValidator = new WBPageValidator();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-		wbWebPageCache = wbCacheFactory.createWBWebPageCacheInstance(); 
+		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}
@@ -175,7 +175,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 	public void setAdminStorage(AdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
-	public void setPageCache(WBWebPageCache pageCache)
+	public void setPageCache(WBWebPagesCache pageCache)
 	{
 		this.wbWebPageCache = pageCache;
 	}

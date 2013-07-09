@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBMessageCache;
+import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 
@@ -42,7 +42,7 @@ private WBFreeMarkerTemplateLoader templateLoaderMock;
 private WBFreeMarkerModuleDirective moduleDirectiveMock;
 private WBFreeMarkerImageDirective imageDirectiveMock;
 private WBFreeMarkerArticleDirective articleDirectiveMock;
-private WBMessageCache messageCacheMock;
+private WBMessagesCache messageCacheMock;
 private WBCacheInstances cacheInstancesMock;
 
 private WBBlobHandler blobHandlerMock;
@@ -58,7 +58,7 @@ public void setUp()
 	imageDirectiveMock = PowerMock.createMock(WBFreeMarkerImageDirective.class);
 	articleDirectiveMock = PowerMock.createMock(WBFreeMarkerArticleDirective.class);
 	blobHandlerMock = PowerMock.createMock(WBBlobHandler.class);
-	messageCacheMock = PowerMock.createMock(WBMessageCache.class);
+	messageCacheMock = PowerMock.createMock(WBMessagesCache.class);
 	cacheInstancesMock = PowerMock.createMock(WBCacheInstances.class);
 	
 	Logger loggerMock = PowerMock.createMock(Logger.class);
@@ -130,7 +130,7 @@ public void process_ok_no_messages()
 		
 		Locale locale = new Locale("en");
 		WBResourceBundle resourceBundleMock = PowerMock.createMock(WBResourceBundle.class);
-		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessageCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);
+		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);
 		
 		Environment envMock = PowerMock.createMock(Environment.class);
 		EasyMock.expect(templateMock.createProcessingEnvironment(rootMap, out)).andReturn(envMock);
@@ -211,7 +211,7 @@ public void process_exception()
 		Writer out = new StringWriter();		
 		EasyMock.expect(configurationMock.getTemplate(nameTemplate)).andReturn(templateMock);		
 		Locale locale = new Locale("en");
-		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessageCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);		
+		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);		
 		EasyMock.expect(templateMock.createProcessingEnvironment(rootMap, out)).andReturn(envMock);			
 		Whitebox.setInternalState(templateEngine, "wbFreeMarkerFactory", freeMarkerFactoryMock);
 

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webbricks.cmsdata.WBImage;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.exception.WBIOException;
 
 public interface WBBlobHandler {

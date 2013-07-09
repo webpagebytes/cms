@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
-import com.webbricks.cache.WBParameterCache;
+import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
@@ -33,7 +33,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBParameterValidator parameterValidator;
-	private WBParameterCache wbParameterCache;
+	private WBParametersCache wbParameterCache;
 	public WBParameterController() {
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
@@ -41,7 +41,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 		parameterValidator = new WBParameterValidator();
 		
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-		wbParameterCache = wbCacheFactory.createWBParameterCacheInstance(); 
+		wbParameterCache = wbCacheFactory.createWBParametersCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}
@@ -256,7 +256,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 	public void setParameterValidator(WBParameterValidator parameterValidator) {
 		this.parameterValidator = parameterValidator;
 	}
-	public void setParameterCache(WBParameterCache parameterCache)
+	public void setParameterCache(WBParametersCache parameterCache)
 	{
 		this.wbParameterCache = parameterCache;
 	}

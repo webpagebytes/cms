@@ -9,8 +9,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBWebPageCache;
-import com.webbricks.cache.WBWebPageModuleCache;
+import com.webbricks.cache.WBWebPagesCache;
+import com.webbricks.cache.WBWebPageModulesCache;
 
 import freemarker.template.Configuration;
 

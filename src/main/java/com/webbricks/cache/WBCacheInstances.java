@@ -1,21 +1,21 @@
 package com.webbricks.cache;
 
 public class WBCacheInstances {
-	private WBUriCache wbUriCache;
-	private WBWebPageCache wbWebPageCache;
-	private WBWebPageModuleCache wbWebPageModuleCache;
-	private WBParameterCache wbParameterCache;
-	private WBImageCache wbImageCache;
-	private WBArticleCache wbArticleCache;
-	private WBMessageCache wbMessageCache;
+	private WBUrisCache wbUriCache;
+	private WBWebPagesCache wbWebPageCache;
+	private WBWebPageModulesCache wbWebPageModuleCache;
+	private WBParametersCache wbParameterCache;
+	private WBFilesCache wbImageCache;
+	private WBArticlesCache wbArticleCache;
+	private WBMessagesCache wbMessageCache;
 	private WBProjectCache wbProjectCache;
-	public WBCacheInstances(WBUriCache uriCache,
-							WBWebPageCache webPageCache,
-							WBWebPageModuleCache webPageModuleCache,
-							WBParameterCache parameterCache,
-							WBImageCache imageCache,
-							WBArticleCache articleCache,
-							WBMessageCache messageCache,
+	public WBCacheInstances(WBUrisCache uriCache,
+							WBWebPagesCache webPageCache,
+							WBWebPageModulesCache webPageModuleCache,
+							WBParametersCache parameterCache,
+							WBFilesCache imageCache,
+							WBArticlesCache articleCache,
+							WBMessagesCache messageCache,
 							WBProjectCache projectCache)
 	{
 		wbArticleCache = articleCache;
@@ -28,31 +28,31 @@ public class WBCacheInstances {
 		wbProjectCache = projectCache;
 	}
 	
-	public WBMessageCache getWBMessageCache()
+	public WBMessagesCache getWBMessageCache()
 	{
 		return wbMessageCache;
 	}
-	public WBWebPageCache getWBWebPageCache()
+	public WBWebPagesCache getWBWebPageCache()
 	{
 		return wbWebPageCache;
 	}
-	public WBWebPageModuleCache getWBWebPageModuleCache()
+	public WBWebPageModulesCache getWBWebPageModuleCache()
 	{
 		return wbWebPageModuleCache;
 	}
-	public WBImageCache getWBImageCache()
+	public WBFilesCache getWBImageCache()
 	{
 		return wbImageCache;
 	}
-	public WBUriCache getWBUriCache()
+	public WBUrisCache getWBUriCache()
 	{
 		return wbUriCache;
 	}
-	public WBArticleCache getWBArticleCache()
+	public WBArticlesCache getWBArticleCache()
 	{
 		return wbArticleCache;
 	}
-	public WBParameterCache getWBParameterCache()
+	public WBParametersCache getWBParameterCache()
 	{
 		return wbParameterCache;
 	}

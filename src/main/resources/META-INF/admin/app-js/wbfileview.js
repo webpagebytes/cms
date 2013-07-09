@@ -85,9 +85,9 @@ $().ready( function () {
 				player.load();
 				
 				break;
-			case 'video':
+			case 'application':
 				$('.wbApplicationContentType').removeClass('wbhidden');
-				$('.wbapplicationcontent').html("this is application");
+				$('.wbapplicationcontent').html("");
 				break;
 		}
 		

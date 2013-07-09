@@ -6,33 +6,33 @@ import java.util.Map;
 import com.webbricks.exception.WBIOException;
 
 public class GaeWBCacheFactory implements WBCacheFactory {
-	public WBUriCache createWBUriCacheInstance()
+	public WBUrisCache createWBUrisCacheInstance()
 	{
-		return new GaeWBUriCache();
+		return new GaeWBUrisCache();
 	}
-	public WBWebPageCache createWBWebPageCacheInstance()
+	public WBWebPagesCache createWBWebPagesCacheInstance()
 	{
-		return new GaeWBWebPageCache();
+		return new GaeWBWebPagesCache();
 	}
-	public WBParameterCache createWBParameterCacheInstance()
+	public WBParametersCache createWBParametersCacheInstance()
 	{
-		return new GaeWBParameterCache();
+		return new GaeWBParametersCache();
 	}
-	public WBWebPageModuleCache createWBWebPageModuleCacheInstance()
+	public WBWebPageModulesCache createWBWebPageModulesCacheInstance()
 	{
-		return new GaeWBWebPageModuleCache();
+		return new GaeWBWebPageModulesCache();
 	}
-	public WBImageCache createWBImageCacheInstance()
+	public WBFilesCache createWBImagesCacheInstance()
 	{
-		return new GaeWBImageCache();
+		return new GaeWBImagesCache();
 	}
-	public WBArticleCache createWBArticleCacheInstance()
+	public WBArticlesCache createWBArticlesCacheInstance()
 	{
-		return new GaeWBArticleCache();
+		return new GaeWBArticlesCache();
 	}
-	public WBMessageCache createWBMessageCacheInstance()
+	public WBMessagesCache createWBMessagesCacheInstance()
 	{
-		return new GaeWBMessageCache();
+		return new GaeWBMessagesCache();
 	}
 	public WBProjectCache createWBProjectCacheInstance()
 	{
