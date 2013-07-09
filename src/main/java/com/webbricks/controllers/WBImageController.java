@@ -34,7 +34,7 @@ import com.webbricks.utility.HttpServletToolbox;
 
 public class WBImageController extends WBController implements AdminDataStorageListener<WBImage> {
 
-	private static final String UPLOAD_RETURN_URL = "/wbimageupload"; 
+	private static final String UPLOAD_RETURN_URL = "/wbfileupload"; 
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;

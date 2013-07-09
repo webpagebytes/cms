@@ -14,7 +14,7 @@
 <script src="./js/wbdisplayobject.js" type="text/javascript"></script>
 <script src="./medelem/mediaelement-and-player.js"></script>
 <link rel="stylesheet" href="./medelem/mediaelementplayer.css" /></code>
-<script src="./app-js/wbimageview.js" type="text/javascript"></script>
+<script src="./app-js/wbfileview.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -28,24 +28,24 @@
 			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
 			<li > <a href="./webarticles.html"> Articles </a> </li>
 			<li > <a href="./webmessages.html"> Messages </a> </li>
-			<li class="active"> <a href="./webimages.html"> Images </a> </li>
+			<li class="active" > <a href="./webfiles.html"> Files </a> </li>
 			<li > <a href="./webbackuprestore.html"> Backup & restore </a> </li>
 		</ul>
 		</div>
 	</div>
 
-	<div id="wbImageView">
+	<div id="wbFileView">
 		<ul class="breadcrumb" >
-			<li> <a id="wbimageshortType" href="./webimages.html"> Web Images </a> <span class="divider">/</span> </li>
-			<li > <span id="wbimagename"></span> (last modified <span id="wbimagelastModified"></span>) </li>
+			<li> <a id="wbfileshortType" href="./webfiles.html"> Web Files </a> <span class="divider">/</span> </li>
+			<li > <span id="wbfilename"></span> (last modified <span id="wbfilelastModified"></span>) </li>
 		</ul>	
 		<div class="wbImageContentType wbhidden">
 			<form class="form-inline">
 				<div class="well marginv">
 					<div class="control-group">
 						<div class="controls">
-							<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit image data </button>
-							<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace image</button>
+							<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit File Data </button>
+							<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace File</button>
 						</div>
 					</div>
 	               <div class="control-group">                     
@@ -69,15 +69,15 @@
 
 				</div>
 			</form>
-			<div id="wbimageblobKey">
+			<div id="wbfileblobKey">
 			</div>
 		</div>
 		<div class="wbVideoContentType wbhidden">
 				<div class="well marginv">
 					<div class="control-group">
 						<div class="controls">
-							<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
-							<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
+							<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
+							<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
 						</div>
 					</div>
 	               <div class="control-group">                     
@@ -86,16 +86,15 @@
                         </div>                      
                     </div>
 				</div>
-				<div id="wbvideocontent">
-					
+				<div id="wbvideocontent">					
 				</div>
 		</div>
 		<div class="wbAudioContentType wbhidden">
 				<div class="well marginv">
 					<div class="control-group">
 						<div class="controls">
-							<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
-							<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
+							<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
+							<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
 						</div>
 					</div>
 	               <div class="control-group">                     
@@ -104,14 +103,15 @@
                         </div>                      
                     </div>
 				</div>
-				<div class="wbaudiocontent"> </div>
+				<div class="wbaudiocontent">
+				</div>
 		</div>
 		<div class="wbApplicationContentType wbhidden">
 				<div class="well marginv">
 					<div class="control-group">
 						<div class="controls">
-							<button class="btn btn-primary wbUpdateImageDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
-							<button class="btn btn-primary wbUpdateUploadImageBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
+							<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit resource data </button>
+							<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
 						</div>
 					</div>
 	               <div class="control-group">                     
@@ -126,12 +126,12 @@
 
 	</div>
 	
-	<div class="modal hide" id="wbModalImageDataUpdate">
+	<div class="modal hide" id="wbModalFileDataUpdate">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Update image data </h3>
+			<h3> Update File Data </h3>
 		</div>
-		<form class="form-inline" id="wbuImageDataUpdateForm">	
+		<form class="form-inline" id="wbuFileDataUpdateForm">	
 			<div class="modal-body">
 				<input id="wbudkey" type="hidden">
 				<fieldset>
@@ -141,7 +141,7 @@
 						</div>										
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="wbudname">Image name</label>
+						<label class="control-label" for="wbudname">File name</label>
 						<div class="controls">
 							<input id="wbudname" class="input-xlarge" type="text">
 							<span id="errudname" class="help-inline"></span>
@@ -150,18 +150,18 @@
 				</fieldset>	
 			</div>
 			<div class="modal-footer">
-					<button class="btn btn-primary wbImageDataSaveBtnClass" type="submit">Save changes</button>
+					<button class="btn btn-primary wbFileDataSaveBtnClass" type="submit">Save changes</button>
 					<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 			</div>
 		</form>
     </div>
 
-	<div class="modal hide" id="wbModalImageUploadUpdate">
+	<div class="modal hide" id="wbModalFileUploadUpdate">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Replace image </h3>
+			<h3> Replace File </h3>
 		</div>
-		<form class="form-inline" id="wbuImageUploadUpdateForm" enctype="multipart/form-data">	
+		<form class="form-inline" id="wbuFileUploadUpdateForm" enctype="multipart/form-data">	
 			<div class="modal-body">
 				<input id="wbuukey" name="key" type="hidden">
 				<fieldset>
@@ -180,7 +180,7 @@
 				</fieldset>	
 			</div>
 			<div class="modal-footer">
-					<button class="btn btn-primary imageUploadUpdateSave" type="submit">Save changes</button>
+					<button class="btn btn-primary fileUploadUpdateSave" type="submit">Save changes</button>
 					<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 			</div>
 		</form>

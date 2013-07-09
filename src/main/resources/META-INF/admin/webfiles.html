@@ -12,7 +12,7 @@
 <script src="./js/wbobjectmanager.js" type="text/javascript"></script>
 <script src="./js/wbtable.js" type="text/javascript"></script>
 <script src="./js/wbsearchbox.js" type="text/javascript"></script>
-<script src="./app-js/wbimages.js" type="text/javascript"></script>
+<script src="./app-js/wbfiles.js" type="text/javascript"></script>
 
 </head>
 	<div class="navbar">
@@ -25,14 +25,14 @@
 			<li > <a href="./webpagemodules.html"> Web Modules </a> </li>
 			<li > <a href="./webarticles.html"> Articles </a> </li>
 			<li > <a href="./webmessages.html"> Messages </a> </li>
-			<li class="active"> <a href="./webimages.html"> Images </a> </li>
+			<li class="active"> <a href="./webfiles.html"> Files </a> </li>
 			<li > <a href="./webbackuprestore.html"> Backup & restore </a> </li>
 		</ul>
 		</div>
 	</div>
 	
 	<ul class="nav nav-tabs nav-filled nav-wb-horizontal">
-		<li id="tabresimages"> <a href="./webimages.html?type=image"> Images </a> </li>
+		<li id="tabresimages"> <a href="./webfiles.html?type=image"> Images </a> </li>
 		<script type="text/javascript">
 			var url = document.location.href;
 			var patt = /(\?type=image|&type=image)/gi;
@@ -41,7 +41,7 @@
 			else
 				document.getElementById('tabresimages').className = '';
 		</script>
-		<li id="tabresmovies"> <a href="./webimages.html?type=video"> Video </a> </li>
+		<li id="tabresmovies"> <a href="./webfiles.html?type=video"> Videos </a> </li>
 		<script type="text/javascript">
 			var url = document.location.href;
 			var patt = /(\?type=video|&type=video)/gi;
@@ -51,7 +51,7 @@
 				document.getElementById('tabresmovies').className = '';
 		</script>
 
-		<li id="tabresapps"> <a href="./webimages.html?type=application"> Application specific </a> </li>
+		<li id="tabresapps"> <a href="./webfiles.html?type=application"> Application Specific </a> </li>
 		<script type="text/javascript">
 			var url = document.location.href;
 			var patt = /(\?type=application|&type=application)/gi;
@@ -61,7 +61,7 @@
 				document.getElementById('tabresapps').className = '';
 		</script>
 
-		<li id="tabressounds"> <a href="./webimages.html?type=audio"> Sounds </a> </li>
+		<li id="tabressounds"> <a href="./webfiles.html?type=audio"> Audios </a> </li>
 		<script type="text/javascript">
 			var url = document.location.href;
 			var patt = /(\?type=audio|&type=audio)/gi;
@@ -71,7 +71,7 @@
 				document.getElementById('tabressounds').className = '';
 		</script>
 
-		<li id="tabresall" class="active"> <a href="./webimages.html"> All resources </a> </li>
+		<li id="tabresall" class="active"> <a href="./webfiles.html"> All Files </a> </li>
 		<script type="text/javascript">
 			var url = document.location.href;
 			var patt = /(\?type=|&type=)/gi;
@@ -86,18 +86,18 @@
 	<div class="wbcolorcontent">
 		<div class="wbinnercontent">
 			<div class="marginv">
-				<button class="btn btn-primary" id="wbAddImageBtn"><i class="icon-plus icon-white"> </i> Add New Image </button>
+				<button class="btn btn-primary" id="wbAddFileBtn"><i class="icon-plus icon-white"> </i> Add New File </button>
 			</div>
-			<div id="wbImagesTable"></div>
+			<div id="wbFilesTable"></div>
 		</div>
 	</div>
 	
-	<div class="modal hide" id="wbAddImageModal">
+	<div class="modal hide" id="wbAddFileModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Add new image </h3>
+			<h3> Add New File </h3>
 		</div>
-		<form class="form-inline" id="wbAddImageForm" enctype="multipart/form-data">
+		<form class="form-inline" id="wbAddFileForm" enctype="multipart/form-data">
 		
 		<div class="modal-body">
 			<fieldset>
@@ -108,7 +108,7 @@
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="wbname">Image name (internal use only)</label>
+					<label class="control-label" for="wbname">File name (internal use only)</label>
 					<div class="controls">
 						<input id="wbname" name="name" class="input-xlarge" type="text" />
 						<span id="errname" class="help-inline"></span>
@@ -117,14 +117,14 @@
 
 				<div class="control-group">
 					<div class="controls">
-						Make the image live <input id="wbenabled" type="radio" name="enabled" value="1"> YES
+						Make the file live <input id="wbenabled" type="radio" name="enabled" value="1"> YES
 										  <input type="radio" name="enabled" value="0"> NO
 						<span id="errenabled" class="help-inline"></span>
 					</div>										
 				</div>
 
 				<div class="control-group">
-					<label class="control-label" for="wbfilename">Image file</label>
+					<label class="control-label" for="wbfilename">File path</label>
 					<div class="controls">
 						<input id="wbfilename" name="file" class="input-xlarge" type="file" />
 						<span id="errfilename" class="help-inline"></span>
@@ -135,18 +135,18 @@
 		
 		</div>
 		<div class="modal-footer">
-				<button class="btn btn-primary wbSaveAddImageBtnClass" type="submit">Save changes</button>
+				<button class="btn btn-primary wbSaveAddFileBtnClass" type="submit">Save changes</button>
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>
     </div>
 
-	<div class="modal hide" id="wbDeleteImageModal">
+	<div class="modal hide" id="wbDeleteFileModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Delete Image?</h3>
+			<h3> Delete File?</h3>
 		</div>
-		<form class="form-inline" id="wbDeleteImageForm">
+		<form class="form-inline" id="wbDeleteFileForm">
 		<div class="modal-body">
 			<fieldset>
 				<input id="wbdkey" type="hidden">
@@ -157,7 +157,7 @@
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="name">Image name</label>
+					<label class="control-label" for="name">File name</label>
 					<div class="controls">
 						<input id="wbdname" name="name" class="input-xlarge" type="text" readonly />
 						<span id="wbdname" class="help-inline"></span>

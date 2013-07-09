@@ -1,25 +1,25 @@
 var errorsGeneral = {
-	'ERROR_IMAGE_NAME_LENGTH': 'Image name length must be between 1 and 250 characters',
-	'ERROR_IMAGE_NAME_BAD_FORMAT': 'Invalid format for image name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
-	'ERROR_IMAGE_FILENAME_LENGTH': 'Image file path cannot be empty',
-	'ERROR_IMAGE_ENABLED_BAD_FORMAT': 'Invalid image live value'
+	'ERROR_FILE_NAME_LENGTH': 'File name length must be between 1 and 250 characters',
+	'ERROR_FILE_NAME_BAD_FORMAT': 'Invalid format for file name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
+	'ERROR_FILE_FILENAME_LENGTH': 'File file path cannot be empty',
+	'ERROR_FILE_ENABLED_BAD_FORMAT': 'Invalid file live value'
 };
 
 $().ready( function () {
-	var wbImageValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_IMAGE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_IMAGE_NAME_BAD_FORMAT"}],
-			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_IMAGE_FILENAME_LENGTH" }],
-			enabled: [{rule: { includedInto: ['0', '1']}, error: "ERROR_IMAGE_ENABLED_BAD_FORMAT" }]
+	var wbFileValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_FILE_NAME_BAD_FORMAT"}],
+			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
+			enabled: [{rule: { includedInto: ['0', '1']}, error: "ERROR_FILE_ENABLED_BAD_FORMAT" }]
 	};
-	$('#wbAddImageForm').wbObjectManager( { fieldsPrefix:'wb',
+	$('#wbAddFileForm').wbObjectManager( { fieldsPrefix:'wb',
 									  errorLabelsPrefix: 'err',
 									  errorGeneral:"errgeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
 									  fieldsDefaults: { enabled: 0 },
-									  validationRules: wbImageValidations
+									  validationRules: wbFileValidations
 									});
-	$('#wbDeleteImageForm').wbObjectManager( { fieldsPrefix: 'wbd',
+	$('#wbDeleteFileForm').wbObjectManager( { fieldsPrefix: 'wbd',
 									 errorGeneral:"errdgeneral",
 									 errorLabelsPrefix: 'errd',
 									 errorLabelClassName: 'errorvalidationlabel',
@@ -27,7 +27,7 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webimage.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteImageClass" id="wbDeleteImage_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webfile.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -51,7 +51,7 @@ $().ready( function () {
 		if (fieldId=="blobKey"){
 			switch (record["shortType"]) {
 				case "image":
-					return '<img src="./wbserveimage?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
+					return '<img src="./wbservefile?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
 				default:
 					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['key']),escapehtml(record['fileName']));				
 			}
@@ -59,7 +59,7 @@ $().ready( function () {
 		
 	}
 				
-	$('#wbImagesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
+	$('#wbFilesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
 	                                {display:"Content type", fieldId:"contentType"},
 									{display:"Size", fieldId:"size", customHandling: true, customHandler: displayHandler},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
@@ -70,22 +70,22 @@ $().ready( function () {
 						 paginationBaseClass: "pagination"
 						});
 
-	$('#wbAddImageForm').wbCommunicationManager();
-	$('#wbDeleteImageForm').wbCommunicationManager();
+	$('#wbAddFileForm').wbCommunicationManager();
+	$('#wbDeleteFileForm').wbCommunicationManager();
 
 	var fSuccessGetUpload = function ( data ) {
-		$('#wbAddImageForm')[0].setAttribute('action', data.url);
-		$('#wbAddImageForm')[0].setAttribute('method', "post");
-		$('#wbAddImageModal').modal('show');			
+		$('#wbAddFileForm')[0].setAttribute('action', data.url);
+		$('#wbAddFileForm')[0].setAttribute('method', "post");
+		$('#wbAddFileModal').modal('show');			
 	}
 	var fErrorGetUpload = function (errors, data) {
 		alert(data);
 	}
 
-	$('#wbAddImageBtn').click( function (e) {
+	$('#wbAddFileBtn').click( function (e) {
 		e.preventDefault();
-		$('#wbAddImageForm').wbObjectManager().resetFields();
-		$('#wbAddImageForm').wbCommunicationManager().ajax ( { url: "./wbuploaddata",
+		$('#wbAddFileForm').wbObjectManager().resetFields();
+		$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: "./wbuploaddata",
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetUpload,
@@ -94,42 +94,42 @@ $().ready( function () {
 	});
 
 	var fSuccessAdd = function ( data ) {
-		$('#wbAddImageModal').modal('hide');
-		$('#wbImagesTable').wbTable().insertRow(data);			
+		$('#wbAddFileModal').modal('hide');
+		$('#wbFilesTable').wbTable().insertRow(data);			
 	}
 	var fErrorAdd = function (errors, data) {
-		$('#wbImageForm').wbObjectManager().setErrors(errors);
+		$('#wbFileForm').wbObjectManager().setErrors(errors);
 	}
 
-	$('.wbSaveAddImageBtnClass').click( function (e) {
+	$('.wbSaveAddFileBtnClass').click( function (e) {
 		e.preventDefault();
-		var errors = $('#wbAddImageForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		var errors = $('#wbAddFileForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
-			$('#wbAddImageForm').submit();
+			$('#wbAddFileForm').submit();
 		}
 	});
 
-	$(document).on ("click", '.wbDeleteImageClass', function (e) {
+	$(document).on ("click", '.wbDeleteFileClass', function (e) {
 		e.preventDefault();
-		$('#wbDeleteImageForm').wbObjectManager().resetFields();
-		var key = $(this).attr('id').substring("wbDeleteImage_".length);
-		var object = $('#wbImagesTable').wbTable().getRowDataWithKey(key);
-		$('#wbDeleteImageForm').wbObjectManager().populateFieldsFromObject(object);
-		$('#wbDeleteImageModal').modal('show');		
+		$('#wbDeleteFileForm').wbObjectManager().resetFields();
+		var key = $(this).attr('id').substring("wbDeleteFile_".length);
+		var object = $('#wbFilesTable').wbTable().getRowDataWithKey(key);
+		$('#wbDeleteFileForm').wbObjectManager().populateFieldsFromObject(object);
+		$('#wbDeleteFileModal').modal('show');		
 	});
 
 	var fSuccessDelete = function ( data ) {
-		$('#wbDeleteImageModal').modal('hide');	
-		$('#wbImagesTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbDeleteFileModal').modal('hide');	
+		$('#wbFilesTable').wbTable().deleteRowWithKey(data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
-		$('#wbDeleteImageForm').wbObjectManager().setErrors(errors);
+		$('#wbDeleteFileForm').wbObjectManager().setErrors(errors);
 	}
 
 	$('.webSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
-		var object = $('#wbDeleteImageForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeleteImageForm').wbCommunicationManager().ajax ( { url: "./wbimage/" + encodeURIComponent(object['key']),
+		var object = $('#wbDeleteFileForm').wbObjectManager().getObjectFromFields();			
+		$('#wbDeleteFileForm').wbCommunicationManager().ajax ( { url: "./wbfile/" + encodeURIComponent(object['key']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
@@ -140,7 +140,7 @@ $().ready( function () {
 
 	var fSuccessGetAll = function (data) {
 		$.each(data, function(index, item) {
-			$('#wbImagesTable').wbTable().insertRow(item);
+			$('#wbFilesTable').wbTable().insertRow(item);
 		});				
 
 	}
@@ -148,11 +148,11 @@ $().ready( function () {
 	
 	}
 	var shortType = getURLParameter('type');
-	var urlValue = "./wbimage";
+	var urlValue = "./wbfile";
 	if (shortType && shortType.length) {
 		urlValue += "?type={0}".format(encodeURIComponent(shortType));
 	}
-	$('#wbAddImageForm').wbCommunicationManager().ajax ( { url: urlValue,
+	$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: urlValue,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetAll,
