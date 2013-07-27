@@ -28,17 +28,20 @@ public class WBUri implements Serializable {
 	private String controllerClass;
 	
 	@AdminFieldStore
+	private Integer resourceType;
+	
+	@AdminFieldStore
+	private Long resourceExternalKey;
+	
+	@AdminFieldStore
+	private String resourceContentType;
+	
+	@AdminFieldStore
 	private String pageName;
 	
 	@AdminFieldStore
 	private Long externalKey;
 	
-	@AdminFieldStore
-	private String contentType;
-	
-	@AdminFieldStore
-	private Long contentExternalKey;
-
 	public Long getKey() {
 		return key;
 	}
@@ -111,20 +114,29 @@ public class WBUri implements Serializable {
 		this.externalKey = externalKey;
 	}
 
-	public String getContentType() {
-		return contentType;
+	public Integer getResourceType() {
+		return resourceType;
 	}
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
+	public void setResourceType(Integer resourceType) {
+		this.resourceType = resourceType;
 	}
 
-	public Long getContentExternalKey() {
-		return contentExternalKey;
+	public Long getResourceExternalKey() {
+		return resourceExternalKey;
 	}
 
-	public void setContentExternalKey(Long contentExternalKey) {
-		this.contentExternalKey = contentExternalKey;
+	public void setResourceExternalKey(Long resourceExternalKey) {
+		this.resourceExternalKey = resourceExternalKey;
 	}
+
+	public String getResourceContentType() {
+		return resourceContentType;
+	}
+
+	public void setResourceContentType(String resourceContentType) {
+		this.resourceContentType = resourceContentType;
+	}
+	
 	
 }

@@ -10,7 +10,11 @@ public class WBUriValidator {
 	public final static int MAX_URI_LENGHT = 100;
 	public final static int MAX_PAGENAME_LENGHT = 250;
 	private HashSet<String> httpOperations;
+	
 
+	public final static int RESOURCE_TYPE_TEXT = 1;
+	public final static int RESOURCE_TYPE_FILE = 2;
+	
 	public WBUriValidator()
 	{
 		httpOperations = new HashSet<String>();
@@ -70,6 +74,22 @@ public class WBUriValidator {
 		{
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
+		
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == this.RESOURCE_TYPE_FILE || wbUri.getResourceType() == this.RESOURCE_TYPE_TEXT)))
+		{
+			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
+		}
+		
+		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey() == 0)
+		{
+			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
+		}
+		
+		if (wbUri.getResourceContentType() == null || wbUri.getResourceContentType().length() == 0)
+		{
+			errors.put("resourceContentType", WBErrors.ERROR_BAD_RESOURCE_CONTENT_TYPE);
+		}
+
 		return errors;
 	}
 	
@@ -120,6 +140,21 @@ public class WBUriValidator {
 		if (wbUri.getLastModified() != null)
 		{
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
+		}
+		
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == this.RESOURCE_TYPE_FILE || wbUri.getResourceType() == this.RESOURCE_TYPE_TEXT)))
+		{
+			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
+		}
+		
+		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey() == 0)
+		{
+			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
+		}
+		
+		if (wbUri.getResourceContentType() == null || wbUri.getResourceContentType().length() == 0)
+		{
+			errors.put("resourceContentType", WBErrors.ERROR_BAD_RESOURCE_CONTENT_TYPE);
 		}
 		return errors;
 	}

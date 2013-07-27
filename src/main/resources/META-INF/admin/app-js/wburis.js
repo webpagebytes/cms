@@ -7,7 +7,12 @@ var errorsGeneral = {
 	'ERROR_INVALID_HTTP_OPERATION': 'Operation not valid, allowed values: GET, PUT, DELETE, POST',
 	'ERROR_URI_BAD_FORMAT':'Invalid url format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
 	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller class: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)',
-	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)'
+	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)',
+	'ERROR_BAD_RESOURCE_TYPE': 'Invaid resource type',
+	'ERROR_NO_RESOURCE_EXTERNAL_KEY': 'No resource External Key',
+	'ERROR_BAD_RESOURCE_EXTERNAL_KEY': 'Invalid resource External Key',
+	'ERROR_BAD_RESOURCE_CONTENT_TYPE': 'Resource content type not supported',
+	'ERROR_RESOURCE_CONTENT_TYPE_LENGTH': 'Resource content type length must be between 1 and 50 characters'
 	
 };
 
@@ -16,14 +21,17 @@ $().ready( function () {
 								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_URI_BAD_FORMAT"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
 								'pageName': [ { rule: { rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
-								'httpOperation': [{ rule: {includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }]
+								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
+								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
+								'resourceExternalKey': [ { rule: { rangeLength: { 'min': 1, 'max': 30 } }, error:"ERROR_NO_RESOURCE_EXTERNAL_KEY" }, {rule:{customRegexp:{pattern:"^[0-9]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}],
+								'resourceContentType': [ { rule: { rangeLength: { 'min': 1, 'max': 50 } }, error:"ERROR_RESOURCE_CONTENT_TYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-//]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_CONTENT_TYPE"}]
 							  };
 	$('#wburiadd').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0 },
+									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', 'enabled': 0, 'resourceContentType': '', 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 
 									});
@@ -33,7 +41,7 @@ $().ready( function () {
 								  errorGeneral:"errcgeneral",
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
-								  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0 },
+								  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceContentType': '', 'resourceType': 1 },
 								  validationRules: wbUriValidationRules
 								});
 
@@ -42,7 +50,7 @@ $().ready( function () {
 									  errorGeneral:"errugeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0 },
+									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceContentType': '', 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 									});
 	$('#wburidelete').wbObjectManager( { fieldsPrefix: 'wbd',
