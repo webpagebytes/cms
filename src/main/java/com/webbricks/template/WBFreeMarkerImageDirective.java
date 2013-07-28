@@ -79,7 +79,7 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
         try
         {
         	String serveUrl = "";
-        	WBFile image = cacheInstances.getWBImageCache().get(longExternalKey);
+        	WBFile image = cacheInstances.getWBFilesCache().get(longExternalKey);
         	if (image != null)
         	{
         		serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	

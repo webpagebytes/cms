@@ -1,5 +1,6 @@
 package com.webbricks.cms;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cache.WBProjectCache;
 import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cache.WBWebPagesCache;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
@@ -44,6 +46,7 @@ public class PublicContentServlet extends HttpServlet {
 	
 	private URLMatcher urlMatcher;
 	private PageContentBuilder pageContentBuilder;
+	private FileContentBuilder fileContentBuilder;
 	private WBCacheInstances cacheInstances;
 	
 	public PublicContentServlet()
@@ -82,6 +85,9 @@ public class PublicContentServlet extends HttpServlet {
 						
 			pageContentBuilder = new PageContentBuilder(cacheInstances);
 			pageContentBuilder.initialize();
+			
+			fileContentBuilder = new FileContentBuilder(cacheInstances);
+			fileContentBuilder.initialize();
 			
 		} catch (Exception e)
 		{
@@ -145,7 +151,18 @@ public class PublicContentServlet extends HttpServlet {
 				} else
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
 				{
-						
+					WBFile wbFile = fileContentBuilder.find(wbUri.getResourceExternalKey());
+					if (wbFile == null)
+					{
+						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						return;						
+					}
+					
+					ServletOutputStream os = resp.getOutputStream();
+					resp.setContentType(wbFile.getAdjustedContentType());													
+					fileContentBuilder.writeFileContent(wbFile, os);
+					os.flush();
+					
 				} else
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

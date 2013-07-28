@@ -5,7 +5,7 @@ public class WBCacheInstances {
 	private WBWebPagesCache wbWebPageCache;
 	private WBWebPageModulesCache wbWebPageModuleCache;
 	private WBParametersCache wbParameterCache;
-	private WBFilesCache wbImageCache;
+	private WBFilesCache wbFilesCache;
 	private WBArticlesCache wbArticleCache;
 	private WBMessagesCache wbMessageCache;
 	private WBProjectCache wbProjectCache;
@@ -13,7 +13,7 @@ public class WBCacheInstances {
 							WBWebPagesCache webPageCache,
 							WBWebPageModulesCache webPageModuleCache,
 							WBParametersCache parameterCache,
-							WBFilesCache imageCache,
+							WBFilesCache filesCache,
 							WBArticlesCache articleCache,
 							WBMessagesCache messageCache,
 							WBProjectCache projectCache)
@@ -23,7 +23,7 @@ public class WBCacheInstances {
 		wbWebPageCache = webPageCache;
 		wbWebPageModuleCache = webPageModuleCache;
 		wbParameterCache = parameterCache;
-		wbImageCache = imageCache;
+		wbFilesCache = filesCache;
 		wbMessageCache = messageCache;
 		wbProjectCache = projectCache;
 	}
@@ -40,9 +40,9 @@ public class WBCacheInstances {
 	{
 		return wbWebPageModuleCache;
 	}
-	public WBFilesCache getWBImageCache()
+	public WBFilesCache getWBFilesCache()
 	{
-		return wbImageCache;
+		return wbFilesCache;
 	}
 	public WBUrisCache getWBUriCache()
 	{
