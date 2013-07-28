@@ -27,6 +27,9 @@ public class WBFile implements Serializable {
 	private String contentType;
 	
 	@AdminFieldStore
+	private String adjustedContentType;
+	
+	@AdminFieldStore
 	private String shortType;	
 
 	@AdminFieldStore
@@ -105,6 +108,14 @@ public class WBFile implements Serializable {
 
 	public void setShortType(String shortType) {
 		this.shortType = shortType;
+	}
+
+	public String getAdjustedContentType() {
+		return adjustedContentType;
+	}
+
+	public void setAdjustedContentType(String adjustedContentType) {
+		this.adjustedContentType = adjustedContentType;
 	}
 	
 	

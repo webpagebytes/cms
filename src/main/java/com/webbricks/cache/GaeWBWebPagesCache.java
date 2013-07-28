@@ -19,7 +19,7 @@ public class GaeWBWebPagesCache implements WBWebPagesCache, WBRefreshableCache {
 	
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBWebPage";
-	private static final String memcacheMapKey = "keyToWBWebPage";
+	private static final String memcacheMapKey = "externalKeyToWBWebPage";
 	private static final String memcacheMapNames = "nameToWBWebPage";
 	private AdminDataStorage adminDataStorage = null;
 	

@@ -24,7 +24,7 @@ public class GaeWBCacheFactory implements WBCacheFactory {
 	}
 	public WBFilesCache createWBImagesCacheInstance()
 	{
-		return new GaeWBImagesCache();
+		return new GaeWBFilesCache();
 	}
 	public WBArticlesCache createWBArticlesCacheInstance()
 	{

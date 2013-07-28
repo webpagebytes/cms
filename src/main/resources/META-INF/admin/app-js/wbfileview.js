@@ -1,13 +1,17 @@
 var errorsGeneral = {
 	'ERROR_FILE_NAME_LENGTH': 'File name length must be between 1 and 250 characters',
 	'ERROR_FILE_NAME_BAD_FORMAT': 'Invalid format for file name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
-	'ERROR_FILE_FILENAME_LENGTH': 'File file path cannot be empty'
+	'ERROR_FILE_FILENAME_LENGTH': 'File file path cannot be empty',
+	'ERROR_ADJUSTED_CONTENT_TYPE_LENGTH': 'Content type length must be between 1 and 30 characters',
+	'ERROR_ADJUSTED_CONTENT_TYPE_BAD_FORMAT': 'Invalid format for content type'
 };
 
 $().ready( function () {
 	var wbFileValidations = { 
 		name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_FILE_NAME_BAD_FORMAT"}],
-		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }]
+		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
+		adjustedContentType: [{rule: { rangeLength: { 'min': 1, 'max': 30 } }, error: "ERROR_ADJUSTED_CONTENT_TYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-//]*$", modifiers:"gi"}}, error:"ERROR_ADJUSTED_CONTENT_TYPE_BAD_FORMAT"}],
+	
 	};
 
 	$('#wbuFileDataUpdateForm').wbObjectManager( { fieldsPrefix:'wbud',

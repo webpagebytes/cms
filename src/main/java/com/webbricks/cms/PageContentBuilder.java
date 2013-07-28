@@ -87,19 +87,9 @@ public class PageContentBuilder {
 		}
 	}
 	
-	public WBWebPage findWebPage(URLMatcherResult urlMatcherResult) throws WBException
+	public WBWebPage findWebPage(Long pageExternalKey) throws WBException
 	{
-		WBUri wburi = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern());
-		if (null == wburi)
-		{
-			return null;
-		}		
-		if (wburi.getEnabled() == null || wburi.getEnabled() == 0)
-		{
-			return null;
-		}
-		String pageName = wburi.getPageName();
-		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(pageName);
+		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(pageExternalKey);
 		if (null == wbWebPage)
 		{
 			return null;

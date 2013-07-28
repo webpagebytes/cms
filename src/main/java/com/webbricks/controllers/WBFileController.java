@@ -209,8 +209,27 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 			{
 				image.setBlobKey(blobInfo.getBlobKey());
 				image.setContentType(blobInfo.getContentType().toLowerCase());
+				image.setAdjustedContentType(blobInfo.getContentType().toLowerCase());
 				image.setShortType( contentTypeToShortType(blobInfo.getContentType()) );
 				image.setFileName(blobInfo.getFileName());
+				if (image.getShortType().equals("text"))
+				{
+					if (image.getFileName().toLowerCase().endsWith(".js"))
+					{
+						image.setAdjustedContentType("text/javascript");
+					}
+					if (image.getFileName().toLowerCase().endsWith(".css"))
+					{
+						image.setAdjustedContentType("text/css");
+					}
+					if (image.getFileName().toLowerCase().endsWith(".html"))
+					{
+						image.setAdjustedContentType("text/html");
+					}					
+				}
+				{
+					
+				}
 				image.setSize(blobInfo.getSize());
 				image.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());				
 				WBFile storedImage = adminStorage.add(image);
@@ -331,6 +350,7 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 			WBFile existingImage = adminStorage.get(key, WBFile.class);
 			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			existingImage.setName(wbimage.getName());
+			existingImage.setAdjustedContentType(wbimage.getAdjustedContentType());
 			WBFile newImage = adminStorage.update(existingImage);
 			
 			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newImage, null);

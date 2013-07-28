@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class WBUri implements Serializable {
-	
+	public final static int RESOURCE_TYPE_TEXT = 1;
+	public final static int RESOURCE_TYPE_FILE = 2;
+
 	@AdminFieldKey
 	private Long key;
 
@@ -32,10 +34,7 @@ public class WBUri implements Serializable {
 	
 	@AdminFieldStore
 	private Long resourceExternalKey;
-	
-	@AdminFieldStore
-	private String resourceContentType;
-	
+		
 	@AdminFieldStore
 	private String pageName;
 	
@@ -128,14 +127,6 @@ public class WBUri implements Serializable {
 
 	public void setResourceExternalKey(Long resourceExternalKey) {
 		this.resourceExternalKey = resourceExternalKey;
-	}
-
-	public String getResourceContentType() {
-		return resourceContentType;
-	}
-
-	public void setResourceContentType(String resourceContentType) {
-		this.resourceContentType = resourceContentType;
 	}
 	
 	

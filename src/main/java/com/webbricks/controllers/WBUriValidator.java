@@ -11,9 +11,6 @@ public class WBUriValidator {
 	public final static int MAX_PAGENAME_LENGHT = 250;
 	private HashSet<String> httpOperations;
 	
-
-	public final static int RESOURCE_TYPE_TEXT = 1;
-	public final static int RESOURCE_TYPE_FILE = 2;
 	
 	public WBUriValidator()
 	{
@@ -75,7 +72,7 @@ public class WBUriValidator {
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == this.RESOURCE_TYPE_FILE || wbUri.getResourceType() == this.RESOURCE_TYPE_TEXT)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)))
 		{
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}
@@ -85,11 +82,6 @@ public class WBUriValidator {
 			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 		}
 		
-		if (wbUri.getResourceContentType() == null || wbUri.getResourceContentType().length() == 0)
-		{
-			errors.put("resourceContentType", WBErrors.ERROR_BAD_RESOURCE_CONTENT_TYPE);
-		}
-
 		return errors;
 	}
 	
@@ -142,7 +134,7 @@ public class WBUriValidator {
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == this.RESOURCE_TYPE_FILE || wbUri.getResourceType() == this.RESOURCE_TYPE_TEXT)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)))
 		{
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}
@@ -152,10 +144,6 @@ public class WBUriValidator {
 			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 		}
 		
-		if (wbUri.getResourceContentType() == null || wbUri.getResourceContentType().length() == 0)
-		{
-			errors.put("resourceContentType", WBErrors.ERROR_BAD_RESOURCE_CONTENT_TYPE);
-		}
 		return errors;
 	}
 	

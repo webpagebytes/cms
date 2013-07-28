@@ -23,15 +23,14 @@ $().ready( function () {
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
 								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
 								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
-								'resourceExternalKey': [ { rule: { rangeLength: { 'min': 1, 'max': 30 } }, error:"ERROR_NO_RESOURCE_EXTERNAL_KEY" }, {rule:{customRegexp:{pattern:"^[0-9]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}],
-								'resourceContentType': [ { rule: { rangeLength: { 'min': 1, 'max': 50 } }, error:"ERROR_RESOURCE_CONTENT_TYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-//]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_CONTENT_TYPE"}]
+								'resourceExternalKey': [ { rule: { rangeLength: { 'min': 1, 'max': 30 } }, error:"ERROR_NO_RESOURCE_EXTERNAL_KEY" }, {rule:{customRegexp:{pattern:"^[0-9]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}]
 							  };
 	$('#wburiadd').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', 'enabled': 0, 'resourceContentType': '', 'resourceType': 1 },
+									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', 'enabled': 0, 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 
 									});
@@ -41,7 +40,7 @@ $().ready( function () {
 								  errorGeneral:"errcgeneral",
 								  errorLabelClassName: 'errorvalidationlabel',
 								  errorInputClassName: 'errorvalidationinput',
-								  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceContentType': '', 'resourceType': 1 },
+								  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceType': 1 },
 								  validationRules: wbUriValidationRules
 								});
 
@@ -50,7 +49,7 @@ $().ready( function () {
 									  errorGeneral:"errugeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceContentType': '', 'resourceType': 1 },
+									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 									});
 	$('#wburidelete').wbObjectManager( { fieldsPrefix: 'wbd',

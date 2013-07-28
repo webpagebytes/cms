@@ -73,8 +73,11 @@ $().ready( function () {
 					templateValue = 'checked';
 				}
 			}
-			var innerHtml = '<input class="input-xlarge" type="radio" {0} disabled="disabled"> Plain html source <input class="input-xlarge" type="radio" {1} disabled="disabled"> Template html source'.format(plainValue, templateValue); 
-			
+			var innerHtml = '<input class="input-xlarge" type="radio" {0} disabled="disabled"> Plain html source <input class="input-xlarge" type="radio" {1} disabled="disabled"> Template html source'.format(plainValue, templateValue); 			
+			return innerHtml;
+		}
+		if (fieldId == 'contentType') {
+			var innerHtml = 'Content type: {0}'.format(escapehtml (record[fieldId]));
 			return innerHtml;
 		}
 		return escapehtml(record[fieldId]);

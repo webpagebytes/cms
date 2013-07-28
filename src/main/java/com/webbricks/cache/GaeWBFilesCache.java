@@ -13,14 +13,14 @@ import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.exception.WBIOException;
 
-public class GaeWBImagesCache implements WBFilesCache {
+public class GaeWBFilesCache implements WBFilesCache {
 
 	private MemcacheService memcache = null;
-	private static final String memcacheNamespace = "cacheWBImage";
-	private static final String memcacheMapKey = "externalKeyToWBImage";
+	private static final String memcacheNamespace = "cacheWBFile";
+	private static final String memcacheMapKey = "externalKeyToWBFile";
 	private AdminDataStorage adminDataStorage = null;
 
-	public GaeWBImagesCache()
+	public GaeWBFilesCache()
 	{
 		memcache = MemcacheServiceFactory.getMemcacheService(memcacheNamespace);
 		adminDataStorage = new GaeAdminDataStorage();		

@@ -24,6 +24,7 @@ import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBProject;
+import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
@@ -120,33 +121,36 @@ public class PublicContentServlet extends HttpServlet {
 		{
 			try
 			{
-				WBWebPage webPage = pageContentBuilder.findWebPage(urlMatcherResult);
-				if (webPage == null)
+				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern());
+				if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-					return;
+					return;					
 				}
-				WBProject wbProject = cacheInstances.getProjectCache().getProject();
-				String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject);
-				uri = uri.toLowerCase();
-				if (uri.endsWith(".js"))
+				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
 				{
-					resp.setContentType("application/javascript");
+					WBWebPage webPage = pageContentBuilder.findWebPage(wbUri.getExternalKey());
+					if (webPage == null)
+					{
+						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						return;
+					}
+					WBProject wbProject = cacheInstances.getProjectCache().getProject();
+					String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject);
 					resp.setCharacterEncoding("UTF-8");
+					resp.setContentType(webPage.getContentType());			
+					ServletOutputStream os = resp.getOutputStream();
+					os.write(content.getBytes("UTF-8"));
+					os.flush();
 				} else
-				if (uri.endsWith(".css")){
-					resp.setContentType("text/css");
-					resp.setCharacterEncoding("UTF-8");
-				} else if (uri.endsWith(".zip")){
-					resp.setContentType("application/zip");
-				}else
+				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
 				{
-					resp.setCharacterEncoding("UTF-8");
-					resp.setContentType("text/html");
+						
+				} else
+				{
+					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+					return;										
 				}
-				ServletOutputStream os = resp.getOutputStream();
-				os.write(content.getBytes("UTF-8"));
-				os.flush();
 			} 
 			catch (WBLocaleException e)
 			{
