@@ -90,10 +90,6 @@ public class PageContentBuilder {
 	public WBWebPage findWebPage(Long pageExternalKey) throws WBException
 	{
 		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(pageExternalKey);
-		if (null == wbWebPage)
-		{
-			return null;
-		}
 		return wbWebPage;
 		
 	}

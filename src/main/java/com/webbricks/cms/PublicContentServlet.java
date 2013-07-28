@@ -129,7 +129,7 @@ public class PublicContentServlet extends HttpServlet {
 				}
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
 				{
-					WBWebPage webPage = pageContentBuilder.findWebPage(wbUri.getExternalKey());
+					WBWebPage webPage = pageContentBuilder.findWebPage(wbUri.getResourceExternalKey());
 					if (webPage == null)
 					{
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
