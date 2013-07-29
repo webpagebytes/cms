@@ -30,6 +30,10 @@ public class WBPageValidator {
 		{
 			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
 		}
+		if (webPage.getHash() != null)
+		{
+			errors.put("hash", WBErrors.ERROR_CANT_SPECIFY_HASH);
+		}
 		if (webPage.getLastModified() != null)
 		{
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
@@ -64,7 +68,10 @@ public class WBPageValidator {
 		{
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
-
+		if (webPage.getHash() != null)
+		{
+			errors.put("hash", WBErrors.ERROR_CANT_SPECIFY_HASH);
+		}
 		return errors;
 	}
 

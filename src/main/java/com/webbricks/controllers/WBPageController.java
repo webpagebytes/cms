@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.zip.CRC32;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,9 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
+			CRC32 crc = new CRC32();
+			crc.update(webPage.getHtmlSource().getBytes());
+			webPage.setHash( crc.getValue() );
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
 			WBWebPage newWebPage = adminStorage.add(webPage);
@@ -145,6 +149,10 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
+			CRC32 crc = new CRC32();
+			crc.update(webPage.getHtmlSource().getBytes());
+			webPage.setHash( crc.getValue() );
+
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBWebPage newWebPage = adminStorage.update(webPage);
 			

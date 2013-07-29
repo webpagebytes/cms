@@ -211,6 +211,7 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 				image.setContentType(blobInfo.getContentType().toLowerCase());
 				image.setAdjustedContentType(blobInfo.getContentType().toLowerCase());
 				image.setShortType( contentTypeToShortType(blobInfo.getContentType()) );
+				image.setHash(blobInfo.getHash());
 				image.setFileName(blobInfo.getFileName());
 				if (image.getShortType().equals("text"))
 				{

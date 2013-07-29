@@ -29,6 +29,9 @@ public class WBWebPage implements Serializable {
 	@AdminFieldStore
 	private Long externalKey;
 	
+	@AdminFieldStore
+	private Long hash;
+	
 	public Long getKey() {
 		return key;
 	}
@@ -87,6 +90,15 @@ public class WBWebPage implements Serializable {
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	public Long getHash() {
+		return hash;
+	}
+
+
+	public void setHash(Long hash) {
+		this.hash = hash;
 	}
 
 	

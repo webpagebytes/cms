@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import java.util.Map;
+import java.util.zip.CRC32;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +40,13 @@ public class WBGaeBlobHandler implements WBBlobHandler {
 			List<BlobKey> fileBlob = blobs.get(FILE_PARAMETER_NAME);
 			if (fileBlob.size() == 1)
 			{
+				// not very nice, to produce CRC from MD5 but it should provide a minimum implementation level
 				BlobInfo bi = blobInfoFactory.loadBlobInfo(fileBlob.get(0));
+				CRC32 crc = new CRC32();
+				crc.update(bi.getMd5Hash().getBytes());
 				if (bi != null)
 				{
-					return new WBBlobInfoDefault(bi.getBlobKey().getKeyString(), bi.getSize(), bi.getFilename(), bi.getContentType());					
+					return new WBBlobInfoDefault(bi.getBlobKey().getKeyString(), bi.getSize(), bi.getFilename(), bi.getContentType(), crc.getValue());					
 				}
 			}
 		}
@@ -91,4 +95,5 @@ public class WBGaeBlobHandler implements WBBlobHandler {
 			throw new WBIOException("cannot get blob input stream " + e.getMessage());
 		}
 	}
+	
 }

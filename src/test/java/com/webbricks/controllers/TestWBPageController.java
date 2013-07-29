@@ -84,8 +84,11 @@ public void test_create_ok()
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(1L);
 		Capture<Date> captureDate = new Capture<Date>();
 		Capture<Long> captureExternalKey = new Capture<Long>();
+		Capture<Long> captureHash = new Capture<Long>();
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setExternalKey(EasyMock.captureLong(captureExternalKey));
+		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
+		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WBWebPage newPage = new WBWebPage();
 		newPage.setKey(10L);
 		
@@ -107,6 +110,7 @@ public void test_create_ok()
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
 		assertTrue (captureExternalKey.getValue().equals(1L));
+		assertTrue (captureHash.getValue().equals(0L));
 	} catch (Exception e)
 	{
 		assertTrue(false);
@@ -157,9 +161,12 @@ public void test_create_exception()
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(2L);
 		Capture<Date> captureDate = new Capture<Date>();
 		Capture<Long> captureExternalKey = new Capture<Long>();
+		Capture<Long> captureHash = new Capture<Long>();
+		
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setExternalKey(EasyMock.captureLong(captureExternalKey));
-
+		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
+		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");		
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andThrow(new WBIOException(""));
 		
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
@@ -176,6 +183,7 @@ public void test_create_exception()
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
 		assertTrue (captureExternalKey.getValue().equals(2L));
+		assertTrue (captureHash.getValue().equals(0L));
 	} catch (Exception e)
 	{
 		assertTrue(false);
@@ -336,9 +344,12 @@ public void test_update_ok()
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 		Capture<Date> captureDate = new Capture<Date>();
 		Capture<Long> captureKey = new Capture<Long>();
+		Capture<Long> captureHash = new Capture<Long>();
+		
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setKey(EasyMock.captureLong(captureKey));
-
+		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
+		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WBWebPage newPage = new WBWebPage();
 		newPage.setKey(123L);
 		EasyMock.expect(adminStorageMock.update(objectForControllerMock)).andReturn(newPage);
@@ -360,6 +371,7 @@ public void test_update_ok()
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureKey.getValue().compareTo(123L) == 0);
 		assertTrue (captureDate.getValue() != null);
+		assertTrue (captureHash.getValue().equals(0L));
 		
 	} catch (Exception e)
 	{

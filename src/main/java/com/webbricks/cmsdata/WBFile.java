@@ -38,6 +38,9 @@ public class WBFile implements Serializable {
 	@AdminFieldStore
 	private String fileName;
 	
+	@AdminFieldStore
+	private Long hash;
+	
 	public Long getKey() {
 		return key;
 	}
@@ -116,6 +119,14 @@ public class WBFile implements Serializable {
 
 	public void setAdjustedContentType(String adjustedContentType) {
 		this.adjustedContentType = adjustedContentType;
+	}
+
+	public Long getHash() {
+		return hash;
+	}
+
+	public void setHash(Long hash) {
+		this.hash = hash;
 	}
 	
 	

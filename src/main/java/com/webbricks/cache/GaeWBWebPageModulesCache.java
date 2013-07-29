@@ -66,7 +66,7 @@ public class GaeWBWebPageModulesCache implements WBWebPageModulesCache, WBRefres
 		RefreshInternal(refreshData, null);
 		if (refreshData.containsKey(externalKey))
 		{
-			return mapkeys.get(externalKey);
+			return refreshData.get(externalKey);
 		}		
 		return null;
 

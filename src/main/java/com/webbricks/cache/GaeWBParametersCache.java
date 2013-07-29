@@ -80,7 +80,7 @@ public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCac
 		RefreshInternal(refreshData, null);
 		if (refreshData.containsKey(externalKey))
 		{
-			return mapkeys.get(externalKey);
+			return refreshData.get(externalKey);
 		}		
 		return null;
 	}

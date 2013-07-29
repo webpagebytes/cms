@@ -5,4 +5,5 @@ public interface WBBlobInfo {
 	public Long getSize();
 	public String getFileName();
 	public String getContentType();
+	public Long getHash();
 }

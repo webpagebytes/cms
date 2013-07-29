@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.apphosting.utils.remoteapi.RemoteApiPb.Request;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
@@ -36,7 +37,7 @@ import com.webbricks.template.WBFreeMarkerModuleDirective;
 
 public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
-	
+	public static final String CACHE_QUERY_PARAM = "cqp";
 	private WBServletUtility servletUtility = null;
 	
 	// this is the common uri part that will be common to all requests served by this CMS
@@ -144,6 +145,18 @@ public class PublicContentServlet extends HttpServlet {
 					WBProject wbProject = cacheInstances.getProjectCache().getProject();
 					String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject);
 					resp.setCharacterEncoding("UTF-8");
+					if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
+					{
+						String cqp = req.getParameter(CACHE_QUERY_PARAM);
+						if (cqp != null && cqp.equals(webPage.getHash().toString()))
+						{
+							// there is a request that can be cached
+							resp.addHeader("cache-control", "max-age=86400");
+						}
+					} else
+					{
+						resp.addHeader("cache-control", "no-cache;no-store;");
+					}
 					resp.setContentType(webPage.getContentType());			
 					ServletOutputStream os = resp.getOutputStream();
 					os.write(content.getBytes("UTF-8"));
@@ -157,7 +170,12 @@ public class PublicContentServlet extends HttpServlet {
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return;						
 					}
-					
+					String cqp = req.getParameter(CACHE_QUERY_PARAM);
+					if (cqp != null && cqp.equals(wbFile.getHash().toString()))
+					{
+						// there is a request that can be cached
+						resp.addHeader("cache-control", "max-age=86400");
+					}
 					ServletOutputStream os = resp.getOutputStream();
 					resp.setContentType(wbFile.getAdjustedContentType());													
 					fileContentBuilder.writeFileContent(wbFile, os);
