@@ -15,7 +15,7 @@ public class WBFile implements Serializable {
 	private String name;
 
 	@AdminFieldStore
-	private Long externalKey;
+	private String externalKey;
 	
 	@AdminFieldStore
 	private String blobKey;
@@ -57,11 +57,11 @@ public class WBFile implements Serializable {
 		this.name = name;
 	}
 
-	public Long getExternalKey() {
+	public String getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(Long externalKey) {
+	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
 	}
 

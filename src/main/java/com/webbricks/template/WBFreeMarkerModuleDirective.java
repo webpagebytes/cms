@@ -47,23 +47,23 @@ public class WBFreeMarkerModuleDirective extends WBFreeMarkerDirectiveBase {
         
     	copyParams(env, params);
     	
-    	String moduleName = null;
-    	if (params.containsKey("name"))
+    	String externalKey = null;
+    	if (params.containsKey("externalKey"))
     	{
-    		moduleName = (String) DeepUnwrap.unwrap((TemplateModel) params.get("name"));
+    		externalKey = (String) DeepUnwrap.unwrap((TemplateModel) params.get("externalKey"));
     	}
-    	if (moduleName == null) throw new TemplateModelException("WBFreeMarkerModuleDirective does not have name parameter set");
+    	if (externalKey == null) throw new TemplateModelException("WBFreeMarkerModuleDirective does not have externalKey parameter set");
     	
         try
         {
-        	WBWebPageModule pageModule = cacheInstances.getWBWebPageModuleCache().get(moduleName);
+        	WBWebPageModule pageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
         	if (pageModule == null)
         	{
-        		throw new TemplateModelException("WBFreeMarkerModuleDirective directive name does not match any existing page module: " + moduleName);       
+        		throw new TemplateModelException("WBFreeMarkerModuleDirective directive name does not match any existing page module: " + externalKey);       
         	}
         	if (pageModule.getIsTemplateSource() == 1)
         	{
-        		moduleName = WBTemplateEngine.WEBMODULES_PATH_PREFIX + moduleName;
+        		String moduleName = WBTemplateEngine.WEBMODULES_PATH_PREFIX + pageModule.getName();
         	    templateEngine.process(moduleName, params, env.getOut());        	 
         	} else
         	{
@@ -72,7 +72,7 @@ public class WBFreeMarkerModuleDirective extends WBFreeMarkerDirectiveBase {
         } catch (WBIOException e)
         {
         	log.log(Level.SEVERE, "ERROR: ", e);
-        	throw new TemplateModelException("WBFreeMarkerModuleDirective IO exception when reading page module: " + moduleName);               	
+        	throw new TemplateModelException("WBFreeMarkerModuleDirective IO exception when reading page module: " + externalKey);               	
         }
     }
 

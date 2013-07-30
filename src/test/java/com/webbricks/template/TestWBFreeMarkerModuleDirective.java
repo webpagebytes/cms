@@ -159,9 +159,9 @@ public void test_execute_plainhtml()
 	TemplateDirectiveBody directiveBodyMock = null;
 	
 	Map params = new HashMap();
-	String name = "testXYZ";
-	StringModel nameModel = new StringModel(name, new DefaultObjectWrapper() );
-	params.put("name", nameModel);
+	String key = "testXYZ";
+	StringModel keyModel = new StringModel(key, new DefaultObjectWrapper() );
+	params.put("externalKey", keyModel);
 
 	String htmlSource = "<b>this is bold text</b> and this is not bold";
 	try
@@ -170,10 +170,9 @@ public void test_execute_plainhtml()
 		
 		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);		
 		WBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WBWebPageModulesCache.class);
-		EasyMock.expect(pageModuleCacheMock.get(name)).andReturn(pageModuleMock);
+		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
 		EasyMock.expect(pageModuleMock.getIsTemplateSource()).andReturn(0);
 		EasyMock.expect(pageModuleMock.getHtmlSource()).andReturn(htmlSource);
-		
 		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
 		
 		StringWriter outWriter = new StringWriter();
@@ -207,18 +206,18 @@ public void test_execute_templathtml()
 	TemplateDirectiveBody directiveBodyMock = null;
 	
 	Map params = new HashMap();
-	String name = "test123";
-	StringModel nameModel = new StringModel(name, new DefaultObjectWrapper() );
-	params.put("name", nameModel);
-
+	String key = "test123";
+	StringModel keyModel = new StringModel(key, new DefaultObjectWrapper() );
+	params.put("externalKey", keyModel);
+	String name = "name123";
 	String htmlSource = "<b>this is bold ${x}</b> and this is not bold ${x}";
 	try
 	{
 	
 		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
-		
+		EasyMock.expect(pageModuleMock.getName()).andReturn(name);
 		WBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WBWebPageModulesCache.class);
-		EasyMock.expect(pageModuleCacheMock.get(name)).andReturn(pageModuleMock);
+		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
 		EasyMock.expect(pageModuleMock.getIsTemplateSource()).andReturn(1);
 
 		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);

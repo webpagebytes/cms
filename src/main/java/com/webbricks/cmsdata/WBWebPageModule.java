@@ -24,7 +24,7 @@ public class WBWebPageModule implements Serializable {
 	private Integer isTemplateSource;
 
 	@AdminFieldStore
-	private Long externalKey;
+	private String externalKey;
 	
 	public Long getKey() {
 		return key;
@@ -66,11 +66,11 @@ public class WBWebPageModule implements Serializable {
 		this.isTemplateSource = isTemplateSource;
 	}
 
-	public Long getExternalKey() {
+	public String getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(Long externalKey) {
+	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
 	}
 

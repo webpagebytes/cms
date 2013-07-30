@@ -26,14 +26,14 @@ public class GaeWBFilesCache implements WBFilesCache {
 		adminDataStorage = new GaeAdminDataStorage();		
 	}
 	
-	public WBFile get(Long externalKey) throws WBIOException
+	public WBFile getByExternalKey(String externalKey) throws WBIOException
 	{
-		HashMap<Long, WBFile> mapkeys = (HashMap<Long, WBFile>) memcache.get(memcacheMapKey);
+		HashMap<String, WBFile> mapkeys = (HashMap<String, WBFile>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
 			return (WBFile) mapkeys.get(externalKey);
 		}
-		Map<Long, WBFile> refreshData = new HashMap<Long, WBFile>(); 
+		Map<String, WBFile> refreshData = new HashMap<String, WBFile>(); 
 		RefreshInternal(refreshData);
 		if (refreshData.containsKey(externalKey))
 		{
@@ -47,17 +47,17 @@ public class GaeWBFilesCache implements WBFilesCache {
 		RefreshInternal(null);
 	}
 	
-	private void RefreshInternal(Map<Long, WBFile> keyMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBFile> keyMap) throws WBIOException
 	{
 		synchronized (this) {
 			List<WBFile> wbImages = adminDataStorage.getAllRecords(WBFile.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBFile>();
+				keyMap = new HashMap<String, WBFile>();
 			}
 			for (WBFile wbImage : wbImages)
 			{
-				Long aKey = wbImage.getExternalKey();
+				String aKey = wbImage.getExternalKey();
 				keyMap.put(aKey, wbImage);
 			}
 			memcache.put(memcacheMapKey, keyMap);

@@ -54,14 +54,6 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
     		throw new TemplateModelException("No external key for image directive");
     	}
     	
-    	Long longExternalKey = null;
-    	try
-    	{
-    		longExternalKey = Long.valueOf(externalKey);
-    	} catch (NumberFormatException e)
-    	{
-    		throw new TemplateModelException("Format error for external key on image directive");
-    	}
     	Integer size = 0;
     	if (params.containsKey("size"))
     	{
@@ -79,7 +71,7 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
         try
         {
         	String serveUrl = "";
-        	WBFile image = cacheInstances.getWBFilesCache().get(longExternalKey);
+        	WBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
         	if (image != null)
         	{
         		serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	

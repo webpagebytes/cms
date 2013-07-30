@@ -5,7 +5,7 @@ import com.webbricks.exception.WBIOException;
 
 public interface WBWebPageModulesCache extends WBRefreshableCache {
 
-	public WBWebPageModule get(Long key) throws WBIOException;
+	public WBWebPageModule getByExternalKey(String key) throws WBIOException;
 	
 	public WBWebPageModule get(String pageName) throws WBIOException;
 

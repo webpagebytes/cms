@@ -43,5 +43,5 @@ public interface AdminDataStorage {
 	
 	public void deleteAllRecords(Class dataClass);
 	
-	public Long getUniqueId();
+	public String getUniqueId();
 }

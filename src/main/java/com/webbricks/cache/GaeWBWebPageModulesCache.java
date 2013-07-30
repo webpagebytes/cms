@@ -32,14 +32,14 @@ public class GaeWBWebPageModulesCache implements WBWebPageModulesCache, WBRefres
 		RefreshInternal(null, null);
 	}
 
-	private void RefreshInternal(Map<Long, WBWebPageModule> keyMap, Map<String, WBWebPageModule> pageNamesMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBWebPageModule> keyMap, Map<String, WBWebPageModule> pageNamesMap) throws WBIOException
 	{
 		synchronized (this) {
 			log.log(Level.INFO, "GaeWBWebPageModuleCache:RefreshInternal");
 			List<WBWebPageModule> wbWebPageModules = adminDataStorage.getAllRecords(WBWebPageModule.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBWebPageModule>();
+				keyMap = new HashMap<String, WBWebPageModule>();
 			}
 			if (pageNamesMap == null)
 			{
@@ -55,14 +55,14 @@ public class GaeWBWebPageModulesCache implements WBWebPageModulesCache, WBRefres
 		}
 	}
 
-	public synchronized WBWebPageModule get(Long externalKey) throws WBIOException
+	public synchronized WBWebPageModule getByExternalKey(String externalKey) throws WBIOException
 	{
-		HashMap<Long, WBWebPageModule> mapkeys = (HashMap<Long, WBWebPageModule>) memcache.get(memcacheMapKey);
+		HashMap<String, WBWebPageModule> mapkeys = (HashMap<String, WBWebPageModule>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
 			return (WBWebPageModule) mapkeys.get(externalKey);
 		}
-		Map<Long, WBWebPageModule> refreshData = new HashMap<Long, WBWebPageModule>(); 
+		Map<String, WBWebPageModule> refreshData = new HashMap<String, WBWebPageModule>(); 
 		RefreshInternal(refreshData, null);
 		if (refreshData.containsKey(externalKey))
 		{

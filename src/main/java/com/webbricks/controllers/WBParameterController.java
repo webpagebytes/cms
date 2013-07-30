@@ -82,7 +82,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 			String keyOwner = request.getParameter("ownerExternalKey");
 			if (keyOwner != null)
 			{
-				parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, Long.valueOf(keyOwner));
+				parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
 			} else
 			{
 				parameters = adminStorage.getAllRecords(WBParameter.class);
@@ -173,7 +173,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 		}		
 	}
 	
-	public void createFromOwner(Long fromOwnerExternalKey, Long ownerExternalKey, HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void createFromOwner(String fromOwnerExternalKey, String ownerExternalKey, HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
 		{
@@ -220,20 +220,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 		String fromOwnerExternalKeyStr = request.getParameter("fromOwnerExternalKey");
 		if (ownerExternalKeyStr != null || fromOwnerExternalKeyStr != null)
 		{
-			Long ownerExternalKey = null;
-			Long fromOwnerExternalKey = null;
-			try
-			{
-				ownerExternalKey = Long.valueOf(ownerExternalKeyStr);
-				fromOwnerExternalKey = Long.valueOf(fromOwnerExternalKeyStr);
-			} catch (Exception e)
-			{
-				Map<String, String> errors = new HashMap<String, String>();		
-				errors.put("", WBErrors.WB_INVALID_KEY);
-				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);							
-				return;
-			}
-			createFromOwner(fromOwnerExternalKey, ownerExternalKey, request, response, requestUri);
+			createFromOwner(fromOwnerExternalKeyStr, ownerExternalKeyStr, request, response, requestUri);
 			return;
 		}
 		

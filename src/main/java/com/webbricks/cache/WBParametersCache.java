@@ -7,8 +7,8 @@ import com.webbricks.exception.WBIOException;
 
 public interface WBParametersCache extends WBRefreshableCache {
 
-	public WBParameter get(Long key) throws WBIOException;
+	public WBParameter getByExternalKey(String externalKey) throws WBIOException;
 	
-	public List<WBParameter> getAllForOwner(Long ownerKey) throws WBIOException;
+	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WBIOException;
 
 }

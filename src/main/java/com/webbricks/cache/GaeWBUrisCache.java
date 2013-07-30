@@ -42,14 +42,14 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		RefreshInternal(null, null);
 	}
 
-	private void RefreshInternal(Map<Long, WBUri> keyMap, Map<String, WBUri> urisMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBUri> keyMap, Map<String, WBUri> urisMap) throws WBIOException
 	{
 		synchronized (this) {
 			log.log(Level.INFO, "GaeWBUriCache:RefreshInternal");
 			List<WBUri> wburis = adminDataStorage.getAllRecords(WBUri.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBUri>();
+				keyMap = new HashMap<String, WBUri>();
 			}
 			if (urisMap == null)
 			{
@@ -71,16 +71,16 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		}
 	}
 
-	public synchronized WBUri get(Long externalKey) throws WBIOException
+	public synchronized WBUri getByExternalKey(String externalKey) throws WBIOException
 	{
-		HashMap<Long, WBUri> mapkeys = (HashMap<Long, WBUri>) memcache.get(memcacheMapKey);
+		HashMap<String, WBUri> mapkeys = (HashMap<String, WBUri>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
 			return (WBUri) mapkeys.get(externalKey);
 		}
 		log.log(Level.INFO, "GaeWBUriCache:get could not find externalKey " + externalKey);
 		
-		Map<Long, WBUri> refreshData = new HashMap<Long, WBUri>(); 
+		Map<String, WBUri> refreshData = new HashMap<String, WBUri>(); 
 		RefreshInternal(refreshData, null);
 		if (refreshData.containsKey(externalKey))
 		{

@@ -35,7 +35,7 @@ public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCac
 		RefreshInternal(null, null);
 	}
 
-	private void RefreshInternal(Map<Long, WBParameter> keyMap, Map<Long, List<WBParameter>> ownersMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBParameter> keyMap, Map<String, List<WBParameter>> ownersMap) throws WBIOException
 	{
 		synchronized (this) {
 			log.log(Level.INFO, "GaeWBParameterCache:RefreshInternal");
@@ -43,16 +43,16 @@ public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCac
 			List<WBParameter> wbParameters = adminDataStorage.getAllRecords(WBParameter.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBParameter>();
+				keyMap = new HashMap<String, WBParameter>();
 			}
 			if (ownersMap == null)
 			{
-				ownersMap = new HashMap<Long, List<WBParameter>>();
+				ownersMap = new HashMap<String, List<WBParameter>>();
 			}
 			for (WBParameter wbParameter : wbParameters)
 			{
-				Long aExternalKey = wbParameter.getExternalKey();
-				Long ownerExternalKey = wbParameter.getOwnerExternalKey();
+				String aExternalKey = wbParameter.getExternalKey();
+				String ownerExternalKey = wbParameter.getOwnerExternalKey();
 				keyMap.put(aExternalKey, wbParameter);
 				if (ownersMap.get(ownerExternalKey) == null)
 				{
@@ -69,14 +69,14 @@ public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCac
 		}
 	}
 
-	public WBParameter get(Long externalKey) throws WBIOException
+	public WBParameter getByExternalKey(String externalKey) throws WBIOException
 	{
-		HashMap<Long, WBParameter> mapkeys = (HashMap<Long, WBParameter>) memcache.get(memcacheMapKey);
+		HashMap<String, WBParameter> mapkeys = (HashMap<String, WBParameter>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
 			return (WBParameter) mapkeys.get(externalKey);
 		}
-		Map<Long, WBParameter> refreshData = new HashMap<Long, WBParameter>(); 
+		Map<String, WBParameter> refreshData = new HashMap<String, WBParameter>(); 
 		RefreshInternal(refreshData, null);
 		if (refreshData.containsKey(externalKey))
 		{
@@ -85,14 +85,14 @@ public class GaeWBParametersCache implements WBParametersCache, WBRefreshableCac
 		return null;
 	}
 	
-	public List<WBParameter> getAllForOwner(Long ownerExternalKey) throws WBIOException
+	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WBIOException
 	{
-		HashMap<Long, List<WBParameter>> ownersMap = (HashMap<Long, List<WBParameter>>) memcache.get(memcacheMapOwners);
+		HashMap<String, List<WBParameter>> ownersMap = (HashMap<String, List<WBParameter>>) memcache.get(memcacheMapOwners);
 		if (ownersMap != null && ownersMap.containsKey(ownerExternalKey))
 		{
 			return (List<WBParameter>) ownersMap.get(ownerExternalKey);
 		}
-		Map<Long, List<WBParameter>> refreshData = new HashMap<Long, List<WBParameter>>(); 
+		Map<String, List<WBParameter>> refreshData = new HashMap<String, List<WBParameter>>(); 
 		RefreshInternal(null, refreshData);
 		if (refreshData.containsKey(ownerExternalKey))
 		{

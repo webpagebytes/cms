@@ -21,7 +21,7 @@ public class WBParameter implements Serializable {
 	private Date lastModified;
 
 	@AdminFieldStore
-	private Long ownerExternalKey;
+	private String ownerExternalKey;
 	
 	@AdminFieldStore
 	private Integer overwriteFromUrl;
@@ -30,7 +30,7 @@ public class WBParameter implements Serializable {
 	private Integer localeType;
 	
 	@AdminFieldStore
-	private Long externalKey;
+	private String externalKey;
 	
 	public Long getKey() {
 		return key;
@@ -64,11 +64,11 @@ public class WBParameter implements Serializable {
 		this.lastModified = lastModified;
 	}
 
-	public Long getOwnerExternalKey() {
+	public String getOwnerExternalKey() {
 		return ownerExternalKey;
 	}
 
-	public void setOwnerExternalKey(Long keyOwner) {
+	public void setOwnerExternalKey(String keyOwner) {
 		this.ownerExternalKey = keyOwner;
 	}
 
@@ -80,11 +80,11 @@ public class WBParameter implements Serializable {
 		this.overwriteFromUrl = overwriteFromUrl;
 	}
 
-	public Long getExternalKey() {
+	public String getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(Long externalKey) {
+	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
 	}
 

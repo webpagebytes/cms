@@ -77,7 +77,7 @@ public class WBUriValidator {
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}
 		
-		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey() == 0)
+		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey().length() == 0)
 		{
 			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 		}
@@ -139,7 +139,7 @@ public class WBUriValidator {
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}
 		
-		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey() == 0)
+		if (wbUri.getResourceExternalKey() == null || wbUri.getResourceExternalKey().length() == 0)
 		{
 			errors.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 		}

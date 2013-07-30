@@ -25,13 +25,13 @@ public class GaeWBArticlesCache implements WBArticlesCache, WBRefreshableCache{
 		adminDataStorage = new GaeAdminDataStorage();
 	}
 	
-	private void RefreshInternal(Map<Long, WBArticle> keyMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBArticle> keyMap) throws WBIOException
 	{
 		synchronized (this) {
 			List<WBArticle> records = adminDataStorage.getAllRecords(WBArticle.class);
 			if (keyMap == null)
 			{
-				keyMap = new HashMap<Long, WBArticle>();
+				keyMap = new HashMap<String, WBArticle>();
 			}
 			for (WBArticle rec : records)
 			{
@@ -46,14 +46,14 @@ public class GaeWBArticlesCache implements WBArticlesCache, WBRefreshableCache{
 		RefreshInternal(null);
 	}
 
-	public synchronized WBArticle get(Long externalKey) throws WBIOException
+	public synchronized WBArticle getByExternalKey(String externalKey) throws WBIOException
 	{
-		HashMap<Long, WBArticle> mapkeys = (HashMap<Long, WBArticle>) memcache.get(memcacheMapKey);
+		HashMap<String, WBArticle> mapkeys = (HashMap<String, WBArticle>) memcache.get(memcacheMapKey);
 		if (mapkeys != null && mapkeys.containsKey(externalKey))
 		{
 			return (WBArticle) mapkeys.get(externalKey);
 		}
-		Map<Long, WBArticle> refreshData = new HashMap<Long, WBArticle>(); 
+		Map<String, WBArticle> refreshData = new HashMap<String, WBArticle>(); 
 		RefreshInternal(refreshData);
 		if (refreshData.containsKey(externalKey))
 		{

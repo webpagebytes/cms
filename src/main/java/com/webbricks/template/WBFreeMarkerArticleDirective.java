@@ -40,33 +40,28 @@ public class WBFreeMarkerArticleDirective implements TemplateDirectiveModel {
         // Check if no parameters were given:
     	if (body != null) throw new TemplateModelException("WBFreeMarkerArticleDirective does not suport directive body");
         
-    	Long articleKey = null;
+    	String articleKeyStr = null;
     	if (params.containsKey("externalKey"))
     	{
-    		String articleKeyStr = (String) DeepUnwrap.unwrap((TemplateModel) params.get("externalKey"));
-    		try
-    		{
-    			articleKey = Long.valueOf(articleKeyStr);
-    		} catch (NumberFormatException e)
-    		{
-    			throw new TemplateModelException("WBFreeMarkerArticleDirective externalkey number format exception");
-    		}
+    		articleKeyStr = (String) DeepUnwrap.unwrap((TemplateModel) params.get("externalKey"));
+    	} else
+    	{
+    		throw new TemplateModelException("WBFreeMarkerArticleDirective does not have external key parameter set");
     	}
-    	if (articleKey == null) throw new TemplateModelException("WBFreeMarkerArticleDirective does not have name parameter set");
     	
         try
         {
-        	WBArticle article = cacheInstances.getWBArticleCache().get(articleKey);
+        	WBArticle article = cacheInstances.getWBArticleCache().getByExternalKey(articleKeyStr);
         	if (article == null)
         	{
-        		throw new TemplateModelException("WBFreeMarkerArticleDirective externalKey does not match an existing Article : " + articleKey);       
+        		throw new TemplateModelException("WBFreeMarkerArticleDirective externalKey does not match an existing Article : " + articleKeyStr);       
         	}
         	env.getOut().write(article.getHtmlSource());
         	
         } catch (WBIOException e)
         {
         	log.log(Level.SEVERE, "ERROR: ", e);
-        	throw new TemplateModelException("WBFreeMarkerArticleDirective IO exception when reading article: " + articleKey);               	
+        	throw new TemplateModelException("WBFreeMarkerArticleDirective IO exception when reading article: " + articleKeyStr);               	
         }
     }
     

@@ -33,13 +33,13 @@ public class WBUri implements Serializable {
 	private Integer resourceType;
 	
 	@AdminFieldStore
-	private Long resourceExternalKey;
+	private String resourceExternalKey;
 		
 	@AdminFieldStore
 	private String pageName;
 	
 	@AdminFieldStore
-	private Long externalKey;
+	private String externalKey;
 	
 	public Long getKey() {
 		return key;
@@ -105,11 +105,11 @@ public class WBUri implements Serializable {
 		this.pageName = pageName;
 	}
 	
-	public Long getExternalKey() {
+	public String getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(Long externalKey) {
+	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
 	}
 
@@ -121,11 +121,11 @@ public class WBUri implements Serializable {
 		this.resourceType = resourceType;
 	}
 
-	public Long getResourceExternalKey() {
+	public String getResourceExternalKey() {
 		return resourceExternalKey;
 	}
 
-	public void setResourceExternalKey(Long resourceExternalKey) {
+	public void setResourceExternalKey(String resourceExternalKey) {
 		this.resourceExternalKey = resourceExternalKey;
 	}
 	

@@ -337,11 +337,8 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 
 	}
 	
-	public Long getUniqueId()
+	public String getUniqueId()
 	{
-		log.log(Level.INFO, "GaeAdminDataStorage:getUniqueId ");
-		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
-		KeyRange range = datastoreService.allocateIds("java.lang.String", 1);
-		return range.getStart().getId();
+		return java.util.UUID.randomUUID().toString();
 	}
 }

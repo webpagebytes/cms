@@ -8,7 +8,7 @@ import com.webbricks.exception.WBIOException;
 
 public interface WBWebPagesCache extends WBRefreshableCache {
 
-	public WBWebPage get(Long key) throws WBIOException;
+	public WBWebPage getByExternalKey(String key) throws WBIOException;
 	
 	public WBWebPage get(String pageName) throws WBIOException;
 	

@@ -70,15 +70,16 @@ public void test_create_single_ok()
 {
 	try
 	{
+		String externalKey = "xyz";
 		String json = "{name:\"testpage\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
 		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBParameter.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
-		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(999L);
+		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
-		Capture<Long> captureExternalKey = new Capture<Long>();
+		Capture<String> captureExternalKey = new Capture<String>();
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
-		objectForControllerMock.setExternalKey(EasyMock.captureLong(captureExternalKey));
+		objectForControllerMock.setExternalKey(EasyMock.capture(captureExternalKey));
 		WBParameter newPage = new WBParameter();
 		newPage.setKey(10L);
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andReturn(newPage);
@@ -98,7 +99,7 @@ public void test_create_single_ok()
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
-		assertTrue (captureExternalKey.getValue().compareTo(999L) == 0);
+		assertTrue (captureExternalKey.getValue().compareTo(externalKey) == 0);
 		
 	} catch (Exception e)
 	{
@@ -143,15 +144,16 @@ public void test_create_single_exception()
 {
 	try
 	{
+		String externalKey = "xyz";
 		String json = "{uri:\"test\", httpOperation:\"GET\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
 		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBParameter.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
-		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(999L);
+		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
-		Capture<Long> captureExternalKey = new Capture<Long>();
+		Capture<String> captureExternalKey = new Capture<String>();
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
-		objectForControllerMock.setExternalKey(EasyMock.captureLong(captureExternalKey));
+		objectForControllerMock.setExternalKey(EasyMock.capture(captureExternalKey));
 
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andThrow(new WBIOException(""));
 		
@@ -168,7 +170,7 @@ public void test_create_single_exception()
 		assertTrue (captureData.getValue().length() == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
-		assertTrue (captureExternalKey.getValue().compareTo(999L) == 0);
+		assertTrue (captureExternalKey.getValue().compareTo(externalKey) == 0);
 
 		
 	} catch (Exception e)
@@ -212,9 +214,9 @@ public void test_getForOwner_ok()
 {
 	try
 	{
-		EasyMock.expect(requestMock.getParameter("ownerExternalKey")).andReturn("112");
+		EasyMock.expect(requestMock.getParameter("ownerExternalKey")).andReturn("123");
 		List<Object> allUri = new ArrayList<Object>();
-		EasyMock.expect(adminStorageMock.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, 112L)).andReturn(allUri);
+		EasyMock.expect(adminStorageMock.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, "123")).andReturn(allUri);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(allUri)).andReturn(jsonString);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();

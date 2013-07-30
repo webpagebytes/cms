@@ -87,9 +87,9 @@ public class PageContentBuilder {
 		}
 	}
 	
-	public WBWebPage findWebPage(Long pageExternalKey) throws WBException
+	public WBWebPage findWebPage(String pageExternalKey) throws WBException
 	{
-		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(pageExternalKey);
+		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);
 		return wbWebPage;
 		
 	}
@@ -120,7 +120,7 @@ public class PageContentBuilder {
 		pageModel.put(URL_PARAMETERS_KEY, subUrlParams);
 
 		List<WBParameter> pageWbParams = cacheInstances.getWBParameterCache().getAllForOwner(wbWebPage.getExternalKey());
-		List<WBParameter> globalParams = cacheInstances.getWBParameterCache().getAllForOwner(0L);
+		List<WBParameter> globalParams = cacheInstances.getWBParameterCache().getAllForOwner("");
 		globalParams.addAll(pageWbParams);
 		pageWbParams = globalParams;
 		

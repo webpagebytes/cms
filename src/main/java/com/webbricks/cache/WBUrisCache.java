@@ -10,7 +10,7 @@ import com.webbricks.exception.WBIOException;
 
 public interface WBUrisCache extends WBRefreshableCache {
 
-	public WBUri get(Long key) throws WBIOException;
+	public WBUri getByExternalKey(String key) throws WBIOException;
 	
 	public WBUri get(String uri) throws WBIOException;
 

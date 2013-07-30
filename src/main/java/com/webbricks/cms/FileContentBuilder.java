@@ -31,9 +31,9 @@ public class FileContentBuilder {
 		blobHandler = new WBGaeBlobHandler();
 		filesCache = cacheInstances.getWBFilesCache();
 	}
-	public WBFile find(Long externalKey) throws WBException
+	public WBFile find(String externalKey) throws WBException
 	{
-		return filesCache.get(externalKey);
+		return filesCache.getByExternalKey(externalKey);
 	}
 	public InputStream getFileContent(WBFile file) throws WBException
 	{

@@ -27,7 +27,7 @@ public class WBWebPage implements Serializable {
 	private String contentType;
 	
 	@AdminFieldStore
-	private Long externalKey;
+	private String externalKey;
 	
 	@AdminFieldStore
 	private Long hash;
@@ -75,11 +75,11 @@ public class WBWebPage implements Serializable {
 		this.isTemplateSource = isTemplateSource;
 	}
 
-	public Long getExternalKey() {
+	public String getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(Long externalKey) {
+	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
 	}
 
