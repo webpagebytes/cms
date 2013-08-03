@@ -71,7 +71,7 @@ $().ready( function () {
 		}
 	}
 	
-	$('#wbtable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External Id", fieldId:"externalKey"}, {display: "uri", fieldId: "uri"}, {display: "Page Name", fieldId: "pageName"}, {display: "Live", fieldId: "enabled"}, 
+	$('#wbtable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "uri", fieldId: "uri"}, {display: "Page Name", fieldId: "pageName"}, {display: "Live", fieldId: "enabled"}, 
 	                                    {display:"Operations", fieldId:"httpOperation"}, {display:"Controller class", fieldId:"controllerClass"}, 
 										{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: displayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 							 keyName: "key",
@@ -187,7 +187,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wburiupdate').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(object);
-			$('#wburiupdate').wbCommunicationManager().ajax ( { url: "./wburi/" + escapehtml(object['key']),
+			$('#wburiupdate').wbCommunicationManager().ajax ( { url: "./wburi/" + encodeURIComponent(object['key']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wburiupdate').wbObjectManager(),

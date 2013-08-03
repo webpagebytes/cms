@@ -40,7 +40,7 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbArticlesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External Id", fieldId:"externalKey"}, {display: "Title", fieldId: "title"}, 
+	$('#wbArticlesTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Title", fieldId: "title"}, 
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",

@@ -190,7 +190,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 			{
 				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);									
 			}
-			List<WBParameter> ownerParams = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, Long.valueOf(fromOwnerExternalKey));			
+			List<WBParameter> ownerParams = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, fromOwnerExternalKey);			
 			List<WBParameter> newParams = new ArrayList<WBParameter>();
 			for(WBParameter parameter: ownerParams)
 			{

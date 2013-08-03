@@ -59,7 +59,7 @@ $().ready( function () {
 		
 	}
 				
-	$('#wbFilesTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
+	$('#wbFilesTable').wbTable( { columns: [ {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
 	                                {display:"Content type", fieldId:"contentType"},
 									{display:"Size", fieldId:"size", customHandling: true, customHandler: displayHandler},
 									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},

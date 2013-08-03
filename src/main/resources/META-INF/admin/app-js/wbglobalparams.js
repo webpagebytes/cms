@@ -72,7 +72,7 @@ $().ready( function () {
 		var errors = $('#wbAddParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var parameter = $('#wbAddParameterForm').wbObjectManager().getObjectFromFields();
-			parameter['ownerExternalKey'] = 0;
+			parameter['ownerExternalKey'] = "";
 			var jsonText = JSON.stringify(parameter);
 			$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter",
 															 httpOperation:"POST", 
@@ -161,7 +161,7 @@ $().ready( function () {
 		alert(errors);
 	}
 	
-	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=0",
+	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=&",
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetParameters,

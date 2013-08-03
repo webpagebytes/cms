@@ -220,7 +220,6 @@
 		
 		<div class="modal-body">
 			<input id="wbukey" type="hidden">
-			<input id="wbuexternalKey" type="hidden">
 			<fieldset>
 				<div class="control-group">
 					<div class="controls">
@@ -235,6 +234,13 @@
 						<span id="erruuri" class="help-inline"></span>
 					</div>										
 				</div>
+				<div class="control-group">
+					<label class="control-label" for="externalKey">External Key</label>
+					<div class="controls">
+						<input id="wbuexternalKey" class="input-xlarge" type="text" readonly>
+						<span id="erruexternalKey" class="help-inline"></span>
+					</div>										
+				</div>
 				
 				<div class="control-group">
 					<div class="controls">
@@ -244,14 +250,6 @@
 					</div>										
 				</div>
 				
-                <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Controller class</label>
-                    <div class="controls">
-                        <input id="wbucontrollerClass" class="input-xlarge" type="text">
-						<span id="errucontrollerClass" class="help-inline"></span>
-					</div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label" for="controllerClass"> Web page name</label>
                     <div class="controls">

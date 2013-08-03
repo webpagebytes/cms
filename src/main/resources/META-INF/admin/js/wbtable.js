@@ -46,7 +46,7 @@
 			
 			paginationBaseClass: "",
 			
-			textLengthToCut: 30
+			textLengthToCut: 40
 			},
 		getOptions: function () {
 			if (! this.options) 

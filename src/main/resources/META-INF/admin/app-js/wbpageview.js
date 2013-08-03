@@ -80,6 +80,10 @@ $().ready( function () {
 			var innerHtml = 'Content type: {0}'.format(escapehtml (record[fieldId]));
 			return innerHtml;
 		}
+		if (fieldId == 'externalKey') {
+			var innerHtml = 'External Key: <input type="text" class="input-xlarge" readonly value="{0}">'.format(escapehtml (record[fieldId]));
+			return innerHtml;			
+		}
 		return escapehtml(record[fieldId]);
 	}
 	
