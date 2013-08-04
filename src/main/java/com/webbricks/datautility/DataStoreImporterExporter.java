@@ -13,6 +13,7 @@ import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.cmsdata.WBParameter;
+import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
@@ -27,6 +28,7 @@ public class DataStoreImporterExporter {
 	public static final String IMAGES_ENTRY = "wbimages.json";
 	public static final String ARTICLES_ENTRY = "wbarticles.json";
 	public static final String MESSAGES_ENTRY = "wbmessages.json";
+	public static final String PROJECT_ENTRY = "wbproject.json";
 	
 	protected WBJSONToFromObjectConverter objectConverter;
 	
@@ -133,6 +135,20 @@ public class DataStoreImporterExporter {
 		}
 	}
 
+	protected void importProject (AdminDataStorage adminStorage, ZipInputStream zis) throws WBIOException
+	{
+		try
+		{
+			String buffer = readFromStream(zis);
+			WBProject project = (WBProject) objectConverter.objectFromJSONString(buffer, WBProject.class);
+			adminStorage.add(project);
+			
+		} catch (IOException e)
+		{
+			throw new WBIOException("cannot import messages " + e.getMessage());
+		}		
+	}
+	
 	protected void importMessages(AdminDataStorage adminStorage, ZipInputStream zis) throws WBIOException
 	{
 		try
@@ -308,6 +324,26 @@ public class DataStoreImporterExporter {
 		}		
 	}
 	
+	protected void exportProject(AdminDataStorage adminStorage, ZipOutputStream zos) throws WBIOException
+	{
+		ZipEntry ze = new ZipEntry(PROJECT_ENTRY);
+		try
+		{
+			zos.putNextEntry(ze);		
+			WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			String recordsString = objectConverter.JSONStringFromObject(project, null);		
+			zos.write(recordsString.getBytes("UTF-8"));
+			zos.closeEntry();
+		} catch (IOException e)
+		{
+			throw new WBIOException("cannot export images " + e.getMessage());
+		}
+		catch (WBIOException e)
+		{
+			throw new WBIOException("cannot export images " + e.getMessage());	
+		}		
+	}
+	
 	protected void exportSettings(AdminDataStorage adminStorage, ZipOutputStream zos) throws WBIOException
 	{
 		
@@ -327,7 +363,7 @@ public class DataStoreImporterExporter {
 			exportImages(adminStorage, zos);
 			exportMessages(adminStorage, zos);
 			exportSettings(adminStorage, zos);
-			
+			exportProject(adminStorage, zos);
 			zos.close();
 		} catch (IOException e)
 		{
@@ -369,6 +405,9 @@ public class DataStoreImporterExporter {
 				} else if (name.compareTo(MESSAGES_ENTRY) == 0)
 				{
 					importMessages(adminStorage, zis);
+				} else if (name.compareTo(PROJECT_ENTRY) == 0)
+				{
+					importProject(adminStorage, zis);
 				}
 				zis.closeEntry();
 			}

@@ -130,7 +130,8 @@ public class PageContentBuilder {
 	
 		Set<String> supportedLanguagesSet = getSupportedLanguages(project);
 		
-		boolean languageParamsPresent = false;
+		boolean languageParamPresent = false;
+		
 		String localeLanguage = "";
 		String localeCountry = "";
 		if (pageWbParams != null)
@@ -145,21 +146,20 @@ public class PageContentBuilder {
 					{
 						if (wbParam.getLocaleType() == 1)
 						{
-							localeLanguage = subUrlParams.get(wbParam.getName());
-							languageParamsPresent = true;
-							if (localeLanguage == null)
+							String _locale = subUrlParams.get(wbParam.getName());
+							if (_locale != null)
 							{
-								throw new WBLocaleLanguageException("No locale language parameter for " + wbParam.getName());
+								languageParamPresent = true;
+								localeLanguage = _locale;
 							}
 						} else
 						if (wbParam.getLocaleType() == 2)
 						{
-							localeCountry = subUrlParams.get(wbParam.getName());
-							languageParamsPresent = true;
-							if (localeCountry == null)
+							String _country = subUrlParams.get(wbParam.getName());
+							if (_country != null)
 							{
-								throw new WBLocaleCountryException("No locale country parameter for " + wbParam.getName());
-							}							
+								localeCountry = _country;
+							}
 						}
 					} else
 					if (requestQueryParams.containsKey(wbParam.getName()))
@@ -169,7 +169,7 @@ public class PageContentBuilder {
 				}
 			}
 		}
-		if (languageParamsPresent == true)
+		if (languageParamPresent == true)
 		{
 			String lcid = localeLanguage;
 			if (localeCountry.length()>0)

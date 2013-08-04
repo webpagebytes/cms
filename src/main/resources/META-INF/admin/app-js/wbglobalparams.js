@@ -97,7 +97,7 @@ $().ready( function () {
 		var errors = $('#wbUpdateParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
-			object['ownerExternalKey'] = 0;
+			object['ownerExternalKey'] = "";
 			var jsonText = JSON.stringify(object);
 			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
 															 httpOperation:"PUT", 
