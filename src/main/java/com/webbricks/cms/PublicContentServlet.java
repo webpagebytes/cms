@@ -105,6 +105,10 @@ public class PublicContentServlet extends HttpServlet {
 		if (uriCommonPrefix.length()>0 && uri.startsWith(uriCommonPrefix))
 		{
 			uri = uri.substring(uriCommonPrefix.length());
+		} else
+		{
+			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
 		}
 		//reinitialize the matchurlToPattern if needed
 		if (cacheInstances.getWBUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
