@@ -38,6 +38,7 @@ import com.webbricks.template.WBFreeMarkerModuleDirective;
 public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
 	public static final String CACHE_QUERY_PARAM = "cqp";
+	public static final String URI_PREFIX = "wb-uri-prefix";
 	private WBServletUtility servletUtility = null;
 	
 	// this is the common uri part that will be common to all requests served by this CMS
@@ -110,6 +111,9 @@ public class PublicContentServlet extends HttpServlet {
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
+		
+		req.setAttribute(URI_PREFIX, uriCommonPrefix);
+		
 		//reinitialize the matchurlToPattern if needed
 		if (cacheInstances.getWBUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
 		{

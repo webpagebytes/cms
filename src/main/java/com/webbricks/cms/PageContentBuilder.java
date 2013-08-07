@@ -22,6 +22,7 @@ import com.webbricks.cache.WBProjectCache;
 import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBParameter;
+import com.webbricks.cmsdata.WBPredefinedParameters;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
@@ -57,6 +58,14 @@ public class PageContentBuilder {
 	public static final String TEXT_FORMAT_DIRECTIVE = "wbFormatText";
 	public static final String FORMAT_TEXT_METHOD = "wbFormatText";
 	
+	
+	public static final String GLOBAL_PROTOCOL = "WB_GLOBAL_PROTOCOL";
+	public static final String GLOBAL_DOMAIN = "WB_GLOBAL_DOMAIN";
+	public static final String GLOBAL_URI_PREFIX = "WB_GLOBAL_URI_PREFIX";
+	
+	public static final String UUID_PROTOCOL = "403a0a8d-7959-472d-b793-c66e5ec71a2e";
+	public static final String UUID_DOMAIN = "d27b1bb8-f5c7-4d1a-a36e-0ccfb2525d3c";
+	public static final String UUID_URI_PREFIX = "b239ad48-1aee-46dc-87b6-048ff2254d59";
 	
 	
 	
@@ -103,6 +112,26 @@ public class PageContentBuilder {
 			if (lang.length()>0) supportedLanguagesSet.add(lang);
 		}
 		return supportedLanguagesSet;
+	}
+	
+	private void addStaticParameters(HttpServletRequest request, Map<String, String> pageModel)
+	{
+		String url = request.getRequestURL().toString();
+		int indexDomain = url.indexOf("://");
+		String protocol = url.substring(0, indexDomain);
+		String domain = url.substring(indexDomain+3);
+		int indexUri = domain.indexOf('/');
+		if (indexUri>0)
+		{
+			domain = domain.substring(0, indexUri);
+		}
+		pageModel.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
+		pageModel.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
+		Object objUriPrefix = request.getAttribute(PublicContentServlet.URI_PREFIX);
+		if (objUriPrefix != null)
+		{
+			pageModel.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, (String)objUriPrefix);
+		}	
 	}
 	
 	private Map<String, Object> getPageModel(HttpServletRequest request,
@@ -169,6 +198,8 @@ public class PageContentBuilder {
 				}
 			}
 		}
+		addStaticParameters(request, pageParams);
+		
 		if (languageParamPresent == true)
 		{
 			String lcid = localeLanguage;

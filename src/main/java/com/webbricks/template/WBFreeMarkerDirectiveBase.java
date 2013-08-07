@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.webbricks.cms.PageContentBuilder;
+import com.webbricks.cmsdata.WBPredefinedParameters;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -25,6 +26,7 @@ public void execute(Environment env,
 public void copyParams(Environment env, Map params) throws TemplateModelException
 {
 	TemplateHashModel dataModel = env.getDataModel();
+
 	TemplateModel resourceBundle = dataModel.get(PageContentBuilder.LOCALE_MESSAGES);
 	if (resourceBundle != null)
 	{
@@ -43,6 +45,22 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	
 	params.put(PageContentBuilder.FORMAT_TEXT_METHOD, dataModel.get(PageContentBuilder.FORMAT_TEXT_METHOD));
 	
+	TemplateModel domain = dataModel.get(WBPredefinedParameters.GLOBAL_DOMAIN);
+	if (domain != null) 
+	{
+		params.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
+	}
+	TemplateModel protocol = dataModel.get(WBPredefinedParameters.GLOBAL_PROTOCOL);
+	if (protocol != null) 
+	{
+		params.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
+	}
+	TemplateModel uriPrefix = dataModel.get(WBPredefinedParameters.GLOBAL_URI_PREFIX);
+	if (uriPrefix != null) 
+	{
+		params.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, uriPrefix);
+	}
+
 }
 
 }
