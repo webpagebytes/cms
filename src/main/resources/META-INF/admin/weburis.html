@@ -8,10 +8,8 @@
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
-<script src="./js/wbcommanager.js" type="text/javascript"></script>
-<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
-<script src="./js/wbtable.js" type="text/javascript"></script>
-<script src="./js/wbsearchbox.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
+<script src="./js/wbutility.js" type="text/javascript"></script>
 <script src="./app-js/wburis.js" type="text/javascript"></script>
 
 </head>
@@ -59,7 +57,7 @@
 				<div class="control-group">
 					<label class="control-label" for="uri">Web relative url</label>
 					<div class="controls">
-						<input id="wbauri" class="input-xlarge" type="text">
+						<input id="wbauri" class="wb-input-xlarge" type="text">
 						<span id="errauri" class="help-inline"></span>
 					</div>										
 				</div>
@@ -72,17 +70,10 @@
 					</div>										
 				</div>
 				
-                <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Controller class</label>
-                    <div class="controls">
-                        <input id="wbacontrollerClass" class="input-xlarge" type="text">
-						<span id="erracontrollerClass" class="help-inline"></span>
-					</div>
-                </div>
-                <div class="control-group">
+              <div class="control-group">
                     <label class="control-label" for="wbapageName"> Web page name </label>
                     <div class="controls">
-                        <input id="wbapageName" class="input-xlarge" type="text">
+                        <input id="wbapageName" class="wb-input-xlarge" type="text">
 						<span id="errapageName" class="help-inline"></span>
 					</div>
                 </div>
@@ -111,7 +102,7 @@
             	 <div class="control-group">
                     <label class="control-label" for="wbaresourceExternalKey"> Resource External Key </label>
                     <div class="controls">
-                        <input id="wbaresourceExternalKey" class="input-xlarge" type="text">
+                        <input id="wbaresourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wbaresourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
 						<span id="erraresourceExternalKey" class="help-inline"></span>
 					</div>
                 </div>
@@ -144,7 +135,7 @@
 				<div class="control-group">
 					<label class="control-label" for="uri">Web relative uri</label>
 					<div class="controls">
-						<input id="wbcuri" name="uri" class="input-xlarge" type="text">
+						<input id="wbcuri" name="uri" class="wb-input-xlarge" type="text">
 						<span id="errcuri" class="help-inline"></span>
 					</div>										
 				</div>
@@ -158,16 +149,9 @@
 				</div>
 				
                 <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Controller class</label>
-                    <div class="controls">
-                        <input id="wbccontrollerClass" name="controllerClass" class="input-xlarge" type="text">
-						<span id="errccontrollerClass" class="help-inline"></span>
-					</div>
-                </div>
-                <div class="control-group">
                     <label class="control-label" for="pageName"> Web page name </label>
                     <div class="controls">
-                        <input id="wbcpageName" name="pageName" class="input-xlarge" type="text">
+                        <input id="wbcpageName" name="pageName" class="wb-input-xlarge" type="text">
 						<span id="errcpageName" class="help-inline"></span>
 					</div>
                 </div>
@@ -196,7 +180,7 @@
                 <div class="control-group">
                     <label class="control-label" for="wbcresourceExternalKey"> Resource External Key </label>
                     <div class="controls">
-                        <input id="wbcresourceExternalKey" class="input-xlarge" type="text">
+                        <input id="wbcresourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wbcresourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
 						<span id="errcresourceExternalKey" class="help-inline"></span>
 					</div>
                 </div>
@@ -230,14 +214,14 @@
 				<div class="control-group">
 					<label class="control-label" for="uri">Web relative url</label>
 					<div class="controls">
-						<input id="wbuuri" class="input-xlarge" type="text">
+						<input id="wbuuri" class="wb-input-xlarge" type="text">
 						<span id="erruuri" class="help-inline"></span>
 					</div>										
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="externalKey">External Key</label>
 					<div class="controls">
-						<input id="wbuexternalKey" class="input-xlarge" type="text" readonly>
+						<input id="wbuexternalKey" class="wb-input-xlarge" type="text" readonly> <input data-clipboard-target="wbuexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
 						<span id="erruexternalKey" class="help-inline"></span>
 					</div>										
 				</div>
@@ -253,7 +237,7 @@
                 <div class="control-group">
                     <label class="control-label" for="controllerClass"> Web page name</label>
                     <div class="controls">
-                        <input id="wbupageName" class="input-xlarge" type="text">
+                        <input id="wbupageName" class="wb-input-xlarge" type="text">
 						<span id="errupageName" class="help-inline"></span>
 					</div>
                 </div>
@@ -282,7 +266,7 @@
                 <div class="control-group">
                     <label class="control-label" for="wburesourceExternalKey"> Resource External Key </label>
                     <div class="controls">
-                        <input id="wburesourceExternalKey" class="input-xlarge" type="text">
+                        <input id="wburesourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wburesourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
 						<span id="erruresourceExternalKey" class="help-inline"></span>
 					</div>
                 </div>
@@ -315,7 +299,7 @@
 				<div class="control-group">
 					<label class="control-label" for="uri">Web relative url</label>
 					<div class="controls">
-						<input id="wbduri" class="input-xlarge" type="text" readonly >
+						<input id="wbduri" class="wb-input-xlarge" type="text" readonly > 
 						<span id="errduri" class="help-inline"></span>
 					</div>										
 				</div>

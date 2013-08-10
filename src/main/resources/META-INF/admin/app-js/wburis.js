@@ -57,8 +57,14 @@ $().ready( function () {
 										 errorLabelsPrefix: 'errd',
 										 errorLabelClassName: 'errorvalidationlabel',
 									    } );							
-	$('#wbsearch').wbSearchBox( { searchFields: ['key','uri'] } );
 	
+	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
+	ZeroClipboard.setDefaults( { moviePath: swfzc } );
+	var zcButtons = $.find('.btn-clipboard');
+	$.each (zcButtons, function (index, elem) {
+		var zc = new ZeroClipboard(elem);
+	});
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="#" class="wbedituri" id="wburiedit_' +record['key']+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>' 
@@ -72,14 +78,12 @@ $().ready( function () {
 	}
 	
 	$('#wbtable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "uri", fieldId: "uri"}, {display: "Page Name", fieldId: "pageName"}, {display: "Live", fieldId: "enabled"}, 
-	                                    {display:"Operations", fieldId:"httpOperation"}, {display:"Controller class", fieldId:"controllerClass"}, 
+	                                    {display:"Operations", fieldId:"httpOperation"}, 
 										{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: displayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 							 keyName: "key",
 							 tableBaseClass: "table table-condensed table-color-header",
 							 paginationBaseClass: "pagination"
 							});
-	$('#wbtable').wbTable().addNotifier($('#wbsearch').wbSearchBox().changeListener, $('#wbsearch').wbSearchBox());	
-	
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbModalUriAdd').modal('hide');

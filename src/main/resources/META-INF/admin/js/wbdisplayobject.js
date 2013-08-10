@@ -35,20 +35,30 @@
 					} else {					
 						htmlField = escapehtml(object[key]);
 					}
-					$(value).html(htmlField);
+					switch (value.type) {
+					case 'text':
+					case 'file':
+					case 'hidden':
+					case 'password':
+					case 'textarea':
+					case 'select-multiple':
+					case 'select-one':
+						$(value).val(htmlField);
+						break;
+					default:
+						$(value).html(htmlField);
+					}
 				}				
 			})
 		}
 	};
 	
-	
-
-$.fn.wbDisplayObject = function ( param ) {
-		var $this = $(this),
-		data = $this.data('wbDisplayObject');			
-		var options = (typeof param == 'object') ? param : {} ; 
-		if (!data) $this.data('wbDisplayObject', (data = new WBDisplayObject ($this, options)));	
-		if (param == undefined) return data;
-}	
+	$.fn.wbDisplayObject = function ( param ) {
+			var $this = $(this),
+			data = $this.data('wbDisplayObject');			
+			var options = (typeof param == 'object') ? param : {} ; 
+			if (!data) $this.data('wbDisplayObject', (data = new WBDisplayObject ($this, options)));	
+			if (param == undefined) return data;
+	}	
 
 }) (window.jQuery)

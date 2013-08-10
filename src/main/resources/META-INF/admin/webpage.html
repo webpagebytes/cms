@@ -3,15 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
-<link rel="stylesheet" href="./css/wbbase.css" type="text/css" />
 <link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
-<script src="./js/wbcommanager.js" type="text/javascript"></script>
-<script src="./js/wbobjectmanager.js" type="text/javascript"></script>
-<script src="./js/wbtable.js" type="text/javascript"></script>
-<script src="./js/wbdisplayobject.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
+<script src="./js/wbutility.js" type="text/javascript"></script>
 <script src="./app-js/wbpageview.js" type="text/javascript"></script>
 
 </head>
@@ -43,8 +40,8 @@
 				<div class="wbPageView well" id="wbPageView">
 					<div id="wbPageViewisTemplateSource" class="marginv">
 					</div>
-					<div id="wbPageViewcontentType" class="marginv"> </div>
-					<div id="wbPageViewexternalKey" class="marginv"> </div>
+					<div class="marginv">Content type: <span id="wbPageViewcontentType"> </span> </div>
+					<div class="marginv">External Key <input id="wbPageViewexternalKey" type="text" readonly="" class="wb-input-xlarge"> <input data-clipboard-target="wbPageViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard"> </div>
 					
 					<textarea rows="20" cols="100" id="wbPageViewhtmlSource" class="input-block-level" readonly> </textarea>					
 					<a href="#" class="wbPageViewEditLink"> <i class="icon-pencil"></i> Edit </a>

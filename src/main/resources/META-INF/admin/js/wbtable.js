@@ -1,4 +1,4 @@
- (function ($) {
+(function ($) {
 
 	WBTable = function ( thisElement, options ) {
 		this.init( thisElement, options );

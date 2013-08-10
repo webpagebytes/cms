@@ -1,4 +1,4 @@
- (function ($) {
+(function ($) {
 	WBCommunicationManager = function ( thisElement, options ) {
 		this.init( thisElement, options );
 	}

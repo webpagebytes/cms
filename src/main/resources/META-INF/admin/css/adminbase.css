@@ -139,3 +139,9 @@ clear: both;
 {
 display: none;
 }
+
+.wb-input-xlarge
+{
+width: 350px;
+margin-bottom: 0px !important;
+}

@@ -35,6 +35,13 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
+	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
+	ZeroClipboard.setDefaults( { moviePath: swfzc } );
+	var zcButtons = $.find('.btn-clipboard');
+	$.each (zcButtons, function (index, elem) {
+		var zc = new ZeroClipboard(elem);
+	});
+
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
@@ -45,7 +52,7 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbPageParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External ID", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
+	$('#wbPageParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
 									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
@@ -75,14 +82,6 @@ $().ready( function () {
 			}
 			var innerHtml = '<input class="input-xlarge" type="radio" {0} disabled="disabled"> Plain html source <input class="input-xlarge" type="radio" {1} disabled="disabled"> Template html source'.format(plainValue, templateValue); 			
 			return innerHtml;
-		}
-		if (fieldId == 'contentType') {
-			var innerHtml = 'Content type: {0}'.format(escapehtml (record[fieldId]));
-			return innerHtml;
-		}
-		if (fieldId == 'externalKey') {
-			var innerHtml = 'External Key: <input type="text" class="input-xlarge" readonly value="{0}">'.format(escapehtml (record[fieldId]));
-			return innerHtml;			
 		}
 		return escapehtml(record[fieldId]);
 	}
