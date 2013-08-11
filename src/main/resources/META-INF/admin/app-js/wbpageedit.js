@@ -1,14 +1,16 @@
 var errorsGeneral = {
-	ERROR_PAGENAME_LENGTH:'Web page name length must be between 1 and 250 characters ',
+	ERROR_PAGENAME_LENGTH:'Web page name length must be between 1 and 250 characters',
 	ERROR_PAGE_INVALID_TYPE: 'Invalid operation type',
-	ERROR_PAGE_BAD_FORMAT: 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)'
-	
+	ERROR_PAGE_BAD_FORMAT: 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
+	ERROR_CONTENTTYPE_LENGTH: 'Content type length must be between 1 and 250 characters',
+	ERROR_CONTENTTYPE_BAD_FORMAT: 'Invalid format for content type'
 };
 
 $().ready( function () {
 	var wbPageValidations = { 
 			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
-			isTemplateSource: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PAGE_INVALID_TYPE" }]
+			isTemplateSource: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PAGE_INVALID_TYPE" }],
+			contentType: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_CONTENTTYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_//.-]*$", modifiers:"gi"}}, error:"ERROR_CONTENTTYPE_BAD_FORMAT"}]
 	};
 
 	$('#wbPageEditForm').wbObjectManager( { fieldsPrefix:'wbe',
@@ -19,6 +21,13 @@ $().ready( function () {
 									  fieldsDefaults: { isTemplateSource: 0 },
 									  validationRules: wbPageValidations
 									 });
+
+	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
+	ZeroClipboard.setDefaults( { moviePath: swfzc } );
+	var zcButtons = $.find('.btn-clipboard');
+	$.each (zcButtons, function (index, elem) {
+		var zc = new ZeroClipboard(elem);
+	});
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {

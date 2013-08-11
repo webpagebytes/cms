@@ -8,6 +8,7 @@
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
 <script src="./app-js/wbpagemoduleedit.js" type="text/javascript"></script>
 
@@ -34,22 +35,35 @@
 		<li id="wbPageModuleSummary" > <span id="wbsummaryname"></span> (last modified <span id="wbsummarylastModified"></span>) </li>
 	</ul>
 	<div class="row-fluid">
-		<form class="form-inline" id="wbPageModuleEditForm">
-			<div class="errageneral"></div>
+		<form class="form-horizontal" id="wbPageModuleEditForm">
+			<div class="erregeneral"></div>
 			<input id="wbekey" type="hidden">
-			<input id="wbeexternalKey" type="hidden">
-			<input id="wbename" type="hidden">
 				<div class="well">
 					<div class="marginv control-group">
-						<label for="name">Web page module name</label>
-						<input class="input-xlarge" type="text" name="name" id="wbename">
-						<span id="errename" class="help-inline"></span>
-					</div>					
-
-					<div class="marginv control-group">
-						<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
-						<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
+						<label for="name" class="control-label">Module name</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="name" id="wbename">
+							<span id="errename" class="help-inline"></span>
+						</div>
 					</div>
+					<div class="marginv control-group">
+						<label for="externalKey" class="control-label">External Key</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+							<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+							<span id="erreexternmalKey" class="help-inline"></span>
+						</div>
+					</div>
+					
+					<div class="marginv control-group">
+						<label for="isTemplateSource" class="control-label">Source interpretation</label>
+						<div class="controls">
+							<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
+							<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
+							<span id="erreisTemplateSource" class="help-inline"></span>
+						</div>
+					</div>
+
 					<textarea rows="20" id="wbehtmlSource" class="input-block-level"> </textarea>					
 					<div class="marginv">
 						<button class="btn btn-primary wbPageModuleEditSaveBtnClass" type="submit">Save</button>

@@ -36,18 +36,42 @@
 	<div class="row-fluid">
 		<div class="span12">
 		<div class="row-fluid">	
-			<div class="span6"> 
+			<div class="span7"> 
 				<div class="wbPageView well" id="wbPageView">
-					<div id="wbPageViewisTemplateSource" class="marginv">
+					<form class="form-horizontal">
+					<div class="marginv control-group">
+						<label for="name" class="control-label">Web page name</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="name" id="wbPageViewname" readonly>
+						</div>
 					</div>
-					<div class="marginv">Content type: <span id="wbPageViewcontentType"> </span> </div>
-					<div class="marginv">External Key <input id="wbPageViewexternalKey" type="text" readonly="" class="wb-input-xlarge"> <input data-clipboard-target="wbPageViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard"> </div>
+					<div class="marginv control-group">
+						<label for="externalKey" class="control-label">External Key</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageViewexternalKey" readonly>
+							<input data-clipboard-target="wbPageViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+							
+						</div>
+					</div>
+					<div class="marginv control-group">
+						<label for="contentType" class="control-label">Content Type</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="contentType" id="wbPageViewcontentType" readonly>
+						</div>
+					</div>		
+					<div class="marginv control-group">
+						<label for="name" class="control-label">Source interpretation</label>
+						<div class="controls">
+							<div id="wbPageViewisTemplateSource" class="marginv"> </div>
+						</div>
+					</div>
 					
 					<textarea rows="20" cols="100" id="wbPageViewhtmlSource" class="input-block-level" readonly> </textarea>					
 					<a href="#" class="wbPageViewEditLink"> <i class="icon-pencil"></i> Edit </a>
+					</form>
 				</div>
 			</div>
-			<div class="span6"> 
+			<div class="span5"> 
 				<div class="well">
 					<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Add New Parameter </button> <br></br>
 					<div id="wbPageParametersTable"></div>

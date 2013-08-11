@@ -8,6 +8,7 @@
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
 <script src="./app-js/wbmoduleview.js" type="text/javascript"></script>
 
@@ -35,10 +36,32 @@
     </ul>
     <div class="row-fluid">
                 <div class="wbPageModuleView well" id="wbPageModuleView">
-                    <div id="wbPageModuleViewisTemplateSource" class="marginv">
-                    </div>
-                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
-                    <a href="#" class="wbPageModuleViewEditLink"> <i class="icon-pencil"></i> Edit </a>
+                
+					<form class="form-horizontal">
+						<div class="marginv control-group">
+							<label for="name" class="control-label">Module name</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="name" id="wbPageModuleViewname" readonly>
+							</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="externalKey" class="control-label">External Key</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageModuleViewexternalKey" readonly>
+								<input data-clipboard-target="wbPageModuleViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">		
+							</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="name" class="control-label">Source interpretation</label>
+							<div class="controls">
+								<div id="wbPageModuleViewisTemplateSource" class="marginv"> </div>
+							</div>
+						</div>
+	
+	                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
+	                    <a href="#" class="wbPageModuleViewEditLink"> <i class="icon-pencil"></i> Edit </a>
+					</form>
+					
                 </div>
     </div>
 

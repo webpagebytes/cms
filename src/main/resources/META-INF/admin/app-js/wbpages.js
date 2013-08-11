@@ -28,8 +28,8 @@ $().ready( function () {
 									 errorGeneral:"errdgeneral",
 									 errorLabelsPrefix: 'errd',
 									 errorLabelClassName: 'errorvalidationlabel',
-									} );							
-
+									} );	
+	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a>' + 

@@ -8,6 +8,7 @@
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
 <script src="./app-js/wbpageedit.js" type="text/javascript"></script>
 
@@ -34,27 +35,42 @@
 		<li id="wbPageSummary" > <span id="wbsummaryname"></span> (last modified <span id="wbsummarylastModified"></span>) </li>
 	</ul>
 	<div class="row-fluid">
-		<form class="form-inline" id="wbPageEditForm">
-			<div class="errageneral"></div>
+		<form class="form-horizontal" id="wbPageEditForm">
+			<div class="erregeneral"></div>
 			<fieldset>
 				<input id="wbekey" type="hidden">
-				<input id="wbeexternalKey" type="hidden">
 				<div class="well">
 					<div class="marginv control-group">
-						<label for="name">Web page name</label>
-						<input class="input-xlarge" type="text" name="name" id="wbename">
-						<span id="errename" class="help-inline"></span>
+						<label for="name" class="control-label">Web page name</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="name" id="wbename">
+							<span id="errename" class="help-inline"></span>
+						</div>
 					</div>
 					<div class="marginv control-group">
-						<label for="contentType">Content type</label>
-						<input class="input-xlarge" type="text" name="contentType" id="wbecontentType">
-						<span id="errecontentType" class="help-inline"></span>
+						<label for="externalKey" class="control-label">External Key</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+							<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+							<span id="erreexternmalKey" class="help-inline"></span>
+						</div>
+					</div>
+					
+					<div class="marginv control-group">
+						<label for="contentType" class="control-label">Content type</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="contentType" id="wbecontentType">
+							<span id="errecontentType" class="help-inline"></span>
+						</div>
 					</div>					
 										
 					<div class="marginv control-group">
-						<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
-						<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
-						<span id="erreisTemplateSource" class="help-inline"></span>
+						<label for="isTemplateSource" class="control-label">Source interpretation</label>
+						<div class="controls">
+							<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
+							<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source
+							<span id="erreisTemplateSource" class="help-inline"></span>
+						</div>
 					</div>
 					<div class="control-group">
 						<textarea rows="20" id="wbehtmlSource" class="input-block-level"> </textarea>	

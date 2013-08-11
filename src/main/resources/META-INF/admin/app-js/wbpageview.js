@@ -53,7 +53,7 @@ $().ready( function () {
 	}
 				
 	$('#wbPageParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
-									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
+								         {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 						 paginationBaseClass: "pagination"
@@ -82,6 +82,9 @@ $().ready( function () {
 			}
 			var innerHtml = '<input class="input-xlarge" type="radio" {0} disabled="disabled"> Plain html source <input class="input-xlarge" type="radio" {1} disabled="disabled"> Template html source'.format(plainValue, templateValue); 			
 			return innerHtml;
+		}
+		if (fieldId == 'htmlSource') {
+			return record[fieldId]; // the htmlSource is displayed in a textarea element
 		}
 		return escapehtml(record[fieldId]);
 	}
