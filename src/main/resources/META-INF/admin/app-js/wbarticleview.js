@@ -2,7 +2,14 @@ var errorsGeneral = {
 };
 
 $().ready( function () {
-	
+
+	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
+	ZeroClipboard.setDefaults( { moviePath: swfzc } );
+	var zcButtons = $.find('.btn-clipboard');
+	$.each (zcButtons, function (index, elem) {
+		var zc = new ZeroClipboard(elem);
+	});
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
 			var date = new Date();

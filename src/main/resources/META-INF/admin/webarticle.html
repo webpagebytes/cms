@@ -8,6 +8,7 @@
 <script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="./js/json2.js" type="text/javascript"></script>
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
 <script type="text/javascript" src="./tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
@@ -17,7 +18,7 @@
         editor_selector : "mceEditor",
 		theme : "advanced",
 		plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist",
-
+		content_css: "css/content.css",
 		// Theme options
 		theme_advanced_buttons1 : "",
 		theme_advanced_buttons2 : "",
@@ -69,8 +70,24 @@
     </ul>
     <div class="row-fluid">
 		<div class="wbArticleView well" id="wbArticleView">
+		<form class="form-horizontal">
+			<div class="marginv control-group">
+				<label for="name" class="control-label wblabel-left">Article title</label>
+				<div class="controls">
+					<input class="wb-input-xlarge" type="text" name="name" id="wbArticleViewtitle" readonly>
+				</div>
+			</div>
+			<div class="marginv control-group">
+				<label for="externalKey" class="control-label wblabel-left">External Key</label>
+				<div class="controls">
+					<input class="wb-input-xlarge" type="text" name="externalKey" id="wbArticleViewexternalKey" readonly>
+					<input data-clipboard-target="wbArticleViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">		
+				</div>
+			</div>
+			
 			<textarea rows="20" cols="100" id="wbArticleViewhtmlSource" class="mceEditor input-block-level" readonly> </textarea>                    
 			<a href="#" class="wbArticleViewEditLink"> <i class="icon-pencil"></i> Edit </a>
+		</form>
 		</div>        
     </div>
    

@@ -34,20 +34,20 @@
 		<li> <a href="./webpages.html"> Web Modules </a> <span class="divider">/</span> </li>
 		<li id="wbPageModuleSummary" > <span id="wbsummaryname"></span> (last modified <span id="wbsummarylastModified"></span>) </li>
 	</ul>
-	<div class="row-fluid">
+	<div class="row-fluid" spellcheck="false">
 		<form class="form-horizontal" id="wbPageModuleEditForm">
 			<div class="erregeneral"></div>
 			<input id="wbekey" type="hidden">
 				<div class="well">
 					<div class="marginv control-group">
-						<label for="name" class="control-label">Module name</label>
+						<label for="name" class="control-label wblabel-left">Module name</label>
 						<div class="controls">
 							<input class="wb-input-xlarge" type="text" name="name" id="wbename">
 							<span id="errename" class="help-inline"></span>
 						</div>
 					</div>
 					<div class="marginv control-group">
-						<label for="externalKey" class="control-label">External Key</label>
+						<label for="externalKey" class="control-label wblabel-left">External Key</label>
 						<div class="controls">
 							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
 							<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
@@ -56,7 +56,7 @@
 					</div>
 					
 					<div class="marginv control-group">
-						<label for="isTemplateSource" class="control-label">Source interpretation</label>
+						<label for="isTemplateSource" class="control-label wblabel-left">Source interpretation</label>
 						<div class="controls">
 							<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain html source
 							<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template html source

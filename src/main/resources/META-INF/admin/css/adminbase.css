@@ -145,3 +145,12 @@ display: none;
 width: 350px;
 margin-bottom: 0px !important;
 }
+.wblabel-left
+{
+text-align:left !important;
+width: 140px !important;
+}
+.form-horizontal .marginv > .controls
+{
+margin-left: 150px;	
+}

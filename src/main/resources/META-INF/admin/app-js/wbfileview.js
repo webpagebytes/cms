@@ -28,6 +28,12 @@ $().ready( function () {
 								  errorInputClassName: 'errorvalidationinput',
 								  validationRules: wbFileValidations
 								});
+	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
+	ZeroClipboard.setDefaults( { moviePath: swfzc } );
+	var zcButtons = $.find('.btn-clipboard');
+	$.each (zcButtons, function (index, elem) {
+		var zc = new ZeroClipboard(elem);
+	});
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'shortType') {
@@ -65,7 +71,7 @@ $().ready( function () {
 	
 	var fSuccessGetFile = function (data) {
 		$('#wbFileView').wbDisplayObject().display(data);
-		$('.downloadResource').html("<a href='./wbdownload/{0}'>Download</a>".format(encodeURIComponent(data['key'])));
+		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		
 		switch (data['shortType']) {
 			case "image":
