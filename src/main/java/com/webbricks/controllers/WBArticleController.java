@@ -38,6 +38,7 @@ public class WBArticleController extends WBController implements AdminDataStorag
 		validator = new WBArticleValidator();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
 		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();
+		adminStorage.addStorageListener(this);
 	}
 	
 	public void notify (WBArticle t, AdminDataStorageOperation o)

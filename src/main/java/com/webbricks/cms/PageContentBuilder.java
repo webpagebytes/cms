@@ -232,7 +232,7 @@ public class PageContentBuilder {
 			WBProject project) throws WBException
 	{
 
-		if (wbWebPage.getIsTemplateSource() == 0)
+		if ((wbWebPage.getIsTemplateSource() == null) || (wbWebPage.getIsTemplateSource() == 0))
 		{
 			return wbWebPage.getHtmlSource();
 		}
