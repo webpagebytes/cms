@@ -38,8 +38,7 @@ $().ready( function () {
 				   + '| <a href="#" class="wbDuplicatePageModuleClass" id="wbDuplicatePageModule_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a> ';
 		} else
 		if (fieldId=="lastModified") {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 	}
 				

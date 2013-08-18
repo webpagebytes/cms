@@ -40,12 +40,11 @@ $().ready( function () {
 			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 	}
 				
-	$('#wbGlobalParamsTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External ID", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
+	$('#wbGlobalParamsTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
 									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",

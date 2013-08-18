@@ -30,8 +30,7 @@ $().ready( function () {
 			return '<a href="./webfile.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm");
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else
 		if (fieldId=="size") {
 			var size = parseInt(record['size']);

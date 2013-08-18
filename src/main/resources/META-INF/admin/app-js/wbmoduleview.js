@@ -11,26 +11,9 @@ $().ready( function () {
 	});
 
 
-	var tableDisplayHandler = function (fieldId, record) {
-		if (fieldId=="_operations") {
-			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + escapehtml(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + escapehtml(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
-		} else
-		if (fieldId=="lastModified") {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
-		}
-	}
-				
-	$('#wbPageModuleParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
-									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
-						 keyName: "key",
-						 tableBaseClass: "table table-stripped table-bordered table-color-header",
-						 paginationBaseClass: "pagination"
-						});
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
 			var innerHtml = '<a href="./webpagemodule.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['name']) + '</a>';

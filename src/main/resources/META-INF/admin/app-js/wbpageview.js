@@ -60,8 +60,7 @@ $().ready( function () {
 						});
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
 			var innerHtml = '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['name']) + '</a>';

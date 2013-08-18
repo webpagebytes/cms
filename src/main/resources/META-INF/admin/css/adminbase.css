@@ -154,3 +154,31 @@ width: 140px !important;
 {
 margin-left: 150px;	
 }
+
+.wbwell
+{
+padding: 10px 19px;
+}
+
+.wbbreadcrumb
+{
+float: left;
+list-style-type:none;
+margin: 0px;
+}
+
+.wbbreadcrumb li
+{
+float:left;
+padding: 0px;
+}
+
+.wbbreadcrumb .wbdivider
+{
+padding: 0px 5px;	
+}
+
+.wblastmodified
+{
+float: right;
+}

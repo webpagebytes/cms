@@ -71,9 +71,7 @@ $().ready( function () {
 					+ '| <a href="#" class="wbduplicateuri" id="wburidup_' + record['key']+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId=="lastModified") {
-			var date = new Date();
-			date.setTime(record[fieldId]);
-			return "{0}/{1}/{2} {3}:{4}:{5}".format(date.getDate(), date.getMonth()+1, date.getFullYear(), date.getHours(), date.getMinutes(), date.getSeconds());
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 	}
 	

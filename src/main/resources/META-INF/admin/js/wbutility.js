@@ -44,17 +44,20 @@ function escapehtml(html) {
 }
 
 Date.prototype.toFormatString = function (time, format) {
+	var val = new Date();
 	if (typeof time == 'string') {
-		this.setTime((new Number(time)).valueOf());
+		val.setTime((new Number(time)).valueOf());
 	} else {
-		this.setTime(time);
+		val.setTime(time);
 	};
 	var now = new Date();
 	if (format == undefined) 
 		format = "dd/mm/yyyy hh:mm:ss";
 	else
 		format =  format.toLowerCase();
-	var d = this.getDate(), mo = this.getMonth()+1, yF = this.getFullYear(), h = this.getHours(), mi = this.getMinutes(), s = this.getSeconds();
+	var d = val.getDate(), mo = val.getMonth()+1, yF = val.getFullYear(), h = val.getHours(), mi = val.getMinutes(), s = val.getSeconds();
+	var mo_ = mo;
+	var d_ = d;
 	d = ("0" + d); d=d.substr(d.length-2);
 	mo = ("0" + mo); mo=mo.substr(mo.length-2);
 	h = ("0" + h); h=h.substr(h.length-2);
@@ -62,7 +65,7 @@ Date.prototype.toFormatString = function (time, format) {
 	s = ("0" + s); s=s.substr(s.length-2);
 	
 	if (format == "today|dd/mm/yyyy hh:mm") {
-		if (now.getFullYear()==yF && ((now.getMonth()+1)==mo) && now.getDate()==d) {
+		if (now.getFullYear()==yF && ((now.getMonth()+1)==mo_) && now.getDate()==d_) {
 			// it's the same date as today
 			return 'Today {0}:{1}'.format (h,mi);
 		} else
@@ -79,6 +82,7 @@ Date.prototype.toFormatString = function (time, format) {
 	}
 	return "";
 }
+Date.toFormatString = Date.prototype.toFormatString;
 
 String.prototype.escapehtml = function (){
 	var html = this;

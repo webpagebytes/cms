@@ -32,10 +32,18 @@
 	</div>
 
 	<div id="wbFileView">
-		<ul class="breadcrumb" >
-			<li> <a id="wbfileshortType" href="./webfiles.html"> Web Files </a> <span class="divider">/</span> </li>
-			<li > <span id="wbfilename"></span> (last modified <span id="wbfilelastModified"></span>) </li>
-		</ul>	
+		<div class="row-fluid">
+			<div class="well wbwell">
+		    <ul class=" wbbreadcrumb" >
+		        <li> <a id="wbfileshortType" href="./webfiles.html"> Files </a> <span class="wbdivider">/</span> </li>
+		        <li> <span id="wbfilename"></span> </li>
+		    </ul>
+		    <div class="wblastmodified">
+		    	 <span class="badge badge-info" id="wbfilelastModified"></span>
+		    </div>
+		    </div>
+    	</div>
+		
 		<div class="wbImageContentType wbhidden">
 			<form class="form-inline">
 				<div class="well marginv">

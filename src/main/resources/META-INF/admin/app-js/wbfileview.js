@@ -58,8 +58,7 @@ $().ready( function () {
 			return "Files";
 		} else
 		if (fieldId == 'lastModified') {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 		return escapehtml(record[fieldId]);
 	}

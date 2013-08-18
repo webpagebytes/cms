@@ -68,10 +68,18 @@
 		</div>
 	</div>
 
-	<ul class="breadcrumb" >
-		<li> <a href="./webarticles.html"> Articles </a> <span class="divider">/</span> </li>
-		<li id="wbArticleSummary" > <span id="wbsummarytitle"></span> (last modified <span id="wbsummarylastModified"></span>) </li>
-	</ul>
+
+	<div id="wbArticleSummary" class="row-fluid">
+		<div class="well wbwell">
+	    <ul class=" wbbreadcrumb" >
+	        <li> <a href="./webarticles.html"> Articles </a> <span class="wbdivider">/</span> </li>
+	        <li> <span id="wbsummarytitle"></span> </li>
+	    </ul>
+	    <div class="wblastmodified">
+	    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
+	    </div>
+	    </div>
+    </div>
 	<div class="row-fluid">
 		<div class="well">	
 		<form class="form-horizontal" id="wbArticleEditForm">

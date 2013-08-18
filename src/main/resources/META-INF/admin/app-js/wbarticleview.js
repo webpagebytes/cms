@@ -12,18 +12,25 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'title') {
 			var innerHtml = '<a href="./webarticle.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['title']) + '</a>';
 			return innerHtml;
 		}
-		return record[fieldId];
+		return escapehtml(record[fieldId]);
 	}
 	
+	var viewHandler = function (fieldId, record) {
+		if (fieldId == 'htmlSource') {
+			return record[fieldId];
+		}
+		
+		return record[fieldId];		
+	}	
+	
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
-	$('#wbArticleView').wbDisplayObject( { fieldsPrefix: 'wbArticleView' } );
+	$('#wbArticleView').wbDisplayObject( { fieldsPrefix: 'wbArticleView', customHandler: viewHandler } );
 	
 	var fSuccessGetArticle = function (data) {
 		$('#wbArticleSummary').wbDisplayObject().display(data);

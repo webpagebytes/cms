@@ -37,8 +37,7 @@ $().ready( function () {
 				 '| <a href="#" class="wbDuplicatePageClass" id="wbDuplicatePage_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId=="lastModified") {
-			var date = new Date();
-			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 	}
 				
