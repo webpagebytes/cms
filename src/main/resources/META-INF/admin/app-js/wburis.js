@@ -64,7 +64,14 @@ $().ready( function () {
 	$.each (zcButtons, function (index, elem) {
 		var zc = new ZeroClipboard(elem);
 	});
-
+	var wbhelpcontent = function(){
+		return "TBD"
+	}
+	$(document).on('click', '.wbhelpclose', function (evente) {
+		    $(".wbhelp-urls").popover('hide');
+		  });
+	$('.wbhelp-urls').popover({animation: false, html:true, content: wbhelpcontent , title: "About site urls <button class='close wbhelpclose' type='button'>&times;</button>"});
+	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="#" class="wbedituri" id="wburiedit_' +record['key']+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>' 

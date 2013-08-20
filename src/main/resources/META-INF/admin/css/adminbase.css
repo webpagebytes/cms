@@ -182,3 +182,13 @@ padding: 0px 5px;
 {
 float: right;
 }
+
+.wbhelp
+{
+margin-left: 20px;	
+}
+.wbhelpclose
+{
+margin: 0px 4px;
+float:right;
+}
