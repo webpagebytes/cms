@@ -33,7 +33,7 @@
 	<div class="wbcolorcontent">
 		<div class="wbinnercontent">
 			<div class="marginv">
-				<button class="btn btn-primary" id="wbAddPageBtn"><i class="icon-plus icon-white"> </i> Add Web Page </button>
+				<button class="btn btn-primary" id="wbAddPageBtn"><i class="icon-plus icon-white"> </i> New site page </button>
 			</div>
 			<div id="wbPagesTable"></div>
 		</div>
@@ -42,7 +42,7 @@
 	<div class="modal hide" id="wbAddPageModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Create new web page</h3>
+			<h3> Create new site page</h3>
 		</div>
 		<form class="form-inline" id="wbAddPageForm">		
 		<div class="modal-body">
@@ -54,7 +54,7 @@
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="wbaname">Web page name (internal use only)</label>
+					<label class="control-label" for="wbaname">Site page description </label>
 					<div class="controls">
 						<input id="wbaname" name="wbaname" class="input-xlarge" type="text">
 						<input id="wbaisTemplateSource" class="input-xlarge" type="hidden" value="0">
@@ -68,7 +68,7 @@
 		
 		</div>
 		<div class="modal-footer">
-				<button class="btn btn-primary wbSaveAddPageBtnClass" type="submit">Save changes</button>
+				<button class="btn btn-primary wbSaveAddPageBtnClass" type="submit">Create</button>
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>
@@ -77,7 +77,7 @@
 	<div class="modal hide" id="wbDuplicatePageModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Duplicate web page</h3>
+			<h3> Duplicate site page</h3>
 		</div>
 		<form class="form-inline" id="wbDuplicatePageForm">		
 		<div class="modal-body">
@@ -89,7 +89,7 @@
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="wbcname">Duplicate web page name (internal use only)</label>
+					<label class="control-label" for="wbcname">Site page name</label>
 					<div class="controls">
 						<input id="wbcname" name="wbcname" class="input-xlarge" type="text">
 						<input id="wbcisTemplateSource" class="input-xlarge" type="hidden" value="0">
@@ -99,13 +99,12 @@
 						
 					</div>										
 				</div>
-								
-               				
+								             				
 			</fieldset>
 		
 		</div>
 		<div class="modal-footer">
-				<button class="btn btn-primary wbSaveDuplicatePageBtnClass" type="submit">Save changes</button>
+				<button class="btn btn-primary wbSaveDuplicatePageBtnClass" type="submit">Duplicate</button>
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>
@@ -114,7 +113,7 @@
 	<div class="modal hide" id="wbDeletePageModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3> Delete Web Page? </h3>
+			<h3> Delete site page? </h3>
 		</div>
 		<form class="form-inline" id="wbDeletePageForm">
 		<div class="modal-body">
@@ -126,7 +125,7 @@
 					</div>										
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="name">Web page name </label>
+					<label class="control-label" for="name">Site page name </label>
 					<div class="controls">
 						<input id="wbdname" name="name" class="input-xlarge" type="text" readonly>
 					</div>

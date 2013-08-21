@@ -1,14 +1,14 @@
 var errorsGeneral = {
-	ERROR_PAGENAME_LENGTH:'Web page name length must be between 1 and 250 characters',
+	ERROR_PAGENAME_LENGTH:'Site page description length must be between 1 and 250 characters',
 	ERROR_PAGE_INVALID_TYPE: 'Invalid operation type',
-	ERROR_PAGE_BAD_FORMAT: 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)',
+	ERROR_PAGE_BAD_FORMAT: 'Invalid format for page description: allowed characters are are numbers, letters(a-z) and , + - .',
 	ERROR_CONTENTTYPE_LENGTH: 'Content type length must be between 1 and 250 characters',
 	ERROR_CONTENTTYPE_BAD_FORMAT: 'Invalid format for content type'
 };
 
 $().ready( function () {
 	var wbPageValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9 a-zA-Z_.+,-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
 			isTemplateSource: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PAGE_INVALID_TYPE" }],
 			contentType: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_CONTENTTYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_//.-]*$", modifiers:"gi"}}, error:"ERROR_CONTENTTYPE_BAD_FORMAT"}]
 	};

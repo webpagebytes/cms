@@ -1,11 +1,11 @@
 var errorsGeneral = {
-	'ERROR_PAGENAME_LENGTH': 'Web page name length must be between 1 and 250 characters ',
-	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _,. (, is not an allowed character)'
+	'ERROR_PAGENAME_LENGTH': 'Site page description length must be between 1 and 250 characters ',
+	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for site page description: allowed characters are numbers, letters(a-z) and , + - .'
 };
 
 $().ready( function () {
 	var wbPageValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}]
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9 a-zA-Z_,+.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}]
 	};
 	$('#wbAddPageForm').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',
@@ -41,7 +41,7 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbPagesTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, 
+	$('#wbPagesTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Description", fieldId: "name"}, 
 									{display:"Last modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",

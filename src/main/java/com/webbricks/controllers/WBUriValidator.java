@@ -49,15 +49,6 @@ public class WBUriValidator {
 		{
 			errors.put("httpOperation", WBErrors.ERROR_INVALID_HTTP_OPERATION);
 		}
-		if (wbUri.getPageName() == null || wbUri.getPageName().length() == 0 || wbUri.getPageName().length()> this.MAX_PAGENAME_LENGHT)
-		{
-			errors.put("pageName", WBErrors.ERROR_PAGENAME_LENGTH);
-		} else
-		if (!wbUri.getPageName().matches("[0-9a-zA-Z_.-]*")) 
-		{
-			errors.put("pageName", WBErrors.ERROR_PAGE_BAD_FORMAT);
-		}
-
 		if (wbUri.getControllerClass()!= null && !wbUri.getControllerClass().matches("[0-9a-zA-Z_.-]*"))
 		{
 			errors.put("controllerClass", WBErrors.ERROR_CONTROLLER_BAD_FORMAT);
@@ -112,14 +103,6 @@ public class WBUriValidator {
 		} else if (! httpOperations.contains( wbUri.getHttpOperation().toUpperCase()))
 		{
 			errors.put("httpOperation", WBErrors.ERROR_INVALID_HTTP_OPERATION);
-		}
-		if (wbUri.getPageName() == null || wbUri.getPageName().length() == 0 || wbUri.getPageName().length()> this.MAX_PAGENAME_LENGHT)
-		{
-			errors.put("pageName", WBErrors.ERROR_PAGENAME_LENGTH);
-		}else
-		if (!wbUri.getPageName().matches("[0-9a-zA-Z_.-]*")) 
-		{
-			errors.put("pageName", WBErrors.ERROR_PAGE_BAD_FORMAT);
 		}
 		if (wbUri.getControllerClass()!= null && !wbUri.getControllerClass().matches("[0-9a-zA-Z_.-]*"))
 		{

@@ -21,7 +21,7 @@ public class WBPageValidator {
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
 		} else
 		{
-			if (! webPage.getName().matches("[0-9a-zA-Z_.-]*"))
+			if (! webPage.getName().matches("[0-9 a-zA-Z_,+.-]*"))
 			{
 				errors.put("name", WBErrors.ERROR_PAGE_BAD_FORMAT);
 			}
@@ -55,7 +55,7 @@ public class WBPageValidator {
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
 		} else
 		{
-			if (! webPage.getName().matches("[0-9a-zA-Z_.-]*"))
+			if (! webPage.getName().matches("[0-9 a-zA-Z_,+.-]*"))
 			{
 				errors.put("name", WBErrors.ERROR_PAGE_BAD_FORMAT);
 			}

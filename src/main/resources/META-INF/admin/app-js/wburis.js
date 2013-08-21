@@ -1,13 +1,11 @@
 
 var errorsGeneral = {
-	'ERROR_URI_START_CHAR': "Web relative url must to start with /",
-	'ERROR_URI_LENGTH': 'Web relative url length must be between 1 and 250 characters',
-	'ERROR_PAGENAME_LENGTH': 'Web page name length must be between 1 and 250 characters ',
+	'ERROR_URI_START_CHAR': "Site url must to start with /",
+	'ERROR_URI_LENGTH': 'Site url length must be between 1 and 250 characters',
 	'ERROR_CONTROLLER_LENGTH': 'Controller class length must be maximum 250 characters',
 	'ERROR_INVALID_HTTP_OPERATION': 'Operation not valid, allowed values: GET, PUT, DELETE, POST',
 	'ERROR_URI_BAD_FORMAT':'Invalid url format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
 	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller class: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)',
-	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for page name: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)',
 	'ERROR_BAD_RESOURCE_TYPE': 'Invaid resource type',
 	'ERROR_NO_RESOURCE_EXTERNAL_KEY': 'No resource External Key',
 	'ERROR_BAD_RESOURCE_EXTERNAL_KEY': 'Invalid resource External Key',
@@ -19,7 +17,6 @@ var errorsGeneral = {
 $().ready( function () {
 	var wbUriValidationRules = {
 								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_URI_BAD_FORMAT"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
-								'pageName': [ { rule: { rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}],
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
 								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
 								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
@@ -70,7 +67,7 @@ $().ready( function () {
 	$(document).on('click', '.wbhelpclose', function (evente) {
 		    $(".wbhelp-urls").popover('hide');
 		  });
-	$('.wbhelp-urls').popover({animation: false, html:true, content: wbhelpcontent , title: "About site urls <button class='close wbhelpclose' type='button'>&times;</button>"});
+	$('.wbhelp-urls').popover({animation: false, html:true, placement: 'right', content: wbhelpcontent , title: "About site urls <button class='close wbhelpclose' type='button'>&times;</button>"});
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
@@ -82,9 +79,9 @@ $().ready( function () {
 		}
 	}
 	
-	$('#wbtable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "uri", fieldId: "uri"}, {display: "Page Name", fieldId: "pageName"}, {display: "Live", fieldId: "enabled"}, 
-	                                    {display:"Operations", fieldId:"httpOperation"}, 
-										{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: displayHandler}, {display: "Edit/delete", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	$('#wbtable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Site url", fieldId: "uri"}, {display: "Live", fieldId: "enabled"}, 
+	                                    {display:"Method", fieldId:"httpOperation"}, 
+										{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 							 keyName: "key",
 							 tableBaseClass: "table table-condensed table-color-header",
 							 paginationBaseClass: "pagination"
