@@ -86,7 +86,13 @@ public class AdminServlet extends HttpServlet {
 			
 			if (null != strTemp && strTemp.length()>0)
 			{
-				adminURIPart = strTemp;
+				if (strTemp.endsWith("/"))
+				{
+					adminURIPart = strTemp.substring(0, strTemp.length()-1);
+				} else
+				{
+					adminURIPart = strTemp;
+				}
 			} else
 			{
 				throw new ServletException("There is no admin-prefix-uri parameter for the admin servlet configuration.");

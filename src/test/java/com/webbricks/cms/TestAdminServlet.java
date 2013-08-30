@@ -125,6 +125,45 @@ public class TestAdminServlet {
 	}
 
 	@Test
+	public void testInit_ok_adminPath_endswithshash()
+	{
+		try
+		{
+			
+			RequestProcessorFactory testProcessor = EasyMock.createMock(RequestProcessorFactory.class);
+			
+			Capture<String> adminFolderR = new Capture<String>();
+			Capture<String> adminFolderA = new Capture<String>();
+			Capture<String> adminConfigR = new Capture<String>();
+			Capture<String> adminConfigA = new Capture<String>();
+			Capture<String> adminUriPart = new Capture<String>();
+			
+			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
+			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
+			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin/");
+			adminServlet.setServletUtility(servletUtility);
+			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
+			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
+			ajaxProcessor.setAdminUriPart(EasyMock.capture(adminUriPart));
+			adminServlet.setProcessorFactory(testProcessor);
+			EasyMock.replay(testProcessor, resourceProcessor, ajaxProcessor, servletUtility);
+			
+			adminServlet.init();
+			EasyMock.verify(testProcessor, resourceProcessor, ajaxProcessor, servletUtility);
+			assertTrue(adminServlet.getAdminURIPart().compareTo("/admin") == 0);
+			assertTrue(adminFolderR.getValue().compareTo(AdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
+			assertTrue(adminFolderA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_FOLDER) == 0);
+			assertTrue(adminConfigA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_AJAX) == 0);
+			assertTrue(adminConfigR.getValue().compareTo(AdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
+			
+		}
+		catch (Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+
+	@Test
 	public void testInit_ok()
 	{
 		try
