@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
+<script src="./js/wbutility.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Site settings </a> </li>
+			<li class="active"> <a href="./weburis.html" > Site urls </a> </li>
+			<li > <a href="./webpages.html" > Site pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Page modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li > <a href="./webmessages.html"> Messages </a> </li>
+			<li > <a href="./webfiles.html"> Files </a> </li>
+			<li > <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+	
+	<div class="wbcolorcontent">
+		<div class="wbinnercontent">
+		<form class="form-horizontal" id="wburiduplicate">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="uri">Site url</label>
+					<div class="controls">
+						<input id="wbcuri" name="uri" class="wb-input-xlarge" type="text">
+						<span id="errcuri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="enabled">Make the url live</label>
+					
+					<div class="controls">
+						<input id="wbcenabled" type="radio" name="enabled" value="1"> YES
+						<input type="radio" name="enabled" value="0"> NO
+						<span id="errcenabled" class="help-inline"></span>
+					</div>										
+				</div>
+			
+			    <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select name="controllerClass" id="wbchttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="errchttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+				<div class="control-group">
+					<label class="control-label" for="resourceType">Resource type</label>
+					
+					<div class="controls">
+						<input id="wbcresourceType" type="radio" name="resourceType" value="1"> Edit content
+						<input type="radio" name="resourceType" value="2"> Existing file
+						<span id="errcresourceType" class="help-inline"></span>
+					</div>										
+				</div>
+
+                <div class="control-group">
+                    <label class="control-label" for="wbcresourceExternalKey"> Resource External Key </label>
+                    <div class="controls">
+                        <input id="wbcresourceExternalKey" class="wb-input-xlarge" type="text"> 
+						<span id="errcresourceExternalKey" class="help-inline"></span>
+					</div>
+                </div>
+				
+				<div class="control-group">
+                    <div class="acordeon">
+                    	<div class="accordion-group">
+                    		<div class="accordion-heading">
+ 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        						Split the traffic
+      							</a>
+                    		</div>
+                    		<div id="collapseOne" class="accordion-body collapse in">
+      							<div class="accordion-inner">
+      								xyz
+      							</div>
+      						</div>
+                    	</div>
+                    </div>
+                     <div class="acordeon">
+                    	<div class="accordion-group">
+                    		<div class="accordion-heading">
+ 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        						Split the traffic
+      							</a>
+                    		</div>
+                    		<div id="collapseTwo" class="accordion-body collapse in">
+      							<div class="accordion-inner">
+      								xyz
+      							</div>
+      						</div>
+                    	</div>
+                    </div>
+                </div>
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriDuplicateSave" type="submit">Duplicate</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+
+		</div>
+	</div>
+	
+
+	<div class="modal hide" id="wbModalUriDuplicate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Duplicate site url</h3>
+		</div>
+		<form class="form-inline" id="wburiduplicate">
+		
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="uri">Site url</label>
+					<div class="controls">
+						<input id="wbcuri" name="uri" class="wb-input-xlarge" type="text">
+						<span id="errcuri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Make the url live <input id="wbcenabled" type="radio" name="enabled" value="1"> YES
+										  <input type="radio" name="enabled" value="0"> NO
+						<span id="errcenabled" class="help-inline"></span>
+					</div>										
+				</div>
+			
+			    <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select name="controllerClass" id="wbchttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="errchttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Resource type <input id="wbcresourceType" type="radio" name="resourceType" value="1"> Edit content
+										  <input type="radio" name="resourceType" value="2"> Existing file
+						<span id="errcresourceType" class="help-inline"></span>
+					</div>										
+				</div>
+
+                <div class="control-group">
+                    <label class="control-label" for="wbcresourceExternalKey"> Resource External Key </label>
+                    <div class="controls">
+                        <input id="wbcresourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wbcresourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+						<span id="errcresourceExternalKey" class="help-inline"></span>
+					</div>
+                </div>
+				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriDuplicateSave" type="submit">Duplicate</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+	
+	<div class="modal hide" id="wbModalUriUpdate">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Update site url </h3>
+		</div>
+		<form class="form-inline" id="wburiupdate">
+		
+		<div class="modal-body">
+			<input id="wbukey" type="hidden">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errugeneral" class="help-inline"></span>
+					</div>										
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="uri">Site url</label>
+					<div class="controls">
+						<input id="wbuuri" class="wb-input-xlarge" type="text">
+						<span id="erruuri" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="externalKey">External Key</label>
+					<div class="controls">
+						<input id="wbuexternalKey" class="wb-input-xlarge" type="text" readonly> <input data-clipboard-target="wbuexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+						<span id="erruexternalKey" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Make the url live <input id="wbuenabled" type="radio" name="enabled" value="1"> YES
+										  <input type="radio" name="enabled" value="0"> NO
+						<span id="erruenabled" class="help-inline"></span>
+					</div>										
+				</div>
+				
+                <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select id="wbuhttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="erruhttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+				<div class="control-group">
+					<div class="controls">
+						Resource type <input id="wburesourceType" type="radio" name="resourceType" value="1"> Edit content
+										  <input type="radio" name="resourceType" value="2"> Existing file
+						<span id="erruresourceType" class="help-inline"></span>
+					</div>										
+				</div>
+
+                <div class="control-group">
+                    <label class="control-label" for="wburesourceExternalKey"> Resource External Key </label>
+                    <div class="controls">
+                        <input id="wburesourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wburesourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+						<span id="erruresourceExternalKey" class="help-inline"></span>
+					</div>
+                </div>
+				
+			</fieldset>
+		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriUpdateSave" type="submit">Update</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbModalUriDelete">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Delete site url? </h3>
+		</div>
+
+		<form class="form-inline" id="wburidelete">
+		<div class="modal-body">
+			<fieldset>
+				<input id="wbdkey" type="hidden">
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="uri">Site url</label>
+					<div class="controls">
+						<input id="wbduri" class="wb-input-xlarge" type="text" readonly > 
+						<span id="errduri" class="help-inline"></span>
+					</div>										
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="uri">External key</label>
+					<div class="controls">
+						<input id="wbdexternalKey" class="wb-input-xlarge" type="text" readonly > 
+						<span id="errdexternalKey" class="help-inline"></span>
+					</div>										
+				</div>
+				
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary uriDeleteSave" type="submit">Delete</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+</body>
+</html>
