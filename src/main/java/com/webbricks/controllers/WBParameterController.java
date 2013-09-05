@@ -19,6 +19,7 @@ import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.datautility.GaeAdminDataStorage;
@@ -63,14 +64,15 @@ public class WBParameterController extends WBController implements AdminDataStor
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBParameter wbparameter = adminStorage.get(key, WBParameter.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(wbparameter, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
-			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbparameter));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	
@@ -78,24 +80,71 @@ public class WBParameterController extends WBController implements AdminDataStor
 	{
 		try
 		{
+			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
+			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
+
 			List<WBParameter> parameters = null;
 			String keyOwner = request.getParameter("ownerExternalKey");
-			if (keyOwner != null)
+			if (sortParamDir != null && sortParamProp != null)
 			{
-				parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
+				if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+
+					if (keyOwner != null)
+					{
+						parameters = adminStorage.queryWithSort(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.ASCENDING);
+					} else
+					{
+						parameters = adminStorage.getAllRecords(WBParameter.class, sortParamProp, AdminSortOperator.ASCENDING);
+					}
+					
+				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+
+					if (keyOwner != null)
+					{
+						parameters = adminStorage.queryWithSort(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.DESCENDING);
+					} else
+					{
+						parameters = adminStorage.getAllRecords(WBParameter.class, sortParamProp, AdminSortOperator.DESCENDING);
+					}
+					
+				} else
+				{
+					if (keyOwner != null)
+					{
+						parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
+					} else
+					{
+						parameters = adminStorage.getAllRecords(WBParameter.class);
+					}					
+				}
 			} else
 			{
-				parameters = adminStorage.getAllRecords(WBParameter.class);
+				if (keyOwner != null)
+				{
+					parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
+				} else
+				{
+					parameters = adminStorage.getAllRecords(WBParameter.class);
+				}				
 			}
-			
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(parameters);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			List<WBParameter> filteredParams = filterPagination(request, parameters, additionalInfo);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(filteredParams));	
+			returnJson.put(ADDTIONAL_DATA, additionalInfo);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
@@ -116,14 +165,15 @@ public class WBParameterController extends WBController implements AdminDataStor
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBParameter newParameter = adminStorage.update(wbParameter);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newParameter, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
-	
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}				
 	}
 	
@@ -135,14 +185,16 @@ public class WBParameterController extends WBController implements AdminDataStor
 			adminStorage.delete(key, WBParameter.class);
 			WBParameter param = new WBParameter();
 			param.setKey(key);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(param, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	
@@ -162,14 +214,16 @@ public class WBParameterController extends WBController implements AdminDataStor
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbParameter.setExternalKey(adminStorage.getUniqueId());
 			WBParameter newParameter = adminStorage.add(wbParameter);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newParameter, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
 			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	
@@ -202,14 +256,16 @@ public class WBParameterController extends WBController implements AdminDataStor
 				WBParameter newParam = adminStorage.add(parameter);
 				newParams.add(newParam);
 			}
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(newParams);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(newParams));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 			
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 		
 	}

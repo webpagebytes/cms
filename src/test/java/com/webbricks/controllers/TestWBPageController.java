@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -37,6 +38,7 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
+@Ignore
 @RunWith(PowerMockRunner.class)
 public class TestWBPageController {
 

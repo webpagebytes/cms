@@ -61,7 +61,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModal').modal('hide');
-		$('#wbPagesTable').wbTable().insertRow(data);			
+		$('#wbPagesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageForm').wbObjectManager().setErrors(errors);
@@ -90,9 +90,9 @@ $().ready( function () {
 	};
 
 	var fSuccessDuplicate = function ( data ) {
-		$('#wbPagesTable').wbTable().insertRow(data);	
+		$('#wbPagesTable').wbTable().insertRow(data.data);	
 		var fromOwnerExternalKey = $('#wbcexternalKey').val();
-		var ownerExternalKey = data['externalKey'];
+		var ownerExternalKey = data.data['externalKey'];
 		$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbparameter?fromOwnerExternalKey={0}&ownerExternalKey={1}".format(encodeURIComponent(fromOwnerExternalKey), encodeURIComponent(ownerExternalKey)),
 															 httpOperation:"POST", 
 															 payloadData:"",
@@ -143,7 +143,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModal').modal('hide');	
-		$('#wbPagesTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbPagesTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageForm').wbObjectManager().setErrors(errors);
@@ -162,7 +162,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetPages = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbPagesTable').wbTable().insertRow(item);
 		});				
 

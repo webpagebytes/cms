@@ -60,7 +60,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		$('#wbGlobalParamsTable').wbTable().insertRow(data);			
+		$('#wbGlobalParamsTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -85,7 +85,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbTable().updateRowWithKey(data,data["key"]);
+		$('#wbGlobalParamsTable').wbTable().updateRowWithKey(data.data,data.data["key"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -110,7 +110,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbGlobalParamsTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -151,7 +151,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetParameters = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbGlobalParamsTable').wbTable().insertRow(item);
 		});				
 

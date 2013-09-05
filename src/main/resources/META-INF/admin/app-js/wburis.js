@@ -89,7 +89,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbModalUriAdd').modal('hide');
-		$('#wbtable').wbTable().insertRow(data);			
+		$('#wbtable').wbTable().insertRow(data.data);			
 	};
 	var fErrorAdd = function (errors, data) {
 		var om = $('#wburiadd').wbObjectManager();
@@ -98,7 +98,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbModalUriDuplicate').modal('hide');
-		$('#wbtable').wbTable().insertRow(data);			
+		$('#wbtable').wbTable().insertRow(data.data);			
 	};
 	var fErrorDuplicate = function (errors, data) {
 		$('#wburiduplicate').wbObjectManager().setErrors(errors);
@@ -106,7 +106,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbModalUriUpdate').modal('hide');		
-		$('#wbtable').wbTable().updateRowWithKey(data,data["key"]);
+		$('#wbtable').wbTable().updateRowWithKey(data.data,data.data["key"]);
 	};
 	var fErrorUpdate = function (errors, data) {
 		$('#wburiupdate').wbObjectManager().setErrors(errors);
@@ -114,7 +114,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbModalUriDelete').modal('hide');	
-		$('#wbtable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbtable').wbTable().deleteRowWithKey(data.data["key"]);
 	};
 	var fErrorDelete = function (errors, data) {
 		$('#wburidelete').wbObjectManager().setErrors(errors);
@@ -216,7 +216,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetUris = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbtable').wbTable().insertRow(item);
 		});				
 
@@ -225,7 +225,7 @@ $().ready( function () {
 	
 	}
 	
-	$('#wburiadd').wbCommunicationManager().ajax ( { url:"./wburi",
+	$('#wburiadd').wbCommunicationManager().ajax ( { url:"./wburi?sort_dir=asc&sort_field=uri",
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetUris,

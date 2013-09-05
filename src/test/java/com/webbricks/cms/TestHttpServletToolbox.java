@@ -109,7 +109,7 @@ public class TestHttpServletToolbox {
 			org.json.JSONObject json = new org.json.JSONObject(new String (captureContent.getValue()));
 			Integer captureLen = json.toString().length();
 			assertTrue (json.getString("status").compareTo("OK") == 0);
-			assertTrue (json.getString("data").compareTo(data) == 0);
+			assertTrue (json.getString("payload").compareTo(data) == 0);
 			assertTrue (json.getString("errors").compareTo("{}") == 0);
 			assertTrue (captureInt.getValue().compareTo(captureLen) == 0);
 		} catch (Exception e)
@@ -144,7 +144,7 @@ public class TestHttpServletToolbox {
 			org.json.JSONObject json = new org.json.JSONObject(new String(captureContent.getValue()));
 			Integer captureContentLen = json.toString().length();
 			assertTrue (json.getString("status").compareTo("FAIL") == 0);
-			assertTrue (json.getString("data").compareTo(data) == 0);
+			assertTrue (json.getString("payload").compareTo(data) == 0);
 			assertTrue (json.getString("errors").compareTo("{\"key\":\"value\"}") == 0);
 			assertTrue (captureInt.getValue().compareTo(captureContentLen) == 0);
 		} catch (Exception e)
@@ -180,7 +180,7 @@ public class TestHttpServletToolbox {
 			org.json.JSONObject json = new org.json.JSONObject(new String (captureContent.getValue()));
 			Integer captureContentLen = json.toString().length();
 			assertTrue (json.getString("status").compareTo("FAIL") == 0);
-			assertTrue (json.getString("data").compareTo("{}") == 0);
+			assertTrue (json.getString("payload").compareTo("{}") == 0);
 			assertTrue (json.getString("errors").compareTo("{\"reason\":\"WB_UNKNOWN_ERROR\"}") == 0);
 			assertTrue (captureInt.getValue().compareTo(captureContentLen) == 0);
 		} catch (Exception e)

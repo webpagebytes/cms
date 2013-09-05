@@ -9,10 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.template.WBFreeMarkerTemplateEngine;
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.datastore.Query.SortDirection;
+
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 
 public class GaeAdminDataStorage implements AdminDataStorage {
@@ -36,6 +39,30 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		this.gaeDataStoreUtility = gaeDataStoreUtility;
 	}
 
+	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator operator) throws WBIOException
+	{
+		log.log(Level.INFO, "GaeAdminDataStorage:getAllRecords " + dataClass.getName());
+		
+		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
+		Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(dataClass.getName());
+		if (operator == AdminSortOperator.ASCENDING)
+		{
+			query.addSort(property, SortDirection.ASCENDING);
+		} else if (operator == AdminSortOperator.DESCENDING)
+		{
+			query.addSort(property, SortDirection.DESCENDING);
+		} 
+		PreparedQuery preparedQuery = datastoreService.prepare(query);
+		List<Entity> fetchEntities = preparedQuery.asList(withLimit(GaeAdminDataStorage.MAX_FETCH_SIZE));		
+		List returnObjects = new ArrayList();
+		for(Entity entity: fetchEntities)
+		{
+			Object obj = gaeDataStoreUtility.objectFromEntity(entity, dataClass);
+			returnObjects.add(obj);
+		}		
+		return returnObjects;
+
+	}
 	public void delete(String recordid, Class dataClass)
 	{
 			DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
@@ -295,6 +322,74 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 			throw new WBIOException(e.getMessage(), e);
 		}
 		return result;	
+	}
+
+	public<T> List<T> queryWithSort(Class dataClass, String propertyName, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WBIOException
+	{
+		log.log(Level.INFO, "GaeAdminDataStorage:queryWithSorting " + dataClass.getName());
+		
+		List<T> result = new ArrayList<T>();
+		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
+		try
+		{
+			String className = dataClass.getName();
+			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
+			query.addFilter(propertyName, adminOperatorToGaeOperator(operator), parameter);
+			if (sortOperator == AdminSortOperator.ASCENDING)
+			{
+				query.addSort(sortProperty, SortDirection.ASCENDING);
+			} else if (sortOperator == AdminSortOperator.DESCENDING)
+			{
+				query.addSort(sortProperty, SortDirection.DESCENDING);
+			} 
+			PreparedQuery preparedQuery = datastoreService.prepare(query);
+			List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
+			for(Entity entity: entities)
+			{
+				T t = (T)gaeDataStoreUtility.objectFromEntity(entity, dataClass);
+				result.add(t);
+			}
+		} catch (Exception e)
+		{
+			throw new WBIOException(e.getMessage(), e);
+		}
+		return result;	
+		
+	}
+	
+	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WBIOException
+	{
+		log.log(Level.INFO, "GaeAdminDataStorage:queryExWithSorting " + dataClass.getName());
+		
+		List<T> result = new ArrayList<T>();
+		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
+		try
+		{
+			String className = dataClass.getName();
+			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
+			for(String propertyName: propertyNames)
+			{
+				query.addFilter(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
+			}
+			if (sortOperator == AdminSortOperator.ASCENDING)
+			{
+				query.addSort(sortProperty, SortDirection.ASCENDING);
+			} else if (sortOperator == AdminSortOperator.DESCENDING)
+			{
+				query.addSort(sortProperty, SortDirection.DESCENDING);
+			} 
+			PreparedQuery preparedQuery = datastoreService.prepare(query);
+			List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
+			for(Entity entity: entities)
+			{
+				T t = (T)gaeDataStoreUtility.objectFromEntity(entity, dataClass);
+				result.add(t);
+			}
+		} catch (Exception e)
+		{
+			throw new WBIOException(e.getMessage(), e);
+		}
+		return result;			
 	}
 
 	protected<T> void notifyOperation(T t, AdminDataStorageListener.AdminDataStorageOperation operation)

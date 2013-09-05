@@ -636,12 +636,12 @@ if (!Array.prototype.indexOf) {
 					var retObject = JSON.parse(data);
 					if (retObject.status == "OK") {							
 						if (options.functionSuccess) {
-							options.functionSuccess(JSON.parse(retObject.data),options.clientData);
+							options.functionSuccess(retObject.payload,options.clientData);
 						}
 					}
 					if (retObject.status == "FAIL") {
 						if (options.functionError) {
-							options.functionError(retObject.errors, JSON.parse(retObject.data), options.clientData);
+							options.functionError(retObject.errors, retObject.payload, options.clientData);
 						}						
 					}
 				  }

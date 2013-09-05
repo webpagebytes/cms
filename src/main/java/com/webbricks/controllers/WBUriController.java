@@ -11,6 +11,7 @@ import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -91,29 +92,59 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setExternalKey(adminStorage.getUniqueId());
 			WBUri newUri = adminStorage.add(wbUri);
 			
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newUri, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
-			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	public void getAllWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
 		{
-			List<WBUri> allUri = adminStorage.getAllRecords(WBUri.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(allUri);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
+			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
+			List<WBUri> allUri = null;
+			
+			if (sortParamDir != null && sortParamProp != null)
+			{
+				if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					allUri = adminStorage.getAllRecords(WBUri.class, sortParamProp, AdminSortOperator.ASCENDING);
+				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					allUri = adminStorage.getAllRecords(WBUri.class, sortParamProp, AdminSortOperator.DESCENDING);
+				} else
+				{
+					allUri = adminStorage.getAllRecords(WBUri.class);
+				}
+			} else
+			{
+				allUri = adminStorage.getAllRecords(WBUri.class);
+			}
+			
+			List<WBUri> result = filterPagination(request, allUri, additionalInfo);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
+			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
+			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	public void getWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -122,14 +153,15 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBUri wburi = adminStorage.get(key, WBUri.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(wburi, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	public void deleteWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -139,16 +171,17 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			adminStorage.delete(key, WBUri.class);
 			
-			WBUri uri = new WBUri();
-			uri.setKey(key);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(uri, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			WBUri wburi = new WBUri();
+			wburi.setKey(key);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));						
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
@@ -170,14 +203,15 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBUri newUri = adminStorage.update(wbUri);
 			
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newUri, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));						
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 

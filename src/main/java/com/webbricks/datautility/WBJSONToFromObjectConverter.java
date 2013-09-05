@@ -131,7 +131,7 @@ public class WBJSONToFromObjectConverter {
 		
 	}
 	
-	private org.json.JSONObject JSONFromObject(Object object) 
+	public org.json.JSONObject JSONFromObject(Object object) 
 	{
 		org.json.JSONObject json = new org.json.JSONObject(); 
 		Class objClass = object.getClass();
@@ -218,4 +218,35 @@ public class WBJSONToFromObjectConverter {
 		}
 		return jsonArray.toString();
 	}
+	
+	public org.json.JSONArray JSONArrayFromListObjects(List listObject)
+	{
+		org.json.JSONArray jsonArray = new org.json.JSONArray();
+		for(Object obj: listObject)
+		{
+			org.json.JSONObject json = JSONFromObject(obj);
+			jsonArray.put(json); 
+		}
+		return jsonArray;
+	}
+	
+	public org.json.JSONObject JSONObjectFromMap(Map<String, Object> map)
+	{
+		org.json.JSONObject object = new org.json.JSONObject();
+		if (map != null)
+		{
+			for (String key: map.keySet())
+			{
+				try 
+				{
+					object.put(key, map.get(key).toString());
+				} catch (org.json.JSONException e)
+				{
+					return null;
+				}
+			}
+		}
+		return object;
+	}
+	
 }

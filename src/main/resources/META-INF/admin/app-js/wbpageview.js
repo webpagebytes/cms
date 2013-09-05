@@ -92,8 +92,8 @@ $().ready( function () {
 	$('#wbPageView').wbDisplayObject( { fieldsPrefix: 'wbPageView', customHandler: pageSourceHandler} );
 	
 	var fSuccessGetPage = function (data) {
-		$('#wbPageSummary').wbDisplayObject().display(data);
-		$('#wbPageView').wbDisplayObject().display(data);
+		$('#wbPageSummary').wbDisplayObject().display(data.data);
+		$('#wbPageView').wbDisplayObject().display(data.data);
 	}
 	var fErrorGetPage = function (errors, data) {
 		alert(errors);
@@ -121,7 +121,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		$('#wbPageParametersTable').wbTable().insertRow(data);			
+		$('#wbPageParametersTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -146,7 +146,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbTable().updateRowWithKey(data,data["key"]);
+		$('#wbPageParametersTable').wbTable().updateRowWithKey(data.data,data.data["key"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -171,7 +171,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbPageParametersTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -212,7 +212,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetParameters = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbPageParametersTable').wbTable().insertRow(item);
 		});				
 

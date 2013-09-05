@@ -43,8 +43,8 @@ $().ready( function () {
 	$('#wbPageSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
 	var fSuccessGetPage = function (data) {
-		$('#wbPageSummary').wbDisplayObject().display(data);
-		$('#wbPageEditForm').wbObjectManager().populateFieldsFromObject(data);
+		$('#wbPageSummary').wbDisplayObject().display(data.data);
+		$('#wbPageEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 	}
 	
 	var fErrorGetPage = function (errors, data) {

@@ -16,12 +16,19 @@ public interface AdminDataStorage {
 		NOT_EQUAL,
 		LESS_THAN_OR_EQUAL,
 		GREATER_THAN_OR_EQUAL		
-	}
+	};
+	enum AdminSortOperator {
+		NO_SORT,
+		ASCENDING,
+		DESCENDING
+	};
 	public void delete(String recordid, Class dataClass) throws WBIOException;
 	
 	public void delete(Long recordid, Class dataClass) throws WBIOException;
 	
 	public<T> List<T> getAllRecords(Class dataClass) throws WBIOException;
+	
+	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator operator) throws WBIOException;
 
 	public<T> T add(T t) throws WBIOException;
 	
@@ -34,7 +41,11 @@ public interface AdminDataStorage {
 	public<T> List<T> query(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WBIOException;
 	
 	public<T> List<T> queryEx(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values) throws WBIOException;
+
+	public<T> List<T> queryWithSort(Class dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WBIOException;
 	
+	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WBIOException;
+
 	public void addStorageListener(AdminDataStorageListener listener);
 	
 	public void removeStorageListener(AdminDataStorageListener listener);

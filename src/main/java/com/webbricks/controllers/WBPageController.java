@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBWebPagesCache;
+import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -73,29 +75,61 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
 			WBWebPage newWebPage = adminStorage.add(webPage);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newWebPage, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
-			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
 		{
-			List<WBWebPage> allRecords = adminStorage.getAllRecords(WBWebPage.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(allRecords);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
+			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
+			List<WBWebPage> allRecords = null;
+			if (sortParamDir != null && sortParamProp != null)
+			{
+				if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					allRecords = adminStorage.getAllRecords(WBWebPage.class, sortParamProp, AdminSortOperator.ASCENDING);					
+				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					allRecords = adminStorage.getAllRecords(WBWebPage.class, sortParamProp, AdminSortOperator.DESCENDING);
+				} else
+				{
+					allRecords = adminStorage.getAllRecords(WBWebPage.class);					
+				}
+			} else
+			{
+				allRecords = adminStorage.getAllRecords(WBWebPage.class);				
+			}
+					
+
+			allRecords = adminStorage.getAllRecords(WBWebPage.class);
+			List<WBWebPage> result = filterPagination(request, allRecords, additionalInfo);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
+			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -104,14 +138,15 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBWebPage webPage = adminStorage.get(key, WBWebPage.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(webPage, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
-			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(webPage));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -123,14 +158,15 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			
 			WBWebPage page = new WBWebPage();
 			page.setKey(key);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(page, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(page));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
@@ -156,14 +192,15 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBWebPage newWebPage = adminStorage.update(webPage);
 			
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newWebPage, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
