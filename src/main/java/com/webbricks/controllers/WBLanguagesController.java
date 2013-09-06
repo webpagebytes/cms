@@ -78,7 +78,9 @@ public class WBLanguagesController extends WBController {
 				item.put("name", allLocales.get(str).getDisplayName());
 				result.put(item);
 			}
-			httpServletToolbox.writeBodyResponseAsJson(response, result.toString(), null);	
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, result);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);	
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
@@ -123,12 +125,15 @@ public class WBLanguagesController extends WBController {
 					result.put(item);
 				}
 			}
-			httpServletToolbox.writeBodyResponseAsJson(response, result.toString(), null);	
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, result);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);	
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("WBErrors.WB_CANT_GET_RECORDS", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	
@@ -171,7 +176,7 @@ public class WBLanguagesController extends WBController {
 			}
 			if (errors.size() > 0)
 			{
-				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);						
+				httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);						
 				return;
 			}
 			String selections = "";
@@ -189,13 +194,13 @@ public class WBLanguagesController extends WBController {
 			project.setSupportedLanguages(selections);
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());			
 			adminStorage.update(project);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);
 			
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put(WBErrors.WB_CANT_UPDATE_RECORD, WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);						
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);						
 		}
 		
 	}

@@ -78,7 +78,7 @@ $().ready( function () {
 		$('#wbAddFileModal').modal('show');			
 	}
 	var fErrorGetUpload = function (errors, data) {
-		alert(data);
+		alert(errors);
 	}
 
 	$('#wbAddFileBtn').click( function (e) {
@@ -94,7 +94,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddFileModal').modal('hide');
-		$('#wbFilesTable').wbTable().insertRow(data);			
+		$('#wbFilesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbFileForm').wbObjectManager().setErrors(errors);
@@ -119,7 +119,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteFileModal').modal('hide');	
-		$('#wbFilesTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbFilesTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteFileForm').wbObjectManager().setErrors(errors);
@@ -138,7 +138,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetAll = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbFilesTable').wbTable().insertRow(item);
 		});				
 

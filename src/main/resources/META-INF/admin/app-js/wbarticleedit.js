@@ -36,8 +36,8 @@ $().ready( function () {
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
 	var fSuccessGetArticle = function (data) {
-		$('#wbArticleSummary').wbDisplayObject().display(data);
-		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data);
+		$('#wbArticleSummary').wbDisplayObject().display(data.data);
+		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 	}
 	
 	var fErrorGetArticle = function (errors, data) {

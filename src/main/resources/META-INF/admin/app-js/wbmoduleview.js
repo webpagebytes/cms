@@ -46,8 +46,8 @@ $().ready( function () {
 	$('#wbPageModuleView').wbDisplayObject( { fieldsPrefix: 'wbPageModuleView', customHandler: pageModuleSourceHandler} );
 	
 	var fSuccessGetPage = function (data) {
-		$('#wbPageModuleSummary').wbDisplayObject().display(data);
-		$('#wbPageModuleView').wbDisplayObject().display(data);
+		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
+		$('#wbPageModuleView').wbDisplayObject().display(data.data);
 	}
 	var fErrorGetPage = function (errors, data) {
 		alert(errors);

@@ -25,7 +25,7 @@ $().ready( function () {
 	$('#wblangstablediv').wbCommunicationManager();
 	
 	var fSuccessSupportedLanguages = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			var idenable = '#enable_' + item['lcid'];
 			$(idenable).prop('checked', true);
 			if (item['default'] == 'true') {
@@ -38,7 +38,7 @@ $().ready( function () {
 		alert(data);
 	};	
 	var fSuccessGetLanguages = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wblangstablediv').wbTable().insertRow(item);
 		});				
 		$('#wblangstablediv').wbCommunicationManager().ajax ( { url:"./wbsupportedlanguages",

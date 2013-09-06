@@ -61,7 +61,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbTable().insertRow(data);			
+		$('#wbPageModulesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageModuleForm').wbObjectManager().setErrors(errors);
@@ -69,7 +69,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicatePageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbTable().insertRow(data);			
+		$('#wbPageModulesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicatePageModuleForm').wbObjectManager().setErrors(errors);
@@ -127,7 +127,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModuleModal').modal('hide');	
-		$('#wbPageModulesTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbPageModulesTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageModuleForm').wbObjectManager().setErrors(errors);
@@ -146,7 +146,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetModules = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbPageModulesTable').wbTable().insertRow(item);
 		});				
 

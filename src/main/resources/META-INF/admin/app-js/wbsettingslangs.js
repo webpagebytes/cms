@@ -24,7 +24,7 @@ $().ready( function () {
 	
 	
 	var fSuccessGetLanguages = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wblangstablediv').wbTable().insertRow(item);
 		});				
 

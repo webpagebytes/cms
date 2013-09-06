@@ -84,7 +84,7 @@ $().ready( function () {
 		$('.wbmessagescontent').css('min-height', $('.wbmessages').css('height'));
 	}
 	var fSuccessGetMessages = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbmessagestable').wbTable().insertRow(item);
 		});	
 		fFixHeightMessages();		
@@ -94,7 +94,8 @@ $().ready( function () {
 		alert(errors);
 	}
 	
-	var fSuccessGetSupportedLanguages = function (data) {
+	var fSuccessGetSupportedLanguages = function (payload) {
+		var data = payload.data;
 		var html = "";
 		var selectedLanguage = "";
 		for(var i=0; i<data.length; i++) {

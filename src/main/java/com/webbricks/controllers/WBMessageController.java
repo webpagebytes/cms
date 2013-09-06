@@ -22,8 +22,10 @@ import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
+import com.webbricks.cmsdata.WBUri;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -79,14 +81,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
 			WBMessage newRecord = adminStorage.add(record);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newRecord, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
@@ -94,22 +97,58 @@ public class WBMessageController extends WBController implements AdminDataStorag
 	{
 		try
 		{
+			
+			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
+			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 			List<WBMessage> allRecords = null;
-			if (request.getParameter("lcid") != null)
+			
+			if (sortParamDir != null && sortParamProp != null)
 			{
-				allRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"));
+				if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					if (request.getParameter("lcid") != null)
+					{
+						allRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.ASCENDING);
+					} else
+					{
+						allRecords = adminStorage.getAllRecords(WBMessage.class, sortParamProp, AdminSortOperator.ASCENDING);
+					}
+				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					if (request.getParameter("lcid") != null)
+					{
+						allRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.DESCENDING);
+					} else
+					{
+						allRecords = adminStorage.getAllRecords(WBMessage.class, sortParamProp, AdminSortOperator.DESCENDING);
+					}
+				} else
+				{
+					allRecords = adminStorage.getAllRecords(WBMessage.class);
+				}
 			} else
 			{
 				allRecords = adminStorage.getAllRecords(WBMessage.class);
 			}
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(allRecords);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
 			
+			List<WBMessage> result = filterPagination(request, allRecords, additionalInfo);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
+			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
+			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
@@ -174,13 +213,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 				jsonArray.put(json);
 			}
 			
-			String jsonReturn = jsonArray.toString();
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonArray);
+			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
@@ -191,14 +232,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBMessage record = adminStorage.get(key, WBMessage.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(record, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
@@ -210,14 +252,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			
 			WBMessage record = new WBMessage();
 			record.setKey(key);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(record, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
@@ -241,14 +284,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			existingMessage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBMessage newRecord = adminStorage.update(existingMessage);
 			
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newRecord, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 

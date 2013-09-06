@@ -115,8 +115,6 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				allRecords = adminStorage.getAllRecords(WBWebPage.class);				
 			}
 					
-
-			allRecords = adminStorage.getAllRecords(WBWebPage.class);
 			List<WBWebPage> result = filterPagination(request, allRecords, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();

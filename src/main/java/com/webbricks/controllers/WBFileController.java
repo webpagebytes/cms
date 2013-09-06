@@ -1,7 +1,6 @@
 package com.webbricks.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
+import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
@@ -89,7 +89,7 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 		{	
 			JSONObject obj = new JSONObject();
 			obj.put("url", blobHandler.getUploadUrl(getAdminUriPart() + UPLOAD_RETURN_URL));
-			httpServletToolbox.writeBodyResponseAsJson(response, obj.toString(), null);		
+			httpServletToolbox.writeBodyResponseAsJson(response, obj, null);		
 		} catch (Exception e)
 		{
 			throw new WBIOException(e.getMessage());
@@ -166,7 +166,7 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 		{	
 			JSONObject obj = new JSONObject();
 			obj.put("url", url);
-			httpServletToolbox.writeBodyResponseAsJson(response, obj.toString(), null);		
+			httpServletToolbox.writeBodyResponseAsJson(response, obj, null);		
 		} catch (Exception e)
 		{
 			throw new WBIOException(e.getMessage());
@@ -259,14 +259,15 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(wbimage, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbimage));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}		
 	}
 	
@@ -274,25 +275,76 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 	{
 		try
 		{
+			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
+			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
+
 			String shortType = request.getParameter("type");
-			List<WBFile> images = null;
+			List<WBFile> files = null;
 			
-			if (null == shortType)
+			if (sortParamDir != null && sortParamProp != null)
 			{
-				images = adminStorage.getAllRecords(WBFile.class);
+				if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					if (null == shortType)
+					{
+						files = adminStorage.getAllRecords(WBFile.class, sortParamProp, AdminSortOperator.ASCENDING);
+					} else
+					{
+						shortType = shortType.toLowerCase();
+						files = adminStorage.queryWithSort(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.ASCENDING);
+					}
+
+				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					if (null == shortType)
+					{
+						files = adminStorage.getAllRecords(WBFile.class, sortParamProp, AdminSortOperator.DESCENDING);
+					} else
+					{
+						shortType = shortType.toLowerCase();
+						files = adminStorage.queryWithSort(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.DESCENDING);
+					}
+
+				} else
+				{
+					if (null == shortType)
+					{
+						files = adminStorage.getAllRecords(WBFile.class);
+					} else
+					{
+						shortType = shortType.toLowerCase();
+						files = adminStorage.query(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+					}
+				}
 			} else
 			{
-				shortType = shortType.toLowerCase();
-				images = adminStorage.query(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+				if (null == shortType)
+				{
+					files = adminStorage.getAllRecords(WBFile.class);
+				} else
+				{
+					shortType = shortType.toLowerCase();
+					files = adminStorage.query(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+				}
 			}
-			String jsonReturn = jsonObjectConverter.JSONStringFromListObjects(images);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+
+			List<WBFile> result = filterPagination(request, files, additionalInfo);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
+			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
+			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}
 	}
 
@@ -311,14 +363,16 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 			
 			WBFile param = new WBFile();
 			param.setKey(key);
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(param, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn, null);
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);	
 		}		
 	}
 
@@ -354,14 +408,15 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 			existingImage.setAdjustedContentType(wbimage.getAdjustedContentType());
 			WBFile newImage = adminStorage.update(existingImage);
 			
-			String jsonReturn = jsonObjectConverter.JSONStringFromObject(newImage, null);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonReturn.toString(), errors);
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newImage));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, "", errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}				
 	}
 

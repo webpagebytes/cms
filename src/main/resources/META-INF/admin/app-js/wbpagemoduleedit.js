@@ -39,8 +39,8 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
 	var fSuccessGetPage = function (data) {
-		$('#wbPageModuleSummary').wbDisplayObject().display(data);
-		$('#wbPageModuleEditForm').wbObjectManager().populateFieldsFromObject(data);
+		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
+		$('#wbPageModuleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 	}
 	
 	var fErrorGetPage = function (errors, data) {

@@ -33,8 +33,8 @@ $().ready( function () {
 	$('#wbArticleView').wbDisplayObject( { fieldsPrefix: 'wbArticleView', customHandler: viewHandler } );
 	
 	var fSuccessGetArticle = function (data) {
-		$('#wbArticleSummary').wbDisplayObject().display(data);
-		$('#wbArticleView').wbDisplayObject().display(data);
+		$('#wbArticleSummary').wbDisplayObject().display(data.data);
+		$('#wbArticleView').wbDisplayObject().display(data.data);
 	}
 	var fErrorGetArticle = function (errors, data) {
 		alert(errors);

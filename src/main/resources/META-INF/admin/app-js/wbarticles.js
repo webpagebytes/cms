@@ -58,7 +58,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddArticleModal').modal('hide');
-		$('#wbArticlesTable').wbTable().insertRow(data);			
+		$('#wbArticlesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddArticleForm').wbObjectManager().setErrors(errors);
@@ -99,7 +99,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteArticleModal').modal('hide');	
-		$('#wbArticlesTable').wbTable().deleteRowWithKey(data["key"]);
+		$('#wbArticlesTable').wbTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteArticleForm').wbObjectManager().setErrors(errors);
@@ -107,7 +107,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicateArticleModal').modal('hide');
-		$('#wbArticlesTable').wbTable().insertRow(data);			
+		$('#wbArticlesTable').wbTable().insertRow(data.data);			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicateArticleForm').wbObjectManager().setErrors(errors);
@@ -144,7 +144,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetAll = function (data) {
-		$.each(data, function(index, item) {
+		$.each(data.data, function(index, item) {
 			$('#wbArticlesTable').wbTable().insertRow(item);
 		});				
 

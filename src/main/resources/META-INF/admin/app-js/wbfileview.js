@@ -68,7 +68,8 @@ $().ready( function () {
 	var fileKey = getURLParameter('key'); 
 	var fileBlobKey = "";
 	
-	var fSuccessGetFile = function (data) {
+	var fSuccessGetFile = function (payload) {
+		var data = payload.data;
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		
@@ -181,7 +182,7 @@ $().ready( function () {
 	
 	var fSuccessGetFileForUpdate = function (data) {	
 		$('#wbuFileDataUpdateForm').wbObjectManager().resetFields();
-		$('#wbuFileDataUpdateForm').wbObjectManager().populateFieldsFromObject(data);
+		$('#wbuFileDataUpdateForm').wbObjectManager().populateFieldsFromObject(data.data);
 		$('#wbModalFileDataUpdate').modal('show');
 	}
 	
