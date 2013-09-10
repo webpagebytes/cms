@@ -60,3 +60,39 @@ test ("test functions - Date.toFormatString", function () {
 	equal(string6, "Today 11:21");
 	
 }); 
+
+test ("test functions - replace query parameter", function () {
+	var x = replaceURLParameter("foo?x=abc&y=xyz", "x", "123");
+	equal(x, "foo?x=123&y=xyz&");
+	
+	x = replaceURLParameter("foo?x=abc&", "x", "123");
+	equal(x, "foo?x=123&");
+	
+	x = replaceURLParameter("foo?x=abc", "y", "123");
+	equal(x, "foo?x=abc&y=123&");
+	
+	x = replaceURLParameter("http://www.foo.com", "x", "123");
+	equal(x, "http://www.foo.com?x=123&");
+	
+	x = replaceURLParameter("http://www.foo.com", "x?", "?=#");
+	equal(x, "http://www.foo.com?x%3F=%3F%3D%23&");
+	
+});
+
+test ("test functions - remove query parameter", function () {
+	var x = removeURLParameter("foo?x=abc&y=xyz", "x");
+	equal(x, "foo?y=xyz&");
+	
+	x = removeURLParameter("foo?x=abc", "x");
+	equal(x, "foo?");
+	
+	x = removeURLParameter("foo?x=abc", "y");
+	equal(x, "foo?x=abc&");
+	
+	x = removeURLParameter("http://www.foo.com", "x", "123");
+	equal(x, "http://www.foo.com?");
+	
+	x = removeURLParameter("http://www.foo.com?x%3F=%3F%3D%23&", "x?");
+	equal(x, "http://www.foo.com?");
+	
+});

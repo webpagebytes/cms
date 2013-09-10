@@ -86,6 +86,19 @@ $().ready( function () {
 							 tableBaseClass: "table table-condensed table-color-header",
 							 paginationBaseClass: "pagination"
 							});
+	var changeSortHandler = function() {
+		var sort = $(this).val();
+		var field = sort.substring(0,sort.indexOf("_"));
+		var dir = sort.substring(sort.indexOf("_")+1);		
+		var url = "./weburis.html?sort_dir={0}&sort_field={1}".format(encodeURIComponent(dir), encodeURIComponent(field));
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", field);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);
+		
+		window.document.location.href = newUrl;
+		
+	} ;
+	$('.wbSelectSort').change (changeSortHandler);
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbModalUriAdd').modal('hide');
@@ -216,6 +229,7 @@ $().ready( function () {
 	});
 
 	var fSuccessGetUris = function (data) {
+		
 		$.each(data.data, function(index, item) {
 			$('#wbtable').wbTable().insertRow(item);
 		});				
@@ -224,8 +238,15 @@ $().ready( function () {
 	var fErrorGetUris = function (errors, data) {
 	
 	}
+	var itemsOnPage = 10;
 	
-	$('#wburiadd').wbCommunicationManager().ajax ( { url:"./wburi?sort_dir=asc&sort_field=uri",
+	var page = getURLParameter('page') || 1;
+	if (page <= 0) page = 1;
+	var index_start = (page-1)*itemsOnPage;
+	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "uri");
+	var uris_url = "./wburi?sort_dir={0}&sort_field={1}&index_start={2}&count=10".format(sort_dir, sort_field, index_start); 
+	$('#wburiadd').wbCommunicationManager().ajax ( { url: uris_url,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetUris,

@@ -16,6 +16,54 @@ function getURLParameter(name) {
 	return undefined;
 };
 
+function replaceURLParameter(url, param, newValue) {
+	url = url || "";
+	var index = url.indexOf('?');
+	var _url = url, url_ = "";
+	if (index>0){
+		_url = url.substring(0, index);
+		url_ = url.substring(index);
+	}
+	var search = /([^&\?=]+)=?([^&#]*)/g
+	var params = {}, match;
+	
+	while (match = search.exec(url_)) {
+		params[match[1]]= match[2];
+	}
+	params[encodeURIComponent(param)] = encodeURIComponent(newValue);
+	if (_url.length>0) {
+		_url = _url + "?";
+	}
+	for (x in params) {
+		_url = _url + x + "=" + params[x] + "&";
+	}
+	return _url;
+}
+
+function removeURLParameter(url, param) {
+	url = url || "";
+	var index = url.indexOf('?');
+	var _url = url, url_ = "";
+	if (index>0){
+		_url = url.substring(0, index);
+		url_ = url.substring(index);
+	}
+	var search = /([^&\?=]+)=?([^&#]*)/g
+	var params = {}, match;
+	
+	while (match = search.exec(url_)) {
+		params[match[1]]= match[2];
+	}
+	delete params[encodeURIComponent(param)];
+	if (_url.length>0) {
+		_url = _url + "?";
+	}
+	for (x in params) {
+		_url = _url + x + "=" + params[x] + "&";
+	}
+	return _url;
+}
+
 function getAdminPath() {
 	var pos = location.pathname.lastIndexOf('/');
 	var adminPath = pos > 0 ? location.pathname.substring(0, pos) : "";

@@ -21,6 +21,7 @@ font-size: 16px;
 .breadcrumb-line > li
 {
 display: inline-block;
+line-height: 20px;
 }
 
 .breadcrumb-line .divider
@@ -171,6 +172,7 @@ margin: 0px;
 {
 float:left;
 padding: 0px;
+line-height: 30px;
 }
 
 .wbbreadcrumb .wbdivider
@@ -181,6 +183,16 @@ padding: 0px 5px;
 .wblastmodified
 {
 float: right;
+}
+
+.wbrightelem
+{
+float:right;
+}
+
+.wbrightelem select
+{
+margin: 0px;
 }
 
 .wbhelp
