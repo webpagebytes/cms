@@ -54,13 +54,10 @@ $().ready( function () {
 										 errorLabelsPrefix: 'errd',
 										 errorLabelClassName: 'errorvalidationlabel',
 									    } );							
+	var itemsOnPage = 10;	
 	
-	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
-	ZeroClipboard.setDefaults( { moviePath: swfzc } );
-	var zcButtons = $.find('.btn-clipboard');
-	$.each (zcButtons, function (index, elem) {
-		var zc = new ZeroClipboard(elem);
-	});
+	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+	
 	var wbhelpcontent = function(){
 		return "TBD"
 	}
@@ -77,19 +74,32 @@ $().ready( function () {
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
-	}
+	};
 	
-	$('#wbtable').wbSimpleTable( { columns: [ {display: "<a href='' class='header-uri-table uri-table-externalKey'> External Id </a>", fieldId:"externalKey", headerHtml: true, simpleDisplay: "External Id"}, 
-	                                          {display: "<a href='' class='header-uri-table uri-table-uri'> Site url </a>", fieldId: "uri", headerHtml:true, simpleDisplay:"Site url"},
-	                                          {display: "<a href='' class='header-uri-table uri-table-enabled'>Live</a>", fieldId: "enabled", headerHtml:true, simpleDisplay: "Live"}, 
-	                                          {display:"Method", fieldId:"httpOperation"}, 
-	                                          {display:"<a href='' class='header-uri-table uri-table-lastModified'>Last Modified</a>", fieldId:"lastModified", customHandling:true, customHandler: displayHandler, headerHtml:true, simpleDisplay:"Last Modified"}, 
-	                                          {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	var columnClick = function (table, fieldId, dir) {	
+		var url = "./weburis.html?sort_dir={0}&sort_field={1}".format(encodeURIComponent(dir), encodeURIComponent(fieldId));
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	};
+
+	$('#wbtable').wbSimpleTable( { columns: [ {display: "External Id", fieldId:"externalKey", isHtmlDisplay: true}, 
+	                                          {display: "Site url", fieldId: "uri", isHtmlDisplay:true},
+	                                          {display: "Live", fieldId: "enabled", isHtmlDisplay:true}, 
+	                                          {display: "Method", fieldId:"httpOperation", isHtmlDisplay:true}, 
+	                                          {display: "Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                          {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
 							 keyName: "key",
 							 tableBaseClass: "table table-condensed table-color-header",
-							 paginationBaseClass: "pagination"
+							 paginationBaseClass: "pagination",
+							 headerColumnBaseClass: "header-uri-table",
+							 headerColumnIdClassPrefix: "uri-table-",							 
+							 handlerColumnClick: columnClick
 							});
 	
+
+	/*
 	$(document).on ("click", ".header-uri-table", function (e) {
 		e.preventDefault();
 		var classList = $(this).attr('class').split(/\s+/);
@@ -108,11 +118,11 @@ $().ready( function () {
 				newUrl = replaceURLParameter(newUrl, "sort_field", field);
 				newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
 				window.document.location.href = newUrl;
-
 			}
 
 		});
 	});
+	*/
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbModalUriAdd').modal('hide');
@@ -242,38 +252,25 @@ $().ready( function () {
 		
 	});
 
-	var fSuccessGetUris = function (data) {
-		
+	
+	var fSuccessGetUris = function (data) {		
 		$('#wbtable').wbSimpleTable().setRows(data.data);
-
+		
+		$('#wbtable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 	}
 	var fErrorGetUris = function (errors, data) {
 	
 	}
-	
-	var addSortIconToTableHeader = function (elem, field, dir)
-	{
-		var column = $(elem).wbSimpleTable().getColumnHeader(field);
-		column['headerHtml'] = true;
-		var icon = "icon-arrow-up";
-		var sortClass = "header-asc";
-		if (dir == "dsc") {
-			icon = "icon-arrow-down";
-			sortClass = "header-dsc";
-		}
-		column.display = "<a href='' class='header-uri-table uri-table-{0} {1}'>{2} <i class='{3}'></i></a>".format(escapehtml(field), sortClass, escapehtml(column.simpleDisplay), icon);
-		$(elem).wbSimpleTable().updateColumnHeader(column)
-	}
-	
-	var itemsOnPage = 10;	
+		
 	var page = getURLParameter('page') || 1;
 	if (page <= 0) page = 1;
 	var index_start = (page-1)*itemsOnPage;
 	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
 	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "uri");
-	addSortIconToTableHeader($('#wbtable'), sort_field, sort_dir);
 	
-	var uris_url = "./wburi?sort_dir={0}&sort_field={1}&index_start={2}&count=10".format(sort_dir, sort_field, index_start); 
+	$('#wbtable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+	
+	var uris_url = "./wburi?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
 	$('#wburiadd').wbCommunicationManager().ajax ( { url: uris_url,
 													 httpOperation:"GET", 
 													 payloadData:"",

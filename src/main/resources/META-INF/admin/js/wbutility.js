@@ -8,8 +8,9 @@ String.prototype.format = function() {
 	
 };
 
-function getURLParameter(name) {
-	var value = (location.search.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,undefined])[1];
+function getURLParameter(name, url) {
+	url = url || window.location.href;
+	var value = (url.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,undefined])[1];
 	if (value != undefined) {
 		return decodeURIComponent(value);
     } 
@@ -566,7 +567,48 @@ if (!Array.prototype.indexOf) {
 	}	
 }) (window.jQuery);
 
- 
+
+(function ($) {
+
+	WBCopyClipboardButoon = function ( thisElement, options ) {
+		this.init( thisElement, options );
+	}
+	WBCopyClipboardButoon.prototype = 
+	{
+		defaults: { 
+			basePath: undefined,
+			selector: undefined
+		},
+		init: function ( thisElement, options ) {			
+			this.thisElement = $(thisElement);
+			this.options = $.extend ( {} , this.defaults, options );		
+			
+			var swfzc = this.options.basePath + '/zeroclipboard/ZeroClipboard.swf';
+			ZeroClipboard.setDefaults( { moviePath: swfzc } );
+			var zcButtons = $.find(this.options.selector);
+			$.each (zcButtons, function (index, elem) {
+				var zc = new ZeroClipboard(elem);
+			});
+
+		},
+		getOptions: function () {
+			if (! this.options) 
+				return this.defaults
+			else
+				return this.options;
+		}
+
+	}
+	$.fn.WBCopyClipboardButoon = function ( param ) {
+			var $this = $(this),
+			data = $this.data('wbCopyClipboardButton');			
+			var options = (typeof param == 'object') ? param : {} ; 
+			if (!data) $this.data('wbCopyClipboardButton', (data = new WBCopyClipboardButoon ($this, options)));	
+			if (param == undefined) return data;
+	}	
+
+}) (window.jQuery);
+
 (function ($) {
 
 	WBDisplayObject = function ( thisElement, options ) {

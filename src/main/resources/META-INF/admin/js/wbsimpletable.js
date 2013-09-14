@@ -45,11 +45,16 @@
 			this.thisElement = thisElement;
 			this.options = $.extend ( {} , this.defaults, options );	
 			var header ='<tr>';
+			var _this = this;
 			$.each(this.getOptions().columns, function(index, item) {
-				item.headerHtml = item.headerHtml || false;
+				item.isHtmlDisplay = item.isHtmlDisplay || false;
 				var value = escapehtml(item.display);
-				if (item.headerHtml) {
-					value = item.display;
+				if (item.isHtmlDisplay) {
+					value = "<a href='' class='{0} {1}{2}' > {3} </a>".format(escapehtml(_this.getOptions().headerColumnBaseClass),
+																	   escapehtml(_this.getOptions().headerColumnIdClassPrefix),
+																	   escapehtml(item.fieldId),
+																	   escapehtml(item.display)
+																	   );
 				}
 				header += '<th>{0}</th>'.format(value);
 			});
@@ -62,7 +67,28 @@
 			$(thisElement).html(html);
 			
 			var tableData = new Array();
-			this.thisElement.data('tableData', tableData);			
+			this.thisElement.data('tableData', tableData);		
+			
+			$(this.thisElement).on ("click", "." + this.getOptions().headerColumnBaseClass, function (e) {
+				e.preventDefault();
+				if (! _this.getOptions().handlerColumnClick) return;
+				
+				var classList = $(this).attr('class').split(/\s+/);
+				var thisElem = this;
+				$(classList).each(function(index, item){
+					if (item.indexOf(_this.getOptions().headerColumnIdClassPrefix) == 0){
+						var field = item.substring(_this.getOptions().headerColumnIdClassPrefix.length);						
+						var dir = 'asc';
+						if ($(thisElem).hasClass('header-asc')) {
+							dir = 'dsc';
+						}
+						_this.getOptions().handlerColumnClick (_this, field, dir);
+						return false;
+					}
+
+				});
+			});
+
 		},
 		
 		getColumnHeader: function(fieldId) {
@@ -83,23 +109,112 @@
 			
 			var header ='<tr>';
 			$.each(this.getOptions().columns, function(index, item) {
-				item.headerHtml = item.headerHtml || false;
+				item.isHtmlDisplay = item.isHtmlDisplay || false;
 				var value = "";
 				if (item.fieldId == option.fieldId) {
 					value = escapehtml(option.display);
-					if (option.headerHtml) {
-						value = option.display;	
+					if (option.isHtmlDisplay) {
+						
+						if ('sortDirection' in option) {
+							var icon = "icon-arrow-up";
+							var sortClass = "header-asc";
+							if (option.sortDirection == "dsc") {
+								icon = "icon-arrow-down";
+								sortClass = "header-dsc";
+							}
+							value = "<a href='' class='{0} {1}{2} {3}' > {4} <i class='{5}'></i> </a>".format(escapehtml(tempThis.getOptions().headerColumnBaseClass),
+									   escapehtml(tempThis.getOptions().headerColumnIdClassPrefix),
+									   escapehtml(option.fieldId),
+									   escapehtml(sortClass),
+									   escapehtml(option.display),
+									   escapehtml(icon)
+									   );
+
+						} else
+							value = "<a href='' class='{0} {1}{2}' > {3} </a>".format(escapehtml(tempThis.getOptions().headerColumnBaseClass),
+								   escapehtml(tempThis.getOptions().headerColumnIdClassPrefix),
+								   escapehtml(option.fieldId),
+								   escapehtml(option.display)
+								   );
+						
 					}
 				} else {
 					value = escapehtml(item.display);
-					if (item.headerHtml) {
-						value = item.display;
+					if (item.isHtmlDisplay) {
+						if ('sortDirection' in item) {
+							var icon = "icon-arrow-up";
+							var sortClass = "header-asc";
+							if (item.sortDirection == "dsc") {
+								icon = "icon-arrow-down";
+								sortClass = "header-dsc";
+							}
+							value = "<a href='' class='{0} {1}{2} {3}' > {4} <i class='{5}'></i> </a>".format(escapehtml(tempThis.getOptions().headerColumnBaseClass),
+									   escapehtml(tempThis.getOptions().headerColumnIdClassPrefix),
+									   escapehtml(item.fieldId),
+									   escapehtml(sortClass),
+									   escapehtml(item.display),
+									   escapehtml(icon)
+									   );
+
+						} else
+							value = "<a href='' class='{0} {1}{2}' > {3} </a>".format(escapehtml(tempThis.getOptions().headerColumnBaseClass),
+								   escapehtml(tempThis.getOptions().headerColumnIdClassPrefix),
+								   escapehtml(item.fieldId),
+								   escapehtml(item.display)
+								   );
 					}
 				}
 				header += '<th>{0}</th>'.format(value);
 			});
 			header += '</tr>';
 			$(tempThis.thisElement).children('table').children('thead').html(header);			
+		},
+		addSortIconToColumnHeader: function(field, dir)
+		{
+			var column = this.getColumnHeader(field);
+			column['isHtmlDisplay'] = true;
+			if (dir == 'asc' || dir == 'dsc'){
+				column['sortDirection'] = dir;
+			}
+			column['fieldId'] = field;
+			column.display = column.display;
+			this.updateColumnHeader(column)
+		},
+		
+		_setPagination: function(pages) {
+			// pages is an array of elements like { display, link, option }, option 1 for current 
+			var elem = $(this.thisElement).find(".__wbPagclass"); 
+			elem.html("");
+			var html = "<ul>";
+			$.each (pages, function (index, item) {
+				var itemClass = ""
+				if (item.option == 1) {
+					itemClass = "active";
+				}
+				html = html + "<li class='{0}'> <a href='{1}'> {2} </a> </li>".format(itemClass, escapehtml(item.link), escapehtml(item.display)); 
+			});
+			html += "</ul>";
+			elem.html(html);			
+		},
+		
+		setPagination: function (link, totalRecords, itemsPerPage, pageParamName){
+			var countPages = Math.ceil (totalRecords / itemsPerPage);
+			var currentPage = getURLParameter(pageParamName, link) || 1;
+			pages = [];
+			for (var i = 0;i<countPages; i++){
+				var item = {}
+				item['display'] = "" + (i+1);
+				if ((i+1) == currentPage) {
+					item['option'] = 1;
+				}
+				item['link'] = replaceURLParameter(link, 'page', item['display']);
+				pages.push(item);
+			}
+			this._setPagination(pages);		
+		},
+		
+		clearPagination: function () {
+			$(this).find(".__wbPagclass").html("");
 		},
 		
 		clearRows: function() {
