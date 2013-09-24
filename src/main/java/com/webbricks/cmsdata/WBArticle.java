@@ -14,7 +14,7 @@ public class WBArticle implements Serializable {
 	@AdminFieldStore
 	private Date lastModified;
 
-	@AdminFieldTextStore
+	@AdminFieldStore
 	private String title;
 
 	@AdminFieldTextStore

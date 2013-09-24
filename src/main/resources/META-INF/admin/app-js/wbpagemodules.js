@@ -31,6 +31,15 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
+	var itemsOnPage = 10;	
+	
+	var columnClick = function (table, fieldId, dir) {	
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	}
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webpagemodule.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
@@ -42,11 +51,16 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbPageModulesTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, 
-									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	$('#wbPageModulesTable').wbSimpleTable( { columns: [ {display: "External Id", fieldId:"externalKey", isHtmlDisplay:true}, 
+	                                                     {display: "Name", fieldId: "name", isHtmlDisplay:true}, 
+	                                                     {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                                     {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
-						 paginationBaseClass: "pagination"
+						 paginationBaseClass: "pagination",
+						 headerColumnBaseClass: "header-uri-table",
+						 headerColumnIdClassPrefix: "uri-table-",							 
+						 handlerColumnClick: columnClick
 						});
 
 	$('#wbAddPageModuleForm').wbCommunicationManager();
@@ -61,7 +75,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbTable().insertRow(data.data);			
+		$('#wbPageModulesTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageModuleForm').wbObjectManager().setErrors(errors);
@@ -69,7 +83,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicatePageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbTable().insertRow(data.data);			
+		$('#wbPageModulesTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicatePageModuleForm').wbObjectManager().setErrors(errors);
@@ -111,7 +125,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeletePageModuleForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDeletePageModule_".length);
-		var object = $('#wbPageModulesTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbPageModulesTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeletePageModuleForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeletePageModuleModal').modal('show');		
 	});
@@ -120,14 +134,14 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDuplicatePageModuleForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDuplicatePageModule_".length);
-		var object = $('#wbPageModulesTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbPageModulesTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDuplicatePageModuleForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDuplicatePageModuleModal').modal('show');		
 	});
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModuleModal').modal('hide');	
-		$('#wbPageModulesTable').wbTable().deleteRowWithKey(data.data["key"]);
+		$('#wbPageModulesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageModuleForm').wbObjectManager().setErrors(errors);
@@ -146,16 +160,24 @@ $().ready( function () {
 	});
 
 	var fSuccessGetModules = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbPageModulesTable').wbTable().insertRow(item);
-		});				
+		$('#wbPageModulesTable').wbSimpleTable().setRows(data.data);
+		$('#wbPageModulesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 
 	}
 	var fErrorGetModules = function (errors, data) {
 	
 	}
 	
-	$('#wbAddPageModuleForm').wbCommunicationManager().ajax ( { url:"./wbpagemodule",
+	var page = getURLParameter('page') || 1;
+	if (page <= 0) page = 1;
+	var index_start = (page-1)*itemsOnPage;
+	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+	$('#wbPageModulesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+	
+	var page_modules_url = "./wbpagemodule?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
+
+	$('#wbAddPageModuleForm').wbCommunicationManager().ajax ( { url:page_modules_url ,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetModules,

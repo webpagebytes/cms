@@ -28,6 +28,8 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
+	var itemsOnPage = 10;	
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webarticle.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
@@ -39,11 +41,23 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbArticlesTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Title", fieldId: "title"}, 
-									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	var columnClick = function (table, fieldId, dir) {	
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	}
+
+	$('#wbArticlesTable').wbSimpleTable( { columns: [ {display: "External Id", fieldId:"externalKey", isHtmlDisplay:true}, 
+	                                                  {display: "Title", fieldId: "title", isHtmlDisplay:true}, 
+	                                                  {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                                  {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
-						 paginationBaseClass: "pagination"
+						 paginationBaseClass: "pagination",
+						 headerColumnBaseClass: "header-uri-table",
+						 headerColumnIdClassPrefix: "uri-table-",							 
+						 handlerColumnClick: columnClick
 						});
 
 	$('#wbAddArticleForm').wbCommunicationManager();
@@ -58,7 +72,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddArticleModal').modal('hide');
-		$('#wbArticlesTable').wbTable().insertRow(data.data);			
+		$('#wbArticlesTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddArticleForm').wbObjectManager().setErrors(errors);
@@ -83,7 +97,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeleteArticleForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDeleteArticle_".length);
-		var object = $('#wbArticlesTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbArticlesTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeleteArticleForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeleteArticleModal').modal('show');		
 	});
@@ -92,14 +106,14 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDuplicateArticleForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDupArticle_".length);
-		var object = $('#wbArticlesTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbArticlesTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDuplicateArticleForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDuplicateArticleModal').modal('show');		
 	});
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteArticleModal').modal('hide');	
-		$('#wbArticlesTable').wbTable().deleteRowWithKey(data.data["key"]);
+		$('#wbArticlesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteArticleForm').wbObjectManager().setErrors(errors);
@@ -107,7 +121,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicateArticleModal').modal('hide');
-		$('#wbArticlesTable').wbTable().insertRow(data.data);			
+		$('#wbArticlesTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicateArticleForm').wbObjectManager().setErrors(errors);
@@ -144,16 +158,23 @@ $().ready( function () {
 	});
 
 	var fSuccessGetAll = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbArticlesTable').wbTable().insertRow(item);
-		});				
-
+		$('#wbArticlesTable').wbSimpleTable().setRows(data.data);
+		$('#wbArticlesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 	}
 	var fErrorGetAll = function (errors, data) {
 	
 	}
 	
-	$('#wbAddArticleForm').wbCommunicationManager().ajax ( { url:"./wbarticle",
+	var page = getURLParameter('page') || 1;
+	if (page <= 0) page = 1;
+	var index_start = (page-1)*itemsOnPage;
+	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "title");	
+	$('#wbArticlesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+	
+	var page_articles_url = "./wbarticle?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
+
+	$('#wbAddArticleForm').wbCommunicationManager().ajax ( { url:page_articles_url,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetAll,

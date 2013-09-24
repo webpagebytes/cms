@@ -44,7 +44,6 @@ $().ready( function () {
 	}
 
 	var columnClick = function (table, fieldId, dir) {	
-		var url = "./weburis.html?sort_dir={0}&sort_field={1}".format(encodeURIComponent(dir), encodeURIComponent(fieldId));
 		var newUrl = window.document.location.href;
 		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
 		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
