@@ -25,6 +25,8 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
+	var itemsOnPage = 10;	
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webfile.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
@@ -58,15 +60,26 @@ $().ready( function () {
 		
 	}
 				
-	$('#wbFilesTable').wbTable( { columns: [ {display: "External key", fieldId: "externalKey"}, {display: "Name", fieldId: "name"},
-	                                {display:"Content type", fieldId:"contentType"},
-									{display:"Size", fieldId:"size", customHandling: true, customHandler: displayHandler},
-									{display:"Last Modified", fieldId:"lastModified", customHandling: true, customHandler: displayHandler},
-									{display:"File", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
-									{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
-						 keyName: "key",
-						 tableBaseClass: "table table-condensed table-color-header",
-						 paginationBaseClass: "pagination"
+	var columnClick = function (table, fieldId, dir) {	
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	}
+
+	$('#wbFilesTable').wbSimpleTable( { columns: [ {display: "External key", fieldId: "externalKey", isHtmlDisplay:true},
+	                                               {display: "Name", fieldId: "name", isHtmlDisplay:true},
+	                                               {display:"Content type", fieldId:"contentType", isHtmlDisplay:true},
+	                                               {display:"Size", fieldId:"size", customHandler: displayHandler, isHtmlDisplay:true},
+	                                               {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true},
+	                                               {display:"File", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
+	                                               {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	                                    keyName: "key",
+	                                    tableBaseClass: "table table-condensed table-color-header",
+	                                    paginationBaseClass: "pagination",
+	                                    headerColumnBaseClass: "header-uri-table",
+	                                    headerColumnIdClassPrefix: "uri-table-",							 
+	                                    handlerColumnClick: columnClick
 						});
 
 	$('#wbAddFileForm').wbCommunicationManager();
@@ -94,7 +107,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddFileModal').modal('hide');
-		$('#wbFilesTable').wbTable().insertRow(data.data);			
+		$('#wbFilesTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbFileForm').wbObjectManager().setErrors(errors);
@@ -112,14 +125,14 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeleteFileForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDeleteFile_".length);
-		var object = $('#wbFilesTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbFilesTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeleteFileForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeleteFileModal').modal('show');		
 	});
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteFileModal').modal('hide');	
-		$('#wbFilesTable').wbTable().deleteRowWithKey(data.data["key"]);
+		$('#wbFilesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteFileForm').wbObjectManager().setErrors(errors);
@@ -138,20 +151,29 @@ $().ready( function () {
 	});
 
 	var fSuccessGetAll = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbFilesTable').wbTable().insertRow(item);
-		});				
-
+		$('#wbFilesTable').wbSimpleTable().setRows(data.data);
+		$('#wbFilesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 	}
 	var fErrorGetAll = function (errors, data) {
 	
 	}
+	
+	var page = getURLParameter('page') || 1;
+	if (page <= 0) page = 1;
+	var index_start = (page-1)*itemsOnPage;
+	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+	$('#wbFilesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+	
+	var files_url = "./wbfile?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
+	
 	var shortType = getURLParameter('type');
-	var urlValue = "./wbfile";
 	if (shortType && shortType.length) {
-		urlValue += "?type={0}".format(encodeURIComponent(shortType));
+		files_url = replaceURLParameter(files_url,"type", shortType);
 	}
-	$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: urlValue,
+
+	
+	$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: files_url,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetAll,

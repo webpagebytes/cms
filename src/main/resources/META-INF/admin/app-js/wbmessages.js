@@ -36,6 +36,8 @@ $().ready( function () {
 							  errorInputClassName: 'errorvalidationinput'
 							 });
 
+	var itemsOnPage = 50;	
+
 	var displayHandler = function (fieldId, record) {
 		if ((fieldId == '_operations') && (record['diff'] != 'default')) {
 			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> | <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{1}'> <i class='icon-trash'></i> Delete </a>".format( encodeURIComponent(record['key']), encodeURIComponent(record['key']));			
@@ -68,25 +70,36 @@ $().ready( function () {
 		return value;
 	}
 	
+	var columnClick = function (table, fieldId, dir) {	
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	}
+
 	var pageLcid = getURLParameter('lcid') || ""; 
 	var selectedLcid = "";
 	var defaultLcid = "";
-	$('#wbmessagestable').wbTable( { columns: [ {display: "KEY", fieldId:"name", customHandling:true, customHandler: displayHandler}, {display: "Is translated", fieldId:"isTranslated", customHandling:true, customHandler: displayHandler}, {display: "Value", fieldId: "value", customHandling:true, customHandler: displayHandler}, 
-								{display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
+	$('#wbmessagestable').wbSimpleTable( { columns: [ {display: "KEY", fieldId:"name", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                                  {display: "Value", fieldId: "value", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                                  {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
 					 keyName: "key",
 					 tableBaseClass: "table table-condensed",
 					 paginationBaseClass: "pagination",
-					 itemsPerPage: 50
-					});
+                     headerColumnBaseClass: "header-uri-table",
+                     headerColumnIdClassPrefix: "uri-table-",							 
+                     handlerColumnClick: columnClick					 
+	});
 	
 	var fFixHeightMessages = function()
 	{
 		$('.wbmessagescontent').css('min-height', $('.wbmessages').css('height'));
 	}
+	
 	var fSuccessGetMessages = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbmessagestable').wbTable().insertRow(item);
-		});	
+		$('#wbmessagestable').wbSimpleTable().setRows(data.data);
+		$('#wbmessagestable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+
 		fFixHeightMessages();		
 	}
 	
@@ -98,7 +111,7 @@ $().ready( function () {
 		var data = payload.data;
 		var html = "";
 		var selectedLanguage = "";
-		for(var i=0; i<data.length; i++) {
+		for(var i=0; i< data.length; i++) {
 			var isSelectedLanguage = false;
 			var isDefaultLanguage = (data[i].default == "true");	
 			if (isDefaultLanguage) {
@@ -117,8 +130,17 @@ $().ready( function () {
 			html += "<li class='{0}'> <a href='./webmessages.html?lcid={1}'> {2} ({3}) {4} </a> </li>".format(isSelectedLanguage?"active":"", encodeURIComponent(data[i].lcid), escapehtml(data[i].name), escapehtml(data[i].lcid), isDefaultLanguage?"*":"");
 		}
 		$("#wbsupportedlanguages").html(html);
-		var param = (selectedLanguage.length > 0) ? ("?lcid=" + escapehtml(selectedLanguage)): "";
-		$("#wbmessagestable").wbCommunicationManager().ajax( { url:"./wbmessagecompare?lcid=" + encodeURIComponent(selectedLcid) + "&dlcid=" + encodeURIComponent(defaultLcid),
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		$('#wbmessagestable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var messages_url = "./wbmessagecompare?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&lcid={4}&dlcid={5}".format(sort_dir, sort_field, index_start, itemsOnPage, encodeURIComponent(selectedLcid), encodeURIComponent(defaultLcid)); 
+
+		$("#wbmessagestable").wbCommunicationManager().ajax( { url: messages_url,
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetMessages,
@@ -219,7 +241,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbAddMessageForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("m_add_id_".length);
-		var object = $('#wbmessagestable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbmessagestable').wbSimpleTable().getRowDataWithKey(key);
 		var newObject = $.extend(true, {}, object);
 		newObject['key']="";
 		newObject['externalKey']="";
@@ -232,7 +254,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbUpdateMessageForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("m_edit_id_".length);
-		var object = $('#wbmessagestable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbmessagestable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbUpdateMessageForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbUpdateMessageModal').modal('show');		
 	});
@@ -241,7 +263,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeleteMessageForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("m_del_id_".length);
-		var object = $('#wbmessagestable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbmessagestable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeleteMessageForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeleteMessageModal').modal('show');		
 	});
