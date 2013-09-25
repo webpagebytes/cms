@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
+
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.exception.WBIOException;
 
@@ -65,6 +67,59 @@ public class WBController {
 		additionalInfo.put(PAGINATION_START, start);
 		additionalInfo.put(PAGINATION_COUNT, result.size());
 		additionalInfo.put(PAGINATION_TOTAL_COUNT, records.size());
+
+		return result;
+	}
+
+	public org.json.JSONArray filterPagination(HttpServletRequest request, org.json.JSONArray records, Map<String, Object> additionalInfo)
+	{
+		String paginationStart = request.getParameter(PAGINATION_START);
+		String paginationCount = request.getParameter(PAGINATION_COUNT);
+		
+		if (paginationCount == null || paginationStart == null)
+		{
+			additionalInfo.put(PAGINATION_START, 0);
+			additionalInfo.put(PAGINATION_COUNT, records.length());
+			additionalInfo.put(PAGINATION_TOTAL_COUNT, records.length());
+			return records;
+		} 
+
+		int start = 0;
+		int count = 0;
+		
+		try {
+			start = Integer.valueOf(paginationStart);
+			count = Integer.valueOf(paginationCount);
+		} catch (NumberFormatException e)
+		{
+			additionalInfo.put(PAGINATION_START, 0);
+			additionalInfo.put(PAGINATION_COUNT, records.length());
+			additionalInfo.put(PAGINATION_TOTAL_COUNT, records.length());
+			return records;
+		}
+		
+		if (count < 0 || start < 0)
+		{
+			return records;			
+		}
+		
+		int end = start + count;
+		org.json.JSONArray result = new org.json.JSONArray();
+		
+		for(int i = start; i < end && i < records.length(); i++)
+		{
+			try 
+			{
+				result.put(records.get(i));
+			} catch (JSONException e)
+			{
+				return null;
+			}
+		}
+		
+		additionalInfo.put(PAGINATION_START, start);
+		additionalInfo.put(PAGINATION_COUNT, result.length());
+		additionalInfo.put(PAGINATION_TOTAL_COUNT, records.length());
 
 		return result;
 	}

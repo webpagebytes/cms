@@ -81,7 +81,7 @@ $().ready( function () {
 	var selectedLcid = "";
 	var defaultLcid = "";
 	$('#wbmessagestable').wbSimpleTable( { columns: [ {display: "KEY", fieldId:"name", customHandler: displayHandler, isHtmlDisplay:true}, 
-	                                                  {display: "Value", fieldId: "value", customHandler: displayHandler, isHtmlDisplay:true}, 
+	                                                  {display: "Value", fieldId: "value", customHandler: displayHandler}, 
 	                                                  {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
 					 keyName: "key",
 					 tableBaseClass: "table table-condensed",

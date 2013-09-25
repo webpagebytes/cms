@@ -45,7 +45,7 @@ public class WBExportImportController extends WBController {
 		{	
 			JSONObject obj = new JSONObject();
 			obj.put("url", blobHandler.getUploadUrl(getAdminUriPart() + UPLOAD_RETURN_URL));
-			httpServletToolbox.writeBodyResponseAsJson(response, obj.toString(), null);		
+			httpServletToolbox.writeBodyResponseAsJson(response, obj, null);		
 		} catch (Exception e)
 		{
 			throw new WBIOException(e.getMessage());

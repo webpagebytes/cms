@@ -171,16 +171,50 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		if (request.getParameter("lcid") == null || request.getParameter("dlcid") == null)
 		{
 			errors.put("", WBErrors.WB_BAD_QUERY_PARAM);
-			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+			return;
 		}
+		
 		String lcid = request.getParameter("lcid");
 		String dlcid = request.getParameter("dlcid");
+
+		Map<String, Object> additionalInfo = new HashMap<String, Object> ();					
+		String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
+		String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
+		List<WBMessage> allRecords = null;
+
 		try
 		{
-			List<WBMessage> defaultRecords = null;
-			defaultRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
-			List<WBMessage> records = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
 			
+			List<WBMessage> defaultRecords = null;
+			List<WBMessage> records = null;
+
+			if (sortParamDir != null && sortParamProp != null)
+			{
+				if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_ASC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					defaultRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.ASCENDING);
+					records = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.ASCENDING);
+
+				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
+				{
+					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
+					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
+					defaultRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.DESCENDING);
+					records = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.DESCENDING);
+				} else
+				{
+					defaultRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
+					records = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
+				}
+			} else
+			{
+				defaultRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
+				records = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
+			}
+
 			Map<String, WBMessage> defaultRecordsMap = new HashMap<String, WBMessage>();
 			Set<String> bkDefaultNames = new HashSet<String>();
 			
@@ -204,18 +238,22 @@ public class WBMessageController extends WBController implements AdminDataStorag
 				jsonArray.put(json);
 				bkDefaultNames.remove(name);
 			}
-			
-			for(String name: bkDefaultNames)
+			if (bkDefaultNames.size()>0)
 			{
-				WBMessage message = defaultRecordsMap.get(name); 
-				JSONObject json = jsonFromMessage(message);
-				json.put("diff", "default");
-				jsonArray.put(json);
+				for(WBMessage message: defaultRecords)
+				{
+					if (bkDefaultNames.contains(message.getName())) {
+						JSONObject json = jsonFromMessage(message);
+						json.put("diff", "default");
+						jsonArray.put(json);					
+					}
+				}
 			}
+			jsonArray = filterPagination(request, jsonArray, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonArray);
-			
+			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
