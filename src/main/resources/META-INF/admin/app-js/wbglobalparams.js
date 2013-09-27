@@ -34,6 +34,7 @@ $().ready( function () {
 									 errorLabelsPrefix: 'errd',
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
+	var itemsOnPage = 50;	
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
@@ -43,12 +44,25 @@ $().ready( function () {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		}
 	}
-				
-	$('#wbGlobalParamsTable').wbTable( { columns: [ {display: "External Id", fieldId:"externalKey"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
-									{display:"Last Modified", fieldId:"lastModified", customHandling:true, customHandler: tableDisplayHandler}, {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
+
+	var columnClick = function (table, fieldId, dir) {	
+		var newUrl = window.document.location.href;
+		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
+		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
+		window.document.location.href = newUrl;		
+	}
+
+	$('#wbGlobalParamsTable').wbSimpleTable( { columns: [ {display: "External Id", fieldId:"externalKey", isHtmlDisplay:true}, 
+	                                                {display: "Name", fieldId: "name", isHtmlDisplay:true}, 
+	                                                {display: "Value", fieldId: "value"},
+	                                                {display:"Last Modified", fieldId:"lastModified", customHandler: tableDisplayHandler, isHtmlDisplay:true}, 
+	                                                {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-condensed table-color-header",
-						 paginationBaseClass: "pagination"
+						 paginationBaseClass: "pagination",
+	                     headerColumnBaseClass: "header-uri-table",
+	                     headerColumnIdClassPrefix: "uri-table-",							 
+	                     handlerColumnClick: columnClick					 
 						});
 		
 			
@@ -60,7 +74,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		$('#wbGlobalParamsTable').wbTable().insertRow(data.data);			
+		$('#wbGlobalParamsTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -85,7 +99,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbTable().updateRowWithKey(data.data,data.data["key"]);
+		$('#wbGlobalParamsTable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -110,7 +124,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbTable().deleteRowWithKey(data.data["key"]);
+		$('#wbGlobalParamsTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -136,7 +150,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbUpdateParameterForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbEditParam_".length);
-		var object = $('#wbGlobalParamsTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbGlobalParamsTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbUpdateParameterForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbUpdateParameterModal').modal('show');		
 	});
@@ -145,22 +159,30 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeleteParameterForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDelParam_".length);
-		var object = $('#wbGlobalParamsTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbGlobalParamsTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeleteParameterForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeleteParameterModal').modal('show');		
 	});
 
 	var fSuccessGetParameters = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbGlobalParamsTable').wbTable().insertRow(item);
-		});				
+		$('#wbGlobalParamsTable').wbSimpleTable().setRows(data.data);
+		$('#wbGlobalParamsTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 
 	}
 	var fErrorGetParameters = function (errors, data) {
 		alert(errors);
 	}
 	
-	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=&",
+	var page = getURLParameter('page') || 1;
+	if (page <= 0) page = 1;
+	var index_start = (page-1)*itemsOnPage;
+	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+	$('#wbGlobalParamsTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+	
+	var parameters_url = "./wbparameter?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&ownerExternalKey=&".format(sort_dir, sort_field, index_start, itemsOnPage); 
+
+	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: parameters_url,
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetParameters,
