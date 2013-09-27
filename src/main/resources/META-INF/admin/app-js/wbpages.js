@@ -30,7 +30,7 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );	
 	
-	var itemsOnPage = 10;	
+	var itemsOnPage = 20;	
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
@@ -76,7 +76,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModal').modal('hide');
-		$('#wbPagesTable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageForm').wbObjectManager().setErrors(errors);
@@ -99,13 +99,13 @@ $().ready( function () {
 
 	var fSuccessDuplicateParams = function ( data ) {
 		$('#wbDuplicatePageModal').modal('hide');
+		window.location.reload();			
 	};
 	var fErrorDuplicateParams = function (errors, data) {
 		alert(errors);
 	};
 
 	var fSuccessDuplicate = function ( data ) {
-		$('#wbPagesTable').wbSimpleTable().insertRow(data.data);	
 		var fromOwnerExternalKey = $('#wbcexternalKey').val();
 		var ownerExternalKey = data.data['externalKey'];
 		$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbparameter?fromOwnerExternalKey={0}&ownerExternalKey={1}".format(encodeURIComponent(fromOwnerExternalKey), encodeURIComponent(ownerExternalKey)),
@@ -158,7 +158,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModal').modal('hide');	
-		$('#wbPagesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		window.location.reload();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageForm').wbObjectManager().setErrors(errors);

@@ -74,7 +74,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		$('#wbGlobalParamsTable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -99,8 +99,9 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
+		window.location.reload();			
 	}
+	
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
 	}
@@ -124,7 +125,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbGlobalParamsTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		window.location.reload();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);

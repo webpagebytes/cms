@@ -54,7 +54,7 @@ $().ready( function () {
 										 errorLabelsPrefix: 'errd',
 										 errorLabelClassName: 'errorvalidationlabel',
 									    } );							
-	var itemsOnPage = 10;	
+	var itemsOnPage = 20;	
 	
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 	
@@ -98,36 +98,12 @@ $().ready( function () {
 							 handlerColumnClick: columnClick
 							});
 	
-
-	/*
-	$(document).on ("click", ".header-uri-table", function (e) {
-		e.preventDefault();
-		var classList = $(this).attr('class').split(/\s+/);
-		var thisElem = this;
-		$(classList).each(function(index, item){
-			if (item.indexOf('uri-table-') == 0){
-				var field = item.substring("uri-table-".length);
-				
-				var dir = 'asc';
-				if ($(thisElem).hasClass('header-asc')) {
-					dir = 'dsc';
-				}
-				
-				var url = "./weburis.html?sort_dir={0}&sort_field={1}".format(encodeURIComponent(dir), encodeURIComponent(field));
-				var newUrl = window.document.location.href;
-				newUrl = replaceURLParameter(newUrl, "sort_field", field);
-				newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
-				window.document.location.href = newUrl;
-			}
-
-		});
-	});
-	*/
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbModalUriAdd').modal('hide');
-		$('#wbtable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();
 	};
+	
 	var fErrorAdd = function (errors, data) {
 		var om = $('#wburiadd').wbObjectManager();
 		om.setErrors( om.convertErrors(errors, errorsGeneral));
@@ -135,24 +111,27 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbModalUriDuplicate').modal('hide');
-		$('#wbtable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	};
+
 	var fErrorDuplicate = function (errors, data) {
 		$('#wburiduplicate').wbObjectManager().setErrors(errors);
 	};
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbModalUriUpdate').modal('hide');		
-		$('#wbtable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
+		window.location.reload();
 	};
+
 	var fErrorUpdate = function (errors, data) {
 		$('#wburiupdate').wbObjectManager().setErrors(errors);
 	};
 
 	var fSuccessDelete = function ( data ) {
-		$('#wbModalUriDelete').modal('hide');	
-		$('#wbtable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		$('#wbModalUriDelete').modal('hide');
+		window.location.reload();			
 	};
+	
 	var fErrorDelete = function (errors, data) {
 		$('#wburidelete').wbObjectManager().setErrors(errors);
 	};

@@ -25,7 +25,7 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
-	var itemsOnPage = 10;	
+	var itemsOnPage = 20;	
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
@@ -107,7 +107,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddFileModal').modal('hide');
-		$('#wbFilesTable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbFileForm').wbObjectManager().setErrors(errors);
@@ -132,7 +132,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteFileModal').modal('hide');	
-		$('#wbFilesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		window.location.reload();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteFileForm').wbObjectManager().setErrors(errors);

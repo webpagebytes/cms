@@ -31,7 +31,7 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
-	var itemsOnPage = 10;	
+	var itemsOnPage = 20;	
 	
 	var columnClick = function (table, fieldId, dir) {	
 		var newUrl = window.document.location.href;
@@ -75,7 +75,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageModuleForm').wbObjectManager().setErrors(errors);
@@ -83,7 +83,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicatePageModuleModal').modal('hide');
-		$('#wbPageModulesTable').wbSimpleTable().insertRow(data.data);			
+		window.location.reload();			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicatePageModuleForm').wbObjectManager().setErrors(errors);
@@ -141,7 +141,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModuleModal').modal('hide');	
-		$('#wbPageModulesTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		window.location.reload();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageModuleForm').wbObjectManager().setErrors(errors);
