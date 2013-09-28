@@ -18,17 +18,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.webbricks.cache.DefaultWBCacheFactory;
+import com.webbricks.cache.WBCacheFactory;
+import com.webbricks.cache.WBProjectCache;
 import com.webbricks.cms.LocaleManager;
 import com.webbricks.cmsdata.WBArticle;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
+import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
-public class WBLanguagesController extends WBController {
+public class WBLanguagesController extends WBController implements AdminDataStorageListener<WBProject> {
 
 	private LocaleManager localeManager;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
@@ -36,7 +42,8 @@ public class WBLanguagesController extends WBController {
 	private AdminDataStorage adminStorage;
 	private ArrayList<String> sortedLanguages;
 	private Map<String, Locale> allLocales;
-
+	private WBProjectCache projectCache;
+	
 	private WBProject getProject() throws WBIOException
 	{
 		WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
@@ -51,6 +58,17 @@ public class WBLanguagesController extends WBController {
 		return project;
 	}
 	
+	public void notify (WBProject t, AdminDataStorageOperation o)
+	{
+		try
+		{
+			projectCache.Refresh();
+		} catch (WBIOException e)
+		{
+			// TBD
+		}
+	}
+
 	public WBLanguagesController()
 	{
 		httpServletToolbox = new HttpServletToolbox();
@@ -63,7 +81,12 @@ public class WBLanguagesController extends WBController {
 		Set<String> keyset = allLocales.keySet();
 		sortedLanguages.addAll(keyset);
 		Collections.sort(sortedLanguages);
+	
+		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		projectCache = wbCacheFactory.createWBProjectCacheInstance();
 		
+		adminStorage.addStorageListener(this);
+
 	}
 
 	public void getAllLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException

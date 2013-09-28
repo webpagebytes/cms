@@ -33,7 +33,7 @@
 
 			paginationBaseClass: "",
 			
-			tableItemMaxLength: 40
+			textLengthToCut: 40
 			},
 		getOptions: function () {
 			if (! this.options) 

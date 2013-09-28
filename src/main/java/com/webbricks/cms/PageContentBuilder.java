@@ -209,7 +209,8 @@ public class PageContentBuilder {
 			}
 			if (!supportedLanguagesSet.contains(lcid))
 			{
-				throw new WBLocaleException("Locale not supported " + lcid);
+				String supportedLangs = "";
+				throw new WBLocaleException("Locale not supported in %s %s ".format(supportedLanguagesSet.toString(),lcid));
 			}
 			pageModel.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, localeLanguage);
 			pageModel.put(PageContentBuilder.LOCALE_COUNTRY_KEY, localeCountry);
