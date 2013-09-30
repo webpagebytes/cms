@@ -9,7 +9,7 @@
 <script src="./bs/js/bootstrap.js" type="text/javascript"></script>
 <script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
-<script src="./app-js/wburisedit.js" type="text/javascript"></script>
+<script src="./app-js/wburiedit.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="navbar">
@@ -28,54 +28,64 @@
 		</div>
 	</div>
 	
+	<div id="wbUriSummary" class="row-fluid">
+		<div class="well wbwell">
+	    <ul class=" wbbreadcrumb" >
+	        <li> <a href="./weburis.html"> Site urls </a> <span class="wbdivider">/</span> </li>
+	        <li> <span id="wbsummaryuri"></span> </li>
+	    </ul>
+	    <div class="wblastmodified">
+	    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
+	    </div>
+	    </div>
+    </div>
+	
 	<div class="wbcolorcontent">
 		<div class="wbinnercontent">
-		<form class="form-horizontal" id="wburiduplicate">
-		
-		<div class="modal-body">
+		<form class="form-horizontal" id="wburiedit">
 			<fieldset>
 				<div class="control-group">
 					<div class="controls">
-						<span id="errcgeneral" class="help-inline"></span>
+						<span id="erregeneral" class="help-inline"></span>
 					</div>										
 				</div>
-				<div class="alert alert-error">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<p><b> 404 status code for this url </b> </p>
-				<p> This url to return a valid response you must:
-				</p>
-				<p> Make the url like </p>
-				<p> assign a valid external id for a page or file </p>
+				<div class="control-group">
+					<label for="externalKey" class="control-label">External Key</label>
+					<div class="controls">
+						<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+						<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+						<span id="erreexternmalKey" class="help-inline"></span>
+					</div>
 				</div>
-				
+
 				<div class="control-group">
 					<label class="control-label" for="uri">Site url</label>
 					<div class="controls">
-						<input id="wbcuri" name="uri" class="wb-input-xlarge" type="text">
-						<span id="errcuri" class="help-inline"></span>
+						<input id="wbeuri" name="uri" class="wb-input-xlarge" type="text">
+						<span id="erreuri" class="help-inline"></span>
 					</div>										
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="enabled">Make the url live</label>
+					<label class="control-label" for="enabled">Is the url live?</label>
 					
 					<div class="controls">
-						<input id="wbcenabled" type="radio" name="enabled" value="1"> YES
+						<input id="wbeenabled" type="radio" name="enabled" value="1"> YES
 						<input type="radio" name="enabled" value="0"> NO
-						<span id="errcenabled" class="help-inline"></span>
+						<span id="erreenabled" class="help-inline"></span>
 					</div>										
 				</div>
 			
 			    <div class="control-group">
                     <label class="control-label" for="controllerClass"> Http operation</label>
                     <div class="controls">
-                        <select name="controllerClass" id="wbchttpOperation">
+                        <select name="controllerClass" id="wbehttpOperation">
 							<option>GET</option>
 							<option>POST</option>
 							<option>PUT</option>
 							<option>DELETE</option>
 						</select>
-						<span id="errchttpOperation" class="help-inline error"></span>
+						<span id="errehttpOperation" class="help-inline error"></span>
 					</div>
                 </div>
 				
@@ -83,38 +93,30 @@
 					<label class="control-label" for="resourceType">Resource type</label>
 					
 					<div class="controls">
-						<input id="wbcresourceType" type="radio" name="resourceType" value="1"> Edit content
+						<input id="wberesourceType" type="radio" name="resourceType" value="1"> Edit content
 						<input type="radio" name="resourceType" value="2"> Existing file
-						<span id="errcresourceType" class="help-inline"></span>
+						<span id="erreresourceType" class="help-inline"></span>
 					</div>										
 				</div>
 
                 <div class="control-group">
-                    <label class="control-label" for="wbcresourceExternalKey"> Resource External Key </label>
+                    <label class="control-label" for="wberesourceExternalKey"> Resource External Key </label>
                     <div class="controls">
-                        <input id="wbcresourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" >  <a href=""> Split traffic on this resource </a>
-						<span id="errcresourceExternalKey" class="help-inline"></span>
+                        <input id="wberesourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
+						<span id="erreresourceExternalKey" class="help-inline"></span>
 					</div>
                 </div>
-				
-				<div class="control-group">
-                    <label class="control-label" for="wbcresourceExternalKey"> Split traffic on this url </label>
-                    <div class="controls">
-                   	</div>
-                </div>
-				
+								
 			</fieldset>
 		
-		</div>
-		<div class="modal-footer">
-				<button class="btn btn-primary uriDuplicateSave" type="submit">Duplicate</button>
-				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
-		</div>
+			<div class="marginv">
+				<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>
+				<button class="btn wbUriEditCancelBtnClass" type="submit">Cancel</button>
+			</div>
 		</form>
 
 		</div>
 	</div>
-	
 
 	
 </body>
