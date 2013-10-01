@@ -19,7 +19,8 @@ $().ready( function () {
 								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_URI_BAD_FORMAT"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
 								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
-								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ]
+								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
+								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}]
 							  };
 
 
@@ -47,19 +48,19 @@ $().ready( function () {
 			return escapehtml("Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else if (fieldId == 'uri') {
 			return escapehtml(record[fieldId]);
-		} 
-		
+		} 		
 	};
+	
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
 		$('#wburiedit').wbObjectManager().populateFieldsFromObject(data.data);
-	}
+	};
 	
 	var fErrorGetUri = function (errors, data) {
 		alert(errors);
-	}
+	};
 
 	var uriKey = getURLParameter('key'); 
 	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wburi/" + encodeURIComponent(uriKey),
@@ -68,6 +69,63 @@ $().ready( function () {
 												 functionSuccess: fSuccessGetUri,
 												 functionError: fErrorGetUri
 												} );
+	
+	var externalKeysArrays = { 'files':[], 'pages': [] }
+	
+	var fS_GetFilesPageSummary = function (data) {		
+		var array = { 'files':[], 'pages': [] };
+		for (var i in data['data_files']) {
+			var item = data['data_files'][i];
+			var val = "{0} {{1}}".format(item['name'], item['externalKey']);
+			array['files'].push(val);
+		};
+		for (var i in data['data_pages']) {
+			var item = data['data_pages'][i];
+			var val = "{0} {{1}}".format(item['name'], item['externalKey']);
+			array['pages'].push(val);
+		}		
+		externalKeysArrays = array;
+	};
+	
+	var fE_GetFilesPageSummary = function (data) {
+		alert(errors);
+	};
+	
+	var updaterFunction = function(item) {
+		//return item;
+		x = item.lastIndexOf('{');
+		if (x>=0) {
+			y = item.lastIndexOf('}');
+			if (y>=0) {
+				return item.substring(x+1,y);
+			}
+		}
+		return item;
+	};
+	
+	var sourceFunction = function(query, process) {
+		//what is selected files or pages ?
+		if ($('input[name="resourceType"]:checked').val() == "1") {
+			return externalKeysArrays['pages'];
+		} else if ($('input[name="resourceType"]:checked').val() == "2") {
+			return externalKeysArrays['files'];			
+		} 
+		return [];		
+	}
+	
+	$('#wberesourceExternalKey').typeahead( {
+		source: sourceFunction,
+		items: 3,
+		updater: updaterFunction
+	});
+
+	
+	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wbsummary_pages_files",
+		 httpOperation:"GET", 
+		 payloadData:"",
+		 functionSuccess: fS_GetFilesPageSummary,
+		 functionError: fE_GetFilesPageSummary
+		} );
 	
 	var fSuccessEdit = function ( data ) {
 		window.location.href = "./weburis.html";

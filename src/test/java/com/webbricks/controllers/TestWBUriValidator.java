@@ -34,7 +34,6 @@ public void test_validateCreateWBUri_empty()
 	errorsContainer.put("uri", WBErrors.ERROR_URI_LENGTH);
 	errorsContainer.put("httpOperation", WBErrors.ERROR_INVALID_HTTP_OPERATION);
 	errorsContainer.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 	
 	Map<String, String> errors1 = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors1));
@@ -97,7 +96,6 @@ public void test_validateCreateWBUri_BadResourceType()
 @Test
 public void test_validateCreateWBUri_NoResourceExternalKey()
 {
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
@@ -109,7 +107,6 @@ public void test_validateCreateWBUri_NoResourceExternalKey()
 @Test
 public void test_validateCreateWBUri_ZeroResourceExternalKey()
 {
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("");
@@ -149,7 +146,6 @@ public void test_validateUpdateWBUri_BadResourceType()
 @Test
 public void test_validateUpdateWBUri_NoResourceExternalKey()
 {
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 	wburi.setHttpOperation("GET");
 	wburi.setKey(1L);
 	wburi.setUri("/test");
@@ -162,7 +158,6 @@ public void test_validateUpdateWBUri_NoResourceExternalKey()
 @Test
 public void test_validateUpdateWBUri_ZeroResourceExternalKey()
 {
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 	wburi.setKey(1L);
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
@@ -250,7 +245,6 @@ public void test_validateUpdateWBUri_empty()
 	errorsContainer.put("uri", WBErrors.ERROR_URI_LENGTH);
 	errorsContainer.put("httpOperation", WBErrors.ERROR_INVALID_HTTP_OPERATION);
 	errorsContainer.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
-	errorsContainer.put("resourceExternalKey", WBErrors.ERROR_NO_RESOURCE_EXTERNAL_KEY);
 
 	Map<String, String> errors1 = uriValidator.validateUpdate(wburi);
 	assertTrue( errorsContainer.equals(errors1));
