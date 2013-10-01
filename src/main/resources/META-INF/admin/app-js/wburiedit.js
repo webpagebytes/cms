@@ -44,9 +44,9 @@ $().ready( function () {
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == "lastModified") {
-			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
+			return escapehtml("Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else if (fieldId == 'uri') {
-			return escapehtml(record[fieldId].substring(1));
+			return escapehtml(record[fieldId]);
 		} 
 		
 	};
