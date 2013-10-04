@@ -46,7 +46,8 @@ public class PublicContentServlet extends HttpServlet {
 	
 	private String uriCommonPrefix = ""; 
 	
-	private URLMatcher urlMatcher;
+	private URLMatcher urlMatcherArray[] = new URLMatcher[4];
+	
 	private PageContentBuilder pageContentBuilder;
 	private FileContentBuilder fileContentBuilder;
 	private WBCacheInstances cacheInstances;
@@ -81,10 +82,13 @@ public class PublicContentServlet extends HttpServlet {
 					wbCacheFactory.createWBMessagesCacheInstance(),
 					wbCacheFactory.createWBProjectCacheInstance());
 
-			Set<String> allUris = cacheInstances.getWBUriCache().getAllUris();
-			this.urlMatcher = new URLMatcher();
-			this.urlMatcher.initialize(allUris, cacheInstances.getWBUriCache().getCacheFingerPrint());
-						
+			
+			for(int i=0; i<4; i++)
+			{
+				Set<String> uris = cacheInstances.getWBUriCache().getAllUris(i);
+				this.urlMatcherArray[i] = new URLMatcher();
+				this.urlMatcherArray[i].initialize(uris, cacheInstances.getWBUriCache().getCacheFingerPrint());
+			}
 			pageContentBuilder = new PageContentBuilder(cacheInstances);
 			pageContentBuilder.initialize();
 			
@@ -112,14 +116,17 @@ public class PublicContentServlet extends HttpServlet {
 			return;
 		}
 		
+		
 		req.setAttribute(URI_PREFIX, uriCommonPrefix);
 		
+		int currentHttpIndex = cacheInstances.getWBUriCache().httpToIndex(req.getMethod().toUpperCase());
+		URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
 		//reinitialize the matchurlToPattern if needed
 		if (cacheInstances.getWBUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
 		{
 			try
 			{
-				Set<String> allUris = cacheInstances.getWBUriCache().getAllUris();
+				Set<String> allUris = cacheInstances.getWBUriCache().getAllUris(currentHttpIndex);
 				urlMatcher.initialize(allUris, cacheInstances.getWBUriCache().getCacheFingerPrint());
 			} catch (WBIOException e)
 			{
@@ -136,7 +143,7 @@ public class PublicContentServlet extends HttpServlet {
 		{
 			try
 			{
-				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern());
+				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
 				if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

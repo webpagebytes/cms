@@ -24,7 +24,11 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 	private MemcacheService memcache = null;
 	private static final String memcacheNamespace = "cacheWBUri";
 	private static final String memcacheMapKey = "keyToWBUri";
-	private static final String memcacheUrlsKey = "allUris";
+	private static final String memcacheUrlsKeyGet = "allUrisGet";
+	private static final String memcacheUrlsKeyPost = "allUrisPost";
+	private static final String memcacheUrlsKeyPut = "allUrisPut";
+	private static final String memcacheUrlsKeyDelete = "allUrisDelete";
+	
 	private static final String memcacheFingerPrint = "fingerPrint";
 	
 	private AdminDataStorage adminDataStorage = null;
@@ -36,37 +40,121 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		random = new SecureRandom();
 	}
 	
+	public int httpToIndex(String httpOperation)
+	{
+		if (httpOperation.toUpperCase().equals("GET"))
+		{
+			return HTTP_GET_INDEX;
+		} else if (httpOperation.toUpperCase().equals("POST"))
+		{
+			return HTTP_POST_INDEX;
+		} else if (httpOperation.toUpperCase().equals("PUT"))
+		{
+			return HTTP_PUT_INDEX;
+		} else if (httpOperation.toUpperCase().equals("DELETE"))
+		{
+			return HTTP_DELETE_INDEX;
+		}
+		return -1;	
+	}
+	public String indexToHttp(int httpIndex)
+	{
+		if (httpIndex == WBUrisCache.HTTP_GET_INDEX)
+		{
+			return "GET";
+		} else if (httpIndex == WBUrisCache.HTTP_POST_INDEX)
+		{
+			return "POST";
+		} else if (httpIndex == WBUrisCache.HTTP_PUT_INDEX)
+		{
+			return "PUT";
+		} else if (httpIndex == WBUrisCache.HTTP_DELETE_INDEX)
+		{
+			return "DELETE";
+		}
+		return null;
+	}
+
+	private String httpIndextoString(int httpIndex)
+	{
+		if (httpIndex == WBUrisCache.HTTP_GET_INDEX)
+		{
+			return memcacheUrlsKeyGet;
+		} else if (httpIndex == WBUrisCache.HTTP_POST_INDEX)
+		{
+			return memcacheUrlsKeyPost;
+		} else if (httpIndex == WBUrisCache.HTTP_PUT_INDEX)
+		{
+			return memcacheUrlsKeyPut;
+		} else if (httpIndex == WBUrisCache.HTTP_DELETE_INDEX)
+		{
+			return memcacheUrlsKeyDelete;
+		}
+		return null;
+	}
+	
 	public void Refresh() throws WBIOException
 	{
 		log.log(Level.INFO, "GaeWBUriCache:Refresh");
-		RefreshInternal(null, null);
+		RefreshInternal(null, null, null, null, null);
 	}
 
-	private void RefreshInternal(Map<String, WBUri> keyMap, Map<String, WBUri> urisMap) throws WBIOException
+	private void RefreshInternal(Map<String, WBUri> keyMapAll, 
+								 Map<String, WBUri> urisMapGet,
+								 Map<String, WBUri> urisMapPost,
+								 Map<String, WBUri> urisMapPut,
+								 Map<String, WBUri> urisMapDelete) throws WBIOException
 	{
 		synchronized (this) {
 			log.log(Level.INFO, "GaeWBUriCache:RefreshInternal");
 			List<WBUri> wburis = adminDataStorage.getAllRecords(WBUri.class);
-			if (keyMap == null)
+			if (keyMapAll == null)
 			{
-				keyMap = new HashMap<String, WBUri>();
+				keyMapAll = new HashMap<String, WBUri>();
 			}
-			if (urisMap == null)
+			if (urisMapGet == null)
 			{
-				urisMap = new HashMap<String, WBUri>();
+				urisMapGet = new HashMap<String, WBUri>();
 			}
+			if (urisMapPost == null)
+			{
+				urisMapPost = new HashMap<String, WBUri>();
+			}
+			if (urisMapPut == null)
+			{
+				urisMapPut = new HashMap<String, WBUri>();
+			}
+			if (urisMapDelete == null)
+			{
+				urisMapDelete = new HashMap<String, WBUri>();
+			}
+			
 			for (WBUri uri : wburis)
 			{
-				keyMap.put(uri.getExternalKey(), uri);
-				urisMap.put(uri.getUri(), uri);
+				keyMapAll.put(uri.getExternalKey(), uri);
+				if (uri.getHttpOperation().equals("GET"))
+				{
+					urisMapGet.put(uri.getUri(), uri);
+				} else if (uri.getHttpOperation().equals("POST"))
+				{
+					urisMapPost.put(uri.getUri(), uri);
+				} else if (uri.getHttpOperation().equals("PUT"))
+				{
+					urisMapPut.put(uri.getUri(), uri);
+				} else if (uri.getHttpOperation().equals("DELETE"))
+				{
+					urisMapDelete.put(uri.getUri(), uri);
+				}					
 			}
-			memcache.put(memcacheMapKey, keyMap, Expiration.byDeltaSeconds(600));
-			memcache.put(memcacheUrlsKey, urisMap, Expiration.byDeltaSeconds(600));
+			memcache.put(memcacheMapKey, keyMapAll, Expiration.byDeltaSeconds(6000));
+			memcache.put(memcacheUrlsKeyGet, urisMapGet, Expiration.byDeltaSeconds(6000));
+			memcache.put(memcacheUrlsKeyPost, urisMapPost, Expiration.byDeltaSeconds(6000));
+			memcache.put(memcacheUrlsKeyPut, urisMapPut, Expiration.byDeltaSeconds(6000));
+			memcache.put(memcacheUrlsKeyDelete, urisMapDelete, Expiration.byDeltaSeconds(6000));
 			
 			Long fingerPrint = 0L;
 			while ((fingerPrint = random.nextLong()) == 0) { };			
-			memcache.put(memcacheFingerPrint, fingerPrint, Expiration.byDeltaSeconds(600));
-			
+			memcache.put(memcacheFingerPrint, fingerPrint, Expiration.byDeltaSeconds(6000));			
 			
 		}
 	}
@@ -81,24 +169,35 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		log.log(Level.INFO, "GaeWBUriCache:get could not find externalKey " + externalKey);
 		
 		Map<String, WBUri> refreshData = new HashMap<String, WBUri>(); 
-		RefreshInternal(refreshData, null);
+		RefreshInternal(refreshData, null, null, null, null);
 		if (refreshData.containsKey(externalKey))
 		{
 			return mapkeys.get(externalKey);
 		}		
 		return null;
 	}
+
 	
-	public synchronized WBUri get(String uri) throws WBIOException
+	public synchronized WBUri get(String uri, int httpIndex) throws WBIOException
 	{
-		HashMap<String, WBUri> mapkeys = (HashMap<String, WBUri>) memcache.get(memcacheUrlsKey);
+		HashMap<String, WBUri> mapkeys = (HashMap<String, WBUri>) memcache.get(httpIndextoString(httpIndex));
 		if (mapkeys != null && mapkeys.containsKey(uri))
 		{
 			return (WBUri) mapkeys.get(uri);
 		}
 		log.log(Level.INFO, "GaeWBUriCache:get could not find " + uri);
 		Map<String, WBUri> refreshData = new HashMap<String, WBUri>(); 
-		RefreshInternal(null, refreshData);
+		
+		if (httpIndex == HTTP_GET_INDEX) {
+			RefreshInternal(null, refreshData, null, null, null);
+		} else if (httpIndex == HTTP_POST_INDEX) {
+			RefreshInternal(null, null, refreshData, null, null);
+		} else if (httpIndex == HTTP_PUT_INDEX) {
+			RefreshInternal(null, null, null, refreshData, null);
+		} else if (httpIndex == HTTP_DELETE_INDEX) {
+			RefreshInternal(null, null, null, null, refreshData);
+		}
+			
 		if (refreshData.containsKey(uri))
 		{
 			return refreshData.get(uri);
@@ -106,16 +205,25 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		return null;
 	}
 
-	public synchronized Set<String> getAllUris() throws WBIOException
+	public synchronized Set<String> getAllUris(int httpIndex) throws WBIOException
 	{
-		HashMap<String, WBUri> mapkeys = (HashMap<String, WBUri>) memcache.get(memcacheUrlsKey);
+		HashMap<String, WBUri> mapkeys = (HashMap<String, WBUri>) memcache.get( httpIndextoString(httpIndex));
 		if (mapkeys != null )
 		{
 			return mapkeys.keySet();
 		}
 		log.log(Level.INFO, "GaeWBUriCache:get could not getAllUris ");
 		Map<String, WBUri> refreshData = new HashMap<String, WBUri>(); 
-		RefreshInternal(null, refreshData);
+		if (httpIndex == HTTP_GET_INDEX) {
+			RefreshInternal(null, refreshData, null, null, null);
+		} else if (httpIndex == HTTP_POST_INDEX) {
+			RefreshInternal(null, null, refreshData, null, null);
+		} else if (httpIndex == HTTP_PUT_INDEX) {
+			RefreshInternal(null, null, null, refreshData, null);
+		} else if (httpIndex == HTTP_DELETE_INDEX) {
+			RefreshInternal(null, null, null, null, refreshData);
+		}
+
 		return refreshData.keySet();
 	}
 
