@@ -14,6 +14,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webbricks.appinterfaces.IPageModelProvider;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
@@ -26,6 +27,7 @@ import com.webbricks.cmsdata.WBPredefinedParameters;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
+import com.webbricks.controllers.WBController;
 import com.webbricks.exception.WBContentException;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
@@ -49,6 +51,7 @@ import com.webbricks.template.WBTemplateEngine;
 public class PageContentBuilder {
 	public static final String URL_PARAMETERS_KEY = "wbUrlParams";
 	public static final String PAGE_PARAMETERS_KEY = "wbPageParams";
+	public static final String PAGE_CONTROLLER_MODEL_KEY = "wbControllerModel";
 	public static final String LOCALE_LANGUAGE_KEY = "wbLocaleLanguage";
 	public static final String LOCALE_COUNTRY_KEY = "wbLocaleCountry";
 	public static final String LOCALE_MESSAGES = "wbMessages";
@@ -73,6 +76,7 @@ public class PageContentBuilder {
 	
 	private WBTemplateEngine templateEngine;
 	private WBCacheInstances cacheInstances;
+	private Map<String, Object> customControllers;
 	
 	public PageContentBuilder()
 	{
@@ -81,6 +85,7 @@ public class PageContentBuilder {
 	public PageContentBuilder(WBCacheInstances cacheInstances)
 							
 	{
+		this.customControllers = new HashMap<String, Object>();
 		this.cacheInstances = cacheInstances;
 	}
 	
@@ -198,6 +203,7 @@ public class PageContentBuilder {
 				}
 			}
 		}
+		
 		addStaticParameters(request, pageParams);
 		
 		if (languageParamPresent == true)
@@ -240,6 +246,27 @@ public class PageContentBuilder {
 		
 		Map<String, Object> pageModel = getPageModel(request, urlMatcherResult, wbWebPage, project);
 
+		String controllerClassName = wbWebPage.getPageModelProvider();
+		if (controllerClassName !=null && controllerClassName.length()>0)
+		{
+			Map<String, Object> controllerModel = new HashMap<String, Object>();
+			IPageModelProvider controllerInst = null;
+			if (customControllers.containsKey(controllerClassName))
+			{
+				controllerInst = (IPageModelProvider) customControllers.get(controllerClassName);
+			} else
+			{
+				try {
+				controllerInst = (IPageModelProvider) Class.forName(controllerClassName).newInstance();
+				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
+			}
+			if (controllerInst != null)
+			{
+				controllerInst.getPageModel(request, controllerModel);
+				pageModel.put(PAGE_CONTROLLER_MODEL_KEY, controllerModel);
+			}
+			
+		}
 		String result = "";
 		try {
 			StringWriter out = new StringWriter();

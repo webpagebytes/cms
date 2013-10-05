@@ -89,6 +89,13 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 				TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
 				rootMap.put(PageContentBuilder.PAGE_PARAMETERS_KEY, hashModel);
 			}
+
+			params = rootMap.get(PageContentBuilder.PAGE_CONTROLLER_MODEL_KEY);
+			if (! (params instanceof TemplateHashModel))
+			{
+				TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
+				rootMap.put(PageContentBuilder.PAGE_CONTROLLER_MODEL_KEY, hashModel);
+			}
 			
 			if (null == rootMap.get(PageContentBuilder.LOCALE_MESSAGES))
 			{

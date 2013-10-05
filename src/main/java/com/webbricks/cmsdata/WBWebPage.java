@@ -32,6 +32,9 @@ public class WBWebPage implements Serializable {
 	@AdminFieldStore
 	private Long hash;
 	
+	@AdminFieldStore
+	private String pageModelProvider;
+	
 	public Long getKey() {
 		return key;
 	}
@@ -96,10 +99,20 @@ public class WBWebPage implements Serializable {
 		return hash;
 	}
 
-
 	public void setHash(Long hash) {
 		this.hash = hash;
 	}
 
+
+	public String getPageModelProvider() {
+		return pageModelProvider;
+	}
+
+
+	public void setPageModelProvider(String pageModelProvider) {
+		this.pageModelProvider = pageModelProvider;
+	}
+
+	
 	
 }
