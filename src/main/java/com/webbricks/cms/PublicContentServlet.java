@@ -1,12 +1,15 @@
 package com.webbricks.cms;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 
 
 import javax.servlet.ServletConfig;
@@ -33,6 +36,7 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBLocaleException;
 import com.webbricks.exception.WBSetKeyException;
+import com.webbricks.exception.WBTemplateException;
 import com.webbricks.template.WBFreeMarkerModuleDirective;
 
 public class PublicContentServlet extends HttpServlet {
@@ -165,7 +169,7 @@ public class PublicContentServlet extends HttpServlet {
 						String cqp = req.getParameter(CACHE_QUERY_PARAM);
 						if (cqp != null && cqp.equals(webPage.getHash().toString()))
 						{
-							// there is a request that can be cached
+							// this is a request that can be cached, todo customize the cache time
 							resp.addHeader("cache-control", "max-age=86400");
 						}
 					} else
@@ -202,6 +206,16 @@ public class PublicContentServlet extends HttpServlet {
 					return;										
 				}
 			} 
+			catch (WBTemplateException e)
+			{
+				log.log(Level.SEVERE, "Template ERROR: ", e);
+				ServletOutputStream os = resp.getOutputStream();
+				String stack = Arrays.toString(e.getStackTrace());
+				os.write(e.getMessage().getBytes("UTF-8")); os.write("\n".getBytes());
+				os.write(stack.getBytes("UTF-8"));
+				os.flush();
+				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
+			}
 			catch (WBLocaleException e)
 			{
 				log.log(Level.SEVERE, "ERROR: ", e);

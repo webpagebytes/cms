@@ -1,7 +1,6 @@
 package com.webbricks.template;
 
 import java.io.IOException;
-
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +10,9 @@ import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.cmsdata.WBWebPageModule;
+import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
+import com.webbricks.exception.WBTemplateException;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -69,10 +70,17 @@ public class WBFreeMarkerModuleDirective extends WBFreeMarkerDirectiveBase {
         	{
         		env.getOut().write(pageModule.getHtmlSource());
         	}
-        } catch (WBIOException e)
+        } 
+        catch (WBTemplateException e)
         {
-        	log.log(Level.SEVERE, "ERROR: ", e);
-        	throw new TemplateModelException("WBFreeMarkerModuleDirective IO exception when reading page module: " + externalKey);               	
+        	String message = "WBFreeMarkerModuleDirective template exception when reading page module: " + externalKey;
+        	message += "\n";
+        	message += e.getMessage();
+        	throw new TemplateModelException(message);
+        }
+        catch (WBException e)
+        {
+        	throw new TemplateModelException("WBFreeMarkerModuleDirective exception when reading page module: " + externalKey);               	
         }
     }
 

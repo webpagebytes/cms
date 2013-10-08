@@ -89,15 +89,15 @@ public class PageContentBuilder {
 		this.cacheInstances = cacheInstances;
 	}
 	
-	public void initialize() throws WBIOException
+	public void initialize() throws WBException
 	{
 		try
 		{
 			templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
 			templateEngine.initialize();
-		} catch (IOException e)
+		} catch (WBException e)
 		{
-			throw new WBIOException("Cannot initialize WB Template Engine", e);
+			throw e;
 		}
 	}
 	
@@ -273,11 +273,9 @@ public class PageContentBuilder {
 			
 			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), pageModel, out);
 			result += out.toString();
-		} catch (IOException e)
+		} catch (WBException e)
 		{
-			log.log(Level.SEVERE, "ERROR: ", e);
-			
-			throw new WBContentException("Can't generate content for request " + urlMatcherResult.getUrlRequest());
+			throw e;
 		}
 		
 		return result;

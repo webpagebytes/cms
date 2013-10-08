@@ -19,12 +19,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
+
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.exception.WBIOException;
 
 import freemarker.core.Environment;
 import freemarker.ext.beans.SimpleMapModel;
@@ -224,7 +227,7 @@ public void process_exception()
 		
 		assertTrue (false);
 	} 
-	catch (IOException e)
+	catch (WBIOException e)
 	{
 		PowerMock.verify(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 		assertTrue (rootMap.containsKey(PageContentBuilder.LOCALE_LANGUAGE_KEY));

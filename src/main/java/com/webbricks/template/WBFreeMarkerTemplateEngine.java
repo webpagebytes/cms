@@ -1,6 +1,5 @@
 package com.webbricks.template;
 import java.io.IOException;
-
 import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
@@ -15,6 +14,9 @@ import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBGaeBlobHandler;
+import com.webbricks.exception.WBException;
+import com.webbricks.exception.WBIOException;
+import com.webbricks.exception.WBTemplateException;
 
 import freemarker.core.Environment;
 import freemarker.ext.beans.BeansWrapper;
@@ -23,6 +25,7 @@ import freemarker.ext.beans.SimpleMapModel;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import freemarker.template.TemplateHashModel;
 
 public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
@@ -39,7 +42,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		this.cacheInstances = cacheInstances;
 	}
 	
-	public void initialize() throws IOException
+	public void initialize() throws WBIOException
 	{
 		log.log(Level.INFO, "WBFreeMarkerTemplateEngine initialize");
 		
@@ -67,7 +70,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		configuration.setSharedVariable(PageContentBuilder.ARTICLE_DIRECTIVE, articleDirective);
 				
 	}
-	public void process(String templateName, Map<String, Object> rootMap, Writer out) throws IOException
+	public void process(String templateName, Map<String, Object> rootMap, Writer out) throws WBException
 	{
 		try {
 			log.log(Level.INFO, "call WBFreeMarkerTemplateEngine process for " + templateName);
@@ -117,10 +120,14 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 			}
 			Environment env = t.createProcessingEnvironment(rootMap, out);
 			env.process();
-		} catch (Exception e)
+		} 
+		catch (TemplateException e)
 		{
-			log.log(Level.SEVERE, "ERROR: ", e);
-			throw (new IOException("Template Exception", e));
+			throw new WBTemplateException("Freemarker Template Exception " + e.getMessage(), e);
+		}		
+		catch (IOException e)
+		{
+			throw (new WBIOException("IO Exception", e));
 		}
 	}
 	
