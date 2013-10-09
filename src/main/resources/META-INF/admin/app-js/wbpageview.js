@@ -35,12 +35,7 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
-	var swfzc = getAdminPath() + '/zeroclipboard/ZeroClipboard.swf';
-	ZeroClipboard.setDefaults( { moviePath: swfzc } );
-	var zcButtons = $.find('.btn-clipboard');
-	$.each (zcButtons, function (index, elem) {
-		var zc = new ZeroClipboard(elem);
-	});
+	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
