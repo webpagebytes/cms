@@ -46,76 +46,6 @@
 		</div>
 	</div>
 	
-	<div class="modal hide" id="wbModalUriAdd">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">×</a>
-			<h3> Create site url</h3>
-		</div>
-		<form class="form-inline" id="wburiadd">
-		
-		<div class="modal-body">
-			<fieldset>
-				<div class="control-group">
-					<div class="controls">
-						<span id="errageneral" class="help-inline"></span>
-					</div>										
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="uri">Site url</label>
-					<div class="controls">
-						<input id="wbauri" class="wb-input-xlarge" type="text">
-						<span id="errauri" class="help-inline"></span>
-					</div>										
-				</div>
-				
-				<div class="control-group">
-					<div class="controls">
-						Make the url live <input id="wbaenabled" type="radio" name="enabled" value="1"> YES
-										  <input type="radio" name="enabled" value="0"> NO
-						<span id="errenabled" class="help-inline"></span>
-					</div>										
-				</div>
-				
-               <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Http operation</label>
-                    <div class="controls">
-                        <select id="wbahttpOperation">
-							<option>GET</option>
-							<option>POST</option>
-							<option>PUT</option>
-							<option>DELETE</option>
-						</select>
-						<span id="errahttpOperation" class="help-inline error"></span>
-					</div>
-                </div>
-				
-				<div class="control-group">
-					<div class="controls">
-						Resource type <input id="wbaresourceType" type="radio" name="resourceType" value="1"> Edit content
-										  <input type="radio" name="resourceType" value="2"> Existing file
-						<span id="erraresourceType" class="help-inline"></span>
-					</div>										
-				</div>
-
-            	 <div class="control-group">
-                    <label class="control-label" for="wbaresourceExternalKey"> Resource External Key </label>
-                    <div class="controls">
-                        <input id="wbaresourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wbaresourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-						<span id="erraresourceExternalKey" class="help-inline"></span>
-					</div>
-                </div>
-				
-			</fieldset>
-		
-		</div>
-		<div class="modal-footer">
-				<button class="btn btn-primary uriAddSave" type="submit">Create</button>
-				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
-		</div>
-		</form>
-    </div>
-
 	<div class="modal hide" id="wbModalUriDuplicate">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
@@ -139,42 +69,10 @@
 					</div>										
 				</div>
 				
-				<div class="control-group">
-					<div class="controls">
-						Make the url live <input id="wbcenabled" type="radio" name="enabled" value="1"> YES
-										  <input type="radio" name="enabled" value="0"> NO
-						<span id="errcenabled" class="help-inline"></span>
-					</div>										
-				</div>
-			
-			    <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Http operation</label>
-                    <div class="controls">
-                        <select name="controllerClass" id="wbchttpOperation">
-							<option>GET</option>
-							<option>POST</option>
-							<option>PUT</option>
-							<option>DELETE</option>
-						</select>
-						<span id="errchttpOperation" class="help-inline error"></span>
-					</div>
-                </div>
-				
-				<div class="control-group">
-					<div class="controls">
-						Resource type <input id="wbcresourceType" type="radio" name="resourceType" value="1"> Edit content
-										  <input type="radio" name="resourceType" value="2"> Existing file
-						<span id="errcresourceType" class="help-inline"></span>
-					</div>										
-				</div>
-
-                <div class="control-group">
-                    <label class="control-label" for="wbcresourceExternalKey"> Resource External Key </label>
-                    <div class="controls">
-                        <input id="wbcresourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wbcresourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-						<span id="errcresourceExternalKey" class="help-inline"></span>
-					</div>
-                </div>
+				<input id="wbcenabled" type="hidden" >
+				<input id="wbchttpOperation" type="hidden">
+				<input id="wbcresourceType" type="hidden">
+                <input id="wbcresourceExternalKey" type="hidden">
 				
 			</fieldset>
 		
@@ -186,84 +84,6 @@
 		</form>
     </div>
 	
-	<div class="modal hide" id="wbModalUriUpdate">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">×</a>
-			<h3> Update site url </h3>
-		</div>
-		<form class="form-inline" id="wburiupdate">
-		
-		<div class="modal-body">
-			<input id="wbukey" type="hidden">
-			<fieldset>
-				<div class="control-group">
-					<div class="controls">
-						<span id="errugeneral" class="help-inline"></span>
-					</div>										
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="uri">Site url</label>
-					<div class="controls">
-						<input id="wbuuri" class="wb-input-xlarge" type="text">
-						<span id="erruuri" class="help-inline"></span>
-					</div>										
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="externalKey">External Key</label>
-					<div class="controls">
-						<input id="wbuexternalKey" class="wb-input-xlarge" type="text" readonly> <input data-clipboard-target="wbuexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-						<span id="erruexternalKey" class="help-inline"></span>
-					</div>										
-				</div>
-				
-				<div class="control-group">
-					<div class="controls">
-						Make the url live <input id="wbuenabled" type="radio" name="enabled" value="1"> YES
-										  <input type="radio" name="enabled" value="0"> NO
-						<span id="erruenabled" class="help-inline"></span>
-					</div>										
-				</div>
-				
-                <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Http operation</label>
-                    <div class="controls">
-                        <select id="wbuhttpOperation">
-							<option>GET</option>
-							<option>POST</option>
-							<option>PUT</option>
-							<option>DELETE</option>
-						</select>
-						<span id="erruhttpOperation" class="help-inline error"></span>
-					</div>
-                </div>
-				
-				<div class="control-group">
-					<div class="controls">
-						Resource type <input id="wburesourceType" type="radio" name="resourceType" value="1"> Edit content
-										  <input type="radio" name="resourceType" value="2"> Existing file
-						<span id="erruresourceType" class="help-inline"></span>
-					</div>										
-				</div>
-
-                <div class="control-group">
-                    <label class="control-label" for="wburesourceExternalKey"> Resource External Key </label>
-                    <div class="controls">
-                        <input id="wburesourceExternalKey" class="wb-input-xlarge" type="text"> <input data-clipboard-target="wburesourceExternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-						<span id="erruresourceExternalKey" class="help-inline"></span>
-					</div>
-                </div>
-				
-			</fieldset>
-		
-		</div>
-		<div class="modal-footer">
-				<button class="btn btn-primary uriUpdateSave" type="submit">Update</button>
-				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
-		</div>
-		</form>
-    </div>
-
 	<div class="modal hide" id="wbModalUriDelete">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

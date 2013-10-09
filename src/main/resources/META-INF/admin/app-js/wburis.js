@@ -101,16 +101,6 @@ $().ready( function () {
 							});
 	
 	
-	var fSuccessAdd = function ( data ) {
-		$('#wbModalUriAdd').modal('hide');
-		window.location.reload();
-	};
-	
-	var fErrorAdd = function (errors, data) {
-		var om = $('#wburiadd').wbObjectManager();
-		om.setErrors( om.convertErrors(errors, errorsGeneral));
-	};
-
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbModalUriDuplicate').modal('hide');
 		window.location.reload();			
@@ -118,15 +108,6 @@ $().ready( function () {
 
 	var fErrorDuplicate = function (errors, data) {
 		$('#wburiduplicate').wbObjectManager().setErrors(errors);
-	};
-
-	var fSuccessUpdate = function ( data ) {
-		$('#wbModalUriUpdate').modal('hide');		
-		window.location.reload();
-	};
-
-	var fErrorUpdate = function (errors, data) {
-		$('#wburiupdate').wbObjectManager().setErrors(errors);
 	};
 
 	var fSuccessDelete = function ( data ) {
@@ -139,24 +120,13 @@ $().ready( function () {
 	};
 
 	$('#wburiadd').wbCommunicationManager();
-	$('#wburiupdate').wbCommunicationManager(); 
 	$('#wburidelete').wbCommunicationManager(); 
 	
 	$('#wbaddnewpage').click( function (e) {
 		e.preventDefault();
-		$('#wburiadd').wbObjectManager().resetFields();
-		$('#wbModalUriAdd').modal('show');
+		window.location.href = "./weburiadd.html";
 	});
 	
-	$(document).on ("click", ".wbedituri", function (e) {
-		e.preventDefault();
-		$('#wburiupdate').wbObjectManager().resetFields();
-		var key = $(this).attr('id').substring("wburiedit_".length);
-		var object = $('#wbtable').wbSimpleTable().getRowDataWithKey(key);
-		$('#wburiupdate').wbObjectManager().populateFieldsFromObject(object);
-		$('#wbModalUriUpdate').modal('show');		
-	});
-
 	$(document).on ("click", ".wbduplicateuri", function (e) {
 		e.preventDefault();
 		$('#wburiduplicate').wbObjectManager().resetFields();
@@ -175,21 +145,6 @@ $().ready( function () {
 		$('#wbModalUriDelete').modal('show');		
 	});
 	
-	$('.uriAddSave').click( function (e) {
-		e.preventDefault();
-		var errors = $('#wburiadd').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
-		if ($.isEmptyObject(errors)) {
-			var jsonText = JSON.stringify($('#wburiadd').wbObjectManager().getObjectFromFields());
-			$('#wburiadd').wbCommunicationManager().ajax ( { url: "./wburi",
-															 httpOperation:"POST", 
-															 payloadData:jsonText,
-															 wbObjectManager : $('#wburiadd').wbObjectManager(),
-															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
-															 } );
-		}
-	});
-
 	$('.uriDuplicateSave').click( function (e) {
 		e.preventDefault();
 		var errors = $('#wburiduplicate').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
@@ -205,21 +160,6 @@ $().ready( function () {
 		}
 	});
 
-	$('.uriUpdateSave').click( function (e) {
-		e.preventDefault();
-		var errors = $('#wburiupdate').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
-		if ($.isEmptyObject(errors)) {
-			var object = $('#wburiupdate').wbObjectManager().getObjectFromFields();
-			var jsonText = JSON.stringify(object);
-			$('#wburiupdate').wbCommunicationManager().ajax ( { url: "./wburi/" + encodeURIComponent(object['key']),
-															 httpOperation:"PUT", 
-															 payloadData:jsonText,
-															 wbObjectManager : $('#wburiupdate').wbObjectManager(),
-															 functionSuccess: fSuccessUpdate,
-															 functionError: fErrorUpdate
-															 } );
-		}
-	});
 
 	$('.uriDeleteSave').click( function (e) {
 		e.preventDefault();

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="./bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./css/adminbase.css" type="text/css" />
+<script src="./js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="./js/json2.js" type="text/javascript"></script>
+<script src="./bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
+<script src="./js/wbutility.js" type="text/javascript"></script>
+<script src="./app-js/wburiadd.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+		<a class="brand" href="#">Web Bricks cms</a>
+		<ul class="nav">
+			<li > <a href="./websettings.html"> Site settings </a> </li>
+			<li class="active"> <a href="./weburis.html" > Site urls </a> </li>
+			<li > <a href="./webpages.html" > Site pages </a> </li>
+			<li > <a href="./webpagemodules.html"> Page modules </a> </li>
+			<li > <a href="./webarticles.html"> Articles </a> </li>
+			<li > <a href="./webmessages.html"> Messages </a> </li>
+			<li > <a href="./webfiles.html"> Files </a> </li>
+			<li > <a href="./webbackuprestore.html"> Backup & restore </a> </li>
+		</ul>
+		</div>
+	</div>
+	
+	<div id="wbUriSummary" class="row-fluid">
+		<div class="well wbwell">
+	    <ul class=" wbbreadcrumb" >
+	        <li> <a href="./weburis.html"> Site urls </a> </li>
+	        <li> <span id="wbsummaryuri"></span> </li>
+	    </ul>
+	    <div class="wblastmodified">
+	    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
+	    </div>
+	    </div>
+    </div>
+	
+	<div class="wbcolorcontent">
+		<div class="wbinnercontent">
+		<form class="form-horizontal" id="wburiadd">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errageneral" class="help-inline"></span>
+					</div>										
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="uri">Site url</label>
+					<div class="controls">
+						<input id="wbauri" name="uri" class="wb-input-xlarge" type="text">
+						<span id="errauri" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="enabled">Is the url live?</label>
+					
+					<div class="controls">
+						<input id="wbaenabled" type="radio" name="enabled" value="1"> YES
+						<input type="radio" name="enabled" value="0"> NO
+						<span id="erraenabled" class="help-inline"></span>
+					</div>										
+				</div>
+			
+			    <div class="control-group">
+                    <label class="control-label" for="controllerClass"> Http operation</label>
+                    <div class="controls">
+                        <select name="controllerClass" id="wbahttpOperation">
+							<option>GET</option>
+							<option>POST</option>
+							<option>PUT</option>
+							<option>DELETE</option>
+						</select>
+						<span id="errahttpOperation" class="help-inline error"></span>
+					</div>
+                </div>
+				
+				<div class="control-group">
+					<label class="control-label" for="resourceType">Resource type</label>					
+					<div class="controls">
+						<input id="wbaresourceType" type="radio" name="resourceType" value="1"> Edit content
+						<input type="radio" name="resourceType" value="2"> Existing file
+						<span id="erraresourceType" class="help-inline"></span>
+					</div>										
+				</div>
+
+                <div class="control-group">
+                    <label class="control-label" for="resourceExternalKey"> Resource External Key </label>
+                    <div class="controls">
+                        <input id="wbaresourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
+						<span id="erraresourceExternalKey" class="help-inline"></span>
+					</div>
+                </div>
+								
+			</fieldset>
+		
+			<div class="marginv">
+				<button class="btn btn-primary wbUriAddBtnClass" type="submit">Save</button>
+				<button class="btn wbUriAddCancelBtnClass" type="submit">Cancel</button>
+			</div>
+		</form>
+
+		</div>
+	</div>
+
+	
+</body>
+</html>
