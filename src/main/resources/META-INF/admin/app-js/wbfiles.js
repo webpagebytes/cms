@@ -7,7 +7,7 @@ var errorsGeneral = {
 
 $().ready( function () {
 	var wbFileValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_FILE_NAME_BAD_FORMAT"}],
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9 a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_FILE_NAME_BAD_FORMAT"}],
 			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
 			enabled: [{rule: { includedInto: ['0', '1']}, error: "ERROR_FILE_ENABLED_BAD_FORMAT" }]
 	};
