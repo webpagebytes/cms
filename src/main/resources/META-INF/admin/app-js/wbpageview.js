@@ -89,7 +89,17 @@ $().ready( function () {
 	var fSuccessGetPage = function (data) {
 		$('#wbPageSummary').wbDisplayObject().display(data.data);
 		$('#wbPageView').wbDisplayObject().display(data.data);
+		if (data.data["isTemplateSource"] != '1') {
+			$('.wbModelProviderContainer').hide();
+		} else {
+			$('.wbModelProviderContainer').show();
+		}
 	}
+	
+	$('input[name="isTemplateSource"]').on("change", function() {
+		$('.wbModelProviderContainer').toggle();
+	});
+
 	var fErrorGetPage = function (errors, data) {
 		alert(errors);
 	}
