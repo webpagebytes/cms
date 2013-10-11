@@ -47,12 +47,26 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbPageParametersTable').wbTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
-								         {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: tableDisplayHandler}],
+	$('#wbPageParametersTable').wbSimpleTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
+								         {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 						 paginationBaseClass: "pagination"
 						});
+
+	var urisDisplayHandler = function (fieldId, record) {
+		if (fieldId=="uri") {
+			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
+			return '<a href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
+		} 
+	}
+
+	$('#wburistable').wbSimpleTable( { columns: [ {display: "Site urls linked to this page", fieldId:"uri", customHandler: urisDisplayHandler}],
+	         						 keyName: "key",
+	         						 tableBaseClass: "table table-stripped table-bordered table-color-header",
+	         						 paginationBaseClass: "pagination"
+	         						});
+
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -89,6 +103,7 @@ $().ready( function () {
 	var fSuccessGetPage = function (data) {
 		$('#wbPageSummary').wbDisplayObject().display(data.data);
 		$('#wbPageView').wbDisplayObject().display(data.data);
+		$('#wburistable').wbSimpleTable().setRows(data.additional_data.uri_links);
 		if (data.data["isTemplateSource"] != '1') {
 			$('.wbModelProviderContainer').hide();
 		} else {
@@ -112,7 +127,7 @@ $().ready( function () {
 		window.location.href = "./webpageedit.html?key={0}&externalKey={1}".format(encodeURIComponent(pageKey),encodeURIComponent(pageExternalKey));
 	} );
 	
-	$('#wbPageSummary').wbCommunicationManager().ajax ( { url:"./wbpage/" + encodeURIComponent(pageKey),
+	$('#wbPageSummary').wbCommunicationManager().ajax ( { url:"./wbpage/{0}?include_links=1".format(encodeURIComponent(pageKey)),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
@@ -126,7 +141,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		$('#wbPageParametersTable').wbTable().insertRow(data.data);			
+		$('#wbPageParametersTable').wbSimpleTable().insertRow(data.data);			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -151,7 +166,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbTable().updateRowWithKey(data.data,data.data["key"]);
+		$('#wbPageParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -176,7 +191,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbTable().deleteRowWithKey(data.data["key"]);
+		$('#wbPageParametersTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -202,7 +217,7 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbUpdateParameterForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbEditParam_".length);
-		var object = $('#wbPageParametersTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbPageParametersTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbUpdateParameterForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbUpdateParameterModal').modal('show');		
 	});
@@ -211,16 +226,13 @@ $().ready( function () {
 		e.preventDefault();
 		$('#wbDeleteParameterForm').wbObjectManager().resetFields();
 		var key = $(this).attr('id').substring("wbDelParam_".length);
-		var object = $('#wbPageParametersTable').wbTable().getRowDataWithKey(key);
+		var object = $('#wbPageParametersTable').wbSimpleTable().getRowDataWithKey(key);
 		$('#wbDeleteParameterForm').wbObjectManager().populateFieldsFromObject(object);
 		$('#wbDeleteParameterModal').modal('show');		
 	});
 
 	var fSuccessGetParameters = function (data) {
-		$.each(data.data, function(index, item) {
-			$('#wbPageParametersTable').wbTable().insertRow(item);
-		});				
-
+			$('#wbPageParametersTable').wbSimpleTable().setRows(data.data);
 	}
 	var fErrorGetParameters = function (errors, data) {
 	

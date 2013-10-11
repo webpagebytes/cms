@@ -16,6 +16,7 @@ import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
@@ -138,6 +139,17 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			WBWebPage webPage = adminStorage.get(key, WBWebPage.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(webPage));			
+
+			String includeLinks = request.getParameter("include_links");
+			if (includeLinks != null && includeLinks.equals("1"))
+			{
+				List<WBUri> uris = adminStorage.query(WBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, webPage.getExternalKey());
+				org.json.JSONArray arrayUris = jsonObjectConverter.JSONArrayFromListObjects(uris);
+				org.json.JSONObject additionalData = new org.json.JSONObject();
+				additionalData.put("uri_links", arrayUris);
+				returnJson.put(ADDTIONAL_DATA, additionalData);			
+			}
+
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 
 		} catch (Exception e)		
