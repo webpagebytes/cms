@@ -33,7 +33,9 @@
 
 			paginationBaseClass: "",
 			
-			textLengthToCut: 40
+			textLengthToCut: 40,
+			
+			headerColumnBaseClass:undefined
 			},
 		getOptions: function () {
 			if (! this.options) 
@@ -69,25 +71,27 @@
 			var tableData = new Array();
 			this.thisElement.data('tableData', tableData);		
 			
-			$(this.thisElement).on ("click", "." + this.getOptions().headerColumnBaseClass, function (e) {
-				e.preventDefault();
-				if (! _this.getOptions().handlerColumnClick) return;
-				
-				var classList = $(this).attr('class').split(/\s+/);
-				var thisElem = this;
-				$(classList).each(function(index, item){
-					if (item.indexOf(_this.getOptions().headerColumnIdClassPrefix) == 0){
-						var field = item.substring(_this.getOptions().headerColumnIdClassPrefix.length);						
-						var dir = 'asc';
-						if ($(thisElem).hasClass('header-asc')) {
-							dir = 'dsc';
+			if (_this.getOptions().headerColumnBaseClass && _this.getOptions().headerColumnIdClassPrefix) {
+				$(this.thisElement).on ("click", "." + this.getOptions().headerColumnBaseClass, function (e) {
+					e.preventDefault();
+					if (! _this.getOptions().handlerColumnClick) return;
+					
+					var classList = $(this).attr('class').split(/\s+/);
+					var thisElem = this;
+					$(classList).each(function(index, item){
+						if (item.indexOf(_this.getOptions().headerColumnIdClassPrefix) == 0){
+							var field = item.substring(_this.getOptions().headerColumnIdClassPrefix.length);						
+							var dir = 'asc';
+							if ($(thisElem).hasClass('header-asc')) {
+								dir = 'dsc';
+							}
+							_this.getOptions().handlerColumnClick (_this, field, dir);
+							return false;
 						}
-						_this.getOptions().handlerColumnClick (_this, field, dir);
-						return false;
-					}
-
+	
+					});
 				});
-			});
+			};
 
 		},
 		
