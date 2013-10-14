@@ -61,8 +61,7 @@ $().ready( function () {
 		} 
 	}
 	
-	$('#wburistable').wbSimpleTable( { columns: [ {display: "Key", fieldId:"key"},
-	                                              {display: "Site urls linked to this page", fieldId:"uri", customHandler: urisDisplayHandler}],
+	$('#wburistable').wbSimpleTable( { columns: [{display: "Site urls linked to this page", fieldId:"uri", customHandler: urisDisplayHandler}],
 	         						 keyName: "key",
 	         						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	         						 paginationBaseClass: "pagination"

@@ -56,6 +56,23 @@ $().ready( function () {
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
 		$('#wburiedit').wbObjectManager().populateFieldsFromObject(data.data);
+		var html = "NOT FOUND";
+		if ('pages_links' in data.additional_data) {
+			if (data.additional_data.pages_links.length >= 1) {
+				var page = data.additional_data.pages_links[0];
+				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+			}
+			$('#wbresourcelink').html(html);
+		} else if ('files_links' in data.additional_data) {
+			if (data.additional_data.files_links.length >= 1) {
+				var file = data.additional_data.files_links[0];
+				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));
+			}
+			$('#wbresourcelink').html(html);
+		} else {
+			$('#wbresourcelink').html(html);			
+		}
+			
 	};
 	
 	var fErrorGetUri = function (errors, data) {
@@ -63,7 +80,7 @@ $().ready( function () {
 	};
 
 	var uriKey = getURLParameter('key'); 
-	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wburi/" + encodeURIComponent(uriKey),
+	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wburi/{0}?include_links=1".format(encodeURIComponent(uriKey)),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetUri,

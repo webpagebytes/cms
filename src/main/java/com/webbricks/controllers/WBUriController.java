@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBUrisCache;
+import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
@@ -154,7 +156,27 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBUri wburi = adminStorage.get(key, WBUri.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
-			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));			
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));
+			String includeLinks = request.getParameter("include_links");
+			if (includeLinks != null && includeLinks.equals("1"))
+			{
+				if (wburi.getResourceType() == 1)
+				{
+					List<WBWebPage> pages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					additionalData.put("pages_links", arrayPages);
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				} else if (wburi.getResourceType() == 2)
+				{
+					List<WBFile> pages = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					org.json.JSONArray arrayFiles = jsonObjectConverter.JSONArrayFromListObjects(pages);
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					additionalData.put("files_links", arrayFiles);
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				}  
+			}
+
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
