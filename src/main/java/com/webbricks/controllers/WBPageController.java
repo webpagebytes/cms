@@ -131,6 +131,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
+	
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
@@ -213,6 +214,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
+		
 
 	public void setPageValidator(WBPageValidator pageValidator) {
 		this.pageValidator = pageValidator;

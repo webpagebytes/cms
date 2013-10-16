@@ -15,6 +15,7 @@ import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
+import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.exception.WBException;
 import com.webbricks.utility.HttpServletToolbox;
 
@@ -74,5 +75,38 @@ public class WBReadOnlyDataController  extends WBController {
 		}
 		
 	}
+	
+	public void search(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			List<WBWebPage> allRecords = null;
+			
+			String property = request.getParameter("externalKey");
+			String entityName = request.getParameter("class");
+			if (property!=null && property.length()>0)
+			{
+				if (entityName != null && entityName.equals("wbpage"))
+				{
+					allRecords = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, property);
+				}
+				if (entityName != null && entityName.equals("wbfile"))
+				{
+					allRecords = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, property);
+				}				
+			}
+			
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(allRecords));
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+		}
+	}
+
 	
 }

@@ -52,10 +52,11 @@ $().ready( function () {
 	};
 	
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
-	
+	var oResourceExternalKey = "";
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
 		$('#wburiedit').wbObjectManager().populateFieldsFromObject(data.data);
+		oResourceExternalKey = data.data["resourceExternalKey"];
 		var html = "NOT FOUND";
 		if ('pages_links' in data.additional_data) {
 			if (data.additional_data.pages_links.length >= 1) {
@@ -71,10 +72,47 @@ $().ready( function () {
 			$('#wbresourcelink').html(html);
 		} else {
 			$('#wbresourcelink').html(html);			
-		}
-			
+		}			
 	};
 	
+	var fSuccessSearch = function (data) {
+		var result = data.data;
+		var html = "NOT FOUND"
+		if (result.length == 1) {
+			if ($('input[name="resourceType"]:checked').val() == "1") {
+				var page = result[0];
+				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+			} else if ($('input[name="resourceType"]:checked').val() == "2") {
+				var file = result[0];
+				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));			
+			} 			
+		}
+		$('#wbresourcelink').html(html);			
+	}
+
+	var fErrorSearch = function (data) {
+		alert(data);
+	}
+
+	var ResourceExternalBlur = function (e) {
+		var value = $(e.target).val();
+		if (value != oResourceExternalKey) {
+			var urlValue = "./search";
+			if ($('input[name="resourceType"]:checked').val() == "1") {
+				urlValue = "./search?externalKey={0}&class=wbpage".format(encodeURIComponent(value));
+			} else if ($('input[name="resourceType"]:checked').val() == "2") {
+				urlValue = "./search?externalKey={0}&class=wbfile".format(encodeURIComponent(value));			
+			} 
+			$('#wburiedit').wbCommunicationManager().ajax ( { url: urlValue,
+				 httpOperation:"GET", 
+				 payloadData:"",
+				 functionSuccess: fSuccessSearch,
+				 functionError: fErrorSearch
+				} );
+			
+		}
+	};
+	$("#wberesourceExternalKey").on("change", ResourceExternalBlur);
 	var fErrorGetUri = function (errors, data) {
 		alert(errors);
 	};
@@ -132,7 +170,7 @@ $().ready( function () {
 	
 	$('#wberesourceExternalKey').typeahead( {
 		source: sourceFunction,
-		items: 3,
+		items: 5,
 		updater: updaterFunction
 	});
 
