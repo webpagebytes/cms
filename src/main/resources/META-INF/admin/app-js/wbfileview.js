@@ -60,6 +60,19 @@ $().ready( function () {
 	
 	$('#wbFileView').wbDisplayObject( { fieldsPrefix: 'wbfile', customHandler: displayHandler} );
 
+	var filesDisplayHandler = function (fieldId, record) {
+		if (fieldId=="uri") {
+			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
+			return '<a href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
+		} 
+	}
+
+	$('#wbfilestable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
+		 keyName: "key",
+		 tableBaseClass: "table table-stripped table-bordered table-color-header",
+		 paginationBaseClass: "pagination"
+		});
+
 	var fileKey = getURLParameter('key'); 
 	var fileBlobKey = "";
 	
@@ -67,7 +80,8 @@ $().ready( function () {
 		var data = payload.data;
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
-		
+		$('#wbfilestable').wbSimpleTable().setRows(payload.additional_data.uri_links);
+
 		switch (data['shortType']) {
 			case "image":
 				$('.wbImageContentType').removeClass('wbhidden');
@@ -101,7 +115,7 @@ $().ready( function () {
 		alert(data);
 	}
 	
-	$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/" + encodeURIComponent(fileKey),
+	$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/{0}?include_links=1".format(encodeURIComponent(fileKey)),
 											 httpOperation:"GET", 
 											 payloadData:"",
 											 functionSuccess: fSuccessGetFile,

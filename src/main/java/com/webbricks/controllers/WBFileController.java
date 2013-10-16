@@ -16,6 +16,7 @@ import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBFilesCache;
 import com.webbricks.cmsdata.WBFile;
+import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
@@ -262,9 +263,20 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbimage = adminStorage.get(key, WBFile.class);
+			WBFile wbFile = adminStorage.get(key, WBFile.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
-			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbimage));			
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));	
+			
+			String includeLinks = request.getParameter("include_links");
+			if (includeLinks != null && includeLinks.equals("1"))
+			{
+				List<WBUri> uris = adminStorage.query(WBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, wbFile.getExternalKey());
+				org.json.JSONArray arrayUris = jsonObjectConverter.JSONArrayFromListObjects(uris);
+				org.json.JSONObject additionalData = new org.json.JSONObject();
+				additionalData.put("uri_links", arrayUris);
+				returnJson.put(ADDTIONAL_DATA, additionalData);			
+			}
+
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		

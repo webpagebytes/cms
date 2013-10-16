@@ -57,7 +57,7 @@ $().ready( function () {
 	var urisDisplayHandler = function (fieldId, record) {
 		if (fieldId=="uri") {
 			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
-			return '<a class="debugm" href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
+			return '<a href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
 		} 
 	}
 	
