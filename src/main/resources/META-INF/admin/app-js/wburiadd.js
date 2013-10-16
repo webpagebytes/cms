@@ -36,9 +36,48 @@ $().ready( function () {
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 		
 	$('#wburiadd').wbObjectManager().resetFields();
-		
+	var oResourceExternalKey = "";
 	var externalKeysArrays = { 'files':[], 'pages': [] }
-	
+
+	var fSuccessSearch = function (data) {
+		var result = data.data;
+		var html = "NOT FOUND"
+		if (result.length == 1) {
+			if ($('input[name="resourceType"]:checked').val() == "1") {
+				var page = result[0];
+				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+			} else if ($('input[name="resourceType"]:checked').val() == "2") {
+				var file = result[0];
+				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));			
+			} 			
+		}
+		$('#wbresourcelink').html(html);			
+	}
+
+	var fErrorSearch = function (data) {
+		alert(data);
+	}
+
+	var ResourceExternalBlur = function (e) {
+		var value = $(e.target).val();
+		if (value != oResourceExternalKey) {
+			var urlValue = "./search";
+			if ($('input[name="resourceType"]:checked').val() == "1") {
+				urlValue = "./search?externalKey={0}&class=wbpage".format(encodeURIComponent(value));
+			} else if ($('input[name="resourceType"]:checked').val() == "2") {
+				urlValue = "./search?externalKey={0}&class=wbfile".format(encodeURIComponent(value));			
+			} 
+			$('#wburiadd').wbCommunicationManager().ajax ( { url: urlValue,
+				 httpOperation:"GET", 
+				 payloadData:"",
+				 functionSuccess: fSuccessSearch,
+				 functionError: fErrorSearch
+				} );
+			
+		}
+	};
+	$("#wbaresourceExternalKey").on("change", ResourceExternalBlur);
+
 	var fS_GetFilesPageSummary = function (data) {		
 		var array = { 'files':[], 'pages': [] };
 		for (var i in data['data_files']) {
