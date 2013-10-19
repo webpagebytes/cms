@@ -577,13 +577,14 @@ if (!Array.prototype.indexOf) {
 	{
 		defaults: { 
 			basePath: undefined,
-			selector: undefined
+			selector: undefined,
+			buildStamp:"_"
 		},
 		init: function ( thisElement, options ) {			
 			this.thisElement = $(thisElement);
 			this.options = $.extend ( {} , this.defaults, options );		
 			
-			var swfzc = this.options.basePath + '/zeroclipboard/ZeroClipboard.swf';
+			var swfzc = this.options.basePath + '/{0}/zeroclipboard/ZeroClipboard.swf'.format(encodeURIComponent(this.options.buildStamp));
 			ZeroClipboard.setDefaults( { moviePath: swfzc } );
 			var zcButtons = $.find(this.options.selector);
 			$.each (zcButtons, function (index, elem) {

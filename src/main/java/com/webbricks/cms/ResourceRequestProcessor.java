@@ -1,21 +1,24 @@
 package com.webbricks.cms;
+import java.util.HashSet;
 import java.util.Map;
-
 import java.util.HashMap;
+import java.util.Set;
 import java.io.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBResourceNotFoundException;
+
 import javax.servlet.*;
 
 public class ResourceRequestProcessor {
 
 	
 	private static Map<String, String> resourcesContentType = new HashMap<String, String>();
-	private StaticResourceMap resourcesMap = new StaticResourceMap();;
-	
+	private StaticResourceMap resourcesMap = new StaticResourceMap();
+	private static Set<String> noCacheContentType = new HashSet<String>();
 	static
 	{
 		resourcesContentType.put("js", "application/x-javascript");
@@ -29,6 +32,11 @@ public class ResourceRequestProcessor {
 		resourcesContentType.put("swf", "application/x-shockwave-flash");
 		resourcesContentType.put("xap", "application/x-silverlight-app");
 		resourcesContentType.put("svg", "image/svg+xml");
+		
+		noCacheContentType.add("text/html");
+		noCacheContentType.add("application/json");
+		
+		
 	}
 		
 	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WBException
@@ -63,12 +71,12 @@ public class ResourceRequestProcessor {
 		}
 		return false;
 	}
-	protected static boolean addContentType(HttpServletResponse resp, String requestUri)
+	protected static String addContentType(HttpServletResponse resp, String requestUri)
 	{
 		int lastIndex = requestUri.lastIndexOf('.');
 		if (lastIndex <= 0)
 		{
-			return false;
+			return null;
 		}
 		String type = requestUri.substring(lastIndex+1);
 		type = type.toLowerCase();
@@ -76,9 +84,9 @@ public class ResourceRequestProcessor {
 		if (resourcesContentType.containsKey(type))
 		{
 			resp.setContentType(resourcesContentType.get(type));
-			return true;
+			return resourcesContentType.get(type);
 		}
-		return false;
+		return null;
 	}
 	
 	public void process(HttpServletRequest req, 
@@ -87,20 +95,25 @@ public class ResourceRequestProcessor {
 	{
 		try
 		{
-			String etag = req.getHeader("If-None-Match");
-			String hash = resourcesMap.getResourceHash(resource);
-			resp.addHeader("Etag", hash);
-			if ((etag != null) && (etag.compareToIgnoreCase(hash) == 0))
+			// the resource is something like /build-generated-id/js/ajsfile.js
+			if (resource.startsWith("/") && resource.lastIndexOf("/")>0)
 			{
-				resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-				return;
+				resource = resource.substring(resource.indexOf("/", 1));
 			}
 			byte[] res = resourcesMap.getResource(resource);
-			if (addContentType(resp, resource))
+			String contentType;
+			if ((contentType = addContentType(resp, resource)) != null)
 			{
-				resp.getOutputStream().write(res);
-				
+				if (! noCacheContentType.contains(contentType))
+				{
+					resp.addHeader("cache-control", "max-age=86400");
+				} else
+				{
+					resp.addHeader("cache-control", "no-cache;no-store;");
+				}
+				resp.getOutputStream().write(res);				
 			}
+			
 		} 
 		catch (IOException e)
 		{

@@ -62,7 +62,7 @@ public class TestResourceRequestProcessor{
 		EasyMock.replay(response);
 		ResourceRequestProcessor processor = new ResourceRequestProcessor();
 		
-		assertTrue(false == processor.addContentType(response, "/path"));
+		assertTrue(null == processor.addContentType(response, "/path"));
 		EasyMock.verify(response);
 	}
 
@@ -72,7 +72,7 @@ public class TestResourceRequestProcessor{
 		EasyMock.replay(request);
 		ResourceRequestProcessor processor = new ResourceRequestProcessor();
 		
-		assertTrue(false == processor.addContentType(response, "/path.svi"));
+		assertTrue(null == processor.addContentType(response, "/path.svi"));
 		EasyMock.verify(request);
 	}
 
@@ -90,9 +90,9 @@ public class TestResourceRequestProcessor{
 		}
 		assertTrue (exception == null);
 	}
-	
+		
 	@Test
-	public void testProcessRequestNotModified()
+	public void testProcessRequestOK_cache()
 	{
 		// the request of a resource that returns 304
 		try
@@ -100,56 +100,17 @@ public class TestResourceRequestProcessor{
 			ResourceRequestProcessor processor = new ResourceRequestProcessor();
 			processor.setResourcesMap(resourceMap);
 		
-			String resource = "/image.png";
-			String hash = "1234";
-			EasyMock.expect(resourceMap.getResourceHash(resource)).andReturn(hash);
-			EasyMock.expect(request.getHeader("If-None-Match")).andReturn(hash);
-			Capture<Integer> capture = new Capture<Integer>();
-			response.setStatus(EasyMock.captureInt(capture));	
-			
-			Capture<String> captureEtag = new Capture<String>();
-			Capture<String> captureEtagValue = new Capture<String>();
-			response.addHeader(EasyMock.capture(captureEtag), EasyMock.capture(captureEtagValue));
-			EasyMock.replay(response);
-			EasyMock.replay(resourceMap);
-			EasyMock.replay(request);	
-			
-			processor.process(request, response, resource);
-			EasyMock.verify(response);
-			EasyMock.verify(request);
-			assertTrue (capture.getValue() == HttpServletResponse.SC_NOT_MODIFIED);
-			assertTrue (captureEtag.getValue().compareTo("Etag") == 0);
-			assertTrue (captureEtagValue.getValue().compareTo(hash) == 0);
-		} catch (Exception e)
-		{
-			assertTrue (false);
-		}
-	}
-	
-	@Test
-	public void testProcessRequestOK()
-	{
-		// the request of a resource that returns 304
-		try
-		{
-			ResourceRequestProcessor processor = new ResourceRequestProcessor();
-			processor.setResourcesMap(resourceMap);
-		
-			String resource = "/base.css";
-			String hash = "1234";
-			String differentHash = "9999";
+			String resource = "/123/base.css";
 			String content = " body { color: #123456; } \n a { color: #567890; }";
 			
-			EasyMock.expect(request.getHeader("If-None-Match")).andReturn(differentHash);
-			EasyMock.expect(resourceMap.getResourceHash(resource)).andReturn(hash);
-			EasyMock.expect(resourceMap.getResource(resource)).andReturn(content.getBytes());
+			EasyMock.expect(resourceMap.getResource("/base.css")).andReturn(content.getBytes());
 			ServletOutputStream os = EasyMock.createMock(ServletOutputStream.class);
 			EasyMock.expect(response.getOutputStream()).andReturn(os);
 			
-			Capture<String> captureEtag = new Capture<String>();
-			Capture<String> captureEtagValue = new Capture<String>();
+			Capture<String> captureExpireValue = new Capture<String>();
+			Capture<String> captureExpire = new Capture<String>();
 			Capture<String> captureContentType = new Capture<String>();
-			response.addHeader(EasyMock.capture(captureEtag), EasyMock.capture(captureEtagValue));
+			response.addHeader(EasyMock.capture(captureExpire), EasyMock.capture(captureExpireValue));
 			response.setContentType(EasyMock.capture(captureContentType));
 			Capture<byte[]> captureContent = new Capture<byte[]>();
 			os.write(EasyMock.capture(captureContent));
@@ -163,8 +124,8 @@ public class TestResourceRequestProcessor{
 			EasyMock.verify(response);
 			EasyMock.verify(request);
 			assertTrue (captureContentType.getValue().compareTo("text/css") == 0);
-			assertTrue (captureEtag.getValue().compareTo("Etag") == 0);
-			assertTrue (captureEtagValue.getValue().compareTo(hash) == 0);
+			assertTrue (captureExpire.getValue().compareTo("cache-control") == 0);
+			assertTrue (captureExpireValue.getValue().compareTo("max-age=86400") == 0);
 			
 			assertTrue (java.util.Arrays.equals(captureContent.getValue(), content.getBytes()));
 		} catch (Exception e)
@@ -174,7 +135,7 @@ public class TestResourceRequestProcessor{
 	}
 
 	@Test
-	public void testProcessRequest_noIfNotModified()
+	public void testProcessRequestOK_nocache()
 	{
 		// the request of a resource that returns 304
 		try
@@ -182,21 +143,17 @@ public class TestResourceRequestProcessor{
 			ResourceRequestProcessor processor = new ResourceRequestProcessor();
 			processor.setResourcesMap(resourceMap);
 		
-			String resource = "/base.css";
-			String hash = "1234";
-			String differentHash = "9999";
-			String content = " body { color: #123456; } \n a { color: #567890; }";
+			String resource = "/123/base.html";
+			String content = "<html>1234</html>";
 			
-			EasyMock.expect(request.getHeader("If-None-Match")).andReturn(null);
-			EasyMock.expect(resourceMap.getResourceHash(resource)).andReturn(hash);
-			EasyMock.expect(resourceMap.getResource(resource)).andReturn(content.getBytes());
+			EasyMock.expect(resourceMap.getResource("/base.html")).andReturn(content.getBytes());
 			ServletOutputStream os = EasyMock.createMock(ServletOutputStream.class);
 			EasyMock.expect(response.getOutputStream()).andReturn(os);
 			
-			Capture<String> captureEtag = new Capture<String>();
-			Capture<String> captureEtagValue = new Capture<String>();
+			Capture<String> captureExpireValue = new Capture<String>();
+			Capture<String> captureExpire = new Capture<String>();
 			Capture<String> captureContentType = new Capture<String>();
-			response.addHeader(EasyMock.capture(captureEtag), EasyMock.capture(captureEtagValue));
+			response.addHeader(EasyMock.capture(captureExpire), EasyMock.capture(captureExpireValue));
 			response.setContentType(EasyMock.capture(captureContentType));
 			Capture<byte[]> captureContent = new Capture<byte[]>();
 			os.write(EasyMock.capture(captureContent));
@@ -209,9 +166,9 @@ public class TestResourceRequestProcessor{
 			processor.process(request, response, resource);
 			EasyMock.verify(response);
 			EasyMock.verify(request);
-			assertTrue (captureContentType.getValue().compareTo("text/css") == 0);
-			assertTrue (captureEtag.getValue().compareTo("Etag") == 0);
-			assertTrue (captureEtagValue.getValue().compareTo(hash) == 0);
+			assertTrue (captureContentType.getValue().compareTo("text/html") == 0);
+			assertTrue (captureExpire.getValue().compareTo("cache-control") == 0);
+			assertTrue (captureExpireValue.getValue().compareTo("no-cache;no-store;") == 0);
 			
 			assertTrue (java.util.Arrays.equals(captureContent.getValue(), content.getBytes()));
 		} catch (Exception e)
@@ -220,43 +177,6 @@ public class TestResourceRequestProcessor{
 		}
 	}
 
-	@Test
-	public void testProcessRequest_wrongFileExtension()
-	{
-		// the request of a resource that returns 304
-		try
-		{
-			ResourceRequestProcessor processor = new ResourceRequestProcessor();
-			processor.setResourcesMap(resourceMap);
-		
-			String resource = "/base1.svi";
-			String hash = "1234";
-			String differentHash = "9999";
-			String content = " body { color: #123456; } \n a { color: #567890; }";
-			
-			EasyMock.expect(request.getHeader("If-None-Match")).andReturn(null);
-			EasyMock.expect(resourceMap.getResourceHash(resource)).andReturn(hash);
-			EasyMock.expect(resourceMap.getResource(resource)).andReturn(content.getBytes());
-			
-			Capture<String> captureEtag = new Capture<String>();
-			Capture<String> captureEtagValue = new Capture<String>();
-			response.addHeader(EasyMock.capture(captureEtag), EasyMock.capture(captureEtagValue));
-			
-			EasyMock.replay(response);
-			EasyMock.replay(resourceMap);
-			EasyMock.replay(request);	
-			
-			processor.process(request, response, resource);
-			EasyMock.verify(response);
-			EasyMock.verify(request);
-			assertTrue (captureEtag.getValue().compareTo("Etag") == 0);
-			assertTrue (captureEtagValue.getValue().compareTo(hash) == 0);
-			
-		} catch (Exception e)
-		{
-			assertTrue (false);
-		}
-	}
 
 	@Test
 	public void testProcessRequestNotFoundException()
@@ -266,12 +186,11 @@ public class TestResourceRequestProcessor{
 			ResourceRequestProcessor processor = new ResourceRequestProcessor();
 			processor.setResourcesMap(resourceMap);
 		
-			String resource = "/notfound.css";
+			String resource = "/123/notfound.css";
 			String hash = "1234";
 			String content = " body { color: #123456; } \n a { color: #567890; }";
 			
-			EasyMock.expect(request.getHeader("If-None-Match")).andReturn(hash);
-			EasyMock.expect(resourceMap.getResourceHash(resource)).andThrow(new WBResourceNotFoundException("resource not found in testing"));
+			EasyMock.expect(resourceMap.getResource("/notfound.css")).andThrow(new WBResourceNotFoundException("resource not found in testing"));
 			
 			Capture<Integer> captureCode = new Capture<Integer>();
 			response.sendError(EasyMock.captureInt(captureCode));
