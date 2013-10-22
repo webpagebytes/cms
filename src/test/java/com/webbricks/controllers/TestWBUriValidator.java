@@ -87,10 +87,31 @@ public void test_validateCreateWBUri_BadResourceType()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("abc");
-	wburi.setResourceType(3); // this is a bad type
+	wburi.setResourceType(4); // this is a bad type
 
 	Map<String, String> errors = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors));
+}
+
+@Test
+public void test_validateCreateWBUri_okResourceType()
+{
+	wburi.setHttpOperation("GET");
+	wburi.setUri("/test");
+	wburi.setResourceExternalKey("abc");
+	
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT); 
+	Map<String, String> errors1 = uriValidator.validateCreate(wburi);
+	assertTrue( errorsContainer.equals(errors1));
+
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE); 
+	Map<String, String> errors2 = uriValidator.validateCreate(wburi);
+	assertTrue( errorsContainer.equals(errors2));
+	
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_URL_CONTROLLER); 
+	Map<String, String> errors3 = uriValidator.validateCreate(wburi);
+	assertTrue( errorsContainer.equals(errors3));
+
 }
 
 @Test
@@ -137,10 +158,33 @@ public void test_validateUpdateWBUri_BadResourceType()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("abc");
-	wburi.setResourceType(3); // this is a bad type
+	wburi.setResourceType(4); // this is a bad type
 
 	Map<String, String> errors = uriValidator.validateUpdate(wburi);
 	assertTrue( errorsContainer.equals(errors));
+}
+
+@Test
+public void test_validateUpdateWBUri_okResourceType()
+{
+	wburi.setKey(1L);
+	wburi.setHttpOperation("GET");
+	wburi.setUri("/test");
+	wburi.setResourceExternalKey("abc");
+
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	Map<String, String> errors2 = uriValidator.validateUpdate(wburi);
+	assertTrue( errorsContainer.equals(errors2));
+
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT);
+	Map<String, String> errors1 = uriValidator.validateUpdate(wburi);
+	assertTrue( errorsContainer.equals(errors1));
+	
+	wburi.setResourceType(WBUri.RESOURCE_TYPE_URL_CONTROLLER);
+	Map<String, String> errors3 = uriValidator.validateUpdate(wburi);
+	assertTrue( errorsContainer.equals(errors3));
+
+
 }
 
 @Test

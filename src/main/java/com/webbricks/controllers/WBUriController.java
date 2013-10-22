@@ -160,21 +160,25 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
-				if (wburi.getResourceType() == 1)
+				if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
 				{
 					List<WBWebPage> pages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("pages_links", arrayPages);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				} else if (wburi.getResourceType() == 2)
+				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
 				{
 					List<WBFile> pages = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayFiles = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("files_links", arrayFiles);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				}  
+				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
+				{
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				}
 			}
 
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

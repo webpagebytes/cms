@@ -84,13 +84,14 @@
 				<div class="control-group">
 					<label class="control-label" for="resourceType">Resource type</label>					
 					<div class="controls">
-						<input id="wbaresourceType" type="radio" name="resourceType" value="1"> Edit content
-						<input type="radio" name="resourceType" value="2"> Existing file
+						<input id="wbaresourceType" type="radio" name="resourceType" value="1"> Site page
+						<input type="radio" name="resourceType" value="2"> File
+						<input type="radio" name="resourceType" value="3"> Url controller
 						<span id="erraresourceType" class="help-inline"></span>
 					</div>										
 				</div>
 
-                <div class="control-group">
+                <div class="control-group wbResourceExternalKey">
                     <label class="control-label" for="resourceExternalKey"> Resource External Key </label>
                     <div class="controls">
                         <input id="wbaresourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
@@ -98,6 +99,14 @@
 						<br>
 						<span> Resource link <span id="wbresourcelink"> </span></span>
 						
+					</div>
+                </div>
+
+                <div class="control-group wbUrlController">
+                    <label class="control-label" for="controllerClass"> Url Controller </label>
+                    <div class="controls">
+                        <input id="wbacontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
+						<span id="erracontrollerClass" class="help-inline"></span>
 					</div>
                 </div>
 								

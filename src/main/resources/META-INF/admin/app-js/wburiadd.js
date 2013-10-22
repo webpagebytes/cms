@@ -10,7 +10,9 @@ var errorsGeneral = {
 	'ERROR_NO_RESOURCE_EXTERNAL_KEY': 'No resource External Key',
 	'ERROR_BAD_RESOURCE_EXTERNAL_KEY': 'Invalid resource External Key',
 	'ERROR_BAD_RESOURCE_CONTENT_TYPE': 'Resource content type not supported',
-	'ERROR_RESOURCE_CONTENT_TYPE_LENGTH': 'Resource content type length must be between 1 and 50 characters'
+	'ERROR_RESOURCE_CONTENT_TYPE_LENGTH': 'Resource content type length must be between 1 and 50 characters',
+	'ERROR_CONTROLLER_LENGTH': 'Controller length must be between 1 and 250 characters',
+	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller'
 	
 };
 
@@ -19,8 +21,9 @@ $().ready( function () {
 								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_URI_BAD_FORMAT"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
 								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
-								'resourceType': [ { rule: { includedInto: [ '1', '2' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
-								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}]
+								'resourceType': [ { rule: { includedInto: [ '1', '2', '3' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
+								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}],
+								'controllerClass': [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_CONTROLLER_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}]
 							  };
 
 
@@ -34,7 +37,39 @@ $().ready( function () {
 									});
 	
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+
+	var ResourceExternalBlur = function (e) {
+		var value = $.trim($(e.target).val());	
+		var urlValue = "./search";
+		if ($('input[name="resourceType"]:checked').val() == "1") {
+			urlValue = "./search?externalKey={0}&class=wbpage".format(encodeURIComponent(value));
+		} else if ($('input[name="resourceType"]:checked').val() == "2") {
+			urlValue = "./search?externalKey={0}&class=wbfile".format(encodeURIComponent(value));			
+		} 
+		$('#wburiadd').wbCommunicationManager().ajax ( { url: urlValue,
+			 httpOperation:"GET", 
+			 payloadData:"",
+			 functionSuccess: fSuccessSearch,
+			 functionError: fErrorSearch
+			} );
+			
+	};
+
+	$('input[name="resourceType"]').on("change", function() {
+		var val = $('input[name="resourceType"]:checked').val();
+		if (val == 1 || val == 2) {
+			$(".wbResourceExternalKey").show();
+			$(".wbUrlController").hide();
+			$("#wbaresourceExternalKey").trigger("change");
+		} else if (val == 3) {
+			$(".wbResourceExternalKey").hide();
+			$(".wbUrlController").show();			
+		}
 		
+	});
+	
+	$("#wbaresourceType").trigger("change");
+	
 	$('#wburiadd').wbObjectManager().resetFields();
 	var oResourceExternalKey = "";
 	var externalKeysArrays = { 'files':[], 'pages': [] }
@@ -58,24 +93,6 @@ $().ready( function () {
 		alert(data);
 	}
 
-	var ResourceExternalBlur = function (e) {
-		var value = $(e.target).val();
-		if (value != oResourceExternalKey) {
-			var urlValue = "./search";
-			if ($('input[name="resourceType"]:checked').val() == "1") {
-				urlValue = "./search?externalKey={0}&class=wbpage".format(encodeURIComponent(value));
-			} else if ($('input[name="resourceType"]:checked').val() == "2") {
-				urlValue = "./search?externalKey={0}&class=wbfile".format(encodeURIComponent(value));			
-			} 
-			$('#wburiadd').wbCommunicationManager().ajax ( { url: urlValue,
-				 httpOperation:"GET", 
-				 payloadData:"",
-				 functionSuccess: fSuccessSearch,
-				 functionError: fErrorSearch
-				} );
-			
-		}
-	};
 	$("#wbaresourceExternalKey").on("change", ResourceExternalBlur);
 
 	var fS_GetFilesPageSummary = function (data) {		

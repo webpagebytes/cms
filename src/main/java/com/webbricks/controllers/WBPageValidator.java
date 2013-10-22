@@ -7,7 +7,8 @@ import com.webbricks.cmsdata.WBWebPage;
 
 public class WBPageValidator {
 	public final static int MAX_PAGENAME_LENGHT = 250;
-
+	public final static int MAX_CONTROLLER_LENGTH = 250;
+	
 	public Map<String, String> validateCreate(WBWebPage webPage)
 	{
 		HashMap<String, String> errors = new HashMap<String, String>();
@@ -39,6 +40,17 @@ public class WBPageValidator {
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 
+		if (webPage.getPageModelProvider() != null)
+		{
+			if (webPage.getPageModelProvider().length()> MAX_CONTROLLER_LENGTH)
+			{
+				errors.put("pageModelProvider", WBErrors.ERROR_CONTROLLER_LENGTH);
+			}
+			if (! webPage.getPageModelProvider().matches("[0-9a-zA-Z_.]*"))
+			{
+				errors.put("pageModelProvider", WBErrors.ERROR_CONTROLLER_BAD_FORMAT);
+			}
+		}
 		return errors;
 		
 	}
@@ -72,6 +84,19 @@ public class WBPageValidator {
 		{
 			errors.put("hash", WBErrors.ERROR_CANT_SPECIFY_HASH);
 		}
+		
+		if (webPage.getPageModelProvider() != null)
+		{
+			if (webPage.getPageModelProvider().length()> MAX_CONTROLLER_LENGTH)
+			{
+				errors.put("pageModelProvider", WBErrors.ERROR_CONTROLLER_LENGTH);
+			}
+			if (! webPage.getPageModelProvider().matches("[0-9a-zA-Z_.]*"))
+			{
+				errors.put("pageModelProvider", WBErrors.ERROR_CONTROLLER_BAD_FORMAT);
+			}
+		}
+
 		return errors;
 	}
 

@@ -63,7 +63,7 @@ public class WBUriValidator {
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)))
 		{
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}
@@ -112,7 +112,7 @@ public class WBUriValidator {
 			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)))
 		{
 			errors.put("resourceType", WBErrors.ERROR_BAD_RESOURCE_TYPE);
 		}

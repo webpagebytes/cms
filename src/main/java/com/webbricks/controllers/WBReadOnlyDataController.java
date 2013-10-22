@@ -1,5 +1,6 @@
 package com.webbricks.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,9 @@ public class WBReadOnlyDataController  extends WBController {
 				{
 					allRecords = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, property);
 				}				
+			} else
+			{
+				allRecords = new ArrayList<WBWebPage>();
 			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();

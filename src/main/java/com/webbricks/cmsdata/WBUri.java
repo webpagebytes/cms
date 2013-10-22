@@ -7,6 +7,8 @@ import java.util.Date;
 public class WBUri implements Serializable {
 	public final static int RESOURCE_TYPE_TEXT = 1;
 	public final static int RESOURCE_TYPE_FILE = 2;
+	public final static int RESOURCE_TYPE_URL_CONTROLLER = 3;
+	
 
 	@AdminFieldKey
 	private Long key;
@@ -34,10 +36,7 @@ public class WBUri implements Serializable {
 	
 	@AdminFieldStore
 	private String resourceExternalKey;
-		
-	@AdminFieldStore
-	private String pageName;
-	
+			
 	@AdminFieldStore
 	private String externalKey;
 	
@@ -95,14 +94,6 @@ public class WBUri implements Serializable {
 
 	public void setControllerClass(String controllerClass) {
 		this.controllerClass = controllerClass;
-	}
-
-	public String getPageName() {
-		return pageName;
-	}
-
-	public void setPageName(String pageName) {
-		this.pageName = pageName;
 	}
 	
 	public String getExternalKey() {
