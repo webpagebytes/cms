@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 
 
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.apphosting.utils.remoteapi.RemoteApiPb.Request;
+import com.webbricks.appinterfaces.WBForward;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
@@ -54,6 +56,7 @@ public class PublicContentServlet extends HttpServlet {
 	
 	private PageContentBuilder pageContentBuilder;
 	private FileContentBuilder fileContentBuilder;
+	private UriContentBuilder uriContentBuilder;
 	private WBCacheInstances cacheInstances;
 	
 	public PublicContentServlet()
@@ -98,6 +101,9 @@ public class PublicContentServlet extends HttpServlet {
 			
 			fileContentBuilder = new FileContentBuilder(cacheInstances);
 			fileContentBuilder.initialize();
+			
+			uriContentBuilder = new UriContentBuilder(cacheInstances);
+			uriContentBuilder.initialize();
 			
 		} catch (Exception e)
 		{
@@ -147,22 +153,40 @@ public class PublicContentServlet extends HttpServlet {
 		{
 			try
 			{
+				WBProject wbProject = cacheInstances.getProjectCache().getProject();
 				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
 				if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					return;					
 				}
-				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
+				WBForward forward = new WBForward();
+				Map<String, Object> model = null;				
+				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
-					WBWebPage webPage = pageContentBuilder.findWebPage(wbUri.getResourceExternalKey());
+					model = uriContentBuilder.buildUriContent(req, resp, urlMatcherResult, wbUri, wbProject, forward);
+					if (!forward.isRequestForwarded())
+					{
+						return;
+					}
+					// the request is forwarded to a page so we need to pass the same model
+				}
+				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || forward.isRequestForwarded())
+				{
+					WBWebPage webPage = null;
+					if (forward.isRequestForwarded())
+					{
+						webPage = pageContentBuilder.findWebPage(forward.getForwardTo());
+					} else
+					{					
+						webPage = pageContentBuilder.findWebPage(wbUri.getResourceExternalKey());
+					}
 					if (webPage == null)
 					{
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return;
 					}
-					WBProject wbProject = cacheInstances.getProjectCache().getProject();
-					String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject);
+					String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject, model);
 					resp.setCharacterEncoding("UTF-8");
 					if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
 					{
