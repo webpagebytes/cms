@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.appinterfaces.IPageModelProvider;
+import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
@@ -91,7 +92,7 @@ public class PageContentBuilder extends BaseModelProvider {
 			URLMatcherResult urlMatcherResult, 
 			WBWebPage wbWebPage, 
 			WBProject project,
-			Map<String, Object> model) throws WBException
+			WBModel model) throws WBException
 	{
 
 		if ((wbWebPage.getIsTemplateSource() == null) || (wbWebPage.getIsTemplateSource() == 0))
@@ -101,13 +102,17 @@ public class PageContentBuilder extends BaseModelProvider {
 		
 		if (model == null)
 		{
-			model = getControllerModel(request, urlMatcherResult, wbWebPage.getExternalKey(), project);
+			model = new WBModel();
+			model.getCmsModel().putAll(getControllerModel(request, urlMatcherResult, wbWebPage.getExternalKey(), this.PAGE_PARAMETERS_KEY, project));
 		}
 		
 		String controllerClassName = wbWebPage.getPageModelProvider();
+		Map<String, Object> controllerModel = new HashMap<String, Object>();
+		Map<String, Object> rootModel = new HashMap<String, Object>();
+		
 		if (controllerClassName !=null && controllerClassName.length()>0)
 		{
-			Map<String, Object> controllerModel = new HashMap<String, Object>();
+
 			IPageModelProvider controllerInst = null;
 			if (customControllers.containsKey(controllerClassName))
 			{
@@ -121,14 +126,18 @@ public class PageContentBuilder extends BaseModelProvider {
 			if (controllerInst != null)
 			{
 				controllerInst.getPageModel(request, controllerModel);
-				model.put(PAGE_CONTROLLER_MODEL_KEY, controllerModel);
 			}			
 		}
+		rootModel.put(PAGE_CONTROLLER_MODEL_KEY, controllerModel);
+		model.transferModel(rootModel);
+		
+		rootModel.put(LOCALE_COUNTRY_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_COUNTRY_KEY));
+		rootModel.put(LOCALE_LANGUAGE_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_LANGUAGE_KEY));
+		
 		String result = "";
 		try {
-			StringWriter out = new StringWriter();
-			
-			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), model, out);
+			StringWriter out = new StringWriter();			
+			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
 			result += out.toString();
 		} catch (WBException e)
 		{

@@ -4,6 +4,7 @@ import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,6 +12,7 @@ import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cache.WBParametersCache;
+import com.webbricks.cms.BaseModelProvider;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBGaeBlobHandler;
@@ -74,9 +76,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 	{
 		try {
 			log.log(Level.INFO, "call WBFreeMarkerTemplateEngine process for " + templateName);
-			String localeLanguage = (String) rootMap.get(PageContentBuilder.LOCALE_LANGUAGE_KEY);
-			String localeCountry = (String) rootMap.get(PageContentBuilder.LOCALE_COUNTRY_KEY);
-		
+					
 			Template t = configuration.getTemplate(templateName);
 			
 			Object textFormatMethod = rootMap.get(PageContentBuilder.FORMAT_TEXT_METHOD);
@@ -85,24 +85,25 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 				textFormatMethod = new WBFreeMarkerTextFormatMethod();
 				rootMap.put(PageContentBuilder.FORMAT_TEXT_METHOD, textFormatMethod);
 			}
+		
 			
-			Object params = rootMap.get(PageContentBuilder.PAGE_PARAMETERS_KEY);
-			if (! (params instanceof TemplateHashModel))
+			Set<String> rootKeys = rootMap.keySet();
+			for(String key: rootKeys)
 			{
-				TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
-				rootMap.put(PageContentBuilder.PAGE_PARAMETERS_KEY, hashModel);
-			}
-
-			params = rootMap.get(PageContentBuilder.PAGE_CONTROLLER_MODEL_KEY);
-			if (! (params instanceof TemplateHashModel))
-			{
-				TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
-				rootMap.put(PageContentBuilder.PAGE_CONTROLLER_MODEL_KEY, hashModel);
+				Object params = rootMap.get(key);
+				if (params instanceof Map)
+				{
+					TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
+					rootMap.put(PageContentBuilder.PAGE_PARAMETERS_KEY, hashModel);			
+				}
 			}
 			
 			if (null == rootMap.get(PageContentBuilder.LOCALE_MESSAGES))
 			{
 				Locale locale = null;
+				String localeLanguage = (String) rootMap.get(PageContentBuilder.LOCALE_LANGUAGE_KEY);
+				String localeCountry = (String) rootMap.get(PageContentBuilder.LOCALE_COUNTRY_KEY);
+
 				if (localeCountry !=null && localeCountry.length()>0)
 				{
 					locale = new Locale(localeLanguage, localeCountry);

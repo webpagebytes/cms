@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
+import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.exception.WBException;
 
 public interface WBTemplateEngine {
@@ -12,5 +13,5 @@ public interface WBTemplateEngine {
 	public static final String WEBMODULES_PATH_PREFIX = "webmodules/";
 
 	public void initialize() throws WBException;
-	public void process(String templateName, Map<String, Object> rootMap, Writer out) throws WBException;
+	public void process(String templateName, Map<String, Object> model, Writer out) throws WBException;
 }

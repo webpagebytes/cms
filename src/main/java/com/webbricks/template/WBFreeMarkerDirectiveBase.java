@@ -3,6 +3,7 @@ package com.webbricks.template;
 import java.io.IOException;
 import java.util.Map;
 
+import com.webbricks.cms.BaseModelProvider;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.cmsdata.WBPredefinedParameters;
 
@@ -27,6 +28,11 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 {
 	TemplateHashModel dataModel = env.getDataModel();
 
+	TemplateModel localeCountry = dataModel.get(BaseModelProvider.LOCALE_COUNTRY_KEY);
+	TemplateModel localeLanguage = dataModel.get(BaseModelProvider.LOCALE_LANGUAGE_KEY);
+	params.put(BaseModelProvider.LOCALE_LANGUAGE_KEY, localeLanguage);
+	params.put(BaseModelProvider.LOCALE_COUNTRY_KEY, localeCountry);
+	
 	TemplateModel resourceBundle = dataModel.get(PageContentBuilder.LOCALE_MESSAGES);
 	if (resourceBundle != null)
 	{
@@ -37,28 +43,34 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	{
 		params.put(PageContentBuilder.PAGE_PARAMETERS_KEY, pageParams);
 	}
-	TemplateModel urlParams = dataModel.get(PageContentBuilder.URL_PARAMETERS_KEY);
+	TemplateModel uriParams = dataModel.get(BaseModelProvider.URI_PARAMETERS_KEY);
+	if (uriParams != null)
+	{
+		params.put(BaseModelProvider.URI_PARAMETERS_KEY, uriParams);
+	}
+
+	TemplateModel urlParams = dataModel.get(PageContentBuilder.URL_REQUEST_PARAMETERS_KEY);
 	if (urlParams != null)
 	{
-		params.put(PageContentBuilder.URL_PARAMETERS_KEY, urlParams);
+		params.put(PageContentBuilder.URL_REQUEST_PARAMETERS_KEY, urlParams);
 	}
 	
 	params.put(PageContentBuilder.FORMAT_TEXT_METHOD, dataModel.get(PageContentBuilder.FORMAT_TEXT_METHOD));
 	
-	TemplateModel domain = dataModel.get(WBPredefinedParameters.GLOBAL_DOMAIN);
-	if (domain != null) 
+	TemplateModel globals = dataModel.get(BaseModelProvider.GLOBALS_KEY);
+	if (globals != null) 
 	{
-		params.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
+		params.put(BaseModelProvider.GLOBALS_KEY, globals);
 	}
-	TemplateModel protocol = dataModel.get(WBPredefinedParameters.GLOBAL_PROTOCOL);
-	if (protocol != null) 
+	TemplateModel locale = dataModel.get(BaseModelProvider.LOCALE_KEY);
+	if (locale != null) 
 	{
-		params.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
+		params.put(BaseModelProvider.LOCALE_KEY, locale);
 	}
-	TemplateModel uriPrefix = dataModel.get(WBPredefinedParameters.GLOBAL_URI_PREFIX);
-	if (uriPrefix != null) 
+	TemplateModel protocols = dataModel.get(BaseModelProvider.GLOBAL_PROTOCOL);
+	if (protocols != null) 
 	{
-		params.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, uriPrefix);
+		params.put(BaseModelProvider.GLOBAL_PROTOCOL, protocols);
 	}
 
 }

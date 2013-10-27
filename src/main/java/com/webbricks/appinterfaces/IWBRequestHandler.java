@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 public interface IWBRequestHandler {
 	public void handleRequest(HttpServletRequest request, 
 							  HttpServletResponse response, 
-							  Map<String, Object> model,
+							  WBModel model,
 							  WBForward forward);
 }

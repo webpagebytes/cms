@@ -8,19 +8,29 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.webbricks.appinterfaces.WBCmsModel;
+import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.WBCacheInstances;
+import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBPredefinedParameters;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.exception.WBException;
+import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBLocaleException;
 
 public class BaseModelProvider {
-	
-	public static final String URL_PARAMETERS_KEY = "wbUrlParams";
+	public static final String GLOBALS_KEY = "wbGlobals";
+	public static final String REQUEST_KEY = "wbRequest";
+	public static final String URL_REQUEST_PARAMETERS_KEY = "wbRequestUrlParams";
 	public static final String PAGE_PARAMETERS_KEY = "wbPageParams";
-	public static final String PAGE_CONTROLLER_MODEL_KEY = "wbControllerModel";
+	public static final String URI_PARAMETERS_KEY = "wbUriParams";
+	
+	public static final String PAGE_CONTROLLER_MODEL_KEY = "wbPageModel";
+	public static final String URI_CONTROLLER_MODEL_KEY = "wbUriModel";
+	
+	public static final String LOCALE_KEY = "wbLocale";
 	public static final String LOCALE_LANGUAGE_KEY = "wbLocaleLanguage";
 	public static final String LOCALE_COUNTRY_KEY = "wbLocaleCountry";
 	public static final String LOCALE_MESSAGES = "wbMessages";
@@ -58,7 +68,7 @@ public class BaseModelProvider {
 		return supportedLanguagesSet;
 	}
 	
-	private void addStaticParameters(HttpServletRequest request, Map<String, String> pageModel)
+	private Map<String, String> getStaticParameters(HttpServletRequest request)
 	{
 		String url = request.getRequestURL().toString();
 		int indexDomain = url.indexOf("://");
@@ -69,49 +79,59 @@ public class BaseModelProvider {
 		{
 			domain = domain.substring(0, indexUri);
 		}
-		pageModel.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
-		pageModel.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
+		Map<String, String> result = new HashMap<String, String>();
+		result.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
+		result.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
 		Object objUriPrefix = request.getAttribute(PublicContentServlet.URI_PREFIX);
 		if (objUriPrefix != null)
 		{
-			pageModel.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, (String)objUriPrefix);
+			result.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, (String)objUriPrefix);
 		}	
+		return result;
 	}
 	
-	public Map<String, Object> getControllerModel(HttpServletRequest request,
+	private Map<String, String> getGlobalParameters(WBParametersCache parametersCache) throws WBIOException
+	{
+		List<WBParameter> globalParams = parametersCache.getAllForOwner("");
+		Map<String, String> result = new HashMap<String, String>();
+		
+		for(WBParameter param: globalParams)
+		{
+			result.put(param.getName(), param.getValue());
+		}
+		return result;
+		
+	}
+	public WBCmsModel getControllerModel(HttpServletRequest request,
 			URLMatcherResult urlMatcherResult, 
-			String ownerExternalKey, 
+			String ownerExternalKey,
+			String ownerModelKey,
 			WBProject project) throws WBException
 	{
-		Map<String, Object> pageModel = new HashMap<String, Object>();
+		WBCmsModel model = new WBCmsModel();
 		Map<String, String> subUrlParams = new HashMap<String, String>();
 		
 		if (urlMatcherResult.getPatternParams() != null)
 		{
 			subUrlParams.putAll(urlMatcherResult.getPatternParams());
 		}
-		pageModel.put(URL_PARAMETERS_KEY, subUrlParams);
+		model.put(URL_REQUEST_PARAMETERS_KEY, subUrlParams);
 
-		List<WBParameter> pageWbParams = cacheInstances.getWBParameterCache().getAllForOwner(ownerExternalKey);
-		List<WBParameter> globalParams = cacheInstances.getWBParameterCache().getAllForOwner("");
-		globalParams.addAll(pageWbParams);
-		pageWbParams = globalParams;
+		List<WBParameter> ownerParams = cacheInstances.getWBParameterCache().getAllForOwner(ownerExternalKey);
 		
-		Map<String, String> pageParams = new HashMap<String, String>();
+		Map<String, String> ownerParamsMap = new HashMap<String, String>();
 		
 		Map<String, String[]> requestQueryParams = request.getParameterMap();
 	
-		Set<String> supportedLanguagesSet = getSupportedLanguages(project);
-		
 		boolean languageParamPresent = false;
 		
 		String localeLanguage = "";
 		String localeCountry = "";
-		if (pageWbParams != null)
+		if (ownerParams != null)
 		{
-			for (WBParameter wbParam: pageWbParams)
+			for (WBParameter wbParam: ownerParams)
 			{
-				pageParams.put(wbParam.getName(), wbParam.getValue());
+				ownerParamsMap.put(wbParam.getName(), wbParam.getValue());
 				
 				if (wbParam.getOverwriteFromUrl() != null && wbParam.getOverwriteFromUrl() != 0)
 				{
@@ -137,16 +157,22 @@ public class BaseModelProvider {
 					} else
 					if (requestQueryParams.containsKey(wbParam.getName()))
 					{
-						pageParams.put(wbParam.getName(), requestQueryParams.get(wbParam.getName())[0]);
+						ownerParamsMap.put(wbParam.getName(), requestQueryParams.get(wbParam.getName())[0]);
 					}
 				}
 			}
-		}
+		}		
 		
-		addStaticParameters(request, pageParams);
+		model.put(ownerModelKey, ownerParamsMap);
+		model.put(GLOBALS_KEY, getGlobalParameters(cacheInstances.getWBParameterCache()));
+		
+		model.put(REQUEST_KEY, getStaticParameters(request));
+		
+		Map<String, String> localeModel = new HashMap<String, String>();
 		
 		if (languageParamPresent == true)
 		{
+			Set<String> supportedLanguagesSet = getSupportedLanguages(project);
 			String lcid = localeLanguage;
 			if (localeCountry.length()>0)
 			{
@@ -154,22 +180,21 @@ public class BaseModelProvider {
 			}
 			if (!supportedLanguagesSet.contains(lcid))
 			{
-				String supportedLangs = "";
 				throw new WBLocaleException("Locale not supported in %s %s ".format(supportedLanguagesSet.toString(),lcid));
 			}
-			pageModel.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, localeLanguage);
-			pageModel.put(PageContentBuilder.LOCALE_COUNTRY_KEY, localeCountry);
+			localeModel.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, localeLanguage);
+			localeModel.put(PageContentBuilder.LOCALE_COUNTRY_KEY, localeCountry);
 		} else
 		{
 			String defaultLanguage = cacheInstances.getProjectCache().getDefaultLanguage();
 			String[] langs_ = defaultLanguage.split("_");
-			pageModel.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, langs_[0]);
-			pageModel.put(PageContentBuilder.LOCALE_COUNTRY_KEY, (langs_.length == 1) ? "":langs_[1] );					
+			localeModel.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, langs_[0]);
+			localeModel.put(PageContentBuilder.LOCALE_COUNTRY_KEY, (langs_.length == 1) ? "":langs_[1] );					
 		}
 		
-		pageModel.put(PAGE_PARAMETERS_KEY ,pageParams);
+		model.put(LOCALE_KEY , localeModel);
 
-		return pageModel;
+		return model;
 	}
 
 }

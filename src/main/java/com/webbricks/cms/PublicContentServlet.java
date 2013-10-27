@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 
 
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.apphosting.utils.remoteapi.RemoteApiPb.Request;
 import com.webbricks.appinterfaces.WBForward;
+import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
@@ -151,6 +153,7 @@ public class PublicContentServlet extends HttpServlet {
 			return;
 		} else
 		{
+			WBModel model = null;				
 			try
 			{
 				WBProject wbProject = cacheInstances.getProjectCache().getProject();
@@ -161,7 +164,6 @@ public class PublicContentServlet extends HttpServlet {
 					return;					
 				}
 				WBForward forward = new WBForward();
-				Map<String, Object> model = null;				
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
 					model = uriContentBuilder.buildUriContent(req, resp, urlMatcherResult, wbUri, wbProject, forward);
@@ -235,8 +237,14 @@ public class PublicContentServlet extends HttpServlet {
 				log.log(Level.SEVERE, "Template ERROR: ", e);
 				ServletOutputStream os = resp.getOutputStream();
 				String stack = Arrays.toString(e.getStackTrace());
-				os.write(e.getMessage().getBytes("UTF-8")); os.write("\n".getBytes());
+				os.write(e.getMessage().getBytes("UTF-8")); os.write("\n".getBytes());				
 				os.write(stack.getBytes("UTF-8"));
+				os.write("-------------".getBytes());
+				if (model != null)
+				{
+					String params = model.getCmsModel().toString() + "|" + model.getCmsCustomModel().toString();
+					os.write(params.getBytes());
+				}
 				os.flush();
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
 			}

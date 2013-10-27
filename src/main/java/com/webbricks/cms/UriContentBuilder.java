@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.appinterfaces.IPageModelProvider;
 import com.webbricks.appinterfaces.IWBRequestHandler;
 import com.webbricks.appinterfaces.WBForward;
+import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
@@ -30,7 +31,7 @@ public class UriContentBuilder extends BaseModelProvider {
 		
 	}
 	
-	public Map<String, Object> buildUriContent(HttpServletRequest request, HttpServletResponse response,
+	public WBModel buildUriContent(HttpServletRequest request, HttpServletResponse response,
 			URLMatcherResult urlMatcherResult, 
 			WBUri wburi, 
 			WBProject project, WBForward forward) throws WBException
@@ -38,7 +39,6 @@ public class UriContentBuilder extends BaseModelProvider {
 		String controllerClassName = wburi.getControllerClass();
 		if (controllerClassName !=null && controllerClassName.length()>0)
 		{
-			Map<String, Object> controllerModel = new HashMap<String, Object>();
 			IWBRequestHandler controllerInst = null;
 			if (customControllers.containsKey(controllerClassName))
 			{
@@ -51,7 +51,8 @@ public class UriContentBuilder extends BaseModelProvider {
 			}
 			if (controllerInst != null)
 			{
-				Map<String, Object> model = getControllerModel(request, urlMatcherResult, wburi.getExternalKey(), project);
+				WBModel model = new WBModel(); 
+				model.getCmsModel().putAll(getControllerModel(request, urlMatcherResult, wburi.getExternalKey(), BaseModelProvider.URI_PARAMETERS_KEY, project));
 				controllerInst.handleRequest(request, response, model, forward);
 				return model;
 			}			
