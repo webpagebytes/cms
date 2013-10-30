@@ -72,6 +72,11 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	{
 		params.put(BaseModelProvider.GLOBAL_PROTOCOL, protocols);
 	}
+	TemplateModel request = dataModel.get(BaseModelProvider.REQUEST_KEY);
+	if (request != null) 
+	{
+		params.put(BaseModelProvider.REQUEST_KEY, request);
+	}
 
 }
 

@@ -21,14 +21,17 @@ import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBTemplateException;
 
 import freemarker.core.Environment;
+import freemarker.core.ParseException;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
 import freemarker.ext.beans.SimpleMapModel;
+import freemarker.ext.beans.StringModel;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModel;
 
 public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerTemplateEngine.class.getName());
@@ -85,19 +88,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 				textFormatMethod = new WBFreeMarkerTextFormatMethod();
 				rootMap.put(PageContentBuilder.FORMAT_TEXT_METHOD, textFormatMethod);
 			}
-		
-			
-			Set<String> rootKeys = rootMap.keySet();
-			for(String key: rootKeys)
-			{
-				Object params = rootMap.get(key);
-				if (params instanceof Map)
-				{
-					TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
-					rootMap.put(PageContentBuilder.PAGE_PARAMETERS_KEY, hashModel);			
-				}
-			}
-			
+					
 			if (null == rootMap.get(PageContentBuilder.LOCALE_MESSAGES))
 			{
 				Locale locale = null;
@@ -119,6 +110,23 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 			{
 				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process found wbmessages in root " + templateName);	
 			}
+			
+			Set<String> rootKeys = rootMap.keySet();
+			for(String key: rootKeys)
+			{
+				Object params = rootMap.get(key);
+				if (params instanceof Map)
+				{
+					TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
+					rootMap.put(key, hashModel);			
+				}
+				if (params instanceof String)
+				{
+					TemplateModel model = new StringModel(params, new DefaultObjectWrapper());
+					rootMap.put(key, model);
+				}
+			}
+
 			Environment env = t.createProcessingEnvironment(rootMap, out);
 			env.process();
 		} 
@@ -126,6 +134,10 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		{
 			throw new WBTemplateException("Freemarker Template Exception " + e.getMessage(), e);
 		}		
+		catch (ParseException e)
+		{
+			throw new WBTemplateException("Freemarker Template Exception " + e.getMessage(), e);
+		}
 		catch (IOException e)
 		{
 			throw (new WBIOException("IO Exception", e));
