@@ -12,7 +12,12 @@ var errorsGeneral = {
 	'ERROR_BAD_RESOURCE_CONTENT_TYPE': 'Resource content type not supported',
 	'ERROR_RESOURCE_CONTENT_TYPE_LENGTH': 'Resource content type length must be between 1 and 50 characters',
 	'ERROR_CONTROLLER_LENGTH': 'Controller length must be between 1 and 250 characters',
-	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller'
+	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller',
+
+	'ERROR_PARAM_NAME_LENGTH': 'Parameter name length must be between 1 and 250 characters',
+	'ERROR_PARAM_NAME_BAD_FORMAT': 'Invalid name format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
+	'ERROR_PARAM_INVALID_OVERWRITE': 'Operation on overwrite not supported',
+	'ERROR_PARAM_INVALID_LOCALETYPE': 'Operation on locale not supported'
 
 	
 };
@@ -26,6 +31,11 @@ $().ready( function () {
 								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}],
 								'controllerClass': [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_CONTROLLER_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}]
 							  };
+	var wbParameterValidations = { 
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PARAM_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PARAM_NAME_BAD_FORMAT"}],
+			overwriteFromUrl: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PARAM_INVALID_OVERWRITE" }],
+			localeType: [{rule: { includedInto: ['0','1','2'] }, error: "ERROR_PARAM_INVALID_LOCALETYPE" }]
+	};
 
 
 	$('#wburiedit').wbObjectManager( { fieldsPrefix:'wbe',
@@ -36,7 +46,47 @@ $().ready( function () {
 									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 									});
-	
+
+	$('#wbAddParameterForm').wbObjectManager( { fieldsPrefix:'wba',
+		  errorLabelsPrefix: 'erra',
+		  errorGeneral:"errageneral",
+		  errorLabelClassName: 'errorvalidationlabel',
+		  errorInputClassName: 'errorvalidationinput',
+		  fieldsDefaults: { overwriteFromUrl: 0, localeType: 0 },
+		  validationRules: wbParameterValidations
+		});
+	$('#wbUpdateParameterForm').wbObjectManager( { fieldsPrefix:'wbu',
+		  errorLabelsPrefix: 'erru',
+		  errorGeneral:"errageneral",
+		  fieldsDefaults: { overwriteFromUrl: 0, localeType: 0 },
+		  errorLabelClassName: 'errorvalidationlabel',
+		  errorInputClassName: 'errorvalidationinput',
+		  validationRules: wbParameterValidations
+		});
+
+	$('#wbDeleteParameterForm').wbObjectManager( { fieldsPrefix: 'wbd',
+		 errorGeneral:"errdgeneral",
+		 errorLabelsPrefix: 'errd',
+		 errorLabelClassName: 'errorvalidationlabel',
+		} );							
+
+	var tableDisplayHandler = function (fieldId, record) {
+		if (fieldId=="_operations") {
+			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
+		} else
+		if (fieldId=="lastModified") {
+			var date = new Date();
+			return date.toFormatString(record[fieldId], "dd/mm/yyyy hh:mm:ss");
+		}
+	}
+
+	$('#wbUriParametersTable').wbSimpleTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
+	               								         {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
+	               						 keyName: "key",
+	               						 tableBaseClass: "table table-stripped table-bordered table-color-header",
+	               						 paginationBaseClass: "pagination"
+	               						});
+
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 	
 	var wbhelpcontent = function(){
@@ -87,11 +137,13 @@ $().ready( function () {
 	
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	var oResourceExternalKey = "";
+	var uriExternalKey = "";
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
 		$('#wburiedit').wbObjectManager().populateFieldsFromObject(data.data);
 		$("#wberesourceType").trigger("change");
 		oResourceExternalKey = data.data["resourceExternalKey"];
+		
 		var html = "NOT FOUND";
 		if ('pages_links' in data.additional_data) {
 			if (data.additional_data.pages_links.length >= 1) {
@@ -107,7 +159,17 @@ $().ready( function () {
 			$('#wbresourcelink').html(html);
 		} else {
 			$('#wbresourcelink').html(html);			
-		}			
+		}	
+		
+		// now get the parameters
+		uriExternalKey = data.data['externalKey'];
+		$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(uriExternalKey),
+			 httpOperation:"GET", 
+			 payloadData:"",
+			 functionSuccess: fSuccessGetParameters,
+			 functionError: fErrorGetParameters
+			} );
+
 	};
 	
 	var fSuccessSearch = function (data) {
@@ -134,7 +196,116 @@ $().ready( function () {
 		alert(errors);
 	};
 
+	// now handle the parameters
+	$('#wbAddParameterBtn').click ( function (e) {
+		e.preventDefault();
+		$('#wbAddParameterForm').wbObjectManager().resetFields();
+		$('#wbAddParameterModal').modal('show');
+	});
+	
+	var fSuccessAdd = function ( data ) {
+		$('#wbAddParameterModal').modal('hide');
+		$('#wbUriParametersTable').wbSimpleTable().insertRow(data.data);			
+	}
+	var fErrorAdd = function (errors, data) {
+		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
+	}
+
+	$('.wbAddParameterBtnClass').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wbAddParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			var parameter = $('#wbAddParameterForm').wbObjectManager().getObjectFromFields();
+			parameter['ownerExternalKey'] = uriExternalKey;
+			var jsonText = JSON.stringify(parameter);
+			$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter",
+															 httpOperation:"POST", 
+															 payloadData:jsonText,
+															 wbObjectManager : $('#wbAddParamaterForm').wbObjectManager(),
+															 functionSuccess: fSuccessAdd,
+															 functionError: fErrorAdd
+															 } );
+		}
+	});
+
+	var fSuccessUpdate = function ( data ) {
+		$('#wbUpdateParameterModal').modal('hide');		
+		$('#wbUriParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
+	}
+	var fErrorUpdate = function (errors, data) {
+		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
+	}
+
+	$('.wbUpdateParameterBtnClass').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wbUpdateParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
+			object['ownerExternalKey'] = uriExternalKey;
+			var jsonText = JSON.stringify(object);
+			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+															 httpOperation:"PUT", 
+															 payloadData:jsonText,
+															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
+															 functionSuccess: fSuccessUpdate,
+															 functionError: fErrorUpdate
+															 } );
+		}
+	});
+
+	var fSuccessDelete = function ( data ) {
+		$('#wbDeleteParameterModal').modal('hide');		
+		$('#wbUriParametersTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+	}
+	var fErrorDelete = function (errors, data) {
+		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
+	}
+
+	$('.wbDeleteParameterBtnClass').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wbDeleteParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			var object = $('#wbDeleteParameterForm').wbObjectManager().getObjectFromFields();
+			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+															 httpOperation:"DELETE", 
+															 payloadData:"",
+															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),
+															 functionSuccess: fSuccessDelete,
+															 functionError: fErrorDelete
+															 } );
+		}
+	});
+
+	
+	$(document).on ("click", ".wbEditParameterClass", function (e) {
+		e.preventDefault();
+		$('#wbUpdateParameterForm').wbObjectManager().resetFields();
+		var key = $(this).attr('id').substring("wbEditParam_".length);
+		var object = $('#wbUriParametersTable').wbSimpleTable().getRowDataWithKey(key);
+		$('#wbUpdateParameterForm').wbObjectManager().populateFieldsFromObject(object);
+		$('#wbUpdateParameterModal').modal('show');		
+	});
+
+	$(document).on ("click", ".wbDeleteParameterClass", function (e) {
+		e.preventDefault();
+		$('#wbDeleteParameterForm').wbObjectManager().resetFields();
+		var key = $(this).attr('id').substring("wbDelParam_".length);
+		var object = $('#wbUriParametersTable').wbSimpleTable().getRowDataWithKey(key);
+		$('#wbDeleteParameterForm').wbObjectManager().populateFieldsFromObject(object);
+		$('#wbDeleteParameterModal').modal('show');		
+	});
+	
+	var fSuccessGetParameters = function (data) {
+		$('#wbUriParametersTable').wbSimpleTable().setRows(data.data);
+	}
+	var fErrorGetParameters = function (errors, data) {
+		alert(errors);
+	}
+
+	// end handle parameters
+	
 	var uriKey = getURLParameter('key'); 
+	
 	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wburi/{0}?include_links=1".format(encodeURIComponent(uriKey)),
 												 httpOperation:"GET", 
 												 payloadData:"",

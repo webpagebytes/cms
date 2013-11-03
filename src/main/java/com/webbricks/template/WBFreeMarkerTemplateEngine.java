@@ -119,11 +119,10 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 				{
 					TemplateHashModel hashModel = new SimpleMapModel((Map)params, new DefaultObjectWrapper());
 					rootMap.put(key, hashModel);			
-				}
+				} else
 				if (params instanceof String)
 				{
-					TemplateModel model = new StringModel(params, new DefaultObjectWrapper());
-					rootMap.put(key, model);
+					// leave this as it is for now
 				}
 			}
 

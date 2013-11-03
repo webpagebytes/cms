@@ -40,84 +40,83 @@
 	    </div>
     </div>
 	
-	<div class="wbcolorcontent">
-		<div class="wbinnercontent">
-		<form class="form-horizontal" id="wburiadd">
-			<fieldset>
-				<div class="control-group">
-					<div class="controls">
-						<span id="errageneral" class="help-inline"></span>
-					</div>										
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="uri">Site url</label>
-					<div class="controls">
-						<input id="wbauri" name="uri" class="wb-input-xlarge" type="text">
-						<span id="errauri" class="help-inline"></span>
-					</div>										
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="enabled">Is the url live?</label>
+	
+	<div class="row-fluid">
+		<div class="well">
+			<form class="form-horizontal" id="wburiadd">
+				<fieldset>
+					<div class="control-group">
+						<div class="controls">
+							<span id="errageneral" class="help-inline"></span>
+						</div>										
+					</div>
+	
+					<div class="control-group">
+						<label class="control-label" for="uri">Site url</label>
+						<div class="controls">
+							<input id="wbauri" name="uri" class="wb-input-xlarge" type="text">
+							<span id="errauri" class="help-inline"></span>
+						</div>										
+					</div>
 					
-					<div class="controls">
-						<input id="wbaenabled" type="radio" name="enabled" value="1"> YES
-						<input type="radio" name="enabled" value="0"> NO
-						<span id="erraenabled" class="help-inline"></span>
-					</div>										
-				</div>
-			
-			    <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Http operation</label>
-                    <div class="controls">
-                        <select name="controllerClass" id="wbahttpOperation">
-							<option>GET</option>
-							<option>POST</option>
-							<option>PUT</option>
-							<option>DELETE</option>
-						</select>
-						<span id="errahttpOperation" class="help-inline error"></span>
-					</div>
-                </div>
-				
-				<div class="control-group">
-					<label class="control-label" for="resourceType">Resource type</label>					
-					<div class="controls">
-						<input id="wbaresourceType" type="radio" name="resourceType" value="1"> Site page
-						<input type="radio" name="resourceType" value="2"> File
-						<input type="radio" name="resourceType" value="3"> Url controller
-						<span id="erraresourceType" class="help-inline"></span>
-					</div>										
-				</div>
-
-                <div class="control-group wbResourceExternalKey">
-                    <label class="control-label" for="resourceExternalKey"> Resource External Key </label>
-                    <div class="controls">
-                        <input id="wbaresourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
-						<span id="erraresourceExternalKey" class="help-inline"></span>
-						<br>
-						<span> Resource link <span id="wbresourcelink"> </span></span>
+					<div class="control-group">
+						<label class="control-label" for="enabled">Is the url live?</label>
 						
+						<div class="controls">
+							<input id="wbaenabled" type="radio" name="enabled" value="1"> YES
+							<input type="radio" name="enabled" value="0"> NO
+							<span id="erraenabled" class="help-inline"></span>
+						</div>										
 					</div>
-                </div>
-
-                <div class="control-group wbUrlController">
-                    <label class="control-label" for="controllerClass"> Url Controller </label>
-                    <div class="controls">
-                        <input id="wbacontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
-						<span id="erracontrollerClass" class="help-inline"></span>
+				
+				    <div class="control-group">
+	                    <label class="control-label" for="controllerClass"> Http operation</label>
+	                    <div class="controls">
+	                        <select name="controllerClass" id="wbahttpOperation">
+								<option>GET</option>
+								<option>POST</option>
+								<option>PUT</option>
+								<option>DELETE</option>
+							</select>
+							<span id="errahttpOperation" class="help-inline error"></span>
+						</div>
+	                </div>
+					
+					<div class="control-group">
+						<label class="control-label" for="resourceType">Resource type</label>					
+						<div class="controls">
+							<input id="wbaresourceType" type="radio" name="resourceType" value="1"> Site page
+							<input type="radio" name="resourceType" value="2"> File
+							<input type="radio" name="resourceType" value="3"> Url controller
+							<span id="erraresourceType" class="help-inline"></span>
+						</div>										
 					</div>
-                </div>
-								
-			</fieldset>
-		
-			<div class="marginv">
-				<button class="btn btn-primary wbUriAddBtnClass" type="submit">Save</button>
-				<button class="btn wbUriAddCancelBtnClass" type="submit">Cancel</button>
-			</div>
-		</form>
+	
+	                <div class="control-group wbResourceExternalKey">
+	                    <label class="control-label" for="resourceExternalKey"> Resource External Key </label>
+	                    <div class="controls">
+	                        <input id="wbaresourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
+							<span id="erraresourceExternalKey" class="help-inline"></span>
+							<br>
+							<span> Resource link <span id="wbresourcelink"> </span></span>
+							
+						</div>
+	                </div>
+	
+	                <div class="control-group wbUrlController">
+	                    <label class="control-label" for="controllerClass"> Url Controller </label>
+	                    <div class="controls">
+	                        <input id="wbacontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
+							<span id="erracontrollerClass" class="help-inline"></span>
+						</div>
+	                </div>								
+				</fieldset>
 
+				<div class="marginv">
+					<button class="btn btn-primary wbUriAddBtnClass" type="submit">Save</button>
+					<button class="btn wbUriAddCancelBtnClass" type="submit">Cancel</button>
+				</div>
+			</form>
 		</div>
 	</div>
 

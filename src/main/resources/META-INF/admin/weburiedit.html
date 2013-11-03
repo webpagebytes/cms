@@ -10,6 +10,7 @@
 <script src="./${timestamp}/bs/js/bootstrap.js" type="text/javascript"></script>
 <script src="./${timestamp}/zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./${timestamp}/js/wbutility.js" type="text/javascript"></script>
+<script src="./${timestamp}/js/wbsimpletable.js" type="text/javascript"></script>
 <script src="./${timestamp}/app-js/wburiedit.js" type="text/javascript"></script>
 </head>
 <body>
@@ -41,92 +42,242 @@
 	    </div>
     </div>
 	
-	<div class="wbcolorcontent">
-		<div class="wbinnercontent">
-		<form class="form-horizontal" id="wburiedit">
-			<fieldset>
-				<div class="control-group">
-					<div class="controls">
-						<span id="erregeneral" class="help-inline"></span>
-					</div>										
-				</div>
-				<div class="control-group">
-					<label for="externalKey" class="control-label">External Key</label>
-					<div class="controls">
-						<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
-						<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-						<span id="erreexternmalKey" class="help-inline"></span>
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="uri">Site url</label>
-					<div class="controls">
-						<input id="wbeuri" name="uri" class="wb-input-xlarge" type="text">
-						<span id="erreuri" class="help-inline"></span>
-					</div>										
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="enabled">Is the url live?</label>
-					
-					<div class="controls">
-						<input id="wbeenabled" type="radio" name="enabled" value="1"> YES
-						<input type="radio" name="enabled" value="0"> NO
-						<span id="erreenabled" class="help-inline"></span>
-					</div>										
-				</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="span7"> 
+				<div class="well">
+					<form class="form-horizontal" id="wburiedit">
+						<fieldset>
+							<div class="control-group">
+								<div class="controls">
+									<span id="erregeneral" class="help-inline"></span>
+								</div>										
+							</div>
+							<div class="control-group">
+								<label for="externalKey" class="control-label">External Key</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+									<input data-clipboard-target="wbeexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+									<span id="erreexternmalKey" class="help-inline"></span>
+								</div>
+							</div>
 			
-			    <div class="control-group">
-                    <label class="control-label" for="controllerClass"> Http operation</label>
-                    <div class="controls">
-                        <select name="controllerClass" id="wbehttpOperation">
-							<option>GET</option>
-							<option>POST</option>
-							<option>PUT</option>
-							<option>DELETE</option>
-						</select>
-						<span id="errehttpOperation" class="help-inline error"></span>
-					</div>
-                </div>
-				
+							<div class="control-group">
+								<label class="control-label" for="uri">Site url</label>
+								<div class="controls">
+									<input id="wbeuri" name="uri" class="wb-input-xlarge" type="text">
+									<span id="erreuri" class="help-inline"></span>
+								</div>										
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="enabled">Is the url live?</label>
+								
+								<div class="controls">
+									<input id="wbeenabled" type="radio" name="enabled" value="1"> YES
+									<input type="radio" name="enabled" value="0"> NO
+									<span id="erreenabled" class="help-inline"></span>
+								</div>										
+							</div>
+						
+						    <div class="control-group">
+			                    <label class="control-label" for="controllerClass"> Http operation</label>
+			                    <div class="controls">
+			                        <select name="controllerClass" id="wbehttpOperation">
+										<option>GET</option>
+										<option>POST</option>
+										<option>PUT</option>
+										<option>DELETE</option>
+									</select>
+									<span id="errehttpOperation" class="help-inline error"></span>
+								</div>
+			                </div>
+							
+							<div class="control-group">
+								<label class="control-label" for="resourceType">Resource type</label>					
+								<div class="controls">
+									<input id="wberesourceType" type="radio" name="resourceType" value="1"> Site page
+									<input type="radio" name="resourceType" value="2"> File
+									<input type="radio" name="resourceType" value="3"> Url Controller
+									<span id="erreresourceType" class="help-inline"></span>
+								</div>										
+							</div>
+			
+			                <div class="control-group wbResourceExternalKey">
+			                    <label class="control-label" for="wberesourceExternalKey"> Resource External Key </label>
+			                    <div class="controls">
+			                        <input id="wberesourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
+									<span id="erreresourceExternalKey" class="help-inline"></span>
+									<br>
+									<span> Resource link <span id="wbresourcelink"> </span></span>
+								</div>
+			                </div>
+											
+							<div class="control-group wbUrlController">
+			                    <label class="control-label" for="controllerClass"> Url Controller </label>
+			                    <div class="controls">
+			                        <input id="wbecontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
+									<span id="errecontrollerClass" class="help-inline"></span>
+								</div>
+			                </div>
+						</fieldset>
+					
+						<div class="marginv">
+							<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>
+							<button class="btn wbUriEditCancelBtnClass" type="submit">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="well"> 
+					<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Customization parameter </button> <br></br>
+					<div id="wbUriParametersTable"></div> 
+				</div>
+			</div>			
+		</div>
+	</div>
+
+	<div class="modal hide" id="wbAddParameterModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Add customization parameter </h3>
+		</div>
+		<form class="form-inline" id="wbAddParameterForm">
+			<div class="modal-body">
+				<fieldset>
 				<div class="control-group">
-					<label class="control-label" for="resourceType">Resource type</label>					
 					<div class="controls">
-						<input id="wberesourceType" type="radio" name="resourceType" value="1"> Site page
-						<input type="radio" name="resourceType" value="2"> File
-						<input type="radio" name="resourceType" value="3"> Url Controller
-						<span id="erreresourceType" class="help-inline"></span>
+						<span id="errdgeneral" class="help-inline"></span>
 					</div>										
 				</div>
-
-                <div class="control-group wbResourceExternalKey">
-                    <label class="control-label" for="wberesourceExternalKey"> Resource External Key </label>
+                <div class="control-group">
+                    <label class="control-label" for="name">Parameter name</label>
                     <div class="controls">
-                        <input id="wberesourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
-						<span id="erreresourceExternalKey" class="help-inline"></span>
-						<br>
-						<span> Resource link <span id="wbresourcelink"> </span></span>
+                        <input id="wbaname" class="input-xlarge" type="text">
+						<span id="erraname" class="help-inline"></span>
 					</div>
                 </div>
-								
-				<div class="control-group wbUrlController">
-                    <label class="control-label" for="controllerClass"> Url Controller </label>
+                <div class="control-group">
+                    <label class="control-label" for="name">Parameter value</label>
                     <div class="controls">
-                        <input id="wbecontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
-						<span id="errecontrollerClass" class="help-inline"></span>
+                        <input id="wbavalue" class="input-xlarge" type="text">
+						<span id="erravalue" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="overwriteFromUrl">Parameter overwrite from url</label>
+                    <div class="controls">
+                        <input id="wbaoverwriteFromUrl" class="input-xlarge" type="radio" name="overwriteFromUrl" value="0"> NO
+						<input class="input-xlarge" type="radio" name="overwriteFromUrl" value="1"> YES
+						<span id="erraoverwriteFromUrl" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="localeType">Parameter Locale type</label>
+                    <div class="controls">
+                        <input id="wbalocaleType" class="input-xlarge" type="radio" name="localeType" value="0"> No locale type
+						<input class="input-xlarge" type="radio" name="localeType" value="1"> Language
+						<input class="input-xlarge" type="radio" name="localeType" value="2"> Country
+						<span id="erralocaleType" class="help-inline"></span>
+					</div>
+                </div>
+
+				</fieldset>
+			</div>
+
+		<div class="modal-footer">
+				<button class="btn btn-primary wbAddParameterBtnClass" type="submit">Add</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
+	<div class="modal hide" id="wbUpdateParameterModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Update customization parameter </h3>
+		</div>
+		<form class="form-inline" id="wbUpdateParameterForm">
+			<div class="modal-body">
+				<fieldset>
+				<input id="wbukey" type="hidden">
+				<input id="wbuexternalKey" type="hidden">
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+                <div class="control-group">
+                    <label class="control-label" for="name">Parameter name</label>
+                    <div class="controls">
+                        <input id="wbuname" class="input-xlarge" type="text">
+						<span id="erruname" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="name">Parameter value</label>
+                    <div class="controls">
+                        <input id="wbuvalue" class="input-xlarge" type="text">
+						<span id="erruvalue" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="overwriteFromUrl">Parameter overwrite from url</label>
+                    <div class="controls">
+                        <input id="wbuoverwriteFromUrl" class="input-xlarge" type="radio" name="overwriteFromUrl" value="0"> NO
+						<input class="input-xlarge" type="radio" name="overwriteFromUrl" value="1"> YES
+						<span id="erruoverwriteFromUrl" class="help-inline"></span>
+					</div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="localeType">Parameter Locale type</label>
+                    <div class="controls">
+                        <input id="wbulocaleType" class="input-xlarge" type="radio" name="localeType" value="0"> No locale type
+						<input class="input-xlarge" type="radio" name="localeType" value="1"> Language
+						<input class="input-xlarge" type="radio" name="localeType" value="2"> Country
+						<span id="errulocaleType" class="help-inline"></span>
+					</div>
+                </div>
+				</fieldset>
+			</div>
+
+		<div class="modal-footer">
+				<button class="btn btn-primary wbUpdateParameterBtnClass" type="submit">Update</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+	
+	<div class="modal hide" id="wbDeleteParameterModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Delete customization parameter </h3>
+		</div>
+		<form class="form-inline" id="wbDeleteParameterForm">
+			<div class="modal-body">
+			<fieldset>
+				<input id="wbdkey" type="hidden">
+				<div class="control-group">
+					<div class="controls">
+						<span id="errdgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+                <div class="control-group">
+                    <label class="control-label" for="name">Parameter name</label>
+                    <div class="controls">
+                        <input id="wbdname" class="input-xlarge" type="text" readonly>
+						<span id="errdname" class="help-inline"></span>
 					</div>
                 </div>
 			</fieldset>
-		
-			<div class="marginv">
-				<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>
-				<button class="btn wbUriEditCancelBtnClass" type="submit">Cancel</button>
 			</div>
-		</form>
-
+		<div class="modal-footer">
+				<button class="btn btn-primary wbDeleteParameterBtnClass" type="submit">Delete</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
-	</div>
+		</form>
+    </div>
 
 	
 </body>
