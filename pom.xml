@@ -43,13 +43,13 @@
      <dependency>
         <groupId>org.powermock</groupId>
         <artifactId>powermock-module-junit4</artifactId>
-        <version>1.4.12</version>
+        <version>1.5.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.powermock</groupId>
         <artifactId>powermock-module-test-easymock-junit4</artifactId>
-        <version>1.4.12</version>
+        <version>1.5.1</version>
         <scope>test</scope>
       </dependency>
 
