@@ -24,11 +24,6 @@ public class WBModel {
 		{
 			rootObject.put(key, cmsModel.get(key));
 		}
-		keys = customModel.keySet();
-		for(String key: keys)
-		{
-			rootObject.put(key, customModel.get(key));
-		}
-		
+				
 	}
 }

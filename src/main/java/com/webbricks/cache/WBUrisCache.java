@@ -23,8 +23,8 @@ public interface WBUrisCache extends WBRefreshableCache {
 	
 	public Long getCacheFingerPrint();
 	
-	public int httpToIndex(String httpOperation);
-	public String indexToHttp(int index);
+	public int httpToOperationIndex(String httpOperation);
+	public String indexOperationToHttpVerb(int index);
 	
 
 }

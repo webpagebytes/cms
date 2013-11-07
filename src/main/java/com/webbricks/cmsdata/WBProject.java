@@ -2,6 +2,8 @@ package com.webbricks.cmsdata;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
@@ -37,8 +39,24 @@ public class WBProject implements Serializable{
 		this.lastModified = lastModified;
 	}
 
-	public String getSupportedLanguages() {
+	public String getSupportedLanguages()
+	{
 		return supportedLanguages;
+	}
+	
+	public Set<String> getSupportedLanguagesSet() {
+		if (supportedLanguages != null)
+		{
+			String[] langs = supportedLanguages.split(",");
+			Set<String> supportedLanguagesSet = new HashSet<String>();
+			for(String lang: langs)
+			{
+				if (lang.length()>0) supportedLanguagesSet.add(lang);
+			}
+			return supportedLanguagesSet;
+		} 
+		return null;
+
 	}
 
 	public void setSupportedLanguages(String supportedLanguages) {

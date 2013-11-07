@@ -60,6 +60,7 @@ public class PublicContentServlet extends HttpServlet {
 	private FileContentBuilder fileContentBuilder;
 	private UriContentBuilder uriContentBuilder;
 	private WBCacheInstances cacheInstances;
+	private ModelBuilder modelBuilder;
 	
 	public PublicContentServlet()
 	{
@@ -98,14 +99,18 @@ public class PublicContentServlet extends HttpServlet {
 				this.urlMatcherArray[i] = new URLMatcher();
 				this.urlMatcherArray[i].initialize(uris, cacheInstances.getWBUriCache().getCacheFingerPrint());
 			}
-			pageContentBuilder = new PageContentBuilder(cacheInstances);
+			
+			modelBuilder = new ModelBuilder(cacheInstances);
+
+			pageContentBuilder = new PageContentBuilder(cacheInstances, modelBuilder);
 			pageContentBuilder.initialize();
 			
 			fileContentBuilder = new FileContentBuilder(cacheInstances);
 			fileContentBuilder.initialize();
 			
-			uriContentBuilder = new UriContentBuilder(cacheInstances);
+			uriContentBuilder = new UriContentBuilder(cacheInstances, modelBuilder);
 			uriContentBuilder.initialize();
+
 			
 		} catch (Exception e)
 		{
@@ -131,7 +136,7 @@ public class PublicContentServlet extends HttpServlet {
 		
 		req.setAttribute(URI_PREFIX, uriCommonPrefix);
 		
-		int currentHttpIndex = cacheInstances.getWBUriCache().httpToIndex(req.getMethod().toUpperCase());
+		int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 		URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
 		//reinitialize the matchurlToPattern if needed
 		if (cacheInstances.getWBUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
@@ -153,20 +158,25 @@ public class PublicContentServlet extends HttpServlet {
 			return;
 		} else
 		{
-			WBModel model = null;				
 			try
 			{
 				WBProject wbProject = cacheInstances.getProjectCache().getProject();
 				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
+				
 				if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					return;					
 				}
+				
+				// build the uri model
+				WBModel model = new WBModel();
 				WBForward forward = new WBForward();
+				modelBuilder.populateModelForUriData(req, wbUri, urlMatcherResult, model);
+				
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
-					model = uriContentBuilder.buildUriContent(req, resp, urlMatcherResult, wbUri, wbProject, forward);
+					uriContentBuilder.buildUriContent(req, resp, urlMatcherResult, wbUri, wbProject, model, forward);
 					if (!forward.isRequestForwarded())
 					{
 						return;
@@ -240,11 +250,6 @@ public class PublicContentServlet extends HttpServlet {
 				os.write(e.getMessage().getBytes("UTF-8")); os.write("\n".getBytes());				
 				os.write(stack.getBytes("UTF-8"));
 				os.write("-------------".getBytes());
-				if (model != null)
-				{
-					String params = model.getCmsModel().toString() + "|" + model.getCmsCustomModel().toString();
-					os.write(params.getBytes());
-				}
 				os.flush();
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
 			}

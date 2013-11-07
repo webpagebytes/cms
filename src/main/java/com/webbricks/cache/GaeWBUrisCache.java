@@ -40,7 +40,7 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		random = new SecureRandom();
 	}
 	
-	public int httpToIndex(String httpOperation)
+	public int httpToOperationIndex(String httpOperation)
 	{
 		if (httpOperation.toUpperCase().equals("GET"))
 		{
@@ -57,7 +57,7 @@ public class GaeWBUrisCache implements WBUrisCache, WBRefreshableCache {
 		}
 		return -1;	
 	}
-	public String indexToHttp(int httpIndex)
+	public String indexOperationToHttpVerb(int httpIndex)
 	{
 		if (httpIndex == WBUrisCache.HTTP_GET_INDEX)
 		{

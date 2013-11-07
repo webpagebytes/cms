@@ -19,11 +19,13 @@ public class UriContentBuilder extends BaseModelProvider {
 
 	private WBCacheInstances cacheInstances;
 	private Map<String, IWBRequestHandler> customControllers;
+	private ModelBuilder modelBuilder;
 	
-	UriContentBuilder(WBCacheInstances cacheInstances)
+	UriContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 	{
 		super(cacheInstances);
 		customControllers = new HashMap<String, IWBRequestHandler>();
+		this.modelBuilder = modelBuilder;
 	}
 	
 	public void initialize()
@@ -31,10 +33,12 @@ public class UriContentBuilder extends BaseModelProvider {
 		
 	}
 	
-	public WBModel buildUriContent(HttpServletRequest request, HttpServletResponse response,
+	public void buildUriContent(HttpServletRequest request, HttpServletResponse response,
 			URLMatcherResult urlMatcherResult, 
 			WBUri wburi, 
-			WBProject project, WBForward forward) throws WBException
+			WBProject project, 
+			WBModel model,
+			WBForward forward) throws WBException
 	{
 		String controllerClassName = wburi.getControllerClass();
 		if (controllerClassName !=null && controllerClassName.length()>0)
@@ -51,14 +55,9 @@ public class UriContentBuilder extends BaseModelProvider {
 			}
 			if (controllerInst != null)
 			{
-				WBModel model = new WBModel(); 
-				model.getCmsModel().putAll(getControllerModel(request, urlMatcherResult, wburi.getExternalKey(), BaseModelProvider.URI_PARAMETERS_KEY, project));
 				controllerInst.handleRequest(request, response, model, forward);
-				return model;
 			}			
 		}
-		return null;
-
 	}
 
 }

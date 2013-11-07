@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import com.webbricks.cms.Pair;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.GaeAdminDataStorage;
@@ -36,24 +37,35 @@ public class GaeWBProjectCache implements WBProjectCache {
 		}
 		return project.getDefaultLanguage();
 	}
-	public Set<String> getSupportedLanguage() throws WBIOException
+	public Set<String> getSupportedLanguages() throws WBIOException
 	{
 		WBProject project = (WBProject)memcache.get(memcacheProjectKey);
 		if (project == null)
 		{
 			project = RefreshInternal();
 		}
-		Set<String> result = new HashSet<String>();
-		String languagesStr = project.getSupportedLanguages();
-		String[] languages = languagesStr.split(",");
-		for (String language: languages)
-		{
-			if (language.length()>0)
-			{
-				result.add(language);
-			}
-		}
+		Set<String> result = project.getSupportedLanguagesSet();
 		return result;
+	}
+	public Pair<String, String> getDefaultLocale() throws WBIOException
+	{
+		WBProject project = (WBProject)memcache.get(memcacheProjectKey);
+		if (project == null)
+		{
+			project = RefreshInternal();
+		}
+		Pair<String, String> result = new Pair<String, String>();
+		String defaultLanguage = project.getDefaultLanguage();
+		String[] langs_ = defaultLanguage.split("_");
+		if (langs_.length == 1)
+		{
+			return new Pair<String, String>(langs_[0], "");
+		} else
+		if (langs_.length == 2)
+		{
+			return new Pair<String, String>(langs_[0], langs_[1]);
+		} else
+			throw new WBIOException("Invalid default language");		
 	}
 	
 	public void Refresh() throws WBIOException {

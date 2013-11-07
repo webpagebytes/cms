@@ -116,12 +116,10 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 	public void getSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		WBProject project = getProject();
-		String supportedLanguages = project.getSupportedLanguages();
-		StringTokenizer stk = new StringTokenizer(supportedLanguages, ",");
+		Set<String> projectLanguages = project.getSupportedLanguagesSet();
 		Set<String> supportedlanguages = new HashSet<String>();
-		while (stk.hasMoreElements())
+		for(String language: projectLanguages)
 		{
-			String language = stk.nextToken();
 			if (allLocales.containsKey(language))
 			{
 				supportedlanguages.add(language);

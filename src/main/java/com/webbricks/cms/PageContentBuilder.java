@@ -58,14 +58,15 @@ public class PageContentBuilder extends BaseModelProvider {
 	private WBTemplateEngine templateEngine;
 	private WBCacheInstances cacheInstances;
 	private Map<String, Object> customControllers;
-	
+	private ModelBuilder modelBuilder;
 
-	public PageContentBuilder(WBCacheInstances cacheInstances)
+	public PageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 							
 	{
 		super(cacheInstances);
 		this.customControllers = new HashMap<String, Object>();
 		this.cacheInstances = cacheInstances;
+		this.modelBuilder = modelBuilder;
 	}
 	
 	public void initialize() throws WBException
@@ -99,15 +100,11 @@ public class PageContentBuilder extends BaseModelProvider {
 		{
 			return wbWebPage.getHtmlSource();
 		}
-		
-		if (model == null)
-		{
-			model = new WBModel();
-			model.getCmsModel().putAll(getControllerModel(request, urlMatcherResult, wbWebPage.getExternalKey(), this.PAGE_PARAMETERS_KEY, project));
-		}
+						
+		modelBuilder.populateModelForWebPage(request, wbWebPage, model);
 		
 		String controllerClassName = wbWebPage.getPageModelProvider();
-		Map<String, Object> controllerModel = new HashMap<String, Object>();
+
 		Map<String, Object> rootModel = new HashMap<String, Object>();
 		
 		if (controllerClassName !=null && controllerClassName.length()>0)
@@ -125,11 +122,12 @@ public class PageContentBuilder extends BaseModelProvider {
 			}
 			if (controllerInst != null)
 			{
-				controllerInst.getPageModel(request, controllerModel);
+				controllerInst.getPageModel(request, model);
 			}			
 		}
-		rootModel.put(PAGE_CONTROLLER_MODEL_KEY, controllerModel);
 		model.transferModel(rootModel);
+		rootModel.put(PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		
 		
 		rootModel.put(LOCALE_COUNTRY_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_COUNTRY_KEY));
 		rootModel.put(LOCALE_LANGUAGE_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_LANGUAGE_KEY));

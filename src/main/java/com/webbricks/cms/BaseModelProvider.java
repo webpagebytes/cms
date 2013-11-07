@@ -58,14 +58,7 @@ public class BaseModelProvider {
 
 	private Set<String> getSupportedLanguages(WBProject project)
 	{
-		String supportedLanguages = project.getSupportedLanguages();
-		String[] langs = supportedLanguages.split(",");
-		Set<String> supportedLanguagesSet = new HashSet<String>();
-		for(String lang: langs)
-		{
-			if (lang.length()>0) supportedLanguagesSet.add(lang);
-		}
-		return supportedLanguagesSet;
+		return project.getSupportedLanguagesSet();
 	}
 	
 	private Map<String, String> getStaticParameters(HttpServletRequest request)

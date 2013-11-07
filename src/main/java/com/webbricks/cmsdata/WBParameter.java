@@ -8,6 +8,9 @@ import com.webbricks.datautility.AdminFieldStore;
 
 public class WBParameter implements Serializable {
 
+	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
+	public static final int PARAMETER_LOCALE_COUNTRY = 2;
+	
 	@AdminFieldKey
 	private Long key;
 
