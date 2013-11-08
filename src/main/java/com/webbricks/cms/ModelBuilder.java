@@ -152,7 +152,7 @@ public class ModelBuilder {
 		populateLocale(languageParam, countryParam, model);
 	}
 	
-	private void populateLocale(String language, String country, WBModel model) throws WBException
+	private void populateLocale(String language, String country, WBModel model)
 	{
 		// populate the LOCALE_KEY
 		Map<String, String> localeMap = new HashMap<String, String>();
@@ -175,7 +175,7 @@ public class ModelBuilder {
 	}
 	private void populateStaticParameters(HttpServletRequest request, WBModel model)
 	{
-		String url = request.getRequestURL().toString();
+		String url = request.getRequestURL().toString().toLowerCase();
 		int indexDomain = url.indexOf("://");
 		String protocol = url.substring(0, indexDomain);
 		String domain = url.substring(indexDomain+3);
@@ -192,7 +192,7 @@ public class ModelBuilder {
 		{
 			result.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, (String)objUriPrefix);
 		}	
-		model.getCmsModel().put(BaseModelProvider.REQUEST_KEY, result);
+		model.getCmsModel().put(REQUEST_KEY, result);
 	}
 
 }

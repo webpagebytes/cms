@@ -7,7 +7,7 @@ import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
 
 public class WBParameter implements Serializable {
-
+	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;
 	

@@ -13,7 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gae.version>1.6.1</gae.version>
     <datanucleus.version>1.1.5</datanucleus.version>
-    <cobertura.version>2.5.1</cobertura.version>
+    <cobertura.version>2.6</cobertura.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd-HH-mm-ss</maven.build.timestamp.format>
   </properties>
