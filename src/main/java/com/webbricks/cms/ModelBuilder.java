@@ -105,7 +105,12 @@ public class ModelBuilder {
 		for(WBParameter param: wbUriParams)
 		{
 			String paramKey = param.getName();
-			if (urlPatternParams != null && urlPatternParams.containsKey(paramKey) && param.getOverwriteFromUrl() != null && param.getOverwriteFromUrl() == 1)
+			if (urlPatternParams == null)
+			{
+				requestParams.put(paramKey, param.getValue());
+				continue;
+			}
+			if (urlPatternParams.containsKey(paramKey) && param.getOverwriteFromUrl() == 1)
 			{
 				requestParams.put(paramKey, urlPatternParams.get(paramKey));
 			} else
@@ -115,26 +120,20 @@ public class ModelBuilder {
 			if (param.getLocaleType() == WBParameter.PARAMETER_LOCALE_LANGUAGE)
 			{
 				hasLocaleParams = true;
-				if (urlPatternParams != null)
-					languageParam = urlPatternParams.get(paramKey);
-				else 
-					languageParam = null;
+				languageParam = urlPatternParams.get(paramKey);
 			}
 			if (param.getLocaleType() == WBParameter.PARAMETER_LOCALE_COUNTRY)
 			{
 				hasLocaleParams = true;
-				if (urlPatternParams != null)
-					countryParam = urlPatternParams.get(paramKey);
-				else
-					countryParam = null;
+				countryParam = urlPatternParams.get(paramKey);
 			}			
 		}
 		
 		if (languageParam == null || countryParam == null)
 		{
 			throw new WBLocaleException("Locale params expected in request url but were not found");
-		} else
-		if (hasLocaleParams && languageParam != null && languageParam.length()>0 && countryParam != null)
+		} 
+		if (hasLocaleParams)
 		{
 			String localeStr = languageParam;
 			if (countryParam.length()>0)

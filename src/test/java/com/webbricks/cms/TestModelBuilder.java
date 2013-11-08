@@ -117,7 +117,7 @@ public void test_populateModelForWebPage()
 }
 
 @Test
-public void test_populateUriParameters()
+public void test_populateUriParameters_OK_language_and_country()
 {
 	try
 	{
@@ -166,6 +166,128 @@ public void test_populateUriParameters()
 		patternParams.put(param1, value1);
 		patternParams.put(param2, value2);
 		urlMatcherResult.setPatternParams(patternParams);
+		
+		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
+		
+		
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		try
+		{
+			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
+		} catch(Exception e)
+		{
+			assertTrue(false);
+		}
+		
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		
+		assertTrue (model.getCmsModel().get(ModelBuilder.URL_REQUEST_PARAMETERS_KEY).equals(mapParams));
+		
+	} catch (WBException e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_populateUriParameters_OK_only_language()
+{
+	try
+	{
+		
+		suppress(method(ModelBuilder.class, "populateLocale"));
+		
+		String uriExternalKey = "abc";
+		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		WBModel model = new WBModel();
+		Map<String, String> mapParams = new HashMap<String, String>(); 
+		String param1 = "language";
+		String value1 = "en";
+		mapParams.put(param1, value1);
+		
+		WBParameter parameter1 = new WBParameter();
+		parameter1.setName(param1);
+		parameter1.setValue(value1);
+		parameter1.setOverwriteFromUrl(1);
+		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		pageParams.add(parameter1);
+		
+		
+		WBParametersCache paramsCacheMock = EasyMock.createMock(WBParametersCache.class);				
+		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
+		
+		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
+		EasyMock.expect(projectCacheMock.getDefaultLocale()).andReturn(defaultLocale);
+		
+		Set<String> supportedLanguages = new HashSet<String>();
+		supportedLanguages.add("en_GB");
+		supportedLanguages.add("en");
+		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		
+		URLMatcherResult urlMatcherResult = new URLMatcherResult();
+		Map<String, String> patternParams = new HashMap<String, String>();
+		patternParams.put(param1, value1);
+		urlMatcherResult.setPatternParams(patternParams);
+		
+		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
+		
+		
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		try
+		{
+			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
+		} catch(Exception e)
+		{
+			assertTrue(false);
+		}
+		
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		
+		assertTrue (model.getCmsModel().get(ModelBuilder.URL_REQUEST_PARAMETERS_KEY).equals(mapParams));
+		
+	} catch (WBException e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_populateUriParameters_empty_urlmatcher()
+{
+	try
+	{
+		
+		suppress(method(ModelBuilder.class, "populateLocale"));
+		
+		String uriExternalKey = "abc";
+		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		Map<String, String> mapParams = new HashMap<String, String>();
+		WBModel model = new WBModel();
+		String param1 = "language";
+		String value1 = "en";
+		mapParams.put(param1, value1);
+		
+		WBParameter parameter1 = new WBParameter();
+		parameter1.setName(param1);
+		parameter1.setValue(value1);
+		parameter1.setOverwriteFromUrl(0);
+		parameter1.setLocaleType(WBParameter.PARAMETER_NO_TYPE);
+		pageParams.add(parameter1);		
+		
+		WBParametersCache paramsCacheMock = EasyMock.createMock(WBParametersCache.class);				
+		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
+		
+		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
+		EasyMock.expect(projectCacheMock.getDefaultLocale()).andReturn(defaultLocale);
+		
+		Set<String> supportedLanguages = new HashSet<String>();
+		supportedLanguages.add("en_GB");
+		supportedLanguages.add("en");
+		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		
+		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
@@ -320,6 +442,85 @@ public void test_populateUriParameters_no_language_param()
 		Map<String, String> patternParams = new HashMap<String, String>();
 		// pattern params contains only the xyz param
 		patternParams.put(param2, value2);
+		urlMatcherResult.setPatternParams(patternParams);
+		
+		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
+		
+		
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		try
+		{
+			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
+		} 
+		catch (WBLocaleException e)
+		{
+			// OK
+		}
+		catch(Exception e)
+		{
+			assertTrue(false);
+		}
+		
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+			
+	} catch (WBException e)
+	{
+		assertTrue (false);
+	}
+}
+
+/*
+ * simulate the case where the url is /{xyz}/test.html and there is a {language} param that is overwrite from url and language identifier
+ */
+@Test
+public void test_populateUriParameters_no_country_param()
+{
+	try
+	{
+		
+		suppress(method(ModelBuilder.class, "populateLocale"));
+		
+		String uriExternalKey = "abc";
+		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		WBModel model = new WBModel();
+		Map<String, String> mapParams = new HashMap<String, String>(); 
+		String param1 = "language";
+		String value1 = "en";
+		String param2 = "country";
+		String value2 = "GB";
+		mapParams.put(param1, value1);
+		mapParams.put(param2, value2);
+		
+		WBParameter parameter1 = new WBParameter();
+		parameter1.setName(param1);
+		parameter1.setValue(value1);
+		parameter1.setOverwriteFromUrl(1);
+		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		pageParams.add(parameter1);
+		WBParameter parameter2 = new WBParameter();
+		parameter2.setName(param2);
+		parameter2.setValue(value2);
+		parameter2.setOverwriteFromUrl(1);
+		parameter2.setLocaleType(WBParameter.PARAMETER_LOCALE_COUNTRY);
+		pageParams.add(parameter2);		
+		
+		
+		WBParametersCache paramsCacheMock = EasyMock.createMock(WBParametersCache.class);				
+		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
+		
+		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
+		EasyMock.expect(projectCacheMock.getDefaultLocale()).andReturn(defaultLocale);
+		
+		Set<String> supportedLanguages = new HashSet<String>();
+		supportedLanguages.add("en_GB");
+		supportedLanguages.add("en");
+		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		
+		URLMatcherResult urlMatcherResult = new URLMatcherResult();
+		Map<String, String> patternParams = new HashMap<String, String>();
+		// pattern params contains only the language param
+		patternParams.put(param1, value1);
 		urlMatcherResult.setPatternParams(patternParams);
 		
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
