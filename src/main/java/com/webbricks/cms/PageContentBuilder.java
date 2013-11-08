@@ -90,7 +90,6 @@ public class PageContentBuilder extends BaseModelProvider {
 		
 	
 	public String buildPageContent(HttpServletRequest request,
-			URLMatcherResult urlMatcherResult, 
 			WBWebPage wbWebPage, 
 			WBProject project,
 			WBModel model) throws WBException

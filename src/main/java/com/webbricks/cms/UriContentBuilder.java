@@ -34,7 +34,6 @@ public class UriContentBuilder extends BaseModelProvider {
 	}
 	
 	public void buildUriContent(HttpServletRequest request, HttpServletResponse response,
-			URLMatcherResult urlMatcherResult, 
 			WBUri wburi, 
 			WBProject project, 
 			WBModel model,

@@ -176,7 +176,7 @@ public class PublicContentServlet extends HttpServlet {
 				
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
-					uriContentBuilder.buildUriContent(req, resp, urlMatcherResult, wbUri, wbProject, model, forward);
+					uriContentBuilder.buildUriContent(req, resp, wbUri, wbProject, model, forward);
 					if (!forward.isRequestForwarded())
 					{
 						return;
@@ -198,7 +198,7 @@ public class PublicContentServlet extends HttpServlet {
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return;
 					}
-					String content = pageContentBuilder.buildPageContent(req, urlMatcherResult, webPage, wbProject, model);
+					String content = pageContentBuilder.buildPageContent(req, webPage, wbProject, model);
 					resp.setCharacterEncoding("UTF-8");
 					if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
 					{
