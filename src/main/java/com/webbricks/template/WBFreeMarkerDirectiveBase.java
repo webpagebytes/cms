@@ -1,9 +1,10 @@
 package com.webbricks.template;
 
 import java.io.IOException;
+
 import java.util.Map;
 
-import com.webbricks.cms.BaseModelProvider;
+import com.webbricks.cms.ModelBuilder;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.cmsdata.WBPredefinedParameters;
 
@@ -28,54 +29,54 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 {
 	TemplateHashModel dataModel = env.getDataModel();
 
-	TemplateModel localeCountry = dataModel.get(BaseModelProvider.LOCALE_COUNTRY_KEY);
-	TemplateModel localeLanguage = dataModel.get(BaseModelProvider.LOCALE_LANGUAGE_KEY);
-	params.put(BaseModelProvider.LOCALE_LANGUAGE_KEY, localeLanguage);
-	params.put(BaseModelProvider.LOCALE_COUNTRY_KEY, localeCountry);
+	TemplateModel localeCountry = dataModel.get(ModelBuilder.LOCALE_COUNTRY_KEY);
+	TemplateModel localeLanguage = dataModel.get(ModelBuilder.LOCALE_LANGUAGE_KEY);
+	params.put(ModelBuilder.LOCALE_LANGUAGE_KEY, localeLanguage);
+	params.put(ModelBuilder.LOCALE_COUNTRY_KEY, localeCountry);
 	
-	TemplateModel resourceBundle = dataModel.get(PageContentBuilder.LOCALE_MESSAGES);
+	TemplateModel resourceBundle = dataModel.get(ModelBuilder.LOCALE_MESSAGES);
 	if (resourceBundle != null)
 	{
-		params.put(PageContentBuilder.LOCALE_MESSAGES, resourceBundle);
+		params.put(ModelBuilder.LOCALE_MESSAGES, resourceBundle);
 	}
-	TemplateModel pageParams = dataModel.get(PageContentBuilder.PAGE_PARAMETERS_KEY);
+	TemplateModel pageParams = dataModel.get(ModelBuilder.PAGE_PARAMETERS_KEY);
 	if (pageParams != null)
 	{
-		params.put(PageContentBuilder.PAGE_PARAMETERS_KEY, pageParams);
+		params.put(ModelBuilder.PAGE_PARAMETERS_KEY, pageParams);
 	}
-	TemplateModel uriParams = dataModel.get(BaseModelProvider.URI_PARAMETERS_KEY);
+	TemplateModel uriParams = dataModel.get(ModelBuilder.URI_PARAMETERS_KEY);
 	if (uriParams != null)
 	{
-		params.put(BaseModelProvider.URI_PARAMETERS_KEY, uriParams);
+		params.put(ModelBuilder.URI_PARAMETERS_KEY, uriParams);
 	}
 
-	TemplateModel urlParams = dataModel.get(PageContentBuilder.URL_REQUEST_PARAMETERS_KEY);
+	TemplateModel urlParams = dataModel.get(ModelBuilder.URL_REQUEST_PARAMETERS_KEY);
 	if (urlParams != null)
 	{
-		params.put(PageContentBuilder.URL_REQUEST_PARAMETERS_KEY, urlParams);
+		params.put(ModelBuilder.URL_REQUEST_PARAMETERS_KEY, urlParams);
 	}
 	
-	params.put(PageContentBuilder.FORMAT_TEXT_METHOD, dataModel.get(PageContentBuilder.FORMAT_TEXT_METHOD));
+	params.put(ModelBuilder.FORMAT_TEXT_METHOD, dataModel.get(ModelBuilder.FORMAT_TEXT_METHOD));
 	
-	TemplateModel globals = dataModel.get(BaseModelProvider.GLOBALS_KEY);
+	TemplateModel globals = dataModel.get(ModelBuilder.GLOBALS_KEY);
 	if (globals != null) 
 	{
-		params.put(BaseModelProvider.GLOBALS_KEY, globals);
+		params.put(ModelBuilder.GLOBALS_KEY, globals);
 	}
-	TemplateModel locale = dataModel.get(BaseModelProvider.LOCALE_KEY);
+	TemplateModel locale = dataModel.get(ModelBuilder.LOCALE_KEY);
 	if (locale != null) 
 	{
-		params.put(BaseModelProvider.LOCALE_KEY, locale);
+		params.put(ModelBuilder.LOCALE_KEY, locale);
 	}
-	TemplateModel protocols = dataModel.get(BaseModelProvider.GLOBAL_PROTOCOL);
+	TemplateModel protocols = dataModel.get(ModelBuilder.GLOBAL_PROTOCOL);
 	if (protocols != null) 
 	{
-		params.put(BaseModelProvider.GLOBAL_PROTOCOL, protocols);
+		params.put(ModelBuilder.GLOBAL_PROTOCOL, protocols);
 	}
-	TemplateModel request = dataModel.get(BaseModelProvider.REQUEST_KEY);
+	TemplateModel request = dataModel.get(ModelBuilder.REQUEST_KEY);
 	if (request != null) 
 	{
-		params.put(BaseModelProvider.REQUEST_KEY, request);
+		params.put(ModelBuilder.REQUEST_KEY, request);
 	}
 
 }

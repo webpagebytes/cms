@@ -15,7 +15,7 @@ import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.exception.WBException;
 
-public class UriContentBuilder extends BaseModelProvider {
+public class UriContentBuilder {
 
 	private WBCacheInstances cacheInstances;
 	private Map<String, IWBRequestHandler> customControllers;
@@ -23,7 +23,6 @@ public class UriContentBuilder extends BaseModelProvider {
 	
 	UriContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 	{
-		super(cacheInstances);
 		customControllers = new HashMap<String, IWBRequestHandler>();
 		this.modelBuilder = modelBuilder;
 	}

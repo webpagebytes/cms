@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBMessagesCache;
-import com.webbricks.cms.PageContentBuilder;
+import com.webbricks.cms.ModelBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.exception.WBIOException;
 
@@ -86,9 +86,9 @@ public void test_initialize()
 	configurationMock.setTemplateLoader(templateLoaderMock);
 	moduleDirectiveMock.initialize(templateEngine, cacheInstancesMock);
 	imageDirectiveMock.initialize(blobHandlerMock, cacheInstancesMock);
-	configurationMock.setSharedVariable(PageContentBuilder.MODULE_DIRECTIVE, moduleDirectiveMock);
-	configurationMock.setSharedVariable(PageContentBuilder.IMAGE_DIRECTIVE, imageDirectiveMock);
-	configurationMock.setSharedVariable(PageContentBuilder.ARTICLE_DIRECTIVE, articleDirectiveMock);
+	configurationMock.setSharedVariable(ModelBuilder.MODULE_DIRECTIVE, moduleDirectiveMock);
+	configurationMock.setSharedVariable(ModelBuilder.IMAGE_DIRECTIVE, imageDirectiveMock);
+	configurationMock.setSharedVariable(ModelBuilder.ARTICLE_DIRECTIVE, articleDirectiveMock);
 	
 	Capture<String> captureDefaultEncoding = new Capture<String>();
 	Capture<String> captureOutputEncoding = new Capture<String>();	
@@ -125,7 +125,7 @@ public void process_ok_no_messages()
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
-		rootMap.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(ModelBuilder.LOCALE_LANGUAGE_KEY, "en");
 		Writer out = new StringWriter();
 		
 		Template templateMock = PowerMock.createMock(Template.class);
@@ -147,7 +147,7 @@ public void process_ok_no_messages()
 		
 		PowerMock.verify(envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
-		assertTrue (rootMap.containsKey(PageContentBuilder.LOCALE_MESSAGES));
+		assertTrue (rootMap.containsKey(ModelBuilder.LOCALE_MESSAGES));
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -166,8 +166,8 @@ public void process_ok_with_messages()
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
-		rootMap.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, "en");
-		rootMap.put(PageContentBuilder.LOCALE_MESSAGES, new Object());
+		rootMap.put(ModelBuilder.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(ModelBuilder.LOCALE_MESSAGES, new Object());
 		
 		Writer out = new StringWriter();
 		
@@ -187,7 +187,7 @@ public void process_ok_with_messages()
 		
 		PowerMock.verify(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
-		assertTrue (rootMap.containsKey(PageContentBuilder.LOCALE_MESSAGES));
+		assertTrue (rootMap.containsKey(ModelBuilder.LOCALE_MESSAGES));
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -210,7 +210,7 @@ public void process_exception()
 	{
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
-		rootMap.put(PageContentBuilder.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(ModelBuilder.LOCALE_LANGUAGE_KEY, "en");
 		Writer out = new StringWriter();		
 		EasyMock.expect(configurationMock.getTemplate(nameTemplate)).andReturn(templateMock);		
 		Locale locale = new Locale("en");
@@ -230,7 +230,7 @@ public void process_exception()
 	catch (WBIOException e)
 	{
 		PowerMock.verify(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
-		assertTrue (rootMap.containsKey(PageContentBuilder.LOCALE_LANGUAGE_KEY));
+		assertTrue (rootMap.containsKey(ModelBuilder.LOCALE_LANGUAGE_KEY));
 
 	}
 	catch (Exception e)

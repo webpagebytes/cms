@@ -99,7 +99,6 @@ public class ModelBuilder {
 		Set<String> supportedLanguages = projectCache.getSupportedLanguages();
 		
 		Map<String, String> urlPatternParams = urlMatcherResult.getPatternParams();
-
 		Map<String, String> requestParams = new HashMap<String, String>();
 		List<WBParameter> wbUriParams = parametersCache.getAllForOwner(uriExternalKey);
 		for(WBParameter param: wbUriParams)

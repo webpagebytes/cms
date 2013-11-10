@@ -49,7 +49,7 @@ import com.webbricks.template.WBTemplateEngine;
  * 
  * 
  */
-public class PageContentBuilder extends BaseModelProvider {
+public class PageContentBuilder {
 	
 	
 	
@@ -63,7 +63,6 @@ public class PageContentBuilder extends BaseModelProvider {
 	public PageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 							
 	{
-		super(cacheInstances);
 		this.customControllers = new HashMap<String, Object>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
@@ -125,11 +124,11 @@ public class PageContentBuilder extends BaseModelProvider {
 			}			
 		}
 		model.transferModel(rootModel);
-		rootModel.put(PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
 		
-		rootModel.put(LOCALE_COUNTRY_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_COUNTRY_KEY));
-		rootModel.put(LOCALE_LANGUAGE_KEY, model.getCmsModel().get(LOCALE_KEY).get(LOCALE_LANGUAGE_KEY));
+		rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
+		rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
 		
 		String result = "";
 		try {
