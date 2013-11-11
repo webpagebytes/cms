@@ -176,7 +176,7 @@ public class PublicContentServlet extends HttpServlet {
 				
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
-					uriContentBuilder.buildUriContent(req, resp, wbUri, wbProject, model, forward);
+					uriContentBuilder.buildUriContent(req, resp, wbUri, model, forward);
 					if (!forward.isRequestForwarded())
 					{
 						return;

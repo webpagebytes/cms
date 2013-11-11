@@ -34,7 +34,6 @@ public class UriContentBuilder {
 	
 	public void buildUriContent(HttpServletRequest request, HttpServletResponse response,
 			WBUri wburi, 
-			WBProject project, 
 			WBModel model,
 			WBForward forward) throws WBException
 	{
@@ -49,12 +48,10 @@ public class UriContentBuilder {
 			{
 				try {
 				controllerInst = (IWBRequestHandler) Class.forName(controllerClassName).newInstance();
+				customControllers.put(controllerClassName, controllerInst);
 				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
 			}
-			if (controllerInst != null)
-			{
-				controllerInst.handleRequest(request, response, model, forward);
-			}			
+			controllerInst.handleRequest(request, response, model, forward);
 		}
 	}
 

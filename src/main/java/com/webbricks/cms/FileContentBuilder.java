@@ -15,22 +15,18 @@ import com.webbricks.exception.WBIOException;
 
 public class FileContentBuilder {
 	private WBCacheInstances cacheInstances;
-	private static final Logger log = Logger.getLogger(FileContentBuilder.class.getName());
 	private WBBlobHandler blobHandler;
 	private WBFilesCache filesCache;
-	public FileContentBuilder()
-	{
-		
-	}
 	public FileContentBuilder(WBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
-	}
-	public void initialize()
-	{
 		blobHandler = new WBGaeBlobHandler();
 		filesCache = cacheInstances.getWBFilesCache();
 	}
+	public void initialize()
+	{
+	}
+	
 	public WBFile find(String externalKey) throws WBException
 	{
 		return filesCache.getByExternalKey(externalKey);
