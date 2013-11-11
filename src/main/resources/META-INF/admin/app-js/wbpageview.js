@@ -47,11 +47,12 @@ $().ready( function () {
 		}
 	}
 				
-	$('#wbPageParametersTable').wbSimpleTable( { columns: [ {display: "Id", fieldId:"key"}, {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
+	$('#wbPageParametersTable').wbSimpleTable( { columns: [ {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
 								         {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
-						 paginationBaseClass: "pagination"
+						 paginationBaseClass: "pagination",
+						 textLengthToCut: 20
 						});
 
 	var urisDisplayHandler = function (fieldId, record) {
