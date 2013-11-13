@@ -68,13 +68,13 @@ $().ready( function () {
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == "_operations") {
-			return '<a href="./weburiedit.html?key=' + encodeURIComponent(record['key'])+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' +record['key']+ '"><i class="icon-trash"></i> Delete </a>' 
-					+ '| <a href="#" class="wbduplicateuri" id="wburidup_' + record['key']+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
+			return '<a href="./weburiedit.html?key=' + encodeURIComponent(record['key'])+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>' 
+					+ '| <a href="#" class="wbduplicateuri" id="wburidup_' + encodeURIComponent(record['key'])+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId == "lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
-		} else if (fieldId == enabled) {
-			return record[fieldId] == '1' ? 'Yes' : 'No';
+		} else if (fieldId == "enabled") {
+			return record[fieldId] == '1' ? "<div class='circle circle-green'></div>" : "<div class='circle circle-red'></div>";
 		}
 	};
 	
@@ -88,7 +88,7 @@ $().ready( function () {
 
 	$('#wbtable').wbSimpleTable( { columns: [ {display: "External Id", fieldId:"externalKey", isHtmlDisplay: true}, 
 	                                          {display: "Site url", fieldId: "uri", isHtmlDisplay:true},
-	                                          {display: "Live", fieldId: "enabled", isHtmlDisplay:true}, 
+	                                          {display: "Live", fieldId: "enabled", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                          {display: "Method", fieldId:"httpOperation", isHtmlDisplay:true}, 
 	                                          {display: "Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                          {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],

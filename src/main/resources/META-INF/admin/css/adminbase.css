@@ -204,3 +204,21 @@ margin-left: 20px;
 margin: 0 0 0 10px;
 float:none;
 }
+
+.circle
+{
+margin: 2px;
+width: 16px;
+height: 16px;
+-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+border-radius: 8px; 
+}
+.circle-red
+{
+background-color: #ED1C24;	
+}
+.circle-green
+{
+background-color: #008000;
+}
