@@ -1,6 +1,7 @@
 package com.webbricks.cms;
 
 import java.io.IOException;
+
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,23 +39,8 @@ import com.webbricks.exception.WBLocaleLanguageException;
 import com.webbricks.template.WBFreeMarkerTemplateEngine;
 import com.webbricks.template.WBTemplateEngine;
 
-/*
- * A Page content is created from a page model + a page template.
- * A page will have a parameters model instance - pageParamsModel - a key-value map. This is build in the following order 
- * 1) the url will produce a set of sub url parameters (i.e /news/{keywords}-{key}) provided as a map of key values, added to pageParamsModel
- * 2) the page will have a set of WBParameter objects that will be added to pageParamsModel
- * 3) the url parameters (the ones after ? i.e /news/sports-football-123?showComments=true) will be added to pageParamsModel if there is a 
- * corresponding WBParameter with overwriteFromUrl flag
- * 4) the page controller will receive the pageParamsModel and will be able to add new model data
- * 
- * 
- */
 public class PageContentBuilder {
-	
-	
-	
-	private static final Logger log = Logger.getLogger(PageContentBuilder.class.getName());
-	
+		
 	private WBTemplateEngine templateEngine;
 	private WBCacheInstances cacheInstances;
 	private Map<String, Object> customControllers;
@@ -66,25 +52,18 @@ public class PageContentBuilder {
 		this.customControllers = new HashMap<String, Object>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
+		this.templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
+		
 	}
 	
 	public void initialize() throws WBException
 	{
-		try
-		{
-			templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
 			templateEngine.initialize();
-		} catch (WBException e)
-		{
-			throw e;
-		}
 	}
 	
 	public WBWebPage findWebPage(String pageExternalKey) throws WBException
 	{
-		WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);
-		return wbWebPage;
-		
+		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
 	
@@ -94,7 +73,8 @@ public class PageContentBuilder {
 			WBModel model) throws WBException
 	{
 
-		if ((wbWebPage.getIsTemplateSource() == null) || (wbWebPage.getIsTemplateSource() == 0))
+		Integer istemplateSource = wbWebPage.getIsTemplateSource();
+		if (istemplateSource == null || istemplateSource == 0)
 		{
 			return wbWebPage.getHtmlSource();
 		}
@@ -105,7 +85,9 @@ public class PageContentBuilder {
 
 		Map<String, Object> rootModel = new HashMap<String, Object>();
 		
-		if (controllerClassName !=null && controllerClassName.length()>0)
+		boolean hasController = controllerClassName !=null && controllerClassName.length()>0;
+		
+		if (hasController)
 		{
 
 			IPageModelProvider controllerInst = null;
@@ -126,9 +108,11 @@ public class PageContentBuilder {
 		model.transferModel(rootModel);
 		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
-		
-		rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
-		rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
+		if (model.getCmsModel().containsKey(ModelBuilder.LOCALE_KEY))
+		{
+			rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
+			rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
+		}
 		
 		String result = "";
 		try {
