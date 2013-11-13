@@ -30,6 +30,15 @@ $().ready( function () {
 								});
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 
+	$('#wbudadjustedContentType').typeahead({ items: 4,
+											  source:[ "image/jpeg", "image/png", "image/bmp", "image/gif", "image/jpg", "image/tiff", 
+	                                                   "video/mpeg", "video/quicktime",
+	                                                   "audio/basic", "audio/mpeg",
+	                                                   "application/pdf", "application/octet-stream", "application/msword", "application/vnd.ms-excel", "application/vnd.ms-powerpoint",
+	                                                   "application/x-gzip", "application/x-gtar", "application/zip",
+	                                                   "text/css", "text/plain", "text/html", "text/javascript", "application/x-javascript", "application/json"
+	                                                   ]}); 
+	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'shortType') {
 			var shortType = record['shortType'];

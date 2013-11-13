@@ -21,7 +21,7 @@ public class ResourceRequestProcessor {
 	private static Set<String> noCacheContentType = new HashSet<String>();
 	static
 	{
-		resourcesContentType.put("js", "application/x-javascript");
+		resourcesContentType.put("js", "text/javascript");
 		resourcesContentType.put("css", "text/css");
 		resourcesContentType.put("png", "image/png");
 		resourcesContentType.put("jpg", "image/jpg");

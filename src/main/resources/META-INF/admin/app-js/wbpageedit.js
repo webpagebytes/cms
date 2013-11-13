@@ -28,6 +28,8 @@ $().ready( function () {
 
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 
+	$('#wbecontentType').typeahead({ source: ["text/html", "text/plain", "text/javascript", "text/css", "application/json", "application/x-javascript"]});
+	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'lastModified') {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));

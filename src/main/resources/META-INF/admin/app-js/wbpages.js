@@ -12,7 +12,7 @@ $().ready( function () {
 									  errorGeneral:"errageneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { isTemplateSource: 0 },
+									  fieldsDefaults: { isTemplateSource: 0, contentType: "text/html" },
 									  validationRules: wbPageValidations
 									});
 	$('#wbDuplicatePageForm').wbObjectManager( { fieldsPrefix:'wbc',
