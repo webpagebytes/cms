@@ -15,7 +15,7 @@ import com.webbricks.exception.WBReadConfigException;
 import java.util.Locale;
 
 public class LocaleManager {
-	protected static final String LANGUAGES_CONFIG_FILE = "META-INF/config/langs.csv"; 
+	protected static String LANGUAGES_CONFIG_FILE = "META-INF/config/langs.csv"; 
 	protected Map<String, Locale> langToLocales;
 	protected Map<String, Locale> langAndCountriesToLocales;
 	public static LocaleManager getInstance() {
@@ -60,33 +60,29 @@ public class LocaleManager {
 			String line = null;
 			while ((line = breader.readLine()) != null)
 			{
-				if (line.indexOf('*') == -1)
-				{
-					continue;
-				}
 				StringTokenizer stk = new StringTokenizer(line, "*");
+				String display = "";
+				if (stk.hasMoreElements()) {
+					display = stk.nextElement().toString().trim();
+				} 
 				if (stk.hasMoreTokens())
 				{
-					String display = stk.nextToken().trim();
-					if (stk.hasMoreTokens())
+					String language = stk.nextToken().trim();
+					String country = "";
+					if (stk.hasMoreElements())
 					{
-						String language = stk.nextToken().trim();
-						String country = "";
-						if (stk.hasMoreElements())
-						{
-							country = stk.nextToken().trim();
-						}
-						if (display.length() >0 && language.length()> 0 && country.length() == 0)
-						{
-							String key = language.toLowerCase();
-							langToLocales.put(key, new Locale(language.toLowerCase()));
-							langAndCountriesToLocales.put(key, new Locale(language.toLowerCase()));
-						} else if (display.length() >0 && language.length()> 0 && country.length() > 0)
-						{
-							String key = language.toLowerCase() + "_" + country.toUpperCase();
-							langAndCountriesToLocales.put(key, new Locale(language.toLowerCase(), country.toUpperCase()));
-						}					
+						country = stk.nextToken().trim();
 					}
+					if (language.length()> 0 && country.length() == 0)
+					{
+						String key = language.toLowerCase();
+						langToLocales.put(key, new Locale(language.toLowerCase()));
+						langAndCountriesToLocales.put(key, new Locale(language.toLowerCase()));
+					} else if (language.length()> 0 && country.length() > 0)
+					{
+						String key = language.toLowerCase() + "_" + country.toUpperCase();
+						langAndCountriesToLocales.put(key, new Locale(language.toLowerCase(), country.toUpperCase()));
+					}					
 				}
 			}
 			breader.close();

@@ -13,11 +13,13 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.After;
-
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
+@PrepareForTest({LocaleManager.class})
 public class TestLocaleManager {
 
 LocaleManager localeManager;
@@ -25,6 +27,7 @@ LocaleManager localeManager;
 public void setup()
 {
 	localeManager = new LocaleManager();
+	
 }
 	
 @Test
@@ -54,6 +57,34 @@ public void test_loadLocalesfromFile_ok()
 	} catch (Exception e)
 	{
 		assertTrue(false);
+	}
+}
+
+@Test
+public void test_getIstance_OK()
+{
+	try
+	{
+		LocaleManager manager = LocaleManager.getInstance();
+		assertTrue (manager.getSupportedLanguages() != null);
+	} catch (Exception e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_getInstance_fail()
+{
+	try
+	{
+		String path = "xyz";
+		Whitebox.setInternalState(LocaleManager.class, "LANGUAGES_CONFIG_FILE", path);
+		LocaleManager manager = LocaleManager.getInstance();
+		assertTrue (manager == null);
+	} catch (Exception e)
+	{
+		assertTrue (false);
 	}
 }
 

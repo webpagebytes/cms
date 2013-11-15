@@ -3,6 +3,7 @@ package com.webbricks.cms;
 import static org.junit.Assert.*;
 
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import com.webbricks.appinterfaces.IPageModelProvider;
 import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBWebPagesCache;
@@ -68,6 +70,27 @@ public void test_initialize()
 	EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock);
 }
 
+@Test
+public void test_find_web_page()
+{
+		
+	try
+	{
+		String pageExternalKey = "123";
+		EasyMock.expect(cacheInstancesMock.getWBWebPageCache()).andReturn(pagesCacheMock);
+		EasyMock.expect(pagesCacheMock.getByExternalKey(pageExternalKey)).andReturn(pageMock);		
+		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock);	
+		WBWebPage result = pageContentBuilder.findWebPage(pageExternalKey);
+		assertTrue (result == pageMock);
+		
+	}catch (Exception e)
+	{
+		assertTrue (false);
+	}
+	
+	EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock);
+}
+
 
 @Test
 public void test_buildPageContent_null_isTemplateSource()
@@ -112,7 +135,7 @@ public void test_buildPageContent_zero_isTemplateSource()
 }
 
 @Test
-public void test_buildPageContent_zero_ok_noController()
+public void test_buildPageContent_zero_ok_nullController()
 {
 	
 	try
@@ -126,6 +149,72 @@ public void test_buildPageContent_zero_ok_noController()
 		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(null);
+		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		
+		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
+		
+		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
+		
+
+	}catch (Exception e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_buildPageContent_validController()
+{
+	
+	try
+	{
+		WBModel model = new WBModel();
+		Map<String, String> locale = new HashMap<String, String>();
+		locale.put(ModelBuilder.LOCALE_COUNTRY_KEY, "");
+		locale.put(ModelBuilder.LOCALE_LANGUAGE_KEY, "en");
+		model.getCmsModel().put(ModelBuilder.LOCALE_KEY, locale);
+		
+		String pageName = "index";
+		String controllerClass = "com.webbricks.cms.DummyPageModelProvider";
+		
+		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
+
+		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		
+		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(controllerClass);
+		
+		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		
+		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
+		
+		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
+		
+
+	}catch (Exception e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_buildPageContent_zero_ok_emptyController()
+{
+	
+	try
+	{
+		WBModel model = new WBModel();
+		String htmlSource = "<html>text</html>";
+		String pageName = "index";
+		
+		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
+
+		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		
+		EasyMock.expect(pageMock.getPageModelProvider()).andReturn("");
 		EasyMock.expect(pageMock.getName()).andReturn(pageName);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
@@ -173,6 +262,63 @@ public void test_buildPageContent_templateException()
 		assertTrue (false);
 	}
 	EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);
+}
+
+@Test
+public void test_getPageModelProvider_exists_in_map()
+{
+	String controllerClass = "com.webbricks.cms.DefaultPageModelProvider";
+	Map<String, IPageModelProvider> customControllers = new HashMap<String, IPageModelProvider>();
+	IPageModelProvider instController = new DummyPageModelProvider();
+	customControllers.put(controllerClass, instController);	
+	Whitebox.setInternalState(pageContentBuilder, "customControllers", customControllers);
+	
+	try
+	{
+		IPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);
+		
+		assertTrue (result == instController);
+	} catch (Exception e)
+	{
+		assertTrue (false);
+	}
+}
+
+@Test
+public void test_getPageModelProvider_not_exists_in_map()
+{
+	String controllerClass = "com.webbricks.cms.DummyPageModelProvider";
+	try
+	{
+		IPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
+		assertTrue (result != null);
+		
+		Map<String, IPageModelProvider> controllers = Whitebox.getInternalState(pageContentBuilder, "customControllers");
+		assertTrue (controllers.get(controllerClass) != null);
+	} catch (Exception e)
+	{
+		assertTrue (false);
+	}	
+}
+
+
+@Test
+public void test_getPageModelProvider_exception()
+{
+	String controllerClass = "com.webbricks.cms.DoesNotExistsModelProvider";	
+	try
+	{
+		Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
+	} 
+	catch (WBException e)
+	{
+		// OK
+	}
+	catch (Exception e)
+	{
+		assertTrue (false);
+	}
+	
 }
 
 }

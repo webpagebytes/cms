@@ -43,13 +43,13 @@ public class PageContentBuilder {
 		
 	private WBTemplateEngine templateEngine;
 	private WBCacheInstances cacheInstances;
-	private Map<String, Object> customControllers;
+	private Map<String, IPageModelProvider> customControllers;
 	private ModelBuilder modelBuilder;
 
 	public PageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 							
 	{
-		this.customControllers = new HashMap<String, Object>();
+		this.customControllers = new HashMap<String, IPageModelProvider>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
 		this.templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
@@ -66,6 +66,21 @@ public class PageContentBuilder {
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
+	private IPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
+	{
+		IPageModelProvider controllerInst = null;
+		if (customControllers.containsKey(controllerClassName))
+		{
+			controllerInst = (IPageModelProvider) customControllers.get(controllerClassName);
+		} else
+		{
+			try {
+			controllerInst = (IPageModelProvider) Class.forName(controllerClassName).newInstance();
+			customControllers.put(controllerClassName, controllerInst);
+			} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
+		}
+		return controllerInst;
+	}
 	
 	public String buildPageContent(HttpServletRequest request,
 			WBWebPage wbWebPage, 
@@ -90,20 +105,8 @@ public class PageContentBuilder {
 		if (hasController)
 		{
 
-			IPageModelProvider controllerInst = null;
-			if (customControllers.containsKey(controllerClassName))
-			{
-				controllerInst = (IPageModelProvider) customControllers.get(controllerClassName);
-			} else
-			{
-				try {
-				controllerInst = (IPageModelProvider) Class.forName(controllerClassName).newInstance();
-				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
-			}
-			if (controllerInst != null)
-			{
-				controllerInst.getPageModel(request, model);
-			}			
+			IPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
+			controllerInst.getPageModel(request, model);
 		}
 		model.transferModel(rootModel);
 		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());

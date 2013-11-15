@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webbricks.exception.WBException;
+import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBResourceNotFoundException;
 
 import javax.servlet.*;
@@ -91,7 +92,7 @@ public class ResourceRequestProcessor {
 	
 	public void process(HttpServletRequest req, 
 							   HttpServletResponse resp, 
-							   String resource)
+							   String resource) throws WBIOException 
 	{
 		try
 		{
@@ -112,28 +113,19 @@ public class ResourceRequestProcessor {
 					resp.addHeader("cache-control", "no-cache;no-store;");
 				}
 				resp.getOutputStream().write(res);				
+			} else
+			{
+				throw new WBResourceNotFoundException("Not supported content Type for " + resource);
 			}
 			
 		} 
 		catch (IOException e)
 		{
-			try
-			{
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			} catch (IOException exception)
-			{
-				
-			}
+			throw new WBIOException("Error processing resource " + resource ,e);
 		}
 		catch (WBResourceNotFoundException e)
 		{
-			try
-			{
-				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-			} catch (IOException exception)
-			{
-				
-			}
+			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 }
