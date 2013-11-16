@@ -1,6 +1,7 @@
 package com.webbricks.datautility;
 import java.beans.IntrospectionException;
 
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.appengine.repackaged.org.json.JSONException;
 public class WBJSONToFromObjectConverter {
 
 	private String STRING_CLASS_NAME = "java.lang.String";

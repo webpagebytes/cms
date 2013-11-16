@@ -11,8 +11,7 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <gae.version>1.6.1</gae.version>
-    <datanucleus.version>1.1.5</datanucleus.version>
+    <gae.version>1.8.7</gae.version>
     <cobertura.version>2.6</cobertura.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd-HH-mm-ss</maven.build.timestamp.format>
@@ -83,20 +82,7 @@
         <version>${gae.version}</version>
         <scope>provided</scope>
     </dependency>    
-    
-     <dependency>
-            <groupId>org.datanucleus</groupId>
-            <artifactId>datanucleus-core</artifactId>
-            <version>${datanucleus.version}</version>
-            <scope>provided</scope>
-     </dependency>
-     
-      <dependency>
-            <groupId>com.google.appengine.orm</groupId>
-            <artifactId>datanucleus-appengine</artifactId>
-            <version>1.0.10</version>
-            <scope>provided</scope>
-      </dependency>
+         
       
       <dependency>
             <groupId>com.google.appengine</groupId>

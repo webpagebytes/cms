@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -28,6 +29,7 @@ import org.junit.Before;
 
 import static com.google.appengine.api.datastore.FetchOptions.Builder.withLimit;
 import static org.junit.Assert.*;
+
 import org.junit.runner.RunWith;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -278,7 +280,7 @@ public class TestGaeDataStorage {
 			EasyMock.expect(gaeDataStoreUtilityMock.getGaeDataFactory()).andReturn(gaeDataFactoryMock);
 			EasyMock.expect(gaeDataFactoryMock.createQuery(dataClass)).andReturn(queryMock);
 						
-			EasyMock.expect(queryMock.addFilter("xyz", Query.FilterOperator.EQUAL, 1)).andReturn(null);
+			EasyMock.expect(queryMock.setFilter(EasyMock.anyObject(Filter.class))).andReturn(null);
 			EasyMock.expect(dataStoreServiceMock.prepare(queryMock)).andReturn(preparedQueryMock);
 			List<Entity> list = new ArrayList<Entity>();
 			Entity entity1 = EasyMock.createMock(Entity.class);
@@ -293,7 +295,7 @@ public class TestGaeDataStorage {
 			gaeAdminDataStorage.setGaeDataStoreUtility(gaeDataStoreUtilityMock);
 			EasyMock.replay(gaeDataStoreUtilityMock, gaeDataFactoryMock, 
 					dataStoreServiceMock);
-			PowerMock.replay(queryMock, preparedQueryMock);
+			EasyMock.replay(queryMock, preparedQueryMock);
 			List<Object> returnArray = gaeAdminDataStorage.query(dataObject.getClass(), "xyz", AdminQueryOperator.EQUAL, 1);			
 			assertTrue(false);
 		} 
@@ -329,7 +331,7 @@ public class TestGaeDataStorage {
 			EasyMock.expect(gaeDataStoreUtilityMock.getGaeDataFactory()).andReturn(gaeDataFactoryMock);
 			EasyMock.expect(gaeDataFactoryMock.createQuery(dataClass)).andReturn(queryMock);
 			
-			EasyMock.expect(queryMock.addFilter("xyz", Query.FilterOperator.EQUAL, 1)).andReturn(null);
+			EasyMock.expect(queryMock.setFilter(EasyMock.anyObject(Filter.class))).andReturn(null);
 			EasyMock.expect(dataStoreServiceMock.prepare(queryMock)).andReturn(preparedQueryMock);
 			List<Entity> list = new ArrayList<Entity>();
 			Entity entity1 = EasyMock.createMock(Entity.class);

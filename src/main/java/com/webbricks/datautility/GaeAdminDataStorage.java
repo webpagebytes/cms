@@ -1,6 +1,9 @@
 package com.webbricks.datautility;
 
+import java.util.Collection;
 import java.util.List;
+
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +18,11 @@ import com.webbricks.exception.WBIOException;
 import com.webbricks.template.WBFreeMarkerTemplateEngine;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 
@@ -105,7 +113,9 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		String className = dataClass.getName();
 		Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
 		query.setKeysOnly();
-		query.addFilter(property, adminOperatorToGaeOperator(operator), parameter);
+		FilterPredicate filter = new FilterPredicate(property, adminOperatorToGaeOperator(operator), parameter);
+		
+		query.setFilter(filter);
 		PreparedQuery preparedQuery = datastoreService.prepare(query);
 		List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
 		
@@ -312,7 +322,8 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		{
 			String className = dataClass.getName();
 			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
-			query.addFilter(propertyName, adminOperatorToGaeOperator(operator), value);
+			FilterPredicate filter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operator), value);
+			query.setFilter(filter);
 			PreparedQuery preparedQuery = datastoreService.prepare(query);
 			List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
 			for(Entity entity: entities)
@@ -337,10 +348,15 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		{
 			String className = dataClass.getName();
 			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
+			
+			Collection<Filter> filters = new ArrayList<Filter>();
 			for(String propertyName: propertyNames)
 			{
-				query.addFilter(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
+				FilterPredicate afilter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
 			}
+			Query.CompositeFilter filterComposite = new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters);
+			
+			query.setFilter(filterComposite);
 			PreparedQuery preparedQuery = datastoreService.prepare(query);
 			List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
 			for(Entity entity: entities)
@@ -365,7 +381,8 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		{
 			String className = dataClass.getName();
 			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
-			query.addFilter(propertyName, adminOperatorToGaeOperator(operator), parameter);
+			FilterPredicate filter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operator), parameter);
+			query.setFilter(filter);
 			if (sortOperator == AdminSortOperator.ASCENDING)
 			{
 				query.addSort(sortProperty, SortDirection.ASCENDING);
@@ -398,10 +415,13 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 		{
 			String className = dataClass.getName();
 			Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
+			Collection<Filter> filters = new ArrayList<Filter>();
 			for(String propertyName: propertyNames)
 			{
-				query.addFilter(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
+				FilterPredicate afilter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
 			}
+			Query.CompositeFilter filterComposite = new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters);
+			query.setFilter(filterComposite);
 			if (sortOperator == AdminSortOperator.ASCENDING)
 			{
 				query.addSort(sortProperty, SortDirection.ASCENDING);

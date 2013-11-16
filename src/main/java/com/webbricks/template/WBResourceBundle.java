@@ -1,13 +1,13 @@
 package com.webbricks.template;
 
 import java.util.Collections;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.google.appengine.repackaged.com.google.common.base.Fingerprinting;
 import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.exception.WBIOException;
 
