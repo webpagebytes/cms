@@ -81,7 +81,7 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 
 	}
 	
-	public void delete(Long recordid, Class dataClass)
+	public void delete(Long recordid, Class dataClass) throws WBIOException
 	{
 		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
 		Transaction tx = datastoreService.beginTransaction();		
@@ -94,10 +94,41 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 			datastoreService.get(key);
 		} catch (Exception e)
 		{
-			// no nothing
+			// do nothing
 		}
 		notifyOperation(null, AdminDataStorageOperation.DELETE);
 
+	}
+	public void delete(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WBIOException
+	{
+		DatastoreService datastoreService = gaeDataStoreUtility.getGaeDataFactory().createDatastoreService();
+		String className = dataClass.getName();
+		Query query = gaeDataStoreUtility.getGaeDataFactory().createQuery(className);
+		query.setKeysOnly();
+		query.addFilter(property, adminOperatorToGaeOperator(operator), parameter);
+		PreparedQuery preparedQuery = datastoreService.prepare(query);
+		List<Entity> entities = preparedQuery.asList(withLimit(MAX_FETCH_SIZE));
+		
+		TransactionOptions options = TransactionOptions.Builder.withXG(true);
+		
+		Transaction tx = datastoreService.beginTransaction(options);		
+		List<Key> keys = new ArrayList<Key>();
+		for (Entity entity: entities)
+		{
+			keys.add(entity.getKey());
+		}
+		datastoreService.delete(keys);
+		tx.commit();
+		
+		// high replication issue?
+		try
+		{
+			datastoreService.get(keys);
+		} catch (Exception e)
+		{
+			//do nothing
+		}
+		
 	}
 	
 	public<T> List<T> getAllRecords(Class dataClass) throws WBIOException

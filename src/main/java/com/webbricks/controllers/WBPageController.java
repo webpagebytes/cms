@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBWebPagesCache;
+import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
@@ -165,8 +166,12 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBWebPage tempPage = adminStorage.get(key, WBWebPage.class);
 			adminStorage.delete(key, WBWebPage.class);
 			
+			// delete the owned parameters
+			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempPage.getExternalKey());
+
 			WBWebPage page = new WBWebPage();
 			page.setKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();

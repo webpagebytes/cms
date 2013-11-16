@@ -26,6 +26,8 @@ public interface AdminDataStorage {
 	
 	public void delete(Long recordid, Class dataClass) throws WBIOException;
 	
+	public void delete(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WBIOException;
+	
 	public<T> List<T> getAllRecords(Class dataClass) throws WBIOException;
 	
 	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator operator) throws WBIOException;

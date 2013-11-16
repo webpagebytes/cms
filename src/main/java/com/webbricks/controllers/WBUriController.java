@@ -9,6 +9,7 @@ import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBUrisCache;
 import com.webbricks.cmsdata.WBFile;
+import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
@@ -195,7 +196,12 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBUri tempUri = adminStorage.get(key, WBUri.class);
+			
 			adminStorage.delete(key, WBUri.class);
+			
+			// delete the owned parameters
+			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempUri.getExternalKey());
 			
 			WBUri wburi = new WBUri();
 			wburi.setKey(key);
