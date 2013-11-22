@@ -1,6 +1,7 @@
 package com.webbricks.cms;
 
 import java.io.InputStream;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
-
-
-
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -65,6 +61,17 @@ public class PublicContentServlet extends HttpServlet {
 	public PublicContentServlet()
 	{
 		setServletUtility(new WBServletUtility());
+		
+		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
+				wbCacheFactory.createWBWebPagesCacheInstance(), 
+				wbCacheFactory.createWBWebPageModulesCacheInstance(), 
+				wbCacheFactory.createWBParametersCacheInstance(),
+				wbCacheFactory.createWBImagesCacheInstance(),
+				wbCacheFactory.createWBArticlesCacheInstance(),
+				wbCacheFactory.createWBMessagesCacheInstance(),
+				wbCacheFactory.createWBProjectCacheInstance());
+		
 	}
 	
 	public void init(ServletConfig config) throws ServletException
@@ -82,16 +89,6 @@ public class PublicContentServlet extends HttpServlet {
 		
 		try
 		{
-			WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
-			this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
-					wbCacheFactory.createWBWebPagesCacheInstance(), 
-					wbCacheFactory.createWBWebPageModulesCacheInstance(), 
-					wbCacheFactory.createWBParametersCacheInstance(),
-					wbCacheFactory.createWBImagesCacheInstance(),
-					wbCacheFactory.createWBArticlesCacheInstance(),
-					wbCacheFactory.createWBMessagesCacheInstance(),
-					wbCacheFactory.createWBProjectCacheInstance());
-
 			
 			for(int i=0; i<4; i++)
 			{
@@ -127,12 +124,7 @@ public class PublicContentServlet extends HttpServlet {
 		if (uriCommonPrefix.length()>0 && uri.startsWith(uriCommonPrefix))
 		{
 			uri = uri.substring(uriCommonPrefix.length());
-		} else
-		{
-			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
 		}
-		
 		
 		req.setAttribute(URI_PREFIX, uriCommonPrefix);
 		
@@ -295,10 +287,6 @@ public class PublicContentServlet extends HttpServlet {
            {
 			handleRequest(req, resp);
            }
-
-	public WBServletUtility getServletUtility() {
-		return servletUtility;
-	}
 
 	public void setServletUtility(WBServletUtility servletUtility) {
 		this.servletUtility = servletUtility;

@@ -1,7 +1,6 @@
 package com.webbricks.cms;
 
 import static org.junit.Assert.*;
-
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;

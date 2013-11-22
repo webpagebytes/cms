@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.DataStoreImporterExporter;
+import com.webbricks.datautility.FlatStorageExporter;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBBlobInfo;
@@ -29,6 +30,7 @@ public class WBExportImportController extends WBController {
 	AdminDataStorage adminStorage;
 	WBBlobHandler blobHandler;
 	HttpServletToolbox httpServletToolbox;
+	FlatStorageExporter storageExporter;
 	
 	public WBExportImportController()
 	{
@@ -36,6 +38,7 @@ public class WBExportImportController extends WBController {
 		adminStorage = new GaeAdminDataStorage();
 		httpServletToolbox = new HttpServletToolbox();
 		blobHandler = new WBGaeBlobHandler();
+		storageExporter = new FlatStorageExporter();
 
 	}
 
@@ -58,7 +61,8 @@ public class WBExportImportController extends WBController {
 		try
 		{
 			response.setContentType("application/zip");
-			importerExporter.exportToZip(adminStorage, response.getOutputStream());
+			
+			storageExporter.exportToZip(response.getOutputStream());
 			
 		} catch (IOException e)
 		{
