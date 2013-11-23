@@ -230,21 +230,26 @@ public class FlatStorageExporter {
 				zos.putNextEntry(metadataZe);
 				exportToXMLFormat(map, zos);
 				zos.closeEntry();
-				/*
-				String filePath = path + file.getExternalKey() + "/" + "file";
-				InputStream is = blobhandler.getBlobData(file.getBlobKey());
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				byte buffer[] = new byte[4096];
-				while (is.read(buffer) >=0) {
-				    bos.write(buffer);
+				
+				try
+				{
+					String filePath = path + file.getExternalKey() + "/" + file.getFileName();
+					InputStream is = blobhandler.getBlobData(file.getBlobKey());
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					byte buffer[] = new byte[4096];
+					while (is.read(buffer) >=0) {
+						bos.write(buffer);
+					}
+					bos.flush();
+					byte[] content = bos.toByteArray();
+					ZipEntry fileZe = new ZipEntry(filePath);
+					zos.putNextEntry(fileZe);
+					zos.write(content);
+					zos.closeEntry();
+				} catch (Exception e)
+				{
+					// do nothing, we do not abort the export because of a failure, but we need to log this as warning
 				}
-				bos.flush();
-				byte[] content = bos.toByteArray();
-				ZipEntry fileZe = new ZipEntry(filePath);
-				zos.putNextEntry(fileZe);
-				zos.write(content);
-				zos.closeEntry();
-				*/				
 			}
 		}
 		catch (IOException e)
