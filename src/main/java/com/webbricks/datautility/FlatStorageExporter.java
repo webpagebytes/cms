@@ -57,7 +57,7 @@ public class FlatStorageExporter {
 		exportUris(zos, PATH_URIS);
 		exportSitePages(zos, PATH_SITE_PAGES);
 		exportPageModules(zos, PATH_SITE_PAGES_MODULES);
-		//exportMessages(zos, PATH_MESSAGES);
+		exportMessages(zos, PATH_MESSAGES);
 		exportFiles(zos, PATH_FILES);
 		try
 		{
