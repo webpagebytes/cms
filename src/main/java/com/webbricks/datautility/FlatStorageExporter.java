@@ -1,27 +1,26 @@
 package com.webbricks.datautility;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.geronimo.mail.util.StringBufferOutputStream;
-
 import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBExporter;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.cmsdata.WBParameter;
+import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
@@ -29,6 +28,8 @@ import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.exception.WBIOException;
 
 public class FlatStorageExporter {
+	private static final Logger log = Logger.getLogger(FlatStorageExporter.class.getName());
+
 	public static final String PATH_URIS = "siteuris/";
 	public static final String PATH_URI_PARAMETERS = "siteuris/%s/parameters/";
 	public static final String PATH_SITE_PAGES = "sitepages/";
@@ -37,6 +38,9 @@ public class FlatStorageExporter {
 	public static final String PATH_MESSAGES = "messages/";
 	public static final String PATH_FILES = "files/";
 	public static final String PATH_ARTICLES = "aticles/";
+	public static final String PATH_GLOBALS = "settings/globals/";
+	public static final String PATH_LOCALES = "settings/locales/";
+	
 	
 	private WBExporter exporter = new WBExporter();
 	AdminDataStorage dataStorage = new GaeAdminDataStorage();
@@ -62,6 +66,8 @@ public class FlatStorageExporter {
 		exportMessages(zos, PATH_MESSAGES);
 		exportFiles(zos, PATH_FILES);
 		exportArticles(zos, PATH_ARTICLES);
+		exportGlobals(zos, PATH_GLOBALS);
+		exportLocales(zos, PATH_LOCALES);
 		try
 		{
 			zos.flush();
@@ -71,7 +77,31 @@ public class FlatStorageExporter {
 			throw new WBIOException("Cannot export project, error flushing/closing stream", e);
 		}
 	}
-	
+
+	protected void exportLocales(ZipOutputStream zos, String path) throws WBIOException
+	{
+		try
+		{
+			WBProject project = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			Map<String, Object> map = new HashMap<String, Object>();
+			exporter.export(project, map);								
+			String metadataXml = path + "metadata.xml";
+			ZipEntry metadataZe = new ZipEntry(metadataXml);
+			zos.putNextEntry(metadataZe);
+			exportToXMLFormat(map, zos);
+			zos.closeEntry();
+			
+		} catch (IOException e)
+		{
+			throw new WBIOException("Cannot export uri's to Zip", e);
+		}		
+	}
+
+	protected void exportGlobals(ZipOutputStream zos, String path) throws WBIOException
+	{
+		exportParameters("", zos, path);
+	}
+
 	protected void exportUris(ZipOutputStream zos, String path) throws WBIOException
 	{
 		try

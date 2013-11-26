@@ -353,6 +353,7 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 			for(String propertyName: propertyNames)
 			{
 				FilterPredicate afilter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
+				filters.add(afilter);
 			}
 			Query.CompositeFilter filterComposite = new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters);
 			
@@ -419,6 +420,7 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 			for(String propertyName: propertyNames)
 			{
 				FilterPredicate afilter = new FilterPredicate(propertyName, adminOperatorToGaeOperator(operators.get(propertyName)), values.get(propertyName));
+				filters.add(afilter);
 			}
 			Query.CompositeFilter filterComposite = new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters);
 			query.setFilter(filterComposite);

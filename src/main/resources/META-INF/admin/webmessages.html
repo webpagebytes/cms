@@ -93,6 +93,53 @@
 		</form>
     </div>
 
+	<div class="modal hide" id="wbDuplicateMessageModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3> Duplicate message</h3>
+		</div>
+		<form class="form-inline" id="wbDuplicateMessageForm">	
+		<div class="modal-body">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<span id="errcgeneral" class="help-inline"></span>
+					</div>										
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="wbcname">Message Key</label>
+					<div class="controls">
+						<input id="wbcname" class="input-xlarge" type="text">
+						<span id="errcname" class="help-inline"></span>
+					</div>										
+				</div>           				
+				
+				<div class="control-group">
+					<label class="control-label" for="wbcvalue">Message Value</label>
+					<div class="controls">
+						<textarea id="wbcvalue" class="input-xlarge" spellcheck="false"> </textarea>
+						<span id="errcvalue" class="help-inline"></span>
+					</div>										
+				</div>           				
+
+				<div class="control-group">
+					<label class="control-label" for="wbaname">Is message translated?</label>
+					<div class="controls">
+						<input id="wbcisTranslated" type="radio" name="isTranslated" value="1"> YES
+										  <input type="radio" name="isTranslated" value="0" checked> NO
+						<span id="errcisTranslated" class="help-inline"></span>
+					</div>										
+				</div>           						
+			</fieldset>		
+		</div>
+		<div class="modal-footer">
+				<button class="btn btn-primary wbSaveDuplicateMessageBtnClass" type="submit">Duplicate</button>
+				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+		</div>
+		</form>
+    </div>
+
 	<div class="modal hide" id="wbUpdateMessageModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

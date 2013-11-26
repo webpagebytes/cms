@@ -20,6 +20,15 @@ $().ready( function () {
 								  fieldsDefaults: { isTranslated: 0 },
 								  validationRules: wbMessagesValidations
 								});
+	$('#wbDuplicateMessageForm').wbObjectManager( { fieldsPrefix:'wbc',
+		  errorLabelsPrefix: 'errc',
+		  errorGeneral:"errcgeneral",
+		  errorLabelClassName: 'errorvalidationlabel',
+		  errorInputClassName: 'errorvalidationinput',
+		  fieldsDefaults: { isTranslated: 0 },
+		  validationRules: wbMessagesValidations
+		});
+	
 	$('#wbUpdateMessageForm').wbObjectManager( { fieldsPrefix:'wbu',
 								  errorLabelsPrefix: 'erru',
 								  errorGeneral:"errageneral",
@@ -40,7 +49,9 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if ((fieldId == '_operations') && (record['diff'] != 'default')) {
-			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> | <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{1}'> <i class='icon-trash'></i> Delete </a>".format( encodeURIComponent(record['key']), encodeURIComponent(record['key']));			
+			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> ".format( encodeURIComponent(record['key'])) +
+						  "| <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{0}'> <i class='icon-trash'></i> Delete </a>".format(encodeURIComponent(record['key'])) +
+						  "| <a href='#' class='wbDuplicateMessageLinkClass' id='m_dup_id_{0}'><i class='aicon-duplicate'></i> Duplicate </a>".format(encodeURIComponent(record['key']));
 			return innerHtml;
 		}
 		if ((fieldId == '_operations') && (record['diff'] == 'default')) {
@@ -192,6 +203,32 @@ $().ready( function () {
 		}
 	});
 
+	var fSuccessDuplicate = function (data) {	
+		$('#wbDuplicateMessageModal').modal('hide');
+		window.location.reload();	
+	};
+	
+	var fErrorDuplicate = function (errors, data) {
+		$('#wbDuplicateMessageForm').wbObjectManager().setErrors(transferProperties(errors, errorsGeneral));
+	};
+	
+	$(".wbSaveDuplicateMessageBtnClass").click(function (e) {
+		e.preventDefault();
+		var errors = $('#wbDuplicateMessageForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			var obj = $('#wbDuplicateMessageForm').wbObjectManager().getObjectFromFields();
+			obj['lcid'] = selectedLcid;
+			var jsonText = JSON.stringify(obj);
+			$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage",
+															 httpOperation:"POST", 
+															 payloadData:jsonText,
+															 wbObjectManager : $('#wbDuplicateMessageForm').wbObjectManager(),
+															 functionSuccess: fSuccessDuplicate,
+															 functionError: fErrorDuplicate
+															 } );
+		}
+	});
+
 	var fSuccessUpdate = function (data) {	
 		$('#wbUpdateMessageModal').modal('hide');
 		window.location.reload();
@@ -249,7 +286,16 @@ $().ready( function () {
 		$('#wbAddMessageForm').wbObjectManager().populateFieldsFromObject(newObject);
 		$('#wbAddMessageModal').modal('show');		
 	});
-	
+
+	$(document).on ("click", ".wbDuplicateMessageLinkClass", function (e) {
+		e.preventDefault();
+		$('#wbDuplicateMessageForm').wbObjectManager().resetFields();
+		var key = $(this).attr('id').substring("m_dup_id_".length);
+		var object = $('#wbmessagestable').wbSimpleTable().getRowDataWithKey(key);
+		$('#wbDuplicateMessageForm').wbObjectManager().populateFieldsFromObject(object);
+		$('#wbDuplicateMessageModal').modal('show');		
+	});
+
 	$(document).on ("click", ".wbEditMessageLinkClass", function (e) {
 		e.preventDefault();
 		$('#wbUpdateMessageForm').wbObjectManager().resetFields();
