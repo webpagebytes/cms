@@ -17,6 +17,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.geronimo.mail.util.StringBufferOutputStream;
 
+import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBExporter;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
@@ -35,6 +36,7 @@ public class FlatStorageExporter {
 	public static final String PATH_SITE_PAGES_MODULES = "sitepagesmodules/";
 	public static final String PATH_MESSAGES = "messages/";
 	public static final String PATH_FILES = "files/";
+	public static final String PATH_ARTICLES = "aticles/";
 	
 	private WBExporter exporter = new WBExporter();
 	AdminDataStorage dataStorage = new GaeAdminDataStorage();
@@ -59,6 +61,7 @@ public class FlatStorageExporter {
 		exportPageModules(zos, PATH_SITE_PAGES_MODULES);
 		exportMessages(zos, PATH_MESSAGES);
 		exportFiles(zos, PATH_FILES);
+		exportArticles(zos, PATH_ARTICLES);
 		try
 		{
 			zos.flush();
@@ -150,7 +153,36 @@ public class FlatStorageExporter {
 			throw new WBIOException("Cannot export site web pages to Zip", e);
 		}
 	}
-	
+
+	protected void exportArticles(ZipOutputStream zos, String path) throws WBIOException
+	{
+		try
+		{
+			List<WBArticle> articles = dataStorage.getAllRecords(WBArticle.class);
+			for(WBArticle article: articles)
+			{
+				String articleXmlPath = path + article.getExternalKey() + "/" + "metadata.xml";
+				Map<String, Object> map = new HashMap<String, Object>();
+				exporter.export(article, map);								
+				ZipEntry metadataZe = new ZipEntry(articleXmlPath);
+				zos.putNextEntry(metadataZe);
+				exportToXMLFormat(map, zos);
+				zos.closeEntry();
+				String articleSourcePath = path + article.getExternalKey() + "/" + "articleSource.txt";
+				String pageSource = article.getHtmlSource() != null ? article.getHtmlSource() : "";
+				ZipEntry pageSourceZe = new ZipEntry(articleSourcePath);
+				zos.putNextEntry(pageSourceZe);
+				zos.write(pageSource.getBytes("UTF-8"));
+				zos.closeEntry();
+				
+			}
+		}
+		catch (IOException e)
+		{
+			throw new WBIOException("Cannot export articles to Zip", e);
+		}
+	}
+
 	protected void exportPageModules(ZipOutputStream zos, String path) throws WBIOException
 	{
 		try

@@ -47,6 +47,19 @@ public class WBExporter {
 			properties.put("lastModified", "0");
 	}
 
+	public void export(WBProject project, Map<String, Object> properties)
+	{
+		if (project.getDefaultLanguage() != null)
+			properties.put("defaultLanguage", project.getDefaultLanguage());
+		else
+			properties.put("defaultLanguage", "");
+		
+		if (project.getSupportedLanguages() != null)
+			properties.put("supportedLanguages", project.getSupportedLanguages());
+		else
+			properties.put("supportedLanguages", "");
+	}
+
 	public void export(WBParameter parameter, Map<String, Object> properties)
 	{
 		if (parameter.getExternalKey() != null)
@@ -110,6 +123,25 @@ public class WBExporter {
 		
 		if (page.getLastModified() != null)
 			properties.put("lastModified", page.getLastModified());
+		else
+			properties.put("lastModified", "0");
+		
+	}
+
+	public void export(WBArticle article, Map<String, Object> properties)
+	{
+		if (article.getExternalKey() != null)
+			properties.put("externalKey", article.getExternalKey());
+		else
+			properties.put("externalKey", "0");
+			
+		if (article.getTitle() != null)
+			properties.put("name", article.getTitle());
+		else
+			properties.put("name", "");
+			
+		if (article.getLastModified() != null)
+			properties.put("lastModified", article.getLastModified());
 		else
 			properties.put("lastModified", "0");
 		
