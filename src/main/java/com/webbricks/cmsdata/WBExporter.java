@@ -17,7 +17,7 @@ public class WBExporter {
 			properties.put("uri", "");
 		
 		if (uri.getEnabled() != null)
-			properties.put("enabled", uri.getEnabled());
+			properties.put("enabled", uri.getEnabled().toString());
 		else
 			properties.put("enabled", "0");
 		
@@ -27,7 +27,7 @@ public class WBExporter {
 			properties.put("resourceExternalKey", "");
 		
 		if (uri.getResourceType() != null)
-			properties.put("resourceType", uri.getResourceType());
+			properties.put("resourceType", uri.getResourceType().toString());
 		else
 			properties.put("resourceType", "0");
 		
@@ -42,7 +42,7 @@ public class WBExporter {
 			properties.put("controllerClass", "");
 		
 		if (uri.getLastModified() != null)
-			properties.put("lastModified", uri.getLastModified().getTime());
+			properties.put("lastModified", new Long(uri.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 	}
@@ -83,12 +83,12 @@ public class WBExporter {
 			properties.put("ownerExternalKey", "");
 
 		if (parameter.getOverwriteFromUrl() != null)
-			properties.put("overwriteFromUrl", parameter.getOverwriteFromUrl());
+			properties.put("overwriteFromUrl", parameter.getOverwriteFromUrl().toString());
 		else
 			properties.put("overwriteFromUrl", "0");
 		
 		if (parameter.getLocaleType() != null)
-			properties.put("localeType", parameter.getLocaleType());
+			properties.put("localeType", parameter.getLocaleType().toString());
 		else
 			properties.put("localeType", "0");
 			
@@ -107,7 +107,7 @@ public class WBExporter {
 			properties.put("contentType", "");
 		
 		if (page.getIsTemplateSource() != null)
-			properties.put("isTemplateSource", page.getIsTemplateSource());
+			properties.put("isTemplateSource", page.getIsTemplateSource().toString());
 		else
 			properties.put("isTemplateSource", "0");
 		
@@ -122,7 +122,7 @@ public class WBExporter {
 			properties.put("pageModelprovider", "");
 		
 		if (page.getLastModified() != null)
-			properties.put("lastModified", page.getLastModified());
+			properties.put("lastModified", page.getLastModified().toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -141,7 +141,7 @@ public class WBExporter {
 			properties.put("name", "");
 			
 		if (article.getLastModified() != null)
-			properties.put("lastModified", article.getLastModified());
+			properties.put("lastModified", article.getLastModified().toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -170,7 +170,7 @@ public class WBExporter {
 			properties.put("name", "");
 				
 		if (file.getLastModified() != null)
-			properties.put("lastModified", file.getLastModified());
+			properties.put("lastModified", file.getLastModified().toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -190,7 +190,7 @@ public class WBExporter {
 			properties.put("externalKey", "0");
 				
 		if (module.getIsTemplateSource() != null)
-			properties.put("isTemplateSource", module.getIsTemplateSource());
+			properties.put("isTemplateSource", module.getIsTemplateSource().toString());
 		else
 			properties.put("isTemplateSource", "0");
 		
@@ -200,7 +200,7 @@ public class WBExporter {
 			properties.put("name", "");
 				
 		if (module.getLastModified() != null)
-			properties.put("lastModified", module.getLastModified());
+			properties.put("lastModified", module.getLastModified().toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -224,7 +224,7 @@ public class WBExporter {
 			properties.put("value", "");
 
 		if (message.getLastModified() != null)
-			properties.put("lastModified", message.getLastModified());
+			properties.put("lastModified", message.getLastModified().toString());
 		else
 			properties.put("lastModified", "0");
 		

@@ -1,7 +1,6 @@
 package com.webbricks.datautility;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +13,13 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBExporter;
 import com.webbricks.cmsdata.WBFile;
+import com.webbricks.cmsdata.WBImporter;
 import com.webbricks.cmsdata.WBMessage;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBProject;
@@ -27,8 +29,8 @@ import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.exception.WBIOException;
 
-public class FlatStorageExporter {
-	private static final Logger log = Logger.getLogger(FlatStorageExporter.class.getName());
+public class FlatStorageImporterExporter {
+	private static final Logger log = Logger.getLogger(FlatStorageImporterExporter.class.getName());
 
 	public static final String PATH_URIS = "siteuris/";
 	public static final String PATH_URI_PARAMETERS = "siteuris/%s/parameters/";
@@ -37,12 +39,16 @@ public class FlatStorageExporter {
 	public static final String PATH_SITE_PAGES_MODULES = "sitepagesmodules/";
 	public static final String PATH_MESSAGES = "messages/";
 	public static final String PATH_FILES = "files/";
+	public static final String PATH_FILE_CONTENT = "files/%s/content/";
+	
 	public static final String PATH_ARTICLES = "aticles/";
 	public static final String PATH_GLOBALS = "settings/globals/";
 	public static final String PATH_LOCALES = "settings/locales/";
 	
 	
 	private WBExporter exporter = new WBExporter();
+	private WBImporter importer = new WBImporter();
+	
 	AdminDataStorage dataStorage = new GaeAdminDataStorage();
 	WBBlobHandler blobhandler = new WBGaeBlobHandler();
 	
@@ -56,7 +62,97 @@ public class FlatStorageExporter {
 		byte metadataBytes[] = bos.toByteArray();
 		os.write(metadataBytes);
 	}
+	private Map<Object, Object> importFromXMLFormat(InputStream is) throws IOException
+	{
+		Properties properties = new Properties();
+		byte[] buffer = getBytesFromInputStream(is);
+		ByteArrayInputStream byteIs = new ByteArrayInputStream(buffer);
+		properties.loadFromXML(byteIs);
+		return properties;		
+	}
 	
+
+	public void importFromZip(InputStream is) throws WBIOException
+	{
+		ZipInputStream zis = new ZipInputStream(is);
+	
+		try
+		{
+			ZipEntry ze = null;
+			while ((ze = zis.getNextEntry()) != null)
+			{
+				String name = ze.getName();
+				if (name.indexOf(PATH_URIS)>=0)
+				{
+					if (name.indexOf("/parameters/")>=0 && name.indexOf("metadata.xml")>=0)
+					{
+						importParameter(zis);
+					} else
+					{
+						// this is a web site url
+						importUri(zis);
+					}
+				}
+				if (name.indexOf(PATH_GLOBALS)>=0)
+				{
+					if (name.indexOf("metadata.xml")>=0)
+					{
+						importParameter(zis);
+					} 
+				}
+
+				zis.closeEntry();
+			}
+		} catch (IOException e)
+		{
+			throw new WBIOException("cannot import from zip", e);
+		}
+	}
+	
+	private byte[] getBytesFromInputStream(InputStream is) throws IOException
+	{
+		byte buffer[] = new byte[4096];
+		ByteArrayOutputStream os = new ByteArrayOutputStream(4096);
+		int len = 0;
+		while ( (len = is.read(buffer))>0)
+		{
+			os.write(buffer, 0, len);
+		}
+		return os.toByteArray();
+	}
+	
+	public void importUri(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBUri uri = importer.buildUri(props);
+			if (uri != null)
+			{
+				dataStorage.add(uri);
+			}
+		} catch (IOException e)
+		{
+			
+		}
+	}
+
+	public void importParameter(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBParameter parameter = importer.buildParameter(props);
+			if (parameter != null)
+			{
+				dataStorage.add(parameter);
+			}
+		} catch (IOException e)
+		{
+			
+		}
+	}
+
 	public void exportToZip(OutputStream os) throws WBIOException
 	{
 		ZipOutputStream zos = new ZipOutputStream(os);
@@ -122,6 +218,10 @@ public class FlatStorageExporter {
 				zos.closeEntry();
 				
 				String parametersPath = String.format(PATH_URI_PARAMETERS, uri.getExternalKey());
+				ZipEntry paramsZe = new ZipEntry(parametersPath);
+				zos.putNextEntry(paramsZe);
+				zos.closeEntry();
+
 				exportParameters(uri.getExternalKey(), zos, parametersPath);
 			}
 		} catch (IOException e)
@@ -174,6 +274,10 @@ public class FlatStorageExporter {
 				zos.closeEntry();
 				
 				String parametersPath = String.format(PATH_SITE_PAGES_PARAMETERS, page.getExternalKey());
+				ZipEntry paramsZe = new ZipEntry(parametersPath);
+				zos.putNextEntry(paramsZe);
+				zos.closeEntry();
+
 				exportParameters(page.getExternalKey(), zos, parametersPath);
 
 			}
@@ -203,8 +307,7 @@ public class FlatStorageExporter {
 				ZipEntry pageSourceZe = new ZipEntry(articleSourcePath);
 				zos.putNextEntry(pageSourceZe);
 				zos.write(pageSource.getBytes("UTF-8"));
-				zos.closeEntry();
-				
+				zos.closeEntry();				
 			}
 		}
 		catch (IOException e)
@@ -292,10 +395,14 @@ public class FlatStorageExporter {
 				zos.putNextEntry(metadataZe);
 				exportToXMLFormat(map, zos);
 				zos.closeEntry();
+				String contentPath = String.format(PATH_FILE_CONTENT, file.getExternalKey());
+				ZipEntry contentZe = new ZipEntry(contentPath);
+				zos.putNextEntry(contentZe);
+				zos.closeEntry();
 				
 				try
 				{
-					String filePath = path + file.getExternalKey() + "/" + file.getFileName();
+					String filePath = contentPath + file.getFileName();
 					InputStream is = blobhandler.getBlobData(file.getBlobKey());
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					byte buffer[] = new byte[4096];

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.DataStoreImporterExporter;
-import com.webbricks.datautility.FlatStorageExporter;
+import com.webbricks.datautility.FlatStorageImporterExporter;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBBlobInfo;
@@ -30,7 +30,7 @@ public class WBExportImportController extends WBController {
 	AdminDataStorage adminStorage;
 	WBBlobHandler blobHandler;
 	HttpServletToolbox httpServletToolbox;
-	FlatStorageExporter storageExporter;
+	FlatStorageImporterExporter storageExporter;
 	
 	public WBExportImportController()
 	{
@@ -38,7 +38,7 @@ public class WBExportImportController extends WBController {
 		adminStorage = new GaeAdminDataStorage();
 		httpServletToolbox = new HttpServletToolbox();
 		blobHandler = new WBGaeBlobHandler();
-		storageExporter = new FlatStorageExporter();
+		storageExporter = new FlatStorageImporterExporter();
 
 	}
 
@@ -74,7 +74,7 @@ public class WBExportImportController extends WBController {
 	{
 		WBBlobInfo blobInfo = blobHandler.storeBlob(request);
 		InputStream is = blobHandler.getBlobData(blobInfo.getBlobKey());
-		importerExporter.importfromZip(adminStorage, is);
+		storageExporter.importFromZip(is);
 		
 		String referer = request.getHeader("Referer");
 		if (blobInfo != null)
