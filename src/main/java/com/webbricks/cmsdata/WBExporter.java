@@ -91,6 +91,11 @@ public class WBExporter {
 			properties.put("localeType", parameter.getLocaleType().toString());
 		else
 			properties.put("localeType", "0");
+		
+		if (parameter.getLastModified() != null)
+			properties.put("lastModified", new Long(parameter.getLastModified().getTime()).toString());
+		else
+			properties.put("lastModified", "0");
 			
 		}
 	
@@ -122,7 +127,7 @@ public class WBExporter {
 			properties.put("pageModelprovider", "");
 		
 		if (page.getLastModified() != null)
-			properties.put("lastModified", page.getLastModified().toString());
+			properties.put("lastModified", new Long(page.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -136,12 +141,12 @@ public class WBExporter {
 			properties.put("externalKey", "0");
 			
 		if (article.getTitle() != null)
-			properties.put("name", article.getTitle());
+			properties.put("title", article.getTitle());
 		else
-			properties.put("name", "");
+			properties.put("title", "");
 			
 		if (article.getLastModified() != null)
-			properties.put("lastModified", article.getLastModified().toString());
+			properties.put("lastModified", new Long(article.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -170,7 +175,7 @@ public class WBExporter {
 			properties.put("name", "");
 				
 		if (file.getLastModified() != null)
-			properties.put("lastModified", file.getLastModified().toString());
+			properties.put("lastModified", new Long(file.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -200,7 +205,7 @@ public class WBExporter {
 			properties.put("name", "");
 				
 		if (module.getLastModified() != null)
-			properties.put("lastModified", module.getLastModified().toString());
+			properties.put("lastModified", new Long(module.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 		
@@ -224,7 +229,7 @@ public class WBExporter {
 			properties.put("value", "");
 
 		if (message.getLastModified() != null)
-			properties.put("lastModified", message.getLastModified().toString());
+			properties.put("lastModified", new Long(message.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
 		

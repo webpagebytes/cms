@@ -108,4 +108,219 @@ public class WBImporter {
 		return uri;
 	}
 
+	public WBWebPage buildWebPage(Map<Object, Object> properties)
+	{
+		WBWebPage page = new WBWebPage();
+		if (properties.get("externalKey") != null)
+			page.setExternalKey(properties.get("externalKey").toString().trim());
+		else
+			return null;
+		
+		if (properties.get("contentType") != null)
+		{
+			page.setContentType(properties.get("contentType").toString().trim());
+		}
+
+		if (properties.get("name") != null)
+		{
+			page.setName(properties.get("name").toString().trim());
+		} else
+		{
+			page.setName("");
+		}
+
+		if (properties.get("htmlSource") != null)
+		{
+			page.setHtmlSource(properties.get("htmlSource").toString().trim());
+		} else
+		{
+			page.setHtmlSource("");
+		}
+		page.setHash( page.crc32(page.getHtmlSource()));
+		
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		page.setLastModified(new Date(lastModified));
+
+		String isTemplateSourceStr = (String) properties.get("isTemplateSource");
+		Integer isTemplateSource = isTemplateSourceStr != null && !isTemplateSourceStr.equals("0") ? 1: 0;
+		page.setIsTemplateSource(isTemplateSource);
+
+		return page;
+	}
+
+	public WBFile buildFile(Map<Object, Object> properties)
+	{
+		WBFile file = new WBFile();
+		if (properties.get("externalKey") != null)
+			file.setExternalKey(properties.get("externalKey").toString().trim());
+		else
+			return null;
+		
+		if (properties.get("contentType") != null)
+		{
+			file.setContentType(properties.get("contentType").toString().trim());
+		}
+
+		if (properties.get("adjustedContentType") != null)
+		{
+			file.setAdjustedContentType(properties.get("adjustedContentType").toString().trim());
+		}
+
+		if (properties.get("shortType") != null)
+		{
+			file.setShortType(properties.get("shortType").toString().trim());
+		}
+
+		if (properties.get("fileName") != null)
+		{
+			file.setFileName(properties.get("fileName").toString().trim());
+		}
+		
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		file.setLastModified(new Date(lastModified));
+
+		String sizeStr = (String) properties.get("size");
+		Long size = 0L;
+		try
+		{
+			size = sizeStr != null ?  Long.valueOf(sizeStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		file.setSize(size);
+		return file;
+	}
+
+	public WBWebPageModule buildWebPageModule(Map<Object, Object> properties)
+	{
+		WBWebPageModule pageModule = new WBWebPageModule();
+		if (properties.get("externalKey") != null)
+			pageModule.setExternalKey(properties.get("externalKey").toString().trim());
+		else
+			return null;
+
+		if (properties.get("name") != null)
+		{
+			pageModule.setName(properties.get("name").toString().trim());
+		} else
+		{
+			pageModule.setName("");
+		}
+
+		if (properties.get("htmlSource") != null)
+		{
+			pageModule.setHtmlSource(properties.get("htmlSource").toString().trim());
+		} else
+		{
+			pageModule.setHtmlSource("");
+		}
+		
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		pageModule.setLastModified(new Date(lastModified));
+
+		String isTemplateSourceStr = (String) properties.get("isTemplateSource");
+		Integer isTemplateSource = isTemplateSourceStr != null && !isTemplateSourceStr.equals("0") ? 1: 0;
+		pageModule.setIsTemplateSource(isTemplateSource);
+
+		return pageModule;
+	}
+
+	public WBArticle buildArticle(Map<Object, Object> properties)
+	{
+		WBArticle article = new WBArticle();
+		if (properties.get("externalKey") != null)
+			article.setExternalKey(properties.get("externalKey").toString().trim());
+		else
+			return null;
+
+		if (properties.get("title") != null)
+		{
+			article.setTitle(properties.get("title").toString().trim());
+		} else
+		{
+			article.setTitle("");
+		}
+
+		if (properties.get("htmlSource") != null)
+		{
+			article.setHtmlSource(properties.get("htmlSource").toString().trim());
+		} else
+		{
+			article.setHtmlSource("");
+		}
+		
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		article.setLastModified(new Date(lastModified));
+
+		return article;
+	}
+
+	public WBMessage buildMessage(Map<Object, Object> properties)
+	{
+		WBMessage message = new WBMessage();
+		if (properties.get("externalKey") != null)
+			message.setExternalKey(properties.get("externalKey").toString().trim());
+		else
+			return null;
+
+		if (properties.get("name") != null)
+		{
+			message.setName(properties.get("name").toString().trim());
+		}
+		if (properties.get("value") != null)
+		{
+			message.setValue(properties.get("value").toString().trim());
+		}
+		if (properties.get("lcid") != null)
+		{
+			message.setLcid(properties.get("lcid").toString().trim());
+		}
+	
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		message.setLastModified(new Date(lastModified));
+
+		return message;
+	}
+
 }

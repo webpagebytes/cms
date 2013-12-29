@@ -2,6 +2,7 @@ package com.webbricks.cmsdata;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.zip.CRC32;
 
 import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
@@ -113,6 +114,12 @@ public class WBWebPage implements Serializable {
 		this.pageModelProvider = pageModelProvider;
 	}
 
-	
+	public static Long crc32(String str)
+	{
+		str = (str != null) ? str : "";
+		CRC32 crc = new CRC32();
+		crc.update(str.getBytes());
+		return crc.getValue();
+	}
 	
 }

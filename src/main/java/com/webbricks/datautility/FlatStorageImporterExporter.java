@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -87,25 +88,54 @@ public class FlatStorageImporterExporter {
 					if (name.indexOf("/parameters/")>=0 && name.indexOf("metadata.xml")>=0)
 					{
 						importParameter(zis);
-					} else
+					} else if (name.indexOf("metadata.xml")>=0)
 					{
 						// this is a web site url
 						importUri(zis);
 					}
-				}
+				} else
 				if (name.indexOf(PATH_GLOBALS)>=0)
 				{
 					if (name.indexOf("metadata.xml")>=0)
 					{
 						importParameter(zis);
 					} 
+				} else
+				if (name.indexOf(PATH_SITE_PAGES)>=0)
+				{
+					if (name.indexOf("/parameters/")>=0 && name.indexOf("metadata.xml")>=0)
+					{
+						importParameter(zis);
+					} else
+					{
+						importWebPage(zis);
+					}
+				} else
+				if (name.indexOf(PATH_SITE_PAGES_MODULES) >= 0)
+				{
+					importPageModule(zis);
+				} else				
+				if (name.indexOf(PATH_ARTICLES) >= 0)
+				{
+					importArticle(zis);
+				} else
+				if (name.indexOf(PATH_MESSAGES) >= 0)
+				{
+					importMessage(zis);
+				} else
+				if (name.indexOf(PATH_FILES) >= 0)
+				{
+					if (name.indexOf("/content/") < 0)
+					{
+						importFile(zis);
+					}
 				}
-
 				zis.closeEntry();
 			}
-		} catch (IOException e)
+		} catch (Exception e)
 		{
-			throw new WBIOException("cannot import from zip", e);
+			log.log(Level.SEVERE, e.getMessage(), e);
+			throw new WBIOException("cannot import from  zip", e);
 		}
 	}
 	
@@ -133,7 +163,87 @@ public class FlatStorageImporterExporter {
 			}
 		} catch (IOException e)
 		{
-			
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importWebPage(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBWebPage webPage = importer.buildWebPage(props);
+			if (webPage != null)
+			{
+				dataStorage.add(webPage);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importPageModule(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBWebPageModule webPageModule = importer.buildWebPageModule(props);
+			if (webPageModule != null)
+			{
+				dataStorage.add(webPageModule);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importArticle(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBArticle article = importer.buildArticle(props);
+			if (article != null)
+			{
+				dataStorage.add(article);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importFile(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBFile file = importer.buildFile(props);
+			if (file != null)
+			{
+				dataStorage.add(file);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importMessage(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBMessage message = importer.buildMessage(props);
+			if (message != null)
+			{
+				dataStorage.add(message);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
 		}
 	}
 
@@ -147,9 +257,9 @@ public class FlatStorageImporterExporter {
 			{
 				dataStorage.add(parameter);
 			}
-		} catch (IOException e)
+		} catch (Exception e)
 		{
-			
+			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
@@ -170,6 +280,7 @@ public class FlatStorageImporterExporter {
 			zos.close();
 		} catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export project, error flushing/closing stream", e);
 		}
 	}
@@ -189,6 +300,7 @@ public class FlatStorageImporterExporter {
 			
 		} catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export uri's to Zip", e);
 		}		
 	}
@@ -226,6 +338,7 @@ public class FlatStorageImporterExporter {
 			}
 		} catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export uri's to Zip", e);
 		}
 	}
@@ -248,6 +361,7 @@ public class FlatStorageImporterExporter {
 			
 		} catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export parameters for uri's to Zip", e);
 		}
 	}
@@ -284,6 +398,7 @@ public class FlatStorageImporterExporter {
 		}
 		catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export site web pages to Zip", e);
 		}
 	}
@@ -312,6 +427,7 @@ public class FlatStorageImporterExporter {
 		}
 		catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export articles to Zip", e);
 		}
 	}
@@ -340,6 +456,7 @@ public class FlatStorageImporterExporter {
 		}
 		catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export site web page modules to Zip", e);
 		}
 	}
@@ -367,7 +484,8 @@ public class FlatStorageImporterExporter {
 				{
 					String messageXmlPath = path + language + "/" + message.getExternalKey() + "/" + "metadata.xml";
 					Map<String, Object> map = new HashMap<String, Object>();
-					exporter.export(message, map);								
+					exporter.export(message, map);				
+					map.put("lcid", language);
 					ZipEntry metadataZe = new ZipEntry(messageXmlPath);
 					zos.putNextEntry(metadataZe);
 					exportToXMLFormat(map, zos);
@@ -377,6 +495,7 @@ public class FlatStorageImporterExporter {
 		}
 		catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export messages to Zip", e);
 		}
 	}
@@ -417,12 +536,14 @@ public class FlatStorageImporterExporter {
 					zos.closeEntry();
 				} catch (Exception e)
 				{
+					log.log(Level.SEVERE, " Exporting file :" + file.getExternalKey(), e);
 					// do nothing, we do not abort the export because of a failure, but we need to log this as warning
 				}
 			}
 		}
 		catch (IOException e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WBIOException("Cannot export files to Zip", e);
 		}
 	}
