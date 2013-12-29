@@ -107,17 +107,37 @@ public class FlatStorageImporterExporter {
 					{
 						importParameter(zis);
 					} else
+					if (name.indexOf("pageSource.txt")>=0)
+					{
+						importWebPageSource(zis, ze.getName());
+					}
+					else
+					if (name.indexOf("metadata.xml")>=0)
 					{
 						importWebPage(zis);
 					}
 				} else
 				if (name.indexOf(PATH_SITE_PAGES_MODULES) >= 0)
 				{
-					importPageModule(zis);
+					if (name.indexOf("moduleSource.txt")>=0)
+					{
+						importWebPageModuleSource(zis, ze.getName());
+					} else
+					if (name.indexOf("metadata.xml")>=0)
+					{						
+						importPageModule(zis);
+					}
 				} else				
 				if (name.indexOf(PATH_ARTICLES) >= 0)
 				{
-					importArticle(zis);
+					if (name.indexOf("articleSource.txt")>=0)
+					{
+						importArticleSource(zis, ze.getName());
+					} else
+					if (name.indexOf("metadata.xml")>=0)
+					{						
+						importArticle(zis);
+					}
 				} else
 				if (name.indexOf(PATH_MESSAGES) >= 0)
 				{
@@ -129,6 +149,10 @@ public class FlatStorageImporterExporter {
 					{
 						importFile(zis);
 					}
+				} else
+				if (name.indexOf(PATH_LOCALES)>=0)
+				{
+					importProject(zis);
 				}
 				zis.closeEntry();
 			}
@@ -176,6 +200,106 @@ public class FlatStorageImporterExporter {
 			if (webPage != null)
 			{
 				dataStorage.add(webPage);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importWebPageSource(ZipInputStream zis, String path) throws WBIOException
+	{
+		try 
+		{
+			String[] parts = path.split("/");
+			String externalKey = parts.length == 3 ? parts[1] : "";
+			
+			List<WBWebPage> pages = dataStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			if (pages.size() == 1)
+			{
+				WBWebPage page = pages.get(0);
+				
+				byte[] content = getBytesFromInputStream(zis);
+				String pageContent = new String(content, "utf-8");
+				page.setHtmlSource(pageContent);
+				page.setHash(WBWebPage.crc32(pageContent));
+				dataStorage.update(page);			
+			} else
+			{
+				log.log(Level.SEVERE, "Cannot find web page for " + path);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importWebPageModuleSource(ZipInputStream zis, String path) throws WBIOException
+	{
+		try 
+		{
+			String[] parts = path.split("/");
+			String externalKey = parts.length == 3 ? parts[1] : "";
+			
+			List<WBWebPageModule> pageModules = dataStorage.query(WBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			if (pageModules.size() == 1)
+			{
+				WBWebPageModule pageModule = pageModules.get(0);
+				
+				byte[] content = getBytesFromInputStream(zis);
+				String pageContent = new String(content, "utf-8");
+				pageModule.setHtmlSource(pageContent);
+				dataStorage.update(pageModule);			
+			} else
+			{
+				log.log(Level.SEVERE, "Cannot find web page module for " + path);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importArticleSource(ZipInputStream zis, String path) throws WBIOException
+	{
+		try 
+		{
+			String[] parts = path.split("/");
+			String externalKey = parts.length == 3 ? parts[1] : "";
+			
+			List<WBArticle> articles = dataStorage.query(WBArticle.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			if (articles.size() == 1)
+			{
+				WBArticle article = articles.get(0);
+				
+				byte[] contentBinary = getBytesFromInputStream(zis);
+				String stringContent = new String(contentBinary, "utf-8");
+				article.setHtmlSource(stringContent);
+				dataStorage.update(article);			
+			} else
+			{
+				log.log(Level.SEVERE, "Cannot find article for " + path);
+			}
+		} catch (IOException e)
+		{
+			log.log(Level.SEVERE, e.getMessage(), e);			
+		}
+	}
+
+	public void importProject(ZipInputStream zis) throws WBIOException
+	{
+		try 
+		{
+			Map<Object, Object> props = importFromXMLFormat(zis);
+			WBProject project = importer.buildProject(props);
+			
+			WBProject tempProject = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			if (tempProject == null)
+			{
+				dataStorage.add(project);
+			} else
+			{
+				dataStorage.update(project);				
 			}
 		} catch (IOException e)
 		{

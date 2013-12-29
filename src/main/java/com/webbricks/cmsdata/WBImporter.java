@@ -250,6 +250,23 @@ public class WBImporter {
 		return pageModule;
 	}
 
+	public WBProject buildProject(Map<Object, Object> properties)
+	{
+		WBProject project = new WBProject();
+		if (properties.get("defaultLanguage") != null)
+			project.setDefaultLanguage(properties.get("defaultLanguage").toString().trim());
+		else
+			project.setDefaultLanguage("");
+
+		if (properties.get("supportedLanguages") != null)
+			project.setSupportedLanguages(properties.get("supportedLanguages").toString().trim());
+		else
+			project.setSupportedLanguages("");
+		
+		project.setKey(WBProject.PROJECT_KEY);
+		return project;
+	}
+
 	public WBArticle buildArticle(Map<Object, Object> properties)
 	{
 		WBArticle article = new WBArticle();
