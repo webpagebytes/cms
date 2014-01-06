@@ -6,17 +6,15 @@ public class WBBlobInfoDefault implements WBBlobInfo {
 	public String fileName;
 	public String contentType;
 	public Long hash;
-	public WBBlobInfoDefault()
-	{
-		
-	}
-	public WBBlobInfoDefault(String blobKey, Long size, String fileName, String contentType, Long hash)
+	public String data; 
+	public WBBlobInfoDefault(String blobKey, Long size, String fileName, String contentType, Long hash, String data)
 	{
 		this.blobKey = blobKey;
 		this.size = size;
 		this.fileName = fileName;
 		this.contentType = contentType;
 		this.hash = hash;
+		this.data = data;
 	}
 	
 	public String getBlobKey()
@@ -40,4 +38,8 @@ public class WBBlobInfoDefault implements WBBlobInfo {
 		return hash;
 	}
 
+	public String getData()
+	{
+		return data;
+	}
 }

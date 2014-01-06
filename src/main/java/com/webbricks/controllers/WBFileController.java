@@ -237,7 +237,8 @@ public class WBFileController extends WBController implements AdminDataStorageLi
 					
 				}
 				image.setSize(blobInfo.getSize());
-				image.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());				
+				image.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());			
+				image.setAdditionalData(blobInfo.getData());
 				WBFile storedImage = adminStorage.add(image);
 				String referer = request.getHeader("Referer");
 				
