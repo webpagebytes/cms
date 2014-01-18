@@ -97,7 +97,13 @@
             <version>2.3.14</version>
             <scope>provided</scope>
       </dependency>
-                    
+              
+      <dependency>
+    		<groupId>com.google.appengine.tools</groupId>
+    		<artifactId>appengine-gcs-client</artifactId>
+    		<version>0.3.3</version>
+    		<scope>provided</scope>
+	   </dependency>      
   </dependencies>
   <build>
     <plugins>

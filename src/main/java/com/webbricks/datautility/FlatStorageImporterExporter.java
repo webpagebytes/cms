@@ -149,7 +149,7 @@ public class FlatStorageImporterExporter {
 					{
 						importFile(zis);
 					} else
-					if (name.indexOf("/content")>=0)
+					if (name.indexOf("/content/")>=0 && !name.endsWith("/"))
 					{
 						importFileContent(zis, ze.getName());
 					}
@@ -267,11 +267,17 @@ public class FlatStorageImporterExporter {
 	public void importFileContent(ZipInputStream zis, String path) throws WBIOException
 	{
 		String[] parts = path.split("/");
-		String externalKey = parts.length == 3 ? parts[1] : "";
+		String externalKey = parts.length > 3 ? parts[1] : "";
 		List<WBFile> files = dataStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 		if (files.size() == 1)
 		{
-			
+			WBBlobInfo blobInfo = blobhandler.storeBlob(zis);
+			WBFile file = files.get(0);
+			file.setBlobKey(blobInfo.getBlobKey());
+			file.setAdditionalData(blobInfo.getData());
+			file.setSize(blobInfo.getSize());
+			file.setHash(blobInfo.getHash());
+			dataStorage.update(file);
 		} else
 		{
 			log.log(Level.SEVERE, "Cannot find image for " + path);
@@ -667,7 +673,7 @@ public class FlatStorageImporterExporter {
 					InputStream is = blobhandler.getBlobData(file.getBlobKey());
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					byte buffer[] = new byte[4096];
-					while (is.read(buffer) >=0) {
+					while (is.read(buffer) != -1) {
 						bos.write(buffer);
 					}
 					bos.flush();

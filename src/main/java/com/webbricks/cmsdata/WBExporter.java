@@ -160,10 +160,15 @@ public class WBExporter {
 			properties.put("externalKey", "0");
 		
 		if (file.getContentType() != null)
+			properties.put("shortType", file.getShortType());
+		else
+			properties.put("shortType", "");
+		
+		if (file.getContentType() != null)
 			properties.put("contentType", file.getContentType());
 		else
 			properties.put("contentType", "");
-
+		
 		if (file.getAdjustedContentType() != null)
 			properties.put("adjustedContentType", file.getAdjustedContentType());
 		else

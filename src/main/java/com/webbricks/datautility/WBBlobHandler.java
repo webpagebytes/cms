@@ -16,5 +16,6 @@ public interface WBBlobHandler {
 	public void serveBlob(String blobKey, HttpServletResponse response) throws WBIOException;
 	public String serveBlobUrl(String blobKey, int imageSize) throws WBIOException;
 	public InputStream getBlobData(String blobKey) throws WBIOException;
+	public WBBlobInfo storeBlob(InputStream is) throws WBIOException;
 
 }

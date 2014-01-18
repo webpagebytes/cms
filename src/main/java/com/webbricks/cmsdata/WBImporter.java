@@ -183,7 +183,12 @@ public class WBImporter {
 		{
 			file.setFileName(properties.get("fileName").toString().trim());
 		}
-		
+
+		if (properties.get("name") != null)
+		{
+			file.setName(properties.get("name").toString().trim());
+		}
+
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;
 		try
