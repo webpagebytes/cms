@@ -1,19 +1,14 @@
 package com.webbricks.controllers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
-import com.webbricks.datautility.DataStoreImporterExporter;
 import com.webbricks.datautility.FlatStorageImporterExporter;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
@@ -26,7 +21,6 @@ import com.webbricks.utility.HttpServletToolbox;
 public class WBExportImportController extends WBController {
 	private static final String UPLOAD_RETURN_URL = "/wbimportupload";
 	
-	DataStoreImporterExporter importerExporter;
 	AdminDataStorage adminStorage;
 	WBBlobHandler blobHandler;
 	HttpServletToolbox httpServletToolbox;
@@ -34,7 +28,6 @@ public class WBExportImportController extends WBController {
 	
 	public WBExportImportController()
 	{
-		importerExporter = new DataStoreImporterExporter();
 		adminStorage = new GaeAdminDataStorage();
 		httpServletToolbox = new HttpServletToolbox();
 		blobHandler = new WBGaeBlobHandler();

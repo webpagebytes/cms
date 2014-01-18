@@ -145,9 +145,13 @@ public class FlatStorageImporterExporter {
 				} else
 				if (name.indexOf(PATH_FILES) >= 0)
 				{
-					if (name.indexOf("/content/") < 0)
+					if (name.indexOf("metadata.xml")>=0)
 					{
 						importFile(zis);
+					} else
+					if (name.indexOf("/content")>=0)
+					{
+						importFileContent(zis, ze.getName());
 					}
 				} else
 				if (name.indexOf(PATH_LOCALES)>=0)
@@ -260,6 +264,20 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
+	public void importFileContent(ZipInputStream zis, String path) throws WBIOException
+	{
+		String[] parts = path.split("/");
+		String externalKey = parts.length == 3 ? parts[1] : "";
+		List<WBFile> files = dataStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+		if (files.size() == 1)
+		{
+			
+		} else
+		{
+			log.log(Level.SEVERE, "Cannot find image for " + path);
+		}
+	}	
+	
 	public void importArticleSource(ZipInputStream zis, String path) throws WBIOException
 	{
 		try 
