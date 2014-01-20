@@ -30,9 +30,26 @@ $().ready( function () {
 	}
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
+	var htmlSource = "";
+	var prevTimeout = undefined;
+	var delayDisplay = function()
+	{
+		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
+			tinyMCE.activeEditor.setContent(htmlSource);
+			clearTimeout(prevTimeout);
+		}
+	}
+
 	var fSuccessGetArticle = function (data) {
 		$('#wbArticleSummary').wbDisplayObject().display(data.data);
 		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
+		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
+			tinyMCE.activeEditor.setContent(data.data['htmlSource']);
+		} else {
+			htmlSource = data.data['htmlSource'];
+			prevTimeout = setTimeout(delayDisplay, 500);
+		}		
+
 	}
 	
 	var fErrorGetArticle = function (errors, data) {
