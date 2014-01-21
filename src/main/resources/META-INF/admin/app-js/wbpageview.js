@@ -52,6 +52,7 @@ $().ready( function () {
 						 keyName: "key",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 						 paginationBaseClass: "pagination",
+						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined. </td></tr>",
 						 textLengthToCut: 20
 						});
 
@@ -65,7 +66,8 @@ $().ready( function () {
 	$('#wburistable').wbSimpleTable( { columns: [{display: "Site urls linked to this page", fieldId:"uri", customHandler: urisDisplayHandler}],
 	         						 keyName: "key",
 	         						 tableBaseClass: "table table-stripped table-bordered table-color-header",
-	         						 paginationBaseClass: "pagination"
+	         						 paginationBaseClass: "pagination",
+	         						 noLinesContent: "<tr> <td colspan='1'>There are site links to this page. </td></tr>"	               						
 	         						});
 
 	var displayHandler = function (fieldId, record) {

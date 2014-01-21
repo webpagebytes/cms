@@ -35,7 +35,9 @@
 			
 			textLengthToCut: 40,
 			
-			headerColumnBaseClass:undefined
+			headerColumnBaseClass:undefined,
+			
+			noLinesContent:""
 			},
 		getOptions: function () {
 			if (! this.options) 
@@ -264,6 +266,9 @@
 				}
 				html += '</tr>';	
 				$(tempThis.thisElement).children('table').children('tbody').append(html);
+			}
+			if (elements.length == 0) {
+				$(tempThis.thisElement).children('table').children('tbody').html(tempThis.getOptions().noLinesContent);
 			}
 		},
 		setRows: function(recordSet) {

@@ -85,7 +85,8 @@ $().ready( function () {
 	               						 keyName: "key",
 	               						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	               						 paginationBaseClass: "pagination",
-	               						 textLengthToCut:20
+	               						 textLengthToCut:20,
+	               						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined. </td></tr>"
 	               						});
 
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});

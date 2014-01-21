@@ -79,7 +79,8 @@ $().ready( function () {
 	$('#wbfilestable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
 		 keyName: "key",
 		 tableBaseClass: "table table-stripped table-bordered table-color-header",
-		 paginationBaseClass: "pagination"
+		 paginationBaseClass: "pagination",
+		 noLinesContent: "<tr> <td colspan='1'>There are no site urls linked to this file. </td></tr>"
 		});
 
 	var fileKey = getURLParameter('key'); 
