@@ -62,7 +62,8 @@ $().ready( function () {
 						 paginationBaseClass: "pagination",
 	                     headerColumnBaseClass: "header-uri-table",
 	                     headerColumnIdClassPrefix: "uri-table-",							 
-	                     handlerColumnClick: columnClick					 
+	                     handlerColumnClick: columnClick,
+	                     noLinesContent: "<tr> <td colspan='5'>There are no global parameters defined. </td></tr>"
 						});
 		
 			

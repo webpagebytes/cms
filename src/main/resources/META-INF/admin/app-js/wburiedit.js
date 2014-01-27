@@ -86,7 +86,7 @@ $().ready( function () {
 	               						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	               						 paginationBaseClass: "pagination",
 	               						 textLengthToCut:20,
-	               						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined. </td></tr>"
+	               						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined for this url. </td></tr>"
 	               						});
 
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});

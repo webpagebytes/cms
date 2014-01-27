@@ -80,7 +80,7 @@ $().ready( function () {
 		 keyName: "key",
 		 tableBaseClass: "table table-stripped table-bordered table-color-header",
 		 paginationBaseClass: "pagination",
-		 noLinesContent: "<tr> <td colspan='1'>There are no site urls linked to this file. </td></tr>"
+		 noLinesContent: "<tr> <td colspan='1'>There are no site urls serving this file. </td></tr>"
 		});
 
 	var fileKey = getURLParameter('key'); 

@@ -97,7 +97,8 @@ $().ready( function () {
 							 paginationBaseClass: "pagination",
 							 headerColumnBaseClass: "header-uri-table",
 							 headerColumnIdClassPrefix: "uri-table-",							 
-							 handlerColumnClick: columnClick
+							 handlerColumnClick: columnClick,
+							 noLinesContent: "<tr> <td colspan='6'>There are no site urls defined. </td></tr>"
 							});
 	
 	

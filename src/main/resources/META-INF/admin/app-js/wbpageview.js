@@ -67,7 +67,7 @@ $().ready( function () {
 	         						 keyName: "key",
 	         						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	         						 paginationBaseClass: "pagination",
-	         						 noLinesContent: "<tr> <td colspan='1'>There are site links to this page. </td></tr>"	               						
+	         						 noLinesContent: "<tr> <td colspan='1'>There are no site links serving this page. </td></tr>"	               						
 	         						});
 
 	var displayHandler = function (fieldId, record) {

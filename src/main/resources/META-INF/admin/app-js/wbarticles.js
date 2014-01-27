@@ -57,7 +57,8 @@ $().ready( function () {
 						 paginationBaseClass: "pagination",
 						 headerColumnBaseClass: "header-uri-table",
 						 headerColumnIdClassPrefix: "uri-table-",							 
-						 handlerColumnClick: columnClick
+						 handlerColumnClick: columnClick,
+						 noLinesContent: "<tr> <td colspan='4'>There are no articles defined. </td></tr>"
 						});
 
 	$('#wbAddArticleForm').wbCommunicationManager();

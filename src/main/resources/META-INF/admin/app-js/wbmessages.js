@@ -99,7 +99,8 @@ $().ready( function () {
 					 paginationBaseClass: "pagination",
                      headerColumnBaseClass: "header-uri-table",
                      headerColumnIdClassPrefix: "uri-table-",							 
-                     handlerColumnClick: columnClick					 
+                     handlerColumnClick: columnClick,
+                     noLinesContent: "<tr> <td colspan='3'>There are no messages defined. </td></tr>"
 	});
 	
 	var fFixHeightMessages = function()

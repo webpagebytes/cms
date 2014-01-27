@@ -79,7 +79,8 @@ $().ready( function () {
 	                                    paginationBaseClass: "pagination",
 	                                    headerColumnBaseClass: "header-uri-table",
 	                                    headerColumnIdClassPrefix: "uri-table-",							 
-	                                    handlerColumnClick: columnClick
+	                                    handlerColumnClick: columnClick,
+	                                    noLinesContent: "<tr> <td colspan='7'>There are no files uploaded. </td></tr>"
 						});
 
 	$('#wbAddFileForm').wbCommunicationManager();
