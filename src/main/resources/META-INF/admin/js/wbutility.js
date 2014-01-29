@@ -65,6 +65,20 @@ function removeURLParameter(url, param) {
 	return _url;
 }
 
+function getTextForItems(count, textMap) {
+	textMap = textMap || {};	
+	if ('any' in textMap) {
+		return textMap['any'].format(count);
+	}
+	if ('empty' in textMap && count == undefined) {
+		return textMap['empty'].format(count);
+	}	
+	if (count>1 && 'greater_than_1' in textMap) {
+		return textMap['greater_than_1'].format(count);
+	}
+	return textMap['' + count].format(count)
+}
+
 function getAdminPath() {
 	var pos = location.pathname.lastIndexOf('/');
 	var adminPath = pos > 0 ? location.pathname.substring(0, pos) : "";

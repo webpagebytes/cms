@@ -174,11 +174,14 @@ $().ready( function () {
 		
 	});
 
-	
 	var fSuccessGetUris = function (data) {		
 		$('#wbtable').wbSimpleTable().setRows(data.data);
 		
 		$('#wbtable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+		
+		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};
+		
+		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
 	}
 	var fErrorGetUris = function (errors, data) {
 	
