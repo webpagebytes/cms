@@ -260,10 +260,11 @@ margin-top: 12px;
 float: left;
 }
 
-.wblangcatalog .active a
+.wblangcatalog .active a, .wblangcatalog .active a:hover 
 {
 background-color: #f5f5f5;
 }
+
 .langs_group
 {
 display: none;	

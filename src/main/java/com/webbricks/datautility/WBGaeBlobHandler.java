@@ -127,8 +127,9 @@ public class WBGaeBlobHandler implements WBBlobHandler {
 		{
 			throw new WBIOException("Cannot write into cloud storage", e);
 		}
-		BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + bucketName + "/" + objectName);
-		return new WBBlobInfoDefault(blobKey.getKeyString(), fileSize, "", "", crc.getValue(), objectName);
+		String gsFileName = "/gs/" + bucketName + "/" + objectName;
+		BlobKey blobKey = blobstoreService.createGsBlobKey(gsFileName);
+		return new WBBlobInfoDefault(blobKey.getKeyString(), fileSize, "", "", crc.getValue(), gsFileName);
 	}
 	
 	public InputStream getBlobData(String blobKey) throws WBIOException

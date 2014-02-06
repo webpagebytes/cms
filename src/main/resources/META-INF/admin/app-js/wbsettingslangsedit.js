@@ -1,4 +1,6 @@
 var errorsGeneral = {
+		"WB_NO_DEFAULT_LANGUAGES": "One of the selected language must be set as the default language.",
+		"WB_NO_LANGUAGES": "At least one language must be selected from the languages catalog."
 };
 
 $().ready( function () {
@@ -6,21 +8,26 @@ $().ready( function () {
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'default') {
 			if (record[fieldId] == "1") {
-				return '<input type="checkbox" class="lang_default" data-code="{0}" checked>'.format(escapehtml(record['code']));
+				return '<input type="checkbox" class="js_lang_default" data-code="{0}" checked>'.format(escapehtml(record['code']));
 			} else
 			{
-				return '<input type="checkbox" class="lang_default" data-code="{0}">'.format(escapehtml(record['code']));		
+				return '<input type="checkbox" class="js_lang_default" data-code="{0}">'.format(escapehtml(record['code']));		
 			}
+		} else if (fieldId == 'remove') {
+			return '<a href="#" data-code="{0}" class="js_lang_remove"><i class="icon-trash"></i></a>'.format(escapehtml(record['code']));
 		}
+		
 
 		return "";
 	};
-	$('#wbSelectedLanguages').wbSimpleTable( { columns: [ {display: "name", fieldId:"name"}, {display: "Code", fieldId:"code"}, {display: "Default language", fieldId: "default", customHandler: displayHandler} ],
+	$('#wbSelectedLanguages').wbSimpleTable( { columns: [ {display: "Name", fieldId:"name"}, {display: "Code", fieldId:"code"}, 
+	                                                      {display: "Default language", fieldId: "default", customHandler: displayHandler},
+	                                                      {display: "", fieldId:"remove", customHandler: displayHandler}],
 						 keyName: "code",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination",
 						 itemsPerPage: 1000,
-						 noLinesContent: "<tr> <td colspan='3'>There are no site urls defined. </td></tr>"
+						 noLinesContent: "<tr> <td colspan='4'>There are no site urls defined. </td></tr>"
 						});
 						
 	$(".letter").click ( function (e) {
@@ -28,8 +35,10 @@ $().ready( function () {
 		$(".langs_group").hide();
 		var letterClass = "langs_" + $.trim(e.target.text);
 		$("." + letterClass).show();
+		$(".letter").parent().removeClass("active");
+		$(e.target).parent().addClass("active");
 	});	
-	$("#wbSelectedLanguages").on("click", ".lang_default", function (e) {		
+	$("#wbSelectedLanguages").on("click", ".js_lang_default", function (e) {		
 			var code = $(e.target).attr('data-code');
 			var record = $('#wbSelectedLanguages').wbSimpleTable().getRowDataWithKey(code);
 			var prevValue = record['default'];
@@ -47,8 +56,15 @@ $().ready( function () {
 			$('#wbSelectedLanguages').wbSimpleTable().updateRowWithKey(record, code);
 
 	});
-	
-	$(".letter_A").trigger("click");
+
+	$("#wbSelectedLanguages").on("click", ".js_lang_remove", function (e) {	
+		e.preventDefault();
+		var code = $(e.target).parent().attr('data-code');
+		$('#wbSelectedLanguages').wbSimpleTable().deleteRowWithKey(code);
+		$('#enable_'+ code).prop('checked', false);
+	});
+
+	$(".langs_A").show();
 	
 	var clickEnableHandler = function(elem, isDefault){
 		var tds = $(elem).parent().siblings();
@@ -97,7 +113,12 @@ $().ready( function () {
 		window.location.href="./websettingslangs.html";
 	}
 	var fErrorSetSupportedLanguages = function(data){
-		
+		for(x in data) {
+			if (x in errorsGeneral) {
+				$('.errorsubmit').html(escapehtml(errorsGeneral[x]));
+			} else
+				$('.errorsubmit').html(escapehtml(data[x]))
+		}
 	}
 
 	$(".wbSubmitSupportedLanguages").click( function (e) {

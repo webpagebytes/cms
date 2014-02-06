@@ -38,7 +38,7 @@ public class FileContentBuilder {
 	public void writeFileContent(WBFile wbFile, OutputStream os) throws WBException 
 	{
 		InputStream is = blobHandler.getBlobData(wbFile.getBlobKey());
-		byte[] buffer = new byte[1024];
+		byte[] buffer = new byte[4096];
 		int len;
 		try 
 		{

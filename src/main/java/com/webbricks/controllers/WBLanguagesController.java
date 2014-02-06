@@ -191,7 +191,12 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 				} 	
 				inputLanguages.add(aLanguage);
 			}
-			if (defaultLanguage.length() == 0)
+			if (array.length() == 0)
+			{
+				errors.put(WBErrors.WB_NO_LANGUAGES, WBErrors.WB_NO_LANGUAGES);				
+			}
+		
+			if (array.length()> 0 && defaultLanguage.length() == 0)
 			{
 				errors.put(WBErrors.WB_NO_DEFAULT_LANGUAGES, WBErrors.WB_NO_DEFAULT_LANGUAGES);				
 			}

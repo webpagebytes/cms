@@ -32,6 +32,8 @@ public class WBErrors {
 	public static final String WB_TWO_IDENTICAL_LANGUAGES = "WB_TWO_IDENTICAL_LANGUAGES";
 	public static final String WB_INVALID_LANGUAGE = "WB_INVALID_LANGUAGE";
 	public static final String WB_NO_DEFAULT_LANGUAGES = "WB_NO_DEFAULT_LANGUAGES";
+	public static final String WB_NO_LANGUAGES = "WB_NO_LANGUAGES";
+	
 	public static final String WBPARAMETER_EMPTY_NAME = "WBPARAMETER_EMPTY_NAME";
 	public static final String WBPARAMETER_NO_OWNER_KEY = "WBPARAMETER_NO_OWNER_KEY";
 	public static final String WBPARAMETER_NO_FROMOWNER_KEY = "WBPARAMETER_NO_FROMOWNER_KEY";
