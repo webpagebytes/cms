@@ -105,7 +105,7 @@ $().ready( function () {
 	
 	var fFixHeightMessages = function()
 	{
-		$('.wbmessagescontent').css('min-height', $('.wbmessages').css('height'));
+		$('#wbsupportedlanguages').css('min-height', $('.tab-content').css('height'));
 	}
 	
 	var fSuccessGetMessages = function (data) {

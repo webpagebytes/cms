@@ -260,7 +260,12 @@ margin-top: 12px;
 float: left;
 }
 
-.wblangcatalog .active a, .wblangcatalog .active a:hover 
+.wbverticalcatalog
+{
+padding-top: 10px;	
+padding-bottom: 10px;
+}
+.wbverticalcatalog .active a, .wbverticalcatalog .active a:hover 
 {
 background-color: #f5f5f5;
 }
