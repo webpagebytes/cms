@@ -74,7 +74,7 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
         	WBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
         	if (image != null)
         	{
-        		serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	
+        		//serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	
         	} 
         	String htmlImage = "<img src=\"" + serveUrl + "\">";
         	env.getOut().write(htmlImage);

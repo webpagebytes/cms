@@ -134,31 +134,19 @@ $().ready( function () {
 											
 	var fSuccessGetServeingUrl = function (data, clientDataValue) {
 		$('#wbfileblobKey').html('<img src="' + encodeURI(data['url']) + '">');
-		if (clientDataValue == 0) {
-			$('.servingurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
-			$('.servingresizeurl').html('');
-		} else {
-			$('.servingresizeurl').html('<a target="_new" href="' + encodeURI(data['url']) + '">' + escapehtml(data['url']) + '</a>');
-		}
 	}
 	var fErrorGetServingUrl = function (errors, data) {
 		alert(data);
 	};
 											
 	var getServingUrl =  function (imageSize) {
-		var ajaxUrl = "./wbservefileurl?blobKey=" + encodeURIComponent(fileBlobKey);
+		var ajaxUrl = "./wbservefile?blobKey=" + encodeURIComponent(fileBlobKey);
 		var clientDataValue = 0;
 		if (imageSize != Number.NaN && imageSize > 0) {
 			ajaxUrl += ('&size=' + encodeURIComponent(imageSize));
 			clientDataValue = imageSize;
 		}
-		$('#wbFileView').wbCommunicationManager().ajax ( { url:ajaxUrl,
-										 httpOperation:"GET", 
-										 payloadData:"",
-										 functionSuccess: fSuccessGetServeingUrl,
-										 functionError: fErrorGetServingUrl,
-										 clientData: clientDataValue
-										} );	
+		$('#wbfileblobKey').html('<img src="' + encodeURI(ajaxUrl) + '">');
 	};
 	
 	var fSuccessFileUpdate = function (data) {

@@ -86,24 +86,13 @@ $().ready( function () {
 	$('#wbAddFileForm').wbCommunicationManager();
 	$('#wbDeleteFileForm').wbCommunicationManager();
 
-	var fSuccessGetUpload = function ( data ) {
-		$('#wbAddFileForm')[0].setAttribute('action', data.url);
-		$('#wbAddFileForm')[0].setAttribute('method', "post");
-		$('#wbAddFileModal').modal('show');			
-	}
-	var fErrorGetUpload = function (errors, data) {
-		alert(errors);
-	}
-
 	$('#wbAddFileBtn').click( function (e) {
 		e.preventDefault();
 		$('#wbAddFileForm').wbObjectManager().resetFields();
-		$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: "./wbuploaddata",
-														 httpOperation:"GET", 
-														 payloadData:"",
-														 functionSuccess: fSuccessGetUpload,
-														 functionError: fErrorGetUpload
-														 } );	
+		$('#wbAddFileForm')[0].setAttribute('action', "./wbfileupload");
+		$('#wbAddFileForm')[0].setAttribute('method', "post");
+		$('#wbAddFileModal').modal('show');			
+
 	});
 
 	var fSuccessAdd = function ( data ) {
