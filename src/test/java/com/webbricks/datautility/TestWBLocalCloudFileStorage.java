@@ -160,6 +160,24 @@ public void test_updateContentType()
 }
 
 @Test
+public void test_file_name_special_characters()
+{
+	try
+	{
+		WBCloudFile file = new WBCloudFile("public", "test?<>:\"//test.txt");
+		ByteArrayInputStream bais = new ByteArrayInputStream("this is string 1".getBytes());
+		storage.storeFile(bais, file);
+		
+		WBCloudFileInfo fileInfo = storage.getFileInfo(file);
+		assertTrue(fileInfo.getContentType().equals("application/octet-stream"));
+
+	} catch (IOException e)
+	{
+		assertTrue(false);
+	}
+}
+
+@Test
 public void test_getFileContent()
 {
 	try

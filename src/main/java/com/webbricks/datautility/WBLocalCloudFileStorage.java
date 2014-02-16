@@ -104,15 +104,24 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		}
 		isInitialized = true;
 	}
+	/*
+	 * sanitizeCloudFilePath will return a safe path that can be part of a file name
+	 * The path will be converted to base64  
+	 */
+	private String sanitizeCloudFilePath(String path)
+	{
+		return DatatypeConverter.printBase64Binary(path.getBytes());
+	}
+	
 	private String getLocalFullDataPath(WBCloudFile file)
 	{
 		if (file.getBucket().equals(publicDataFolder)) 
 		{
-			return getPathPublicDataDir() +  File.separator +  file.getPath();
+			return getPathPublicDataDir() +  File.separator +  sanitizeCloudFilePath(file.getPath());
 		}
 		if (file.getBucket().equals(privateDataFolder)) 
 		{
-			return getPathPrivateDataDir() +  File.separator +  file.getPath();
+			return getPathPrivateDataDir() +  File.separator +  sanitizeCloudFilePath(file.getPath());
 		}
 		return null;
 	}
@@ -120,11 +129,11 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	{
 		if (file.getBucket().equals(publicDataFolder)) 
 		{
-			return getPathPublicMetaDir() +  File.separator +  file.getPath();
+			return getPathPublicMetaDir() +  File.separator +  sanitizeCloudFilePath(file.getPath());
 		}
 		if (file.getBucket().equals(privateDataFolder)) 
 		{
-			return getPathPrivateMetaDir() +  File.separator +  file.getPath();
+			return getPathPrivateMetaDir() +  File.separator +  sanitizeCloudFilePath(file.getPath());
 		}
 		return null;
 	}
@@ -164,7 +173,6 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		String metaPath = getLocalFullMetaPath(file);
 		Properties props = new Properties();
 		props.put("path", file.getPath());
-		props.put("fullPath", fullFilePath);
 		props.put("contentType", "application/octet-stream");
 		props.put("crc32", String.valueOf(crc.getValue()));
 		props.put("md5", DatatypeConverter.printBase64Binary(md.digest()));
@@ -179,6 +187,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	public WBCloudFileInfo getFileInfo(WBCloudFile file) 
 	{
 		String metaPath = getLocalFullMetaPath(file);
+		String dataPath = getLocalFullDataPath(file);
 		File metaFile = new File(metaPath);
 		Properties props = new Properties();
 		FileInputStream fis = null;
@@ -186,8 +195,6 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		{
 			fis = new FileInputStream(metaFile);
 			props.loadFromXML(fis);
-			String path = props.getProperty("path");
-			String fullPath = props.getProperty("fullPath");
 			String contentType = props.getProperty("contentType");
 			int size = Integer.valueOf(props.getProperty("size"));
 			String md5 = props.getProperty("md5");
@@ -195,10 +202,9 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			long creationTime = Long.valueOf(props.getProperty("creationTime"));
 			
 			
-			boolean fileExists = new File(fullPath).exists();
+			boolean fileExists = new File(dataPath).exists();
 			WBCloudFileInfo fileInfo = new WBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
 			props.remove("path");
-			props.remove("fullPath");
 			props.remove("contentType");
 			props.remove("size");
 			props.remove("md5");
@@ -284,7 +290,6 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		props.loadFromXML(new FileInputStream(metaPath));
 
 		customProps.remove("path");
-		customProps.remove("fullPath");
 		customProps.remove("contentType");
 		customProps.remove("size");
 		customProps.remove("md5");
