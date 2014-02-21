@@ -22,14 +22,14 @@ import com.webbricks.cmsdata.WBFile;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.exception.WBIOException;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({FileContentBuilder.class})
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest({FileContentBuilder.class})
 public class TestFileContentBuilder {
 
 WBCacheInstances cacheInstancesMock;
 WBFilesCache filesCacheMock;
 FileContentBuilder fileContentBuilder;
-
+/*
 @Before
 public void setUp()
 {
@@ -168,5 +168,5 @@ public void test_writeFileContent_exception()
 		assertTrue (false);
 	}
 }
-
+*/
 }

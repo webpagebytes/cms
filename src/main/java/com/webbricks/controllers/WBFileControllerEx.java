@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
@@ -27,6 +28,10 @@ import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBBlobInfo;
+import com.webbricks.datautility.WBCloudFile;
+import com.webbricks.datautility.WBCloudFileInfo;
+import com.webbricks.datautility.WBCloudFileStorage;
+import com.webbricks.datautility.WBCloudFileStorageFactory;
 import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
@@ -42,6 +47,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBBlobHandler blobHandler;
+	private WBCloudFileStorage cloudFileStorage;
 	private WBFileValidator validator;
 	private WBFilesCache imageCache;
 	private static final String IMAGE_CONTENT_NAME = "image";
@@ -56,7 +62,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		adminStorage = new GaeAdminDataStorage();
 		blobHandler = new WBGaeBlobHandler();
 		validator = new WBFileValidator();
-		
+		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
 		imageCache = wbCacheFactory.createWBImagesCacheInstance();
 		
@@ -88,17 +94,23 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          
 		          WBFile wbFile = new WBFile();
 		          wbFile.setExternalKey(adminStorage.getUniqueId());    
-		          WBBlobInfo blobInfo = blobHandler.storeBlob(stream);
-		          wbFile.setBlobKey(blobInfo.getBlobKey());
-		          wbFile.setHash(blobInfo.getHash());
+		          String filePath = adminStorage.getUniqueId() + "/" + item.getName();
+		          //WBBlobInfo blobInfo = blobHandler.storeBlob(stream);
+		          WBCloudFile cloudFile = new WBCloudFile("public", filePath);
+		          cloudFileStorage.storeFile(stream, cloudFile);
+		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
+		          
+		          WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+		          wbFile.setBlobKey(cloudFile.getPath());
+		          wbFile.setHash(fileInfo.getCrc32());
 		          wbFile.setFileName(item.getName());
 		          wbFile.setName( request.getParameter("name") != null ? request.getParameter("name"): item.getName());
 		          wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-		          wbFile.setSize(blobInfo.getSize());
-		          wbFile.setContentType(ContentTypeDetector.fileNameToContentType(item.getName()));
+		          wbFile.setSize(fileInfo.getSize());
+		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
-		          wbFile.setAdditionalData(blobInfo.getData());
+		         // wbFile.setAdditionalData(blobInfo.getData());
 		          
 		          WBFile addedFile = adminStorage.add(wbFile);
 		          
@@ -156,7 +168,9 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			WBFile tempImage = adminStorage.get(key, WBFile.class);
 			if (tempImage.getBlobKey() != null)
 			{
-				blobHandler.deleteBlob(tempImage.getBlobKey());
+				//blobHandler.deleteBlob(tempImage.getBlobKey());
+				WBCloudFile cloudFile = new WBCloudFile("public", tempImage.getBlobKey());
+				cloudFileStorage.deleteFile(cloudFile);
 			}
 			
 			adminStorage.delete(key, WBFile.class);
@@ -289,9 +303,12 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			blobHandler.serveBlob(wbimage.getBlobKey(), response);
+			//blobHandler.serveBlob(wbimage.getBlobKey(), response);
+			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
+			InputStream is = cloudFileStorage.getFileContent(cloudFile);
+			IOUtils.copy(is, response.getOutputStream());
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbimage.getFileName() + "\"");
-						
+			response.setContentType(wbimage.getContentType());
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -305,8 +322,12 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			blobHandler.serveBlob(wbimage.getBlobKey(), response);
-						
+			//blobHandler.serveBlob(wbimage.getBlobKey(), response);
+			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
+			InputStream is = cloudFileStorage.getFileContent(cloudFile);
+			IOUtils.copy(is, response.getOutputStream());
+			response.setContentType(wbimage.getContentType());
+			
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

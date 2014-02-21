@@ -1,4 +1,4 @@
-package com.webbricks.datautility;
+package com.webbricks.datautility.local;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,6 +19,11 @@ import java.util.zip.CRC32;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.IOUtils;
+
+import com.webbricks.datautility.WBCloudFile;
+import com.webbricks.datautility.WBCloudFileInfo;
+import com.webbricks.datautility.WBCloudFileStorage;
+import com.webbricks.datautility.WBDefaultCloudFileInfo;
 
 public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	private static final String publicDataFolder = "public";

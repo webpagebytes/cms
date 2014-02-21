@@ -9,6 +9,9 @@ import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBFilesCache;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBCloudFile;
+import com.webbricks.datautility.WBCloudFileStorage;
+import com.webbricks.datautility.WBCloudFileStorageFactory;
 import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
@@ -16,12 +19,14 @@ import com.webbricks.exception.WBIOException;
 public class FileContentBuilder {
 	private WBCacheInstances cacheInstances;
 	private WBBlobHandler blobHandler;
+	private WBCloudFileStorage cloudFileStorage;
 	private WBFilesCache filesCache;
 	public FileContentBuilder(WBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
 		blobHandler = new WBGaeBlobHandler();
 		filesCache = cacheInstances.getWBFilesCache();
+		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 	}
 	public void initialize()
 	{
@@ -33,12 +38,19 @@ public class FileContentBuilder {
 	}
 	public InputStream getFileContent(WBFile file) throws WBException
 	{
-		return blobHandler.getBlobData(file.getBlobKey());
+		WBCloudFile cloudFile = new WBCloudFile("public", file.getBlobKey());
+		try
+		{
+			return cloudFileStorage.getFileContent(cloudFile);
+		} catch (IOException e)
+		{
+			throw new WBException ("cannot get file content ", e);
+		}
 	}
 	public void writeFileContent(WBFile wbFile, OutputStream os) throws WBException 
 	{
-		InputStream is = blobHandler.getBlobData(wbFile.getBlobKey());
-		byte[] buffer = new byte[100*1024];
+		InputStream is = getFileContent(wbFile);
+		byte[] buffer = new byte[4096];
 		int len;
 		try 
 		{

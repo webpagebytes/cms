@@ -8,7 +8,7 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 	private String contentType;
 	private Map<String, String> customProperties;
 	private boolean fileExists = false;
-	private int size;
+	private long size;
 	private String md5;
 	private long crc32;
 	private long creationDate;
@@ -16,7 +16,7 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 	public WBDefaultCloudFileInfo(WBCloudFile cloudFile, 
 							String contentType, 
 							boolean fileExists, 
-							int size,
+							long size,
 							String md5,
 							long crc32,
 							long creationDate) {
@@ -34,7 +34,7 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 		return cloudFile;
 	}
 
-	public int getSize()
+	public long getSize()
 	{
 		return size;
 	}

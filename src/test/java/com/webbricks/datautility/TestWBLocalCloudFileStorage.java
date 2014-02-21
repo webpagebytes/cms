@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.webbricks.datautility.local.WBLocalCloudFileStorage;
+
 @RunWith(PowerMockRunner.class)
 public class TestWBLocalCloudFileStorage {
 

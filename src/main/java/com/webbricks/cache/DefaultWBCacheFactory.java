@@ -1,5 +1,7 @@
 package com.webbricks.cache;
 
-public class DefaultWBCacheFactory extends GaeWBCacheFactory{
+import com.webbricks.cache.local.WBLocalCacheFactory;
+
+public class DefaultWBCacheFactory extends WBLocalCacheFactory{
 
 }

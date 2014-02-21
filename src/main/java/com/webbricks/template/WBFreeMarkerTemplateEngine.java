@@ -1,6 +1,5 @@
 package com.webbricks.template;
 import java.io.IOException;
-
 import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
@@ -16,6 +15,8 @@ import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cms.ModelBuilder;
 import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBCloudFileStorage;
+import com.webbricks.datautility.WBCloudFileStorageFactory;
 import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
@@ -41,6 +42,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 	private WBFreeMarkerTemplateLoader templateLoader;
 	private WBCacheInstances cacheInstances;
 	private WBBlobHandler blobHandler;
+	private WBCloudFileStorage cloudFileStorage;
 	
 	public WBFreeMarkerTemplateEngine(WBCacheInstances cacheInstances)
 	{
@@ -59,6 +61,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
  
 		// TBD
 		blobHandler = new WBGaeBlobHandler();
+		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		
 		configuration.setLocalizedLookup(false);
 		configuration.setTemplateLoader( templateLoader );	

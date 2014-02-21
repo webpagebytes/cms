@@ -14,9 +14,6 @@ public class WBUri implements Serializable {
 	private Long key;
 
 	@AdminFieldStore
-	private Integer version;
-	
-	@AdminFieldStore
 	private Integer enabled;
 
 	@AdminFieldStore
@@ -46,14 +43,6 @@ public class WBUri implements Serializable {
 
 	public void setKey(Long key) {
 		this.key = key;
-	}
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
 	}
 
 	public Integer getEnabled() {

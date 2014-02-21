@@ -6,7 +6,7 @@ import java.util.Map;
 public interface WBCloudFileInfo {
 	
 	public WBCloudFile getCloudFile();
-	public int getSize();
+	public long getSize();
 	public String getContentType();
 	public void setContentType(String contentType);
 	public Map<String, String> getCustomProperties();
