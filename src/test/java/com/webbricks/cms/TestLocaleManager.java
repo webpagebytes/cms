@@ -69,6 +69,7 @@ public void test_getIstance_OK()
 		assertTrue (manager.getSupportedLanguages() != null);
 	} catch (Exception e)
 	{
+		e.printStackTrace();
 		assertTrue (false);
 	}
 }
@@ -80,6 +81,7 @@ public void test_getInstance_fail()
 	{
 		String path = "xyz";
 		Whitebox.setInternalState(LocaleManager.class, "LANGUAGES_CONFIG_FILE", path);
+		Whitebox.setInternalState(LocaleManager.class, "localeManager", (LocaleManager)null);
 		LocaleManager manager = LocaleManager.getInstance();
 		assertTrue (manager == null);
 	} catch (Exception e)

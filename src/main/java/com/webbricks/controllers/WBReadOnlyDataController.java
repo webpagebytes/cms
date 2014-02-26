@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
-import com.webbricks.datautility.GaeAdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.exception.WBException;
@@ -34,7 +34,7 @@ public class WBReadOnlyDataController  extends WBController {
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 	}
 	
 	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException

@@ -88,6 +88,10 @@ public class GaeAdminDataStorage implements AdminDataStorage {
 			notifyOperation(null, AdminDataStorageOperation.DELETE);
 
 	}
+	public<T> T addWithKey(T t) throws WBIOException
+	{
+		return null;
+	}
 	
 	public void delete(Long recordid, Class dataClass) throws WBIOException
 	{

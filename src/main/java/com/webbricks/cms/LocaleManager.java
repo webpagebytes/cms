@@ -18,13 +18,19 @@ public class LocaleManager {
 	protected static String LANGUAGES_CONFIG_FILE = "META-INF/config/langs.csv"; 
 	protected Map<String, Locale> langToLocales;
 	protected Map<String, Locale> langAndCountriesToLocales;
+	private static LocaleManager localeManager = null;
 	public static LocaleManager getInstance() {
-		LocaleManager localeManager = new LocaleManager();
-		try {
-		localeManager.loadLocalesfromFile(LANGUAGES_CONFIG_FILE);
-		} catch (WBIOException e)
+		if (localeManager == null)
 		{
-			return null;
+			localeManager = new LocaleManager();
+			try {
+				localeManager.loadLocalesfromFile(LANGUAGES_CONFIG_FILE);
+			} catch (WBIOException e)
+			{
+				localeManager = null;
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return localeManager;
 		

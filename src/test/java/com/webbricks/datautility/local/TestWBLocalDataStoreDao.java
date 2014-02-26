@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
@@ -53,6 +54,27 @@ public void test_addRecord()
 
 		WBUri newUri = dao.addRecord(uri, "key");
 		assertTrue (newUri.getKey() != null);
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+	assertTrue(true);
+}
+
+@Test
+public void test_addRecordWithKey()
+{
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	try
+	{
+		WBProject project = new WBProject();
+		project.setKey(UUID.randomUUID().toString());
+		project.setLastModified(Calendar.getInstance().getTime());
+		project.setDefaultLanguage("en");
+		project.setSupportedLanguages("en");
+	
+		WBProject newProject = dao.addRecordWithKey(project, "key");
+		assertTrue (newProject.getKey() != null);
 	} catch (Exception e)
 	{
 		assertTrue(false);

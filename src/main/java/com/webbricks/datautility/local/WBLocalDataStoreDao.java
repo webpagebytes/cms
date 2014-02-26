@@ -2,6 +2,7 @@ package com.webbricks.datautility.local;
 
 import java.beans.PropertyDescriptor;
 
+
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -19,7 +20,6 @@ import java.util.Set;
 
 import org.h2.jdbcx.JdbcConnectionPool;
 
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
@@ -271,7 +271,10 @@ public class WBLocalDataStoreDao {
 					if (field.getAnnotation(AdminFieldStore.class) != null)
 					{
 						preparedStatement.setString(fieldIndex, valueString);
-					} else if (field.getAnnotation(AdminFieldTextStore.class) != null)
+					} else if (field.getAnnotation(AdminFieldKey.class) != null)
+					{
+						preparedStatement.setString(fieldIndex, valueString);
+					} else 	if (field.getAnnotation(AdminFieldTextStore.class) != null)
 					{
 						Clob clob = connection.createClob();
 						clob.setString(1, valueString);
@@ -547,7 +550,33 @@ public class WBLocalDataStoreDao {
 		return objects;
 	}
 	
-	
+	public<T> T addRecordWithKey(T object, String keyFieldName) throws SQLException, WBSerializerException
+	{
+		Connection connection = getConnection();
+		PreparedStatement preparedStatement = null;
+		try
+		{
+			Set<String> ignoreFields = new HashSet();
+			String sqlStatement = getSQLStringForInsert(object, ignoreFields) ;			
+			connection.setAutoCommit(true);
+			preparedStatement = connection.prepareStatement(sqlStatement);
+			buildStatementForInsertUpdate(object, ignoreFields, preparedStatement, connection);
+			preparedStatement.execute();
+			return object;
+		} catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+			if (preparedStatement != null)
+			{
+				preparedStatement.close();
+			}
+			connection.close();
+		}
+	}
+
 	public<T> T addRecord(T object, String keyFieldName) throws SQLException, WBSerializerException
 	{
 		Connection connection = getConnection();

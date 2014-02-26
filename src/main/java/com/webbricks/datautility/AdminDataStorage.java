@@ -34,6 +34,8 @@ public interface AdminDataStorage {
 
 	public<T> T add(T t) throws WBIOException;
 	
+	public<T> T addWithKey(T t) throws WBIOException;
+	
 	public<T> T get(Long dataid, Class dataClass) throws WBIOException;
 	
 	public<T> T get(String dataid, Class dataClass) throws WBIOException;

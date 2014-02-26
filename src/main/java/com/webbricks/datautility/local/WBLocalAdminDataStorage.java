@@ -1,6 +1,7 @@
 package com.webbricks.datautility.local;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -127,6 +128,17 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		try
 		{
 			return localDataStorageDao.addRecord(t, KEY_FILED_NAME);
+		} catch (Exception e)
+		{
+			throw new WBIOException("Cannot add new record", e);
+		}
+	}
+
+	public<T> T addWithKey(T t) throws WBIOException
+	{
+		try
+		{
+			return localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot add new record", e);
