@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.FlatStorageImporterExporter;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
@@ -28,7 +29,7 @@ public class WBExportImportController extends WBController {
 	
 	public WBExportImportController()
 	{
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		httpServletToolbox = new HttpServletToolbox();
 		blobHandler = new WBGaeBlobHandler();
 		storageExporter = new FlatStorageImporterExporter();

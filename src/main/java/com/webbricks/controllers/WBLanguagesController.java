@@ -26,6 +26,7 @@ import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -73,7 +74,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		localeManager = LocaleManager.getInstance();
 		sortedLanguages = new ArrayList<String>();
 		

@@ -19,6 +19,7 @@ import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -39,7 +40,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		pageValidator = new WBPageValidator();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
 		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 

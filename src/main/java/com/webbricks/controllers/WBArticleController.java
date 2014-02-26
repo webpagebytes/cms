@@ -18,6 +18,7 @@ import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -37,7 +38,7 @@ public class WBArticleController extends WBController implements AdminDataStorag
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBArticleValidator();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
 		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();

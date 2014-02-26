@@ -15,6 +15,7 @@ import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -39,7 +40,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 	public WBUriController() {
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		uriValidator = new WBUriValidator();
 		WBCacheFactory cacheFactory = new DefaultWBCacheFactory();
 		wbUriCache = cacheFactory.createWBUrisCacheInstance();	

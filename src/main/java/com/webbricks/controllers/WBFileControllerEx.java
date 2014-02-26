@@ -24,6 +24,7 @@ import com.webbricks.cache.WBFilesCache;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBBlobHandler;
@@ -59,7 +60,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		blobHandler = new WBGaeBlobHandler();
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface AdminDataStorage {
 
-	enum AdminQueryOperator{
+	static enum AdminQueryOperator{
 		LESS_THAN,
 		GREATER_THAN,
 		EQUAL,

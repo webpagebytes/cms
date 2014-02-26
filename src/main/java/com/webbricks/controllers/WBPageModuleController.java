@@ -1,7 +1,6 @@
 package com.webbricks.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,7 @@ import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage;
+import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -35,7 +35,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = new GaeAdminDataStorage();
+		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBPageModuleValidator();
 		
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
