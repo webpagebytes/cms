@@ -1,6 +1,5 @@
 package com.webbricks.controllers;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,18 +16,13 @@ import org.json.JSONObject;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBMessagesCache;
-import com.webbricks.cmsdata.WBArticle;
-import com.webbricks.cmsdata.WBFile;
 import com.webbricks.cmsdata.WBMessage;
-import com.webbricks.cmsdata.WBUri;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
-import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
-import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
@@ -182,8 +174,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		Map<String, Object> additionalInfo = new HashMap<String, Object> ();					
 		String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 		String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
-		List<WBMessage> allRecords = null;
-
+		
 		try
 		{
 			

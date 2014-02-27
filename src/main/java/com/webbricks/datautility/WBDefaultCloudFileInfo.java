@@ -7,7 +7,6 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 	private WBCloudFile cloudFile;
 	private String contentType;
 	private Map<String, String> customProperties;
-	private boolean fileExists = false;
 	private long size;
 	private String md5;
 	private long crc32;
@@ -22,7 +21,6 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 							long creationDate) {
 		this.cloudFile = cloudFile;
 		this.contentType = contentType;
-		this.fileExists = fileExists;
 		this.size = size;
 		this.crc32 = crc32;
 		this.creationDate = creationDate;

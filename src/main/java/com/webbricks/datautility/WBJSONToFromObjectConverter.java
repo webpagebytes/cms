@@ -1,11 +1,6 @@
 package com.webbricks.datautility;
-import java.beans.IntrospectionException;
-
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -1,16 +1,13 @@
 package com.webbricks.template;
 
 import java.io.IOException;
+
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webbricks.cache.WBArticlesCache;
-import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cmsdata.WBArticle;
-import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.exception.WBIOException;
 
 import freemarker.core.Environment;

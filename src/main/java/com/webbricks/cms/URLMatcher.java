@@ -1,13 +1,12 @@
 package com.webbricks.cms;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 public class URLMatcher {
 
@@ -130,7 +129,7 @@ public URLMatcherResult matchUrlToPattern(String url)
 	for(int i= searchLevel2Order.size()-1; i >=0; i--)
 	{
 		Set<String> keySet = toSearchLevel2.keySet();
-		for( String s : toSearchLevel2.keySet())
+		for( String s : keySet)
 		{
 			if (toSearchLevel2.get(s).compareTo(searchLevel2Order.get(i)) == 0)
 			{

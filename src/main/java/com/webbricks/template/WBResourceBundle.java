@@ -14,14 +14,12 @@ import com.webbricks.exception.WBIOException;
 public class WBResourceBundle extends ResourceBundle {
 
 	private WBMessagesCache messageCache;
-	private Locale wblocale;
 	private Long fingerPrint;
 	private Map<String, String> messages;
 	
 	WBResourceBundle(WBMessagesCache messageCache, Locale locale)
 	{
 		this.messageCache = messageCache;
-		this.wblocale = locale;
 		fingerPrint = 0L;
 		messages = new HashMap<String, String>();
 		Refresh(locale);

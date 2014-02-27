@@ -1,8 +1,6 @@
 package com.webbricks.template;
 
 import java.util.Locale;
-
-import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBMessagesCache;
 

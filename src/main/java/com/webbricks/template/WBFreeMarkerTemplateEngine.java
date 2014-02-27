@@ -1,39 +1,31 @@
 package com.webbricks.template;
 import java.io.IOException;
+
 import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBMessagesCache;
-import com.webbricks.cache.WBParametersCache;
 import com.webbricks.cms.ModelBuilder;
-import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.datautility.WBCloudFileStorageFactory;
-import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBTemplateException;
 
 import freemarker.core.Environment;
 import freemarker.core.ParseException;
-import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
 import freemarker.ext.beans.SimpleMapModel;
-import freemarker.ext.beans.StringModel;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateHashModel;
-import freemarker.template.TemplateModel;
 
 public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerTemplateEngine.class.getName());
@@ -60,7 +52,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		templateLoader = wbFreeMarkerFactory.createWBFreeMarkerTemplateLoader(cacheInstances);
  
 		// TBD
-		blobHandler = new WBGaeBlobHandler();
+		//blobHandler = new WBGaeBlobHandler();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		
 		configuration.setLocalizedLookup(false);

@@ -1,9 +1,8 @@
 package com.webbricks.controllers;
 
 import java.io.InputStream;
-import java.net.URLConnection;
+
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
@@ -57,7 +55,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
-		//blobHandler = new WBGaeBlobHandler();
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
@@ -92,7 +89,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          WBFile wbFile = new WBFile();
 		          wbFile.setExternalKey(adminStorage.getUniqueId());    
 		          String filePath = adminStorage.getUniqueId() + "/" + item.getName();
-		          //WBBlobInfo blobInfo = blobHandler.storeBlob(stream);
 		          WBCloudFile cloudFile = new WBCloudFile("public", filePath);
 		          cloudFileStorage.storeFile(stream, cloudFile);
 		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));

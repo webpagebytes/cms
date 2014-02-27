@@ -1,6 +1,5 @@
 package com.webbricks.datautility;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface WBCloudFileInfo {

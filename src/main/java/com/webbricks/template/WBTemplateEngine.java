@@ -1,10 +1,8 @@
 package com.webbricks.template;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.exception.WBException;
 
 public interface WBTemplateEngine {

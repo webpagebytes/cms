@@ -1,6 +1,5 @@
 package com.webbricks.datautility;
 
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.webbricks.exception.*;
 
 import java.util.List;

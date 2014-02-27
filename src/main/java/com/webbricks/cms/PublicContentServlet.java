@@ -2,10 +2,8 @@ package com.webbricks.cms;
 
 import java.io.InputStream;
 
+
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,27 +15,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.apphosting.utils.remoteapi.RemoteApiPb.Request;
 import com.webbricks.appinterfaces.WBForward;
 import com.webbricks.appinterfaces.WBModel;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBParametersCache;
-import com.webbricks.cache.WBProjectCache;
-import com.webbricks.cache.WBUrisCache;
-import com.webbricks.cache.WBWebPagesCache;
 import com.webbricks.cmsdata.WBFile;
-import com.webbricks.cmsdata.WBParameter;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
-import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBLocaleException;
-import com.webbricks.exception.WBSetKeyException;
 import com.webbricks.exception.WBTemplateException;
-import com.webbricks.template.WBFreeMarkerModuleDirective;
 
 public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
@@ -51,7 +40,7 @@ public class PublicContentServlet extends HttpServlet {
 	private String uriCommonPrefix = ""; 
 	
 	private URLMatcher urlMatcherArray[] = new URLMatcher[4];
-	
+	private LocalCloudFileContentBuilder localFileContentBuilder;
 	private PageContentBuilder pageContentBuilder;
 	private FileContentBuilder fileContentBuilder;
 	private UriContentBuilder uriContentBuilder;
@@ -61,7 +50,7 @@ public class PublicContentServlet extends HttpServlet {
 	public PublicContentServlet()
 	{
 		setServletUtility(new WBServletUtility());
-		
+		localFileContentBuilder = new LocalCloudFileContentBuilder();
 		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
 		this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
 				wbCacheFactory.createWBWebPagesCacheInstance(), 
@@ -146,6 +135,17 @@ public class PublicContentServlet extends HttpServlet {
 		URLMatcherResult urlMatcherResult = urlMatcher.matchUrlToPattern(uri);
 		if (urlMatcherResult == null)
 		{
+			if (uri.startsWith(LocalCloudFileContentBuilder.LOCAL_FILE_SERVE_URL))
+			{
+				try
+				{
+					localFileContentBuilder.serveFile(req, resp, uri);
+				} catch (WBIOException e)
+				{
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
+				}
+				return;
+			}
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		} else

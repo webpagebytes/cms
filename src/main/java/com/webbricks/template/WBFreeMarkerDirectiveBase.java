@@ -2,12 +2,10 @@ package com.webbricks.template;
 
 import java.io.IOException;
 
+
 import java.util.Map;
 
 import com.webbricks.cms.ModelBuilder;
-import com.webbricks.cms.PageContentBuilder;
-import com.webbricks.cmsdata.WBPredefinedParameters;
-
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;

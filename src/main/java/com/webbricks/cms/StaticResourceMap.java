@@ -1,14 +1,10 @@
 package com.webbricks.cms;
 
 import java.util.Map;
+
 import java.util.HashMap;
 import com.webbricks.exception.*;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.io.*;
-import java.util.Date;
 import java.util.zip.CRC32;
 
 public class StaticResourceMap {

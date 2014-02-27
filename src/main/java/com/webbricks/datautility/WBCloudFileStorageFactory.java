@@ -1,6 +1,5 @@
 package com.webbricks.datautility;
 
-import java.net.URL;
 
 import com.webbricks.datautility.local.WBLocalCloudFileStorage;
 
@@ -15,7 +14,7 @@ public class WBCloudFileStorageFactory {
 				String path = "d:\\Tree"; 
 				WBLocalCloudFileStorage _instance = null;
 				try {
-					_instance = new WBLocalCloudFileStorage(path, "");
+					_instance = new WBLocalCloudFileStorage(path, "http://localhost:8080/webpagebytes/test/");
 					_instance.initialize();
 				} catch (Exception e)
 				{

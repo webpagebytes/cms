@@ -1,6 +1,7 @@
 package com.webbricks.datautility;
 
 import java.util.Collection;
+
 import java.util.List;
 
 
@@ -11,18 +12,12 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.exception.WBIOException;
-import com.webbricks.template.WBFreeMarkerTemplateEngine;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.CompositeFilter;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 

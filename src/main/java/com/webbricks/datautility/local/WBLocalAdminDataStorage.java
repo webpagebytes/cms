@@ -1,7 +1,5 @@
 package com.webbricks.datautility.local;
 
-import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,8 +8,6 @@ import java.util.Set;
 
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageListener;
-import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
 import com.webbricks.exception.WBIOException;

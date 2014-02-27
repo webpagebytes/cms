@@ -1,6 +1,7 @@
 package com.webbricks.cms;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
@@ -8,23 +9,17 @@ import java.util.logging.Logger;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBFilesCache;
 import com.webbricks.cmsdata.WBFile;
-import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBCloudFile;
 import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.datautility.WBCloudFileStorageFactory;
-import com.webbricks.datautility.WBGaeBlobHandler;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 
 public class FileContentBuilder {
-	private WBCacheInstances cacheInstances;
-	private WBBlobHandler blobHandler;
 	private WBCloudFileStorage cloudFileStorage;
 	private WBFilesCache filesCache;
 	public FileContentBuilder(WBCacheInstances cacheInstances)
 	{
-		this.cacheInstances = cacheInstances;
-		blobHandler = new WBGaeBlobHandler();
 		filesCache = cacheInstances.getWBFilesCache();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 	}

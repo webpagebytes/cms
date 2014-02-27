@@ -1,24 +1,18 @@
 package com.webbricks.template;
 
 import java.io.IOException;
+
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBCacheInstances;
-import com.webbricks.cache.WBWebPageModulesCache;
-import com.webbricks.cms.PageContentBuilder;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.exception.WBException;
-import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBTemplateException;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.utility.DeepUnwrap;

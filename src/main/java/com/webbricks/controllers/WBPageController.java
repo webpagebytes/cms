@@ -1,6 +1,7 @@
 package com.webbricks.controllers;
 
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +22,7 @@ import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
 import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
-import com.webbricks.datautility.GaeAdminDataStorage;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
-import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
@@ -72,7 +71,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
-			webPage.setHash( webPage.crc32(webPage.getHtmlSource()));
+			webPage.setHash( WBWebPage.crc32(webPage.getHtmlSource()));
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
 			WBWebPage newWebPage = adminStorage.add(webPage);

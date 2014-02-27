@@ -38,6 +38,10 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 								   String basePublicUrlPath)
 	{
 		this.dataDirectory = dataDirectory;
+		if (!basePublicUrlPath.endsWith("/"))
+		{
+			basePublicUrlPath = basePublicUrlPath + "/";
+		}
 		this.basePublicUrlPath = basePublicUrlPath;
 		isInitialized = false;
 	}
@@ -308,9 +312,10 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		IOUtils.closeQuietly(os);		
 	}
 	
-	public void getPublicFileUrl(WBCloudFile file)	
+	public String getPublicFileUrl(WBCloudFile file)	
 	{
-		
+		String fullFilePath = getLocalFullDataPath(file);
+		return basePublicUrlPath + fullFilePath;
 	}
 
 }

@@ -2,20 +2,17 @@ package com.webbricks.cms;
 
 import java.io.ByteArrayOutputStream;
 
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
-import java.util.Date;
 
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBFileNotFoundException;
 import com.webbricks.exception.WBReadConfigException;
-import com.webbricks.exception.WBResourceNotFoundException;
 
 public class ResourceReader {
 

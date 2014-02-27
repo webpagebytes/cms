@@ -1,5 +1,6 @@
 package com.webbricks.cms;
 import java.util.HashSet;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -11,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBResourceNotFoundException;
-
-import javax.servlet.*;
 
 public class ResourceRequestProcessor {
 

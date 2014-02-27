@@ -37,7 +37,7 @@ public class WBMessageValidator {
 		
 		try
 		{
-			Set properties = new HashSet<String>();
+			Set<String> properties = new HashSet<String>();
 			properties.add("name");
 			properties.add("lcid");
 			

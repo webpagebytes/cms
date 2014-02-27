@@ -1,6 +1,7 @@
 package com.webbricks.datautility;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 
 
@@ -18,18 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 
 import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreInputStream;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.blobstore.FileInfo;
 import com.google.appengine.api.blobstore.UploadOptions;
 import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.Image.Format;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.Transform;
 
-import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 
 import com.webbricks.exception.WBIOException;
