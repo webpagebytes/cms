@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -146,6 +147,12 @@ public class WBLocalDataStoreDao {
 					{
 						Integer value = resultSet.getInt(fieldNameUpperCase);
 						pd.getWriteMethod().invoke(result, value);							 
+					} else if (field.getType() == Date.class)
+					{
+						Timestamp ts = resultSet.getTimestamp(fieldNameUpperCase);
+						Date value = new Date(ts.getTime());
+						pd.getWriteMethod().invoke(result, value);
+						
 					}
 				 }
 				}
@@ -287,8 +294,8 @@ public class WBLocalDataStoreDao {
 				}  else if (field.getType() == Date.class)							
 				{
 					Date date = (Date) value;
-					java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-					preparedStatement.setDate(fieldIndex, sqlDate);
+					java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
+					preparedStatement.setTimestamp(fieldIndex, sqlDate);
 				}
 			 }
 		}

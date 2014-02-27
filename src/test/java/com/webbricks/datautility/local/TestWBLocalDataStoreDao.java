@@ -30,7 +30,19 @@ public void test_getRecord()
 	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
 	try
 	{
-		WBUri uri = (WBUri) dao.getRecord(WBUri.class, "key", 1L);
+		WBUri uri = new WBUri();
+		uri.setExternalKey("123");
+		uri.setUri("/test");
+		uri.setEnabled(1);
+		uri.setLastModified(Calendar.getInstance().getTime());
+		uri.setResourceType(1);
+		uri.setHttpOperation("GET");
+		WBUri newUri = dao.addRecord(uri, "key");
+
+		WBUri uriGet = (WBUri) dao.getRecord(WBUri.class, "key", newUri.getKey());
+		assertTrue(uriGet.getLastModified().getTime() == uri.getLastModified().getTime());
+		assertTrue(uri.getUri().equals(uriGet.getUri()));
+		assertTrue(uri.getEnabled().equals(uriGet.getEnabled()));
 	} catch (Exception e)
 	{
 		assertTrue(false);

@@ -76,7 +76,7 @@ $().ready( function () {
 		var errors = $('#wbArticleEditForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var article = $('#wbArticleEditForm').wbObjectManager().getObjectFromFields();
-			article['htmlSource'] = tinyMCE.get("wbehtmlSource").getContent();
+			article['htmlSource'] = tinyMCE.activeEditor.getContent();
 			var jsonText = JSON.stringify(article);
 			$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(pageKey),
 															 httpOperation:"PUT", 

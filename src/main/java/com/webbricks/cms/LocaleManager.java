@@ -28,7 +28,6 @@ public class LocaleManager {
 			} catch (WBIOException e)
 			{
 				localeManager = null;
-				e.printStackTrace();
 				return null;
 			}
 		}
