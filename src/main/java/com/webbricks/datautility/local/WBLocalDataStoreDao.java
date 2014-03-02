@@ -1,9 +1,6 @@
 package com.webbricks.datautility.local;
 
 import java.beans.PropertyDescriptor;
-
-
-
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -17,9 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.logging.Logger;
 import org.h2.jdbcx.JdbcConnectionPool;
-
 import com.webbricks.datautility.AdminFieldKey;
 import com.webbricks.datautility.AdminFieldStore;
 import com.webbricks.datautility.AdminFieldTextStore;
@@ -32,6 +28,8 @@ import com.webbricks.exception.WBSerializerException;
  * web server.
  */
 public class WBLocalDataStoreDao {
+	
+	private static final Logger log = Logger.getLogger(WBLocalDataStoreDao.class.getName());
 	
 	public enum WBLocalQueryOperator{
 		LESS_THAN,
@@ -77,7 +75,7 @@ public class WBLocalDataStoreDao {
 	 * @param propertyValue The new value for the property that will be set
 	 * @throws WBSerializerException If the object property was not set with success 
 	 */
-	private void setObjectProperty(Object object, String property, Object propertyValue) throws WBSerializerException
+	public void setObjectProperty(Object object, String property, Object propertyValue) throws WBSerializerException
 	{
 		try
 		{
@@ -89,7 +87,7 @@ public class WBLocalDataStoreDao {
 		}
 
 	}
-	private Object getObjectProperty(Object object, String property) throws WBSerializerException
+	public Object getObjectProperty(Object object, String property) throws WBSerializerException
 	{
 		try
 		{
@@ -100,7 +98,7 @@ public class WBLocalDataStoreDao {
 			throw new WBSerializerException("Cannot set property for object", e);
 		}
 	}
-	private boolean hasClassProperty(Class kind, String property) throws WBSerializerException
+	public boolean hasClassProperty(Class kind, String property) throws WBSerializerException
 	{
 		try
 		{

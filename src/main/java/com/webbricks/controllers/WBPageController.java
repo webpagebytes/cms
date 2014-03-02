@@ -1,11 +1,12 @@
 package com.webbricks.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.CRC32;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
+import com.webbricks.datautility.local.WBLocalAdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
@@ -27,8 +29,9 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
-public class WBPageController extends WBController implements AdminDataStorageListener<WBWebPage>{
+public class WBPageController extends WBController implements AdminDataStorageListener<Object>{
 
+	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
@@ -41,17 +44,21 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		pageValidator = new WBPageValidator();
-		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (WBWebPage t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o)
 	{
 		try
 		{
-			wbWebPageCache.Refresh();
+			if (t instanceof WBWebPage)
+			{
+				log.log(Level.INFO, "WbWebPage datastore notification, going to refresh the cache");
+				wbWebPageCache.Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			// TBD

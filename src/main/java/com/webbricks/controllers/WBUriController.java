@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
-public class WBUriController extends WBController implements AdminDataStorageListener<WBUri> {
+public class WBUriController extends WBController implements AdminDataStorageListener<Object> {
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
@@ -40,16 +40,19 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		uriValidator = new WBUriValidator();
-		WBCacheFactory cacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory cacheFactory = DefaultWBCacheFactory.getInstance();
 		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (WBUri t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o)
 	{
 		try
 		{
-			wbUriCache.Refresh();
+			if (t instanceof WBUri)
+			{
+				wbUriCache.Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			// TBD

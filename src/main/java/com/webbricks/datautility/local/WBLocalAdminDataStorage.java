@@ -5,15 +5,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageListener;
+import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperation;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
 import com.webbricks.exception.WBIOException;
 
 public class WBLocalAdminDataStorage implements AdminDataStorage {
+	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
 	private static final String KEY_FILED_NAME = "key";
+	private Vector<AdminDataStorageListener> storageListeners = new Vector<AdminDataStorageListener>();
 	
 	WBLocalDataStoreDao localDataStorageDao = new WBLocalDataStoreDao("~/test");
 	
@@ -37,6 +43,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 			return null;
 		}
 	}
+	
 	private WBLocalDataStoreDao.WBLocalSortDirection adminDirectionToLocalDirection(AdminSortOperator sortOperator)
 	{
 		switch (sortOperator)
@@ -56,7 +63,12 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			localDataStorageDao.deleteRecord(dataClass, "key", recordid);
+			log.log(Level.INFO, "delete record %s", recordid);
+			localDataStorageDao.deleteRecord(dataClass, "key", recordid);			
+			Object obj = dataClass.newInstance();
+			localDataStorageDao.setObjectProperty(obj, "key", recordid);
+			notifyOperation(obj, AdminDataStorageOperation.DELETE);			
+
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot delete record " + recordid, e);
@@ -67,7 +79,11 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
+			log.log(Level.INFO, "delete record %d", recordid);
 			localDataStorageDao.deleteRecord(dataClass, "key", recordid);
+			Object obj = dataClass.newInstance();
+			localDataStorageDao.setObjectProperty(obj, "key", recordid);
+			notifyOperation(obj, AdminDataStorageOperation.DELETE);			
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot delete record " + recordid, e);
@@ -78,13 +94,16 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			Set<String> properties = new HashSet();
+			log.log(Level.INFO, "delete records with property condition %s ", property);		
+			Set<String> properties = new HashSet<String>();
 			properties.add(property);
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 			operators.put(property, adminOperatorToLocalOperator(operator));
 			Map<String, Object> values = new HashMap<String, Object>();
 			values.put(property, parameter);
 			localDataStorageDao.deleteRecords(dataClass, properties, operators, values);
+			Object obj = dataClass.newInstance();
+			notifyOperation(obj, AdminDataStorageOperation.DELETE);				
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot delete records ", e);
@@ -95,6 +114,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
+			log.log(Level.INFO, "get all record %s", dataClass.getSimpleName());			
 			List<T> result = (List<T>) localDataStorageDao.getAllRecords(dataClass);
 			return result;
 		} catch (Exception e)
@@ -107,6 +127,9 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
+			Object [] logObjects = { dataClass.getSimpleName(), property};
+			log.log(Level.INFO, "get all record %s with condition on property %s", logObjects);			
+			
 			Set<String> properties = new HashSet();
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 			Map<String, Object> values = new HashMap<String, Object>();
@@ -123,7 +146,10 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			return localDataStorageDao.addRecord(t, KEY_FILED_NAME);
+			log.log(Level.INFO, "add record for class %s", t.getClass().getSimpleName());			
+			T res = localDataStorageDao.addRecord(t, KEY_FILED_NAME);			
+			notifyOperation(t, AdminDataStorageOperation.CREATE);			
+			return res;
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot add new record", e);
@@ -134,7 +160,10 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			return localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
+			log.log(Level.INFO, "add record with key for class %s", t.getClass().getSimpleName());			
+			T res = localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
+			notifyOperation(t, AdminDataStorageOperation.CREATE);			
+			return res;
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot add new record", e);
@@ -145,6 +174,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
+			log.log(Level.INFO, "get record for key %d", dataid);			
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
@@ -156,6 +186,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
+			log.log(Level.INFO, "get record for key %s", dataid);
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
@@ -163,12 +194,14 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	public<T> T update(T data) throws WBIOException
+	public<T> T update(T t) throws WBIOException
 	{
 		try
 		{
-			localDataStorageDao.updateRecord(data, KEY_FILED_NAME);
-			return data;
+			log.log(Level.INFO, "update record for class %s", t.getClass().getSimpleName());
+			localDataStorageDao.updateRecord(t, KEY_FILED_NAME);
+			notifyOperation(t, AdminDataStorageOperation.UPDATE);			
+			return t;
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot add new record", e);
@@ -215,7 +248,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			Set<String> properties = new HashSet();
+			Set<String> properties = new HashSet<String>();
 			properties.add(property);
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 			operators.put(property, adminOperatorToLocalOperator(operator));
@@ -250,13 +283,38 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 
 	public void addStorageListener(AdminDataStorageListener listener)
 	{
+		synchronized (storageListeners)
+		{
+			storageListeners.add(listener);
+		}
 	}
-
 	
 	public void removeStorageListener(AdminDataStorageListener listener)
 	{
-		
+		synchronized (storageListeners)
+		{
+			for(int i=0; i< storageListeners.size(); i++)
+			{
+				if (storageListeners.get(i) == listener)
+				{
+					storageListeners.remove(i);
+					return;
+				}
+			}
+		}
 	}
+	
+	protected<T> void notifyOperation(Object obj, AdminDataStorageListener.AdminDataStorageOperation operation)
+	{
+		synchronized (storageListeners)
+		{
+			for(int i=0; i< storageListeners.size(); i++)
+			{
+				storageListeners.get(i).notify(obj, operation);
+			}
+		}		
+	}
+
 	
 	public String getUploadUrl(String returnUrl)
 	{

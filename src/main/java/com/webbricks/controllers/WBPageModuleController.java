@@ -23,7 +23,7 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
-public class WBPageModuleController extends WBController implements AdminDataStorageListener<WBWebPageModule>{
+public class WBPageModuleController extends WBController implements AdminDataStorageListener<Object>{
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
@@ -36,18 +36,21 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBPageModuleValidator();
 		
-		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		wbPageModuleCache = wbCacheFactory.createWBWebPageModulesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 
 	}
 
-	public void notify (WBWebPageModule t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o)
 	{
 		try
 		{
-			wbPageModuleCache.Refresh();
+			if (t instanceof WBWebPageModule)
+			{
+				wbPageModuleCache.Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			// TBD

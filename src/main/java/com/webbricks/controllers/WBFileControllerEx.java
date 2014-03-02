@@ -37,7 +37,7 @@ import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.ContentTypeDetector;
 import com.webbricks.utility.HttpServletToolbox;
 
-public class WBFileControllerEx extends WBController implements AdminDataStorageListener<WBFile>{
+public class WBFileControllerEx extends WBController implements AdminDataStorageListener<Object>{
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
@@ -57,17 +57,20 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
-		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		imageCache = wbCacheFactory.createWBImagesCacheInstance();
 		
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (WBFile t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o)
 	{
 		try
 		{
-			imageCache.Refresh();
+			if (t instanceof WBFile)
+			{
+				imageCache.Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			// TBD

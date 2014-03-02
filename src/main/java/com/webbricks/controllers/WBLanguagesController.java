@@ -30,7 +30,7 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
-public class WBLanguagesController extends WBController implements AdminDataStorageListener<WBProject> {
+public class WBLanguagesController extends WBController implements AdminDataStorageListener<Object> {
 
 	private LocaleManager localeManager;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
@@ -55,11 +55,14 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		return project;
 	}
 	
-	public void notify (WBProject t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o)
 	{
 		try
 		{
-			projectCache.Refresh();
+			if (t.getClass().equals(this.getClass()))
+			{
+				projectCache.Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			// TBD
@@ -79,7 +82,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		sortedLanguages.addAll(keyset);
 		Collections.sort(sortedLanguages);
 	
-		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		projectCache = wbCacheFactory.createWBProjectCacheInstance();
 		
 		adminStorage.addStorageListener(this);

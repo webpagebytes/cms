@@ -51,7 +51,7 @@ public class PublicContentServlet extends HttpServlet {
 	{
 		setServletUtility(new WBServletUtility());
 		localFileContentBuilder = new LocalCloudFileContentBuilder();
-		WBCacheFactory wbCacheFactory = new DefaultWBCacheFactory();
+		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
 				wbCacheFactory.createWBWebPagesCacheInstance(), 
 				wbCacheFactory.createWBWebPageModulesCacheInstance(), 

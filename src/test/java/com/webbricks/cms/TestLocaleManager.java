@@ -61,16 +61,19 @@ public void test_loadLocalesfromFile_ok()
 }
 
 @Test
-public void test_getIstance_OK()
+public void test_getInstance_OK()
 {
 	try
 	{
+		Whitebox.setInternalState(LocaleManager.class, "localeManager", (LocaleManager)null);
+		
 		LocaleManager manager = LocaleManager.getInstance();
+		assertTrue (manager != null);
 		assertTrue (manager.getSupportedLanguages() != null);
 	} catch (Exception e)
 	{
-		e.printStackTrace();
-		assertTrue (false);
+		assertTrue (e.getMessage(), false);
+		throw e;
 	}
 }
 

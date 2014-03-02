@@ -12,36 +12,79 @@ import com.webbricks.cache.WBWebPageModulesCache;
 import com.webbricks.cache.WBWebPagesCache;
 
 public class WBLocalCacheFactory implements WBCacheFactory {
+	
+	private static WBUrisCache uriCacheInstance;
+	private static WBWebPagesCache pageCacheInstance;
+	private static WBParametersCache parametersCacheInstance;
+	private static WBWebPageModulesCache pageModulesCacheInstance;
+	private static WBFilesCache filesCacheInstance;
+	private static WBArticlesCache articlesCacheInstance;
+	private static WBMessagesCache messagesCacheInstance;
+	private static WBProjectCache projectCacheInstance;
+	
 	public WBUrisCache createWBUrisCacheInstance()
 	{
-		return new WBLocalUrisCache();
+		if (null == uriCacheInstance)
+		{
+			uriCacheInstance = new WBLocalUrisCache();
+		}
+		return uriCacheInstance;
 	}
 	public WBWebPagesCache createWBWebPagesCacheInstance()
 	{
-		return new WBLocalWebPagesCache();
+		if (null == pageCacheInstance)
+		{
+			pageCacheInstance = new WBLocalWebPagesCache();
+		}
+		return pageCacheInstance;
 	}
 	public WBParametersCache createWBParametersCacheInstance()
 	{
-		return new WBLocalParametersCache();
+		if (parametersCacheInstance == null)
+		{
+			parametersCacheInstance = new WBLocalParametersCache();
+		}
+		return parametersCacheInstance;
 	}
+	
 	public WBWebPageModulesCache createWBWebPageModulesCacheInstance()
 	{
-		return new WBLocalWebPageModulesCache();
+		if (pageModulesCacheInstance == null)
+		{
+			pageModulesCacheInstance = new WBLocalWebPageModulesCache();
+		}
+		return pageModulesCacheInstance;
 	}
 	public WBFilesCache createWBImagesCacheInstance()
 	{
-		return new WBLocalFilesCache();
+		if (filesCacheInstance == null)
+		{
+			filesCacheInstance = new WBLocalFilesCache();
+		}
+		return filesCacheInstance;
 	}
 	public WBArticlesCache createWBArticlesCacheInstance()
 	{
-		return new WBLocalArticlesCache();
+		if (articlesCacheInstance == null)
+		{
+			articlesCacheInstance = new WBLocalArticlesCache();
+		}
+		return articlesCacheInstance;
 	}
 	public WBMessagesCache createWBMessagesCacheInstance()
 	{
-		return new WBLocalMessagesCache();
+		if (messagesCacheInstance == null)
+		{
+			messagesCacheInstance = new WBLocalMessagesCache(); 
+		}
+		return messagesCacheInstance;
 	}
 	public WBProjectCache createWBProjectCacheInstance()
 	{
-		return new WBLocalProjectCache();
+		if (projectCacheInstance == null)
+		{
+			projectCacheInstance = new WBLocalProjectCache();
+		}
+		return projectCacheInstance;
 	}
 }

@@ -23,11 +23,12 @@ import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
 
 @RunWith(PowerMockRunner.class)
 public class TestWBLocalDataStoreDao {
+private String dbPath = "~/testUnits";
 
 @Test
 public void test_getRecord()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBUri uri = new WBUri();
@@ -53,7 +54,7 @@ public void test_getRecord()
 @Test
 public void test_addRecord()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBUri uri = new WBUri();
@@ -76,7 +77,7 @@ public void test_addRecord()
 @Test
 public void test_addRecordWithKey()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBProject project = new WBProject();
@@ -97,7 +98,7 @@ public void test_addRecordWithKey()
 @Test
 public void test_addRecordClob()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBWebPage page = new WBWebPage();
@@ -121,7 +122,7 @@ public void test_addRecordClob()
 @Test
 public void test_updateRecord()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBUri uri = new WBUri();
@@ -152,7 +153,7 @@ public void test_updateRecord()
 @Test
 public void test_query_more_properties()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBUri uri = new WBUri();
@@ -192,7 +193,7 @@ public void test_query_more_properties()
 @Test
 public void test_query_with_sort_desc()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		String guidUri = UUID.randomUUID().toString();
@@ -247,7 +248,7 @@ public void test_query_with_sort_desc()
 @Test
 public void test_query_with_sort_asc()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		String guidUri = UUID.randomUUID().toString();
@@ -302,7 +303,7 @@ public void test_query_with_sort_asc()
 @Test
 public void test_query_no_conditions()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		String guidUri = UUID.randomUUID().toString();
@@ -326,7 +327,7 @@ public void test_query_no_conditions()
 @Test
 public void test_deleteRecord()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
 		WBUri uri = new WBUri();
