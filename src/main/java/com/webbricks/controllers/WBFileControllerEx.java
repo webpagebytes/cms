@@ -58,8 +58,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
-		imageCache = wbCacheFactory.createWBImagesCacheInstance();
-		
+		imageCache = wbCacheFactory.createWBImagesCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
 	
@@ -164,7 +163,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			WBFile tempImage = adminStorage.get(key, WBFile.class);
 			if (tempImage.getBlobKey() != null)
 			{
-				//blobHandler.deleteBlob(tempImage.getBlobKey());
 				WBCloudFile cloudFile = new WBCloudFile("public", tempImage.getBlobKey());
 				cloudFileStorage.deleteFile(cloudFile);
 			}
@@ -299,12 +297,12 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			//blobHandler.serveBlob(wbimage.getBlobKey(), response);
 			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			IOUtils.copy(is, response.getOutputStream());
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbimage.getFileName() + "\"");
 			response.setContentType(wbimage.getContentType());
+			IOUtils.closeQuietly(is);
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -318,11 +316,11 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			//blobHandler.serveBlob(wbimage.getBlobKey(), response);
 			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			IOUtils.copy(is, response.getOutputStream());
 			response.setContentType(wbimage.getContentType());
+			IOUtils.closeQuietly(is);
 			
 		} catch (Exception e)		
 		{

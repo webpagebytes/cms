@@ -314,8 +314,8 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	
 	public String getPublicFileUrl(WBCloudFile file)	
 	{
-		String fullFilePath = getLocalFullDataPath(file);
-		return basePublicUrlPath + fullFilePath;
+		String partialPath = file.getBucket() + "/" + sanitizeCloudFilePath(file.getPath());
+		return basePublicUrlPath + partialPath;
 	}
 
 }

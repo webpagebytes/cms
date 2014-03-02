@@ -1,7 +1,6 @@
 package com.webbricks.template;
 
 import java.io.IOException;
-
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,6 +8,8 @@ import java.util.logging.Logger;
 import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cmsdata.WBFile;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBCloudFile;
+import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.exception.WBIOException;
 
 import freemarker.core.Environment;
@@ -22,16 +23,16 @@ import freemarker.template.utility.DeepUnwrap;
 public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerModuleDirective.class.getName());
 	WBCacheInstances cacheInstances;
-	WBBlobHandler blobHandler;
+	WBCloudFileStorage cloudFileStorage;
 	
 	public WBFreeMarkerImageDirective()
 	{
 		
 	}
-	public void initialize(WBBlobHandler blobHandler, WBCacheInstances cacheInstances)
+	public void initialize(WBCloudFileStorage cloudFileStorage, WBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
-		this.blobHandler = blobHandler;
+		this.cloudFileStorage = cloudFileStorage;
 	}
 	
     public void execute(Environment env,
@@ -50,28 +51,15 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
     	{
     		throw new TemplateModelException("No external key for image directive");
     	}
-    	
-    	Integer size = 0;
-    	if (params.containsKey("size"))
-    	{
-    		String strSize = (String) DeepUnwrap.unwrap((TemplateModel) params.get("size"));
-    		try
-    		{
-    			size = Integer.valueOf(strSize);
-    		} catch (NumberFormatException e)
-    		{
-    			// do nothing
-    		}
-    	}
-    	
-    	
+    	   	
         try
         {
         	String serveUrl = "";
         	WBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
         	if (image != null)
         	{
-        		//serveUrl = blobHandler.serveBlobUrl(image.getBlobKey(), size);        	
+        		WBCloudFile cloudFile = new WBCloudFile("public", image.getBlobKey());
+        		serveUrl = cloudFileStorage.getPublicFileUrl(cloudFile);        	
         	} 
         	String htmlImage = "<img src=\"" + serveUrl + "\">";
         	env.getOut().write(htmlImage);

@@ -14,7 +14,8 @@ import com.webbricks.exception.WBIOException;
 public class WBLocalWebPageModulesCache implements WBWebPageModulesCache {
 	
 	private AdminDataStorage dataStorage;
-	private Map<String, WBWebPageModule> localCache;
+	private Map<String, WBWebPageModule> localCacheByID;
+	private Map<String, WBWebPageModule> localCacheByName;
 	private static final Object lock = new Object();
 	public WBLocalWebPageModulesCache()
 	{
@@ -29,13 +30,9 @@ public class WBLocalWebPageModulesCache implements WBWebPageModulesCache {
 	}
 	public WBWebPageModule getByExternalKey(String externalKey) throws WBIOException
 	{
-		if (localCache == null)
+		if (localCacheByID != null)
 		{
-			Refresh();
-		}
-		if (localCache != null)
-		{
-			return localCache.get(externalKey);
+			return localCacheByID.get(externalKey);
 		}
 		return null;
 	}
@@ -44,20 +41,28 @@ public class WBLocalWebPageModulesCache implements WBWebPageModulesCache {
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{
-			Map<String, WBWebPageModule> tempMap = new HashMap<String, WBWebPageModule>();
+			Map<String, WBWebPageModule> tempMapByID = new HashMap<String, WBWebPageModule>();
+			Map<String, WBWebPageModule> tempMapByName = new HashMap<String, WBWebPageModule>();
+			
 			List<WBWebPageModule> recList = dataStorage.getAllRecords(WBWebPageModule.class);
 			for(WBWebPageModule item: recList)
 			{
-				tempMap.put(item.getExternalKey(), item);
+				tempMapByID.put(item.getExternalKey(), item);
+				tempMapByName.put(item.getName(), item);
 			}
-			localCache = tempMap;
+			localCacheByID = tempMapByID;
+			localCacheByName = tempMapByName;
 		}
 		
 	}
 
 		
-	public WBWebPageModule get(String pageName) throws WBIOException
+	public WBWebPageModule get(String moduleName) throws WBIOException
 	{
+		if (localCacheByName != null)
+		{
+			return localCacheByName.get(moduleName);
+		}
 		return null;
 	}
 	

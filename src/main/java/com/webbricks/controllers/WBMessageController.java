@@ -43,6 +43,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		validator.setAdminStorage(adminStorage);
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		wbMessageCache = wbCacheFactory.createWBMessagesCacheInstance();
+		adminStorage.addStorageListener(this);
 	}
 	
 	public void notify (Object t, AdminDataStorageOperation o)

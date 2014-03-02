@@ -27,6 +27,7 @@ import com.webbricks.cache.WBCacheInstances;
 import com.webbricks.cache.WBMessagesCache;
 import com.webbricks.cms.ModelBuilder;
 import com.webbricks.datautility.WBBlobHandler;
+import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.exception.WBIOException;
 
 import freemarker.core.Environment;
@@ -47,8 +48,7 @@ private WBFreeMarkerImageDirective imageDirectiveMock;
 private WBFreeMarkerArticleDirective articleDirectiveMock;
 private WBMessagesCache messageCacheMock;
 private WBCacheInstances cacheInstancesMock;
-
-private WBBlobHandler blobHandlerMock;
+private WBCloudFileStorage cloudStorageMock;
 
 @Before
 public void setUp()
@@ -60,7 +60,7 @@ public void setUp()
 	moduleDirectiveMock = PowerMock.createMock(WBFreeMarkerModuleDirective.class);
 	imageDirectiveMock = PowerMock.createMock(WBFreeMarkerImageDirective.class);
 	articleDirectiveMock = PowerMock.createMock(WBFreeMarkerArticleDirective.class);
-	blobHandlerMock = PowerMock.createMock(WBBlobHandler.class);
+	cloudStorageMock = PowerMock.createMock(WBCloudFileStorage.class);
 	messageCacheMock = PowerMock.createMock(WBMessagesCache.class);
 	cacheInstancesMock = PowerMock.createMock(WBCacheInstances.class);
 	
@@ -85,7 +85,7 @@ public void test_initialize()
 	configurationMock.setLocalizedLookup(false);
 	configurationMock.setTemplateLoader(templateLoaderMock);
 	moduleDirectiveMock.initialize(templateEngine, cacheInstancesMock);
-	imageDirectiveMock.initialize(blobHandlerMock, cacheInstancesMock);
+	imageDirectiveMock.initialize(cloudStorageMock, cacheInstancesMock);
 	configurationMock.setSharedVariable(ModelBuilder.MODULE_DIRECTIVE, moduleDirectiveMock);
 	configurationMock.setSharedVariable(ModelBuilder.IMAGE_DIRECTIVE, imageDirectiveMock);
 	configurationMock.setSharedVariable(ModelBuilder.ARTICLE_DIRECTIVE, articleDirectiveMock);

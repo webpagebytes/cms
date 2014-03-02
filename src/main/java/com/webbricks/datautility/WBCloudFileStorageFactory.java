@@ -14,7 +14,7 @@ public class WBCloudFileStorageFactory {
 				String path = "d:\\Tree"; 
 				WBLocalCloudFileStorage _instance = null;
 				try {
-					_instance = new WBLocalCloudFileStorage(path, "http://localhost:8080/webpagebytes/test/");
+					_instance = new WBLocalCloudFileStorage(path, "http://localhost:8080/webpagebytes/test/__wblocalfile/");
 					_instance.initialize();
 				} catch (Exception e)
 				{

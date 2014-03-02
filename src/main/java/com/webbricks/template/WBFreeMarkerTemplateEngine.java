@@ -63,7 +63,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		configuration.setSharedVariable(ModelBuilder.MODULE_DIRECTIVE, moduleDirective);
 		
 		WBFreeMarkerImageDirective imageDirective = wbFreeMarkerFactory.createWBFreeMarkerImageDirective();
-		imageDirective.initialize(blobHandler, cacheInstances);
+		imageDirective.initialize(cloudFileStorage, cacheInstances);
 		configuration.setSharedVariable(ModelBuilder.IMAGE_DIRECTIVE, imageDirective);
 		
 		WBFreeMarkerArticleDirective articleDirective = wbFreeMarkerFactory.createWBFreeMarkerArticleDirective();
