@@ -24,6 +24,9 @@ import com.webbricks.datautility.WBCloudFile;
 import com.webbricks.datautility.WBCloudFileInfo;
 import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.datautility.WBDefaultCloudFileInfo;
+import com.webbricks.utility.WBConfiguration;
+import com.webbricks.utility.WBConfiguration.SECTION;
+import com.webbricks.utility.WBConfigurationFactory;
 
 public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	private static final String publicDataFolder = "public";
@@ -34,17 +37,35 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	private String basePublicUrlPath;
 	private boolean isInitialized;
 	
-	public WBLocalCloudFileStorage(String dataDirectory,
-								   String basePublicUrlPath)
+	public WBLocalCloudFileStorage()
 	{
+		try
+		{
+			initialize(true);
+		} catch (Exception e)
+		{
+			// log the exception here
+		}
+	}
+	
+	public WBLocalCloudFileStorage(String dataDirectory, String basePublicUrlPath)	
+	{
+		
 		this.dataDirectory = dataDirectory;
+		
 		if (!basePublicUrlPath.endsWith("/"))
 		{
 			basePublicUrlPath = basePublicUrlPath + "/";
 		}
 		this.basePublicUrlPath = basePublicUrlPath;
-		isInitialized = false;
-	}
+		try
+		{
+			initialize(false);
+		} catch (Exception e)
+		{
+			// log the exception here
+		}	}
+
 	public String getDataDir()
 	{
 		return dataDirectory;
@@ -70,9 +91,22 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		return dataDirectory +  File.separator + privateMetaFolder;
 	}
 	
-	public void initialize() throws IOException, FileNotFoundException
+	private void initialize(boolean paramsFromConfig) throws IOException, FileNotFoundException
 	{
-		isInitialized = false;
+		if (paramsFromConfig)
+		{
+			WBConfiguration config = WBConfigurationFactory.getConfiguration();
+			Map<String, String> params = config.getSectionParams(SECTION.SECTION_FILESTORAGE);
+		
+			dataDirectory = params.get("dataDirectory");
+			basePublicUrlPath = params.get("basePublicUrlPath");
+		
+			if (!basePublicUrlPath.endsWith("/"))
+			{
+				basePublicUrlPath = basePublicUrlPath + "/";
+			}
+		}
+	
 		//check to see that the dataDirectory exists
 		File fileBaseData = new File(dataDirectory);
 		if (!fileBaseData.exists() || !fileBaseData.isDirectory())

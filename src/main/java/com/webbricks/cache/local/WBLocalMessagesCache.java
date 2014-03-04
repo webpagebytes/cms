@@ -25,7 +25,10 @@ public class WBLocalMessagesCache implements WBMessagesCache {
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try
 		{
-			Refresh();
+			if (dataStorage != null)
+			{
+				Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			

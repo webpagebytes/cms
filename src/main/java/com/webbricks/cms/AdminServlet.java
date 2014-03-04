@@ -1,7 +1,5 @@
 package com.webbricks.cms;
 
-import java.io.*;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -18,14 +16,14 @@ public class AdminServlet extends HttpServlet {
 	
 	private ResourceRequestProcessor resourceRequestProcessor = null;
 	private AjaxRequestProcessor ajaxRequestProcssor = null;
-	private RequestProcessorFactory processorFactory = null;
+	private AdminRequestProcessorFactory processorFactory = null;
 	private WBServletUtility servletUtility = null;
 	
 	private String adminURIPart = "";
 	
 	public AdminServlet()
 	{
-		processorFactory = new DefaultRequestProcessorFactory();
+		processorFactory = new BaseRequestProcessorFactory();
 		servletUtility = new WBServletUtility();
 	}
 	
@@ -189,11 +187,11 @@ public class AdminServlet extends HttpServlet {
 		this.ajaxRequestProcssor = ajaxRequestProcssor;
 	}
 
-	public RequestProcessorFactory getProcessorFactory() {
+	public AdminRequestProcessorFactory getProcessorFactory() {
 		return processorFactory;
 	}
 
-	public void setProcessorFactory(RequestProcessorFactory processorFactory) {
+	public void setProcessorFactory(AdminRequestProcessorFactory processorFactory) {
 		this.processorFactory = processorFactory;
 	}
 

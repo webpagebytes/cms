@@ -19,14 +19,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocaleManager.class})
+@PrepareForTest({LanguageLocaleManager.class})
 public class TestLocaleManager {
 
-LocaleManager localeManager;
+LanguageLocaleManager localeManager;
 @Before
 public void setup()
 {
-	localeManager = new LocaleManager();
+	localeManager = new LanguageLocaleManager();
 	
 }
 	
@@ -65,9 +65,9 @@ public void test_getInstance_OK()
 {
 	try
 	{
-		Whitebox.setInternalState(LocaleManager.class, "localeManager", (LocaleManager)null);
+		Whitebox.setInternalState(LanguageLocaleManager.class, "localeManager", (LanguageLocaleManager)null);
 		
-		LocaleManager manager = LocaleManager.getInstance();
+		LanguageLocaleManager manager = LanguageLocaleManager.getInstance();
 		assertTrue (manager != null);
 		assertTrue (manager.getSupportedLanguages() != null);
 	} catch (Exception e)
@@ -83,9 +83,9 @@ public void test_getInstance_fail()
 	try
 	{
 		String path = "xyz";
-		Whitebox.setInternalState(LocaleManager.class, "LANGUAGES_CONFIG_FILE", path);
-		Whitebox.setInternalState(LocaleManager.class, "localeManager", (LocaleManager)null);
-		LocaleManager manager = LocaleManager.getInstance();
+		Whitebox.setInternalState(LanguageLocaleManager.class, "LANGUAGES_CONFIG_FILE", path);
+		Whitebox.setInternalState(LanguageLocaleManager.class, "localeManager", (LanguageLocaleManager)null);
+		LanguageLocaleManager manager = LanguageLocaleManager.getInstance();
 		assertTrue (manager == null);
 	} catch (Exception e)
 	{

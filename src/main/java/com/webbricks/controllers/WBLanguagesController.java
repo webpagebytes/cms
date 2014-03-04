@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import com.webbricks.cache.DefaultWBCacheFactory;
 import com.webbricks.cache.WBCacheFactory;
 import com.webbricks.cache.WBProjectCache;
-import com.webbricks.cms.LocaleManager;
+import com.webbricks.cms.LanguageLocaleManager;
 import com.webbricks.cmsdata.WBProject;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageFactory;
@@ -32,7 +32,7 @@ import com.webbricks.utility.HttpServletToolbox;
 
 public class WBLanguagesController extends WBController implements AdminDataStorageListener<Object> {
 
-	private LocaleManager localeManager;
+	private LanguageLocaleManager localeManager;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private HttpServletToolbox httpServletToolbox;
 	private AdminDataStorage adminStorage;
@@ -74,7 +74,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
-		localeManager = LocaleManager.getInstance();
+		localeManager = LanguageLocaleManager.getInstance();
 		sortedLanguages = new ArrayList<String>();
 		
 		allLocales = localeManager.getSupportedLanguagesAndCountries();

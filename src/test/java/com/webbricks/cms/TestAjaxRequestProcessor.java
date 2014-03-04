@@ -67,7 +67,7 @@ public class TestAjaxRequestProcessor {
 		try
 		{
 			String reqUri = "/test";
-			OperationsReader operationsReader = EasyMock.createMock(OperationsReader.class);
+			AdminServletOperationsReader operationsReader = EasyMock.createMock(AdminServletOperationsReader.class);
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn( new Pair<String,String>("com.webbricks.cms.TestDefaultController", "test"));
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn( new Pair<String,String>("com.webbricks.cms.TestDefaultController", "test"));
 			
@@ -97,7 +97,7 @@ public class TestAjaxRequestProcessor {
 		try
 		{
 			String reqUri = "/test";
-			OperationsReader operationsReader = EasyMock.createMock(OperationsReader.class);
+			AdminServletOperationsReader operationsReader = EasyMock.createMock(AdminServletOperationsReader.class);
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn( new Pair<String,String>("com.webbricks.cms.TestDefaultController", "methodnotfound"));
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn(null);
 			Capture<Integer> capture = new Capture<Integer>();
@@ -129,7 +129,7 @@ public class TestAjaxRequestProcessor {
 		try
 		{
 			String reqUri = "/test";
-			OperationsReader operationsReader = EasyMock.createMock(OperationsReader.class);
+			AdminServletOperationsReader operationsReader = EasyMock.createMock(AdminServletOperationsReader.class);
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn( new Pair<String,String>("com.webbricks.cms.TestDefaultController", "methodnotfound"));
 			EasyMock.expect(operationsReader.operationToMethod("/test", "GET")).andReturn( new Pair<String,String>("com.webbricks.cms.TestDefaultController", "methodnotfound"));
 			
@@ -158,7 +158,7 @@ public class TestAjaxRequestProcessor {
 	{
 		try
 		{
-			OperationsReader operationsReader = EasyMock.createMock(OperationsReader.class);
+			AdminServletOperationsReader operationsReader = EasyMock.createMock(AdminServletOperationsReader.class);
 			
 			EasyMock.expect(operationsReader.operationToMethod(EasyMock.anyObject(String.class), EasyMock.anyObject(String.class))).andReturn(null);
 			EasyMock.expect(operationsReader.wildOperationToMethod(EasyMock.anyObject(String.class), EasyMock.anyObject(String.class))).andReturn(null);
@@ -184,7 +184,7 @@ public class TestAjaxRequestProcessor {
 		try
 		{
 			String path = "META-INF/config/ajaxwhitelist.properties";
-			OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);
+			AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);
 			readerMock.initialize(path);
 			
 			ajaxProcessor.setOperationsReader(readerMock);
@@ -206,7 +206,7 @@ public class TestAjaxRequestProcessor {
 			String httpUri = "/uri/param1";
 			
 			HttpServletRequest req = EasyMock.createMock(HttpServletRequest.class);
-			OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+			AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 			EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
 			EasyMock.expect(readerMock.operationToMethod("/uri/{key}", httpOperation)).andReturn(new Pair("",""));
 			EasyMock.expect(req.getMethod()).andReturn(httpOperation);
@@ -230,7 +230,7 @@ public class TestAjaxRequestProcessor {
 			String httpUri = "/uri/param1";
 			
 			HttpServletRequest req = EasyMock.createMock(HttpServletRequest.class);
-			OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+			AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 			EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
 			EasyMock.expect(readerMock.operationToMethod("/uri/{key}", httpOperation)).andReturn(null);
 			EasyMock.expect(req.getMethod()).andReturn(httpOperation);
@@ -257,7 +257,7 @@ public class TestAjaxRequestProcessor {
 		String httpOperation = "POST";
 		String httpUri = "/uri/12367";
 		
-		OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
 		EasyMock.expect(readerMock.operationToMethod("/uri/{key}", httpOperation)).andReturn(new Pair("",""));
 		EasyMock.replay(readerMock);
@@ -275,7 +275,7 @@ public class TestAjaxRequestProcessor {
 		String httpOperation = "POST";
 		String httpUri = "/uri/param1";
 		
-		OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
 		EasyMock.expect(readerMock.operationToMethod("/uri/{key}", httpOperation)).andReturn(new Pair("",""));
 		EasyMock.replay(readerMock);
@@ -292,7 +292,7 @@ public class TestAjaxRequestProcessor {
 		String httpOperation = "POST";
 		String httpUri = "/uri/param1/param2";
 		
-		OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
 		EasyMock.replay(readerMock);
 		ajaxProcessor.setOperationsReader(readerMock);			
@@ -307,7 +307,7 @@ public class TestAjaxRequestProcessor {
 		String httpOperation = "GET";
 		String httpUri = "/uri";
 		
-		OperationsReader readerMock = EasyMock.createMock(OperationsReader.class);			
+		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(new Pair("",""));
 		EasyMock.replay(readerMock);
 		ajaxProcessor.setOperationsReader(readerMock);			

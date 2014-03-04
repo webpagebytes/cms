@@ -13,14 +13,14 @@ import com.webbricks.exception.WBException;
 public class AjaxRequestProcessor {
 
 	private final String keyUrlPart = "/{key}";
-	private OperationsReader operationsReader;
+	private AdminServletOperationsReader operationsReader;
 	private String adminUriPart;
 	
 	private Map<String, WBController> controllersMap;
 	
 	public AjaxRequestProcessor()
 	{
-		operationsReader = new OperationsReader();
+		operationsReader = new AdminServletOperationsReader();
 		controllersMap = new HashMap<String, WBController>();
 	}
 	public void initialize(String configResourceFolder, String resourcesWhiteList) throws WBException
@@ -146,11 +146,11 @@ public class AjaxRequestProcessor {
 		}
 	}
 
-	public OperationsReader getOperationsReader() {
+	public AdminServletOperationsReader getOperationsReader() {
 		return operationsReader;
 	}
 
-	public void setOperationsReader(OperationsReader operationsReader) {
+	public void setOperationsReader(AdminServletOperationsReader operationsReader) {
 		this.operationsReader = operationsReader;
 	}
 

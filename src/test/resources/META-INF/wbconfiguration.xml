@@ -5,30 +5,17 @@
 		<factoryclass>com.xyz.cache</factoryclass>
 	</wpbcache>
 	<wpbadmindatastorage>
-		<factoryclass>com.xyz.datastorage</factoryclass>
+		<factoryclass>com.webbricks.datautility.local.WBLocalAdminDataStorage</factoryclass>
 		<params>
-			<param name="x" value="1" />
-			<param name="y" value="2" />
+			<param name="dbpath" value="~/test" />
 		</params>
 	</wpbadmindatastorage>
 	<wpbcloudfilestorage>
-		<factoryclass>com.xyz.abc</factoryclass>
-	</wpbcloudfilestorage>
-</wpbconfiguration>
-
-<wpbconfiguration name="dev">
-	<wpbcache>
-		<factoryclass>com.xyz.dev</factoryclass>
-	</wpbcache>
-	<wpbadmindatastorage>
-		<factoryclass>com.xyz.datastorage</factoryclass>
+		<factoryclass>com.webbricks.datautility.local.WBLocalCloudFileStorage</factoryclass>
 		<params>
-			<param name="x" value="3" />
-			<param name="y" value="4" />
+			<param name="dataDirectory" value="D:\Tree"/>
+			<param name="basePublicUrlPath" value=""/> 
 		</params>
-	</wpbadmindatastorage>
-	<wpbcloudfilestorage>
-		<factoryclass>com.dev</factoryclass>
 	</wpbcloudfilestorage>
 </wpbconfiguration>
 

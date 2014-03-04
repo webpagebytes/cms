@@ -20,7 +20,10 @@ public class WBLocalWebPagesCache implements WBWebPagesCache {
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try
 		{
-			Refresh();
+			if (dataStorage != null)
+			{
+				Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			

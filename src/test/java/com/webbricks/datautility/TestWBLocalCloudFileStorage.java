@@ -37,7 +37,6 @@ public void setup() throws IOException
 	}
 	file.mkdir();
 	storage = new WBLocalCloudFileStorage(file.getPath(), "");
-	storage.initialize();
 }
 
 @After
@@ -59,7 +58,6 @@ public void test_initialize()
 		file.mkdir();
 	
 		WBLocalCloudFileStorage storage = new WBLocalCloudFileStorage(file.getPath(), "");
-		storage.initialize();
 		assertTrue (storage.isInitialized());
 	} catch (IOException e)
 	{

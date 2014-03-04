@@ -92,7 +92,7 @@ public class TestAdminServlet {
 		try
 		{
 			
-			RequestProcessorFactory testProcessor = EasyMock.createMock(RequestProcessorFactory.class);
+			AdminRequestProcessorFactory testProcessor = EasyMock.createMock(AdminRequestProcessorFactory.class);
 			
 			Capture<String> adminFolderR = new Capture<String>();
 			Capture<String> adminFolderA = new Capture<String>();
@@ -130,7 +130,7 @@ public class TestAdminServlet {
 		try
 		{
 			
-			RequestProcessorFactory testProcessor = EasyMock.createMock(RequestProcessorFactory.class);
+			AdminRequestProcessorFactory testProcessor = EasyMock.createMock(AdminRequestProcessorFactory.class);
 			
 			Capture<String> adminFolderR = new Capture<String>();
 			Capture<String> adminFolderA = new Capture<String>();
@@ -169,7 +169,7 @@ public class TestAdminServlet {
 		try
 		{
 			
-			RequestProcessorFactory testProcessor = EasyMock.createMock(RequestProcessorFactory.class);
+			AdminRequestProcessorFactory testProcessor = EasyMock.createMock(AdminRequestProcessorFactory.class);
 			
 			Capture<String> adminFolderR = new Capture<String>();
 			Capture<String> adminFolderA = new Capture<String>();
@@ -214,7 +214,7 @@ public class TestAdminServlet {
 		try
 		{
 			
-			RequestProcessorFactory testProcessor = EasyMock.createMock(RequestProcessorFactory.class);
+			AdminRequestProcessorFactory testProcessor = EasyMock.createMock(AdminRequestProcessorFactory.class);
 			
 			Capture<String> adminFolderR = new Capture<String>();
 			Capture<String> adminFolderA = new Capture<String>();

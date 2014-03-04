@@ -22,8 +22,8 @@ public void testSax()
 	try
 	{
 	XMLConfigReader reader = new XMLConfigReader();
-	InputStream is = this.getClass().getClassLoader().getResourceAsStream("META-INF/wbconfiguration.xml");
-	WBConfiguration conf = reader.readSax(is);
+	InputStream is = this.getClass().getClassLoader().getResourceAsStream("META-INF/wbconfiguration_sax.xml");
+	WBConfiguration conf = reader.readConfiguration(is);
 	assertTrue(conf != null);
 	assertTrue(conf.getSectionClassFactory(WBConfiguration.SECTION.SECTION_CACHE).equals("com.xyz.cache"));
 	assertTrue(conf.getSectionClassFactory(WBConfiguration.SECTION.SECTION_FILESTORAGE).equals("com.xyz.abc"));

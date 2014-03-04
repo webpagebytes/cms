@@ -1,6 +1,6 @@
 package com.webbricks.cms;
 
-public class DefaultRequestProcessorFactory extends RequestProcessorFactory {
+public class BaseRequestProcessorFactory extends AdminRequestProcessorFactory {
 
 	public ResourceRequestProcessor createResourceRequestProcessor()
 	{

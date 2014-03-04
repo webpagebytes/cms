@@ -15,14 +15,28 @@ import com.webbricks.datautility.AdminDataStorageListener.AdminDataStorageOperat
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webbricks.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
 import com.webbricks.exception.WBIOException;
+import com.webbricks.utility.WBConfiguration;
+import com.webbricks.utility.WBConfiguration.SECTION;
+import com.webbricks.utility.WBConfigurationFactory;
 
 public class WBLocalAdminDataStorage implements AdminDataStorage {
 	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
 	private static final String KEY_FILED_NAME = "key";
 	private Vector<AdminDataStorageListener> storageListeners = new Vector<AdminDataStorageListener>();
 	
-	WBLocalDataStoreDao localDataStorageDao = new WBLocalDataStoreDao("~/test");
+	WBLocalDataStoreDao localDataStorageDao;
 	
+	public WBLocalAdminDataStorage()
+	{
+		WBConfiguration config = WBConfigurationFactory.getConfiguration();
+		Map<String, String> params = config.getSectionParams(SECTION.SECTION_DATASTORAGE);
+		String dbpath = params.get("dbpath");
+		localDataStorageDao = new WBLocalDataStoreDao(dbpath);
+	}
+	public WBLocalAdminDataStorage(String dbPath)
+	{
+		localDataStorageDao = new WBLocalDataStoreDao(dbPath);
+	}
 	private WBLocalDataStoreDao.WBLocalQueryOperator adminOperatorToLocalOperator(AdminQueryOperator adminOperator)
 	{
 		switch (adminOperator)

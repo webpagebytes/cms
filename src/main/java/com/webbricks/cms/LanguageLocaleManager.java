@@ -14,15 +14,15 @@ import com.webbricks.exception.WBReadConfigException;
 
 import java.util.Locale;
 
-public class LocaleManager {
+public class LanguageLocaleManager {
 	protected static String LANGUAGES_CONFIG_FILE = "META-INF/config/langs.csv"; 
 	protected Map<String, Locale> langToLocales;
 	protected Map<String, Locale> langAndCountriesToLocales;
-	private static LocaleManager localeManager = null;
-	public static LocaleManager getInstance() {
+	private static LanguageLocaleManager localeManager = null;
+	public static LanguageLocaleManager getInstance() {
 		if (localeManager == null)
 		{
-			localeManager = new LocaleManager();
+			localeManager = new LanguageLocaleManager();
 			try {
 				localeManager.loadLocalesfromFile(LANGUAGES_CONFIG_FILE);
 			} catch (WBIOException e)

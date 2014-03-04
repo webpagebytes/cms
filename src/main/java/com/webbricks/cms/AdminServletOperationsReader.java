@@ -12,13 +12,13 @@ import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBFileNotFoundException;
 import com.webbricks.exception.WBReadConfigException;
 
-public class OperationsReader {
+public class AdminServletOperationsReader {
 
 	private Map<String, Pair<String, String>> operationsToMethods;
 	private Map<String, Pair<String, String>> wildOperationsToMethods;
 	
 	
-	public OperationsReader()
+	public AdminServletOperationsReader()
 	{
 		
 	}

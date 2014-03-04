@@ -26,7 +26,10 @@ public class WBLocalProjectCache implements WBProjectCache {
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try
 		{
-			Refresh();
+			if (dataStorage != null)
+			{
+				Refresh();
+			}
 		} catch (WBIOException e)
 		{
 			

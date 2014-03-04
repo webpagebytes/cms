@@ -1,5 +1,5 @@
 package com.webbricks.cms;
-import com.webbricks.cms.DefaultRequestProcessorFactory;
+import com.webbricks.cms.BaseRequestProcessorFactory;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -16,7 +16,7 @@ public class TestDefaultRequestProcessorFactory {
 	@Test
 	public void testCreateResourceRequestProcessor()
 	{
-		DefaultRequestProcessorFactory processorFactory = new DefaultRequestProcessorFactory();
+		BaseRequestProcessorFactory processorFactory = new BaseRequestProcessorFactory();
 		ResourceRequestProcessor processor = processorFactory.createResourceRequestProcessor();
 		assertTrue (processor != null);
 	}
@@ -24,7 +24,7 @@ public class TestDefaultRequestProcessorFactory {
 	@Test
 	public void testCreateAjaxRequestProcessor()
 	{
-		DefaultRequestProcessorFactory processorFactory = new DefaultRequestProcessorFactory();
+		BaseRequestProcessorFactory processorFactory = new BaseRequestProcessorFactory();
 		AjaxRequestProcessor processor = processorFactory.createAjaxRequestProcessor();
 		assertTrue (processor != null);
 	}

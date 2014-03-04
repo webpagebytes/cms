@@ -26,7 +26,7 @@ public class TestOperationsReader {
 	{
 		try
 		{
-			OperationsReader operationsReader = new OperationsReader();
+			AdminServletOperationsReader operationsReader = new AdminServletOperationsReader();
 			operationsReader.initialize("dummyfile");
 			assertTrue(false);
 		} 
@@ -45,7 +45,7 @@ public class TestOperationsReader {
 	{
 		try
 		{
-			OperationsReader operationsReader = new OperationsReader();
+			AdminServletOperationsReader operationsReader = new AdminServletOperationsReader();
 			operationsReader.initialize("META-INF/config/ajaxwhitelist.properties");
 			
 			assertTrue(operationsReader.wildOperationToMethod("/export_121201.zip", "GET").compareTo("/export_*.zip") == 0);
@@ -61,7 +61,7 @@ public class TestOperationsReader {
 	{
 		try
 		{
-			OperationsReader operationsReader = new OperationsReader();
+			AdminServletOperationsReader operationsReader = new AdminServletOperationsReader();
 			operationsReader.initialize("META-INF/config/ajaxwhitelist.properties");
 			
 			assertTrue(operationsReader.operationToMethod("/test", "POST").getFirst().compareTo("Test") == 0);
@@ -97,7 +97,7 @@ public class TestOperationsReader {
 	{
 		try
 		{
-			OperationsReader operationsReader = new OperationsReader();
+			AdminServletOperationsReader operationsReader = new AdminServletOperationsReader();
 			operationsReader.initialize("META-INF/config/ajaxwhitelist.properties");
 			assertTrue(operationsReader.operationToMethod("/login", "POST") == null);
 		} 
@@ -112,7 +112,7 @@ public class TestOperationsReader {
 	{
 		try
 		{
-			OperationsReader operationsReader = new OperationsReader();
+			AdminServletOperationsReader operationsReader = new AdminServletOperationsReader();
 			operationsReader.initialize("META-INF/config/ajaxwhitelist2.properties");
 			assertTrue(operationsReader.operationToMethod("/resource/{id}", "POST") == null);
 		} 
