@@ -1,0 +1,35 @@
+<xml>
+<activeconfiguration>prod</activeconfiguration>
+<wpbconfiguration name="prod">
+	<wpbcache>
+		<factoryclass>com.xyz.cache</factoryclass>
+	</wpbcache>
+	<wpbadmindatastorage>
+		<factoryclass>com.xyz.datastorage</factoryclass>
+		<params>
+			<param name="x" value="1" />
+			<param name="y" value="2" />
+		</params>
+	</wpbadmindatastorage>
+	<wpbcloudfilestorage>
+		<factoryclass>com.xyz.abc</factoryclass>
+	</wpbcloudfilestorage>
+</wpbconfiguration>
+
+<wpbconfiguration name="dev">
+	<wpbcache>
+		<factoryclass>com.xyz.dev</factoryclass>
+	</wpbcache>
+	<wpbadmindatastorage>
+		<factoryclass>com.xyz.datastorage</factoryclass>
+		<params>
+			<param name="x" value="3" />
+			<param name="y" value="4" />
+		</params>
+	</wpbadmindatastorage>
+	<wpbcloudfilestorage>
+		<factoryclass>com.dev</factoryclass>
+	</wpbcloudfilestorage>
+</wpbconfiguration>
+
+</xml>
