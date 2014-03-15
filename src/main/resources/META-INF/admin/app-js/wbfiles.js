@@ -89,8 +89,6 @@ $().ready( function () {
 	$('#wbAddFileBtn').click( function (e) {
 		e.preventDefault();
 		$('#wbAddFileForm').wbObjectManager().resetFields();
-		$('#wbAddFileForm')[0].setAttribute('action', "./wbfileupload");
-		$('#wbAddFileForm')[0].setAttribute('method', "post");
 		$('#wbAddFileModal').modal('show');			
 
 	});
@@ -99,15 +97,17 @@ $().ready( function () {
 		$('#wbAddFileModal').modal('hide');
 		window.location.reload();			
 	}
-	var fErrorAdd = function (errors, data) {
-		$('#wbFileForm').wbObjectManager().setErrors(errors);
+	var fErrorAdd = function (data) {
+		
+		//$('#wbFileForm').wbObjectManager().setErrors(errors);
 	}
 
+	$('#wbAddFileForm').ajaxForm({ success: fSuccessAdd, error: fErrorAdd });
+
 	$('.wbSaveAddFileBtnClass').click( function (e) {
-		e.preventDefault();
 		var errors = $('#wbAddFileForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
-		if ($.isEmptyObject(errors)) {
-			$('#wbAddFileForm').submit();
+		if (! $.isEmptyObject(errors)) {
+			e.preventDefault();
 		}
 	});
 

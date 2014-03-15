@@ -18,6 +18,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import com.webbricks.exception.WBException;
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LanguageLocaleManager.class})
 public class TestLocaleManager {
@@ -61,23 +63,6 @@ public void test_loadLocalesfromFile_ok()
 }
 
 @Test
-public void test_getInstance_OK()
-{
-	try
-	{
-		Whitebox.setInternalState(LanguageLocaleManager.class, "localeManager", (LanguageLocaleManager)null);
-		
-		LanguageLocaleManager manager = LanguageLocaleManager.getInstance();
-		assertTrue (manager != null);
-		assertTrue (manager.getSupportedLanguages() != null);
-	} catch (Exception e)
-	{
-		assertTrue (e.getMessage(), false);
-		throw e;
-	}
-}
-
-@Test
 public void test_getInstance_fail()
 {
 	try
@@ -87,7 +72,8 @@ public void test_getInstance_fail()
 		Whitebox.setInternalState(LanguageLocaleManager.class, "localeManager", (LanguageLocaleManager)null);
 		LanguageLocaleManager manager = LanguageLocaleManager.getInstance();
 		assertTrue (manager == null);
-	} catch (Exception e)
+	} 
+	catch (Exception e)
 	{
 		assertTrue (false);
 	}

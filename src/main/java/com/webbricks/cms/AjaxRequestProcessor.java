@@ -133,6 +133,7 @@ public class AjaxRequestProcessor {
 						req.setAttribute("key", genericUri.getSecond());
 					}
 					method.invoke(controller, req, resp, reqUri);
+					return;
 				}
 			}
 			if (!bFound)

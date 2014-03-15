@@ -43,5 +43,8 @@ public class WBErrors {
 	public static final String WB_BAD_QUERY_PARAM = "WB_BAD_QUERY_PARAM";
 	public static final String WB_INVALID_KEY = "WB_INVALID_KEY";
 	
+	public static final String WB_CANNOT_IMPORT_PROJECT = "WB_CANNOT_IMPORT_PROJECT";
+	public static final String WB_CANNOT_EXPORT_PROJECT = "WB_CANNOT_EXPORT_PROJECT";
+	
 
 }

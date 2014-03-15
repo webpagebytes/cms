@@ -3,49 +3,56 @@ package com.webbricks.controllers;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import com.webbricks.datautility.AdminDataStorage;
-import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.FlatStorageImporterExporter;
-import com.webbricks.datautility.WBBlobHandler;
-import com.webbricks.datautility.WBBlobInfo;
-import com.webbricks.datautility.WBGaeBlobHandler;
+import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.exception.WBException;
-import com.webbricks.exception.WBIOException;
 import com.webbricks.utility.HttpServletToolbox;
 
 public class WBExportImportController extends WBController {
-	private static final String UPLOAD_RETURN_URL = "/wbimportupload";
-	
-	AdminDataStorage adminStorage;
-	WBBlobHandler blobHandler;
-	HttpServletToolbox httpServletToolbox;
-	FlatStorageImporterExporter storageExporter;
+	private HttpServletToolbox httpServletToolbox;
+	private FlatStorageImporterExporter storageExporter;
+	private WBJSONToFromObjectConverter jsonObjectConverter;
 	
 	public WBExportImportController()
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
 		httpServletToolbox = new HttpServletToolbox();
-		blobHandler = new WBGaeBlobHandler();
 		storageExporter = new FlatStorageImporterExporter();
-
+		jsonObjectConverter = new WBJSONToFromObjectConverter();
+		
 	}
 
-	public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
-		{	
-			JSONObject obj = new JSONObject();
-			obj.put("url", blobHandler.getUploadUrl(getAdminUriPart() + UPLOAD_RETURN_URL));
-			httpServletToolbox.writeBodyResponseAsJson(response, obj, null);		
+		{
+			  ServletFileUpload upload = new ServletFileUpload();
+		      
+		      FileItemIterator iterator = upload.getItemIterator(request);
+		      while (iterator.hasNext()) {
+		        FileItemStream item = iterator.next(); 
+		        if (!item.isFormField() && item.getFieldName().equals("file")) {
+		          InputStream is = item.openStream();
+		          storageExporter.importFromZip(is);		  		
+		          org.json.JSONObject returnJson = new org.json.JSONObject();
+		          returnJson.put(DATA, "");			
+		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+		        }
+		      }		
 		} catch (Exception e)
 		{
-			throw new WBIOException(e.getMessage());
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANNOT_IMPORT_PROJECT);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
@@ -60,27 +67,10 @@ public class WBExportImportController extends WBController {
 			
 		} catch (IOException e)
 		{
-			throw new WBException(e.getMessage());
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANNOT_EXPORT_PROJECT);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
-			
-	public void importUpload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
-	{
-		WBBlobInfo blobInfo = blobHandler.storeBlob(request);
-		InputStream is = blobHandler.getBlobData(blobInfo.getBlobKey());
-		storageExporter.importFromZip(is);
-		
-		String referer = request.getHeader("Referer");
-		if (blobInfo != null)
-		{
-			blobHandler.deleteBlob(blobInfo.getBlobKey());
-		}
-		if (referer!= null)
-		{
-			response.addHeader("Location", referer);
-			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-		}
-
-	}
-	
+				
 }

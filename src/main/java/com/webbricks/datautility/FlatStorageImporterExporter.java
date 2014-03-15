@@ -1,6 +1,7 @@
 package com.webbricks.datautility;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,8 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.io.IOUtils;
 
 import com.webbricks.cmsdata.WBArticle;
 import com.webbricks.cmsdata.WBExporter;
@@ -50,8 +53,9 @@ public class FlatStorageImporterExporter {
 	private WBExporter exporter = new WBExporter();
 	private WBImporter importer = new WBImporter();
 	
-	AdminDataStorage dataStorage = new GaeAdminDataStorage();
-	WBBlobHandler blobhandler = new WBGaeBlobHandler();
+	private AdminDataStorage dataStorage = AdminDataStorageFactory.getInstance();
+	private WBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+	
 	
 	private void exportToXMLFormat(Map<String, Object> props, OutputStream os) throws IOException
 	{
@@ -266,21 +270,30 @@ public class FlatStorageImporterExporter {
 
 	public void importFileContent(ZipInputStream zis, String path) throws WBIOException
 	{
-		String[] parts = path.split("/");
-		String externalKey = parts.length > 3 ? parts[1] : "";
-		List<WBFile> files = dataStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
-		if (files.size() == 1)
+		try
 		{
-			WBBlobInfo blobInfo = blobhandler.storeBlob(zis);
-			WBFile file = files.get(0);
-			file.setBlobKey(blobInfo.getBlobKey());
-			file.setAdditionalData(blobInfo.getData());
-			file.setSize(blobInfo.getSize());
-			file.setHash(blobInfo.getHash());
-			dataStorage.update(file);
-		} else
+			String[] parts = path.split("/");
+			String externalKey = parts.length > 3 ? parts[1] : "";
+			List<WBFile> files = dataStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			if (files.size() >= 1)
+			{
+				// just take the first file, normally there should be a single file
+				WBFile file = files.get(0);
+				String cloudPath = dataStorage.getUniqueId() + "/" + file.getFileName();
+				WBCloudFile cloudFile = new WBCloudFile("public", cloudPath);
+				cloudFileStorage.storeFile(zis, cloudFile);
+			    WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+		        file.setBlobKey(cloudFile.getPath());
+		        file.setHash(fileInfo.getCrc32());
+		        file.setSize(fileInfo.getSize());     
+				dataStorage.update(file);
+			} else
+			{
+				log.log(Level.SEVERE, "Cannot import image for " + path);
+			}
+		} catch (IOException e)
 		{
-			log.log(Level.SEVERE, "Cannot find image for " + path);
+			log.log(Level.SEVERE, e.getMessage(), e);						
 		}
 	}	
 	
@@ -670,12 +683,10 @@ public class FlatStorageImporterExporter {
 				try
 				{
 					String filePath = contentPath + file.getFileName();
-					InputStream is = blobhandler.getBlobData(file.getBlobKey());
+					WBCloudFile cloudFile = new WBCloudFile("public", file.getBlobKey());
+					InputStream is = cloudFileStorage.getFileContent(cloudFile);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					byte buffer[] = new byte[4096];
-					while (is.read(buffer) != -1) {
-						bos.write(buffer);
-					}
+					IOUtils.copy(is, bos);
 					bos.flush();
 					byte[] content = bos.toByteArray();
 					ZipEntry fileZe = new ZipEntry(filePath);

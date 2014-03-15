@@ -189,6 +189,9 @@ public class WBImporter {
 			file.setName(properties.get("name").toString().trim());
 		}
 
+		file.setSize(0L);
+		file.setBlobKey("");
+		file.setHash(0L);
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;
 		try
@@ -200,16 +203,6 @@ public class WBImporter {
 		}
 		file.setLastModified(new Date(lastModified));
 
-		String sizeStr = (String) properties.get("size");
-		Long size = 0L;
-		try
-		{
-			size = sizeStr != null ?  Long.valueOf(sizeStr): 0;
-		} catch (NumberFormatException e)
-		{
-			
-		}
-		file.setSize(size);
 		return file;
 	}
 
@@ -268,6 +261,17 @@ public class WBImporter {
 		else
 			project.setSupportedLanguages("");
 		
+		String lastModifiedStr = (String) properties.get("lastModified");
+		Long lastModified = 0L;
+		try
+		{
+			lastModified = lastModifiedStr != null ? Long.valueOf(lastModifiedStr): 0;
+		} catch (NumberFormatException e)
+		{
+			
+		}
+		project.setLastModified(new Date(lastModified));
+
 		project.setKey(WBProject.PROJECT_KEY);
 		return project;
 	}
@@ -329,6 +333,13 @@ public class WBImporter {
 		if (properties.get("lcid") != null)
 		{
 			message.setLcid(properties.get("lcid").toString().trim());
+		}
+		if (properties.get("isTranslated") != null)
+		{
+			message.setIsTranslated( properties.get("isTranslated").equals("1") ? 1: 0);
+		} else
+		{
+			message.setIsTranslated(0);
 		}
 	
 		String lastModifiedStr = (String) properties.get("lastModified");

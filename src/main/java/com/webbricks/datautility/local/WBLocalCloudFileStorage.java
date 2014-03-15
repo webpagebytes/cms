@@ -210,7 +210,6 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			md.update(buffer, 0, count);
 		}
 		
-		IOUtils.closeQuietly(is);
 		IOUtils.closeQuietly(fos);
 		
 		String metaPath = getLocalFullMetaPath(file);

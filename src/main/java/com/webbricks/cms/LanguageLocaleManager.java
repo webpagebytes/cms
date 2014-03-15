@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBFileNotFoundException;
 import com.webbricks.exception.WBIOException;
 import com.webbricks.exception.WBReadConfigException;

@@ -32,6 +32,8 @@ public class ContentTypeDetector {
 		mapTypes.put(".bz", "application/x-bzip");
 		mapTypes.put(".cer", "application/pkix-cert");
 		mapTypes.put(".cab", "application/vnd.ms-cab-compressed");	
+		mapTypes.put(".wmv", "video/x-ms-wmv");
+		mapTypes.put(".mp4", "video/mp4");
 	};
 	
 	public static String contentTypeToShortType(String contentType)

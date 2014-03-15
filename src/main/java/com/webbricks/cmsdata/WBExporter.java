@@ -58,6 +58,12 @@ public class WBExporter {
 			properties.put("supportedLanguages", project.getSupportedLanguages());
 		else
 			properties.put("supportedLanguages", "");
+
+		if (project.getLastModified() != null)
+			properties.put("lastModified", new Long(project.getLastModified().getTime()).toString());
+		else
+			properties.put("lastModified", "0");
+
 	}
 
 	public void export(WBParameter parameter, Map<String, Object> properties)

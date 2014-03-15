@@ -2,6 +2,7 @@ package com.webbricks.controllers;
 
 import java.io.InputStream;
 
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,6 @@ import com.webbricks.cmsdata.WBUri;
 import com.webbricks.datautility.AdminDataStorage;
 import com.webbricks.datautility.AdminDataStorageFactory;
 import com.webbricks.datautility.AdminDataStorageListener;
-import com.webbricks.datautility.WBBlobHandler;
 import com.webbricks.datautility.WBCloudFile;
 import com.webbricks.datautility.WBCloudFileInfo;
 import com.webbricks.datautility.WBCloudFileStorage;
@@ -41,15 +41,10 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	private HttpServletToolbox httpServletToolbox;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
-	private WBBlobHandler blobHandler;
 	private WBCloudFileStorage cloudFileStorage;
 	private WBFileValidator validator;
-	private WBFilesCache imageCache;
-	private static final String IMAGE_CONTENT_NAME = "image";
-	private static final String VIDEO_CONTENT_NAME = "video";
-	private static final String AUDIO_CONTENT_NAME = "audio";
-	private static final String APP_CONTENT_NAME   = "application";
-
+	private WBFilesCache filesCache;
+	
 	public WBFileControllerEx()
 	{
 		httpServletToolbox = new HttpServletToolbox();
@@ -58,7 +53,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
-		imageCache = wbCacheFactory.createWBImagesCacheInstance();	
+		filesCache = wbCacheFactory.createWBImagesCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
 	
@@ -68,7 +63,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			if (t instanceof WBFile)
 			{
-				imageCache.Refresh();
+				filesCache.Refresh();
 			}
 		} catch (WBIOException e)
 		{
@@ -105,7 +100,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
-		         // wbFile.setAdditionalData(blobInfo.getData());
 		          
 		          WBFile addedFile = adminStorage.add(wbFile);
 		          
@@ -296,13 +290,17 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
+			WBFile wbfile = adminStorage.get(key, WBFile.class);
+			WBCloudFile cloudFile = new WBCloudFile("public", wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
-			IOUtils.copy(is, response.getOutputStream());
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbimage.getFileName() + "\"");
-			response.setContentType(wbimage.getContentType());
+			response.setContentType(wbfile.getContentType());			
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbfile.getFileName() + "\"");
+			response.setContentLength(wbfile.getSize().intValue());
+			OutputStream os = response.getOutputStream();
+			IOUtils.copy(is, os);
+			os.flush();
 			IOUtils.closeQuietly(is);
+			IOUtils.closeQuietly(os);
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -315,13 +313,16 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbimage = adminStorage.get(key, WBFile.class);
-			WBCloudFile cloudFile = new WBCloudFile("public", wbimage.getBlobKey());
+			WBFile wbfile = adminStorage.get(key, WBFile.class);
+			WBCloudFile cloudFile = new WBCloudFile("public", wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
-			IOUtils.copy(is, response.getOutputStream());
-			response.setContentType(wbimage.getContentType());
+			response.setContentType(wbfile.getContentType());
+			response.setContentLength(wbfile.getSize().intValue());
+			OutputStream os = response.getOutputStream();
+			IOUtils.copy(is, os);
+			os.flush();
 			IOUtils.closeQuietly(is);
-			
+			IOUtils.closeQuietly(os);
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -330,20 +331,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 
 	public void serveImage(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
-		int size = 0;
-		String blobKey = request.getParameter("blobKey");
-		String sizeStr = request.getParameter("size");
-		if (sizeStr != null && sizeStr.length() > 0)
-		{
-			try
-			{
-				size = Integer.valueOf(sizeStr);
-			} catch (NumberFormatException e)
-			{
-				size = 0;
-			}			
-		}
-		blobHandler.serveBlobAsImage(blobKey, size, response);
 	}
 
 }
