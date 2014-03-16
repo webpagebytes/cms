@@ -40,9 +40,17 @@ public class WBFile implements Serializable {
 	
 	@AdminFieldStore
 	private Long hash;
-	
+
 	@AdminFieldStore
-	private String additionalData;
+	private String publicUrl;
+
+	@AdminFieldStore
+	private String thumbnailPublicUrl;
+
+	@AdminFieldStore
+	private String thumbnailBlobKey;
+
+	
 	
 	public Long getKey() {
 		return key;
@@ -132,14 +140,29 @@ public class WBFile implements Serializable {
 		this.hash = hash;
 	}
 
-	public String getAdditionalData() {
-		return additionalData;
+	public String getPublicUrl() {
+		return publicUrl;
 	}
 
-	public void setAdditionalData(String additionalData) {
-		this.additionalData = additionalData;
+	public void setPublicUrl(String publicUrl) {
+		this.publicUrl = publicUrl;
 	}
-	
-	
-	
+
+	public String getThumbnailPublicUrl() {
+		return thumbnailPublicUrl;
+	}
+
+	public void setThumbnailPublicUrl(String thumbnailPublicUrl) {
+		this.thumbnailPublicUrl = thumbnailPublicUrl;
+	}
+
+	public String getThumbnailBlobKey() {
+		return thumbnailBlobKey;
+	}
+
+	public void setThumbnailBlobKey(String thumbnailBlobKey) {
+		this.thumbnailBlobKey = thumbnailBlobKey;
+	}
+
+
 }

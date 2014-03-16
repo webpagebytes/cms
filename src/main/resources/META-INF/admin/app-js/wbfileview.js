@@ -30,6 +30,7 @@ $().ready( function () {
 								});
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 
+	$('#collapseOne').collapse();
 	$('#wbudadjustedContentType').typeahead({ items: 4,
 											  source:[ "image/jpeg", "image/png", "image/bmp", "image/gif", "image/jpg", "image/tiff", 
 	                                                   "video/mpeg", "video/quicktime",
@@ -111,7 +112,8 @@ $().ready( function () {
 
 		switch (data['shortType']) {
 			case "image":
-				$('.wbimagecontent').html("");
+				var imgHtml = "<img src='{0}'>".format(data['publicUrl']);
+				$('.wbimagecontent').html(imgHtml);
 				break;
 			case 'video':
 				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['key']));

@@ -59,65 +59,80 @@
 									</div>
 								</div>
 								</form>
-								<form class="form-horizontal">
-									<div class="control-group">
-										<label for="externalKey" class="control-label wblabel-left">External Key</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="externalKey" id="wbfileexternalKey" readonly>
-											<input data-clipboard-target="wbfileexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="name" class="control-label wblabel-left">Name</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="name" id="wbfilename" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="fileName" class="control-label wblabel-left">File Name</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="fileName" id="wbfilefileName" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="size" class="control-label wblabel-left">Size (bytes)</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="size" id="wbfilesize" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="hash" class="control-label wblabel-left">CRC32 hash</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="hash" id="wbfilehash" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="contentType" class="control-label wblabel-left">Content type</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="contentType" id="wbfilecontentType" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="adjustedContentType" class="control-label wblabel-left">Adjusted content type</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="hash" id="wbfileadjustedContentType" readonly>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="blobKey" class="control-label wblabel-left">Blob key</label>
-										<div class="controls">
-											<textarea class="wb-input-xlarge" type="text" name="blobKey" id="wbfileblobKey" readonly> </textarea>
-										</div>
-									</div>
-									<div class="control-group">
-										<label for="lastModified" class="control-label wblabel-left">Last modified</label>
-										<div class="controls">
-											<input class="wb-input-xlarge" type="text" name="hash" id="wbfilelastModified_" readonly>
-										</div>
-									</div>
-									
-								</form>
-							</div>
+								
+								<div class="accordion" id="accordionFileDetails">
+  									<div class="accordion-group">
+    									<div class="accordion-heading">
+      										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+        										File details...
+      										</a>
+   										 </div>
+    									<div id="collapseOne" class="accordion-body collapse in">
+      										<div class="accordion-inner">
+        
+											<form class="form-horizontal">
+												<div class="control-group">
+													<label for="externalKey" class="control-label wblabel-left">External Key</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="externalKey" id="wbfileexternalKey" readonly>
+														<input data-clipboard-target="wbfileexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="name" class="control-label wblabel-left">Name</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="name" id="wbfilename" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="fileName" class="control-label wblabel-left">File Name</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="fileName" id="wbfilefileName" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="size" class="control-label wblabel-left">Size (bytes)</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="size" id="wbfilesize" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="hash" class="control-label wblabel-left">CRC32 hash</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilehash" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="contentType" class="control-label wblabel-left">Content type</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="contentType" id="wbfilecontentType" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="adjustedContentType" class="control-label wblabel-left">Adjusted content type</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="hash" id="wbfileadjustedContentType" readonly>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="blobKey" class="control-label wblabel-left">Blob key</label>
+													<div class="controls">
+														<textarea class="wb-input-xlarge" type="text" name="blobKey" id="wbfileblobKey" readonly> </textarea>
+													</div>
+												</div>
+												<div class="control-group">
+													<label for="lastModified" class="control-label wblabel-left">Last modified</label>
+													<div class="controls">
+														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilelastModified_" readonly>
+													</div>
+												</div>
+												
+											</form>
+											</div>
+    									</div>
+  									</div>
+								</div>
+					</div>
 				</div>
 				<div class="span5">
 					<div class="well marginv">

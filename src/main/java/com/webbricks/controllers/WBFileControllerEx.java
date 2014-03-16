@@ -99,7 +99,8 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		        	  wbFile = new WBFile();
 		        	  wbFile.setExternalKey(adminStorage.getUniqueId());    			        
 		          }
-		          String filePath = adminStorage.getUniqueId() + "/" + item.getName();
+		          String uniqueId = adminStorage.getUniqueId();
+		          String filePath = uniqueId + "/" + item.getName();
 		          WBCloudFile cloudFile = new WBCloudFile("public", filePath);
 		          cloudFileStorage.storeFile(stream, cloudFile);
 		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
@@ -114,6 +115,14 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
+		          wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
+		          
+		          //String thumbnailfilePath = uniqueId + "/thumbnail/" + item.getName();
+		          //WBCloudFile thumbnailCloudFile = new WBCloudFile("public", thumbnailfilePath);
+		          //cloudFileStorage.storeFile(stream, thumbnailCloudFile);
+		          //cloudFileStorage.updateContentType(thumbnailCloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
+		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
+		          wbFile.setThumbnailBlobKey(cloudFile.getPath());
 		          
 		          if (wbFile.getKey() != null)
 		          {
@@ -349,8 +358,5 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		}
 	}
 
-	public void serveImage(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
-	{
-	}
 
 }
