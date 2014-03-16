@@ -28,12 +28,13 @@
 			var tempThis = this;
 			$.each( elements, function (index, value) {
 				var key = $(value).attr('id').substring( tempThis.getOptions().fieldsPrefix.length );
-				if (key in object) {
 					var htmlField = ""; 
 					if (tempThis.getOptions().customHandler) {
 						htmlField = (tempThis.getOptions().customHandler)(key, object);
-					} else {					
-						htmlField = escapehtml(object[key]);
+					} else {		
+						if (key in object) {
+							htmlField = escapehtml(object[key]);
+						}
 					}
 					switch (value.type) {
 					case 'text':
@@ -47,8 +48,7 @@
 						break;
 					default:
 						$(value).html(htmlField);
-					}
-				}				
+					}				
 			})
 		}
 	};

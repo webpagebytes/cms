@@ -97,7 +97,7 @@ public class PublicContentServlet extends HttpServlet {
 			
 		} catch (Exception e)
 		{
-			log.log(Level.SEVERE, "ERROR: ", e);
+			log.log(Level.SEVERE, "ERROR: {0}", e);
 			throw new ServletException(e);
 		}
     }
@@ -125,7 +125,7 @@ public class PublicContentServlet extends HttpServlet {
 				urlMatcher.initialize(allUris, cacheInstances.getWBUriCache().getCacheFingerPrint());
 			} catch (WBIOException e)
 			{
-				log.log(Level.SEVERE, "Could not reinitialize the URL matcher ", e);
+				log.log(Level.SEVERE, "Could not reinitialize the URL matcher {0} ", e);
 				// do not fail as some urls may still work
 			}
 		}

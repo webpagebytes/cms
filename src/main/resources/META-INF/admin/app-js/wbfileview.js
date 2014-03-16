@@ -63,7 +63,11 @@ $().ready( function () {
 		} else
 		if (fieldId == 'lastModified') {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
+		} else
+		if (fieldId == 'lastModified_') {
+			return escapehtml( Date.toFormatString(record['lastModified'], "today|dd/mm/yyyy hh:mm"));
 		}
+
 		return escapehtml(record[fieldId]);
 	}
 	
@@ -76,46 +80,53 @@ $().ready( function () {
 		} 
 	}
 
-	$('#wbfilestable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
+	$('#wbUrlsTable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
 		 keyName: "key",
 		 tableBaseClass: "table table-stripped table-bordered table-color-header",
 		 paginationBaseClass: "pagination",
 		 noLinesContent: "<tr> <td colspan='1'>There are no site urls serving this file. </td></tr>"
 		});
 
+	var fSuccessUploadFile = function(data) {
+		$('#wbModalFileUploadUpdate').modal('hide');
+		window.location.reload();
+	}
+	
+	var fErrorUploadFile = function(data) {
+		alert(data);
+	}
+	
+	$('#wbuFileUploadUpdateForm').ajaxForm({ success: fSuccessUploadFile, error: fErrorUploadFile });
+
 	var fileKey = getURLParameter('key'); 
 	var fileBlobKey = "";
+	
+	$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));
 	
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
-		$('#wbfilestable').wbSimpleTable().setRows(payload.additional_data.uri_links);
+		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 
 		switch (data['shortType']) {
 			case "image":
-				$('.wbImageContentType').removeClass('wbhidden');
-				fileBlobKey = data['blobKey'];
-				getServingUrl(0);
+				$('.wbimagecontent').html("");
 				break;
 			case 'video':
 				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['key']));
-				$('.wbVideoContentType').removeClass('wbhidden');				
 				$("#wbvideocontent").html(videoHtml);
-				
 				var player = new MediaElementPlayer('#idvideocontent');
 				player.load();
 				break;
 			case 'audio':
 				var audioHtml = "<audio id='idaudiocontent' controls> <source type='{0}' src='./wbresource/{1}'> Your browser does not support the audio element. </audio> ".format(escapehtml(data['contentType']), encodeURI(data['key']));
-				$('.wbAudioContentType').removeClass('wbhidden');
 				$('.wbaudiocontent').html(audioHtml);
 				var player = new MediaElementPlayer('#idaudiocontent');
 				player.load();
 				
 				break;
 			case 'application':
-				$('.wbApplicationContentType').removeClass('wbhidden');
 				$('.wbapplicationcontent').html("");
 				break;
 		}
@@ -132,23 +143,9 @@ $().ready( function () {
 											 functionError: fErrorGetFile
 											} );	
 											
-	var fSuccessGetServeingUrl = function (data, clientDataValue) {
-		$('#wbfileblobKey').html('<img src="' + encodeURI(data['url']) + '">');
-	}
-	var fErrorGetServingUrl = function (errors, data) {
-		alert(data);
-	};
-											
-	var getServingUrl =  function (imageSize) {
-		var ajaxUrl = "./wbservefile?blobKey=" + encodeURIComponent(fileBlobKey);
-		var clientDataValue = 0;
-		if (imageSize != Number.NaN && imageSize > 0) {
-			ajaxUrl += ('&size=' + encodeURIComponent(imageSize));
-			clientDataValue = imageSize;
-		}
-		$('#wbfileblobKey').html('<img src="' + encodeURI(ajaxUrl) + '">');
-	};
 	
+											
+
 	var fSuccessFileUpdate = function (data) {
 		$('#wbModalFileDataUpdate').modal('hide');
 		window.location.reload();
@@ -157,18 +154,6 @@ $().ready( function () {
 	var fErrorFileUpdate = function (errors, data) {
 		alert(data);
 	};
-	
-	$('.wbGetServingUrlBtnClass').click ( function (e) {
-		e.preventDefault();
-		var size = $('.wbImageSizeInputClass').val();
-		size = parseInt(size);
-		if (size != Number.NaN && size>0){
-			getServingUrl(size);
-		} else {
-			$('.wbImageSizeInputClass').val("");
-		}
-		
-	});
 	
 	$('.wbFileDataSaveBtnClass').click ( function (e) {
 		e.preventDefault();
@@ -208,29 +193,13 @@ $().ready( function () {
 	$('.wbUpdateUploadFileBtnClass').click ( function (e) {
 		e.preventDefault();
 		$('#wbuFileUploadUpdateForm').wbObjectManager().resetFields();
-		$('#wbuFileUploadUpdateForm').wbCommunicationManager().ajax ( { url: "./wbuploaddata",
-												 httpOperation:"GET", 
-												 payloadData:"",
-												 functionSuccess: fSuccessGetUpload,
-												 functionError: fErrorGetUpload
-												 } );	
+		$('#wbModalFileUploadUpdate').modal('show');
 	});
 		
-	var fSuccessGetUpload = function ( data ) {
-		$('#wbuFileUploadUpdateForm')[0].setAttribute('action', data.url);
-		$('#wbuFileUploadUpdateForm')[0].setAttribute('method', "post");
-		$('#wbuukey').val(fileKey);
-		$('#wbModalFileUploadUpdate').modal('show');			
-	}
-	var fErrorGetUpload = function (errors, data) {
-		alert(data);
-	}
-
 	$('.fileUploadUpdateSave').click( function (e) {
-		e.preventDefault();
 		var errors = $('#wbuFileUploadUpdateForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
-		if ($.isEmptyObject(errors)) {
-			$('#wbuFileUploadUpdateForm').submit();
+		if (! $.isEmptyObject(errors)) {
+			e.preventDefault();
 		}
 	});
 

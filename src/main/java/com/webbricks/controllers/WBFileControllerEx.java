@@ -82,9 +82,23 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		        FileItemStream item = iterator.next(); 
 		        if (!item.isFormField() && item.getFieldName().equals("file")) {
 		          InputStream stream = item.openStream();
-		          
-		          WBFile wbFile = new WBFile();
-		          wbFile.setExternalKey(adminStorage.getUniqueId());    
+		          WBFile wbFile = null;
+		          if (request.getAttribute("key") != null)
+		          {
+		        	  // this is an upload as update for an existing file
+		        	  Long key = Long.valueOf((String)request.getAttribute("key"));
+		        	  wbFile = adminStorage.get(key, WBFile.class);
+		        	  
+		        	  //old file need to be deleted from cloud
+		              String oldFilePath = wbFile.getBlobKey();
+			          WBCloudFile oldCloudFile = new WBCloudFile("public", oldFilePath);
+			          cloudFileStorage.deleteFile(oldCloudFile);
+		          } else
+		          {
+		        	  // this is a new upload
+		        	  wbFile = new WBFile();
+		        	  wbFile.setExternalKey(adminStorage.getUniqueId());    			        
+		          }
 		          String filePath = adminStorage.getUniqueId() + "/" + item.getName();
 		          WBCloudFile cloudFile = new WBCloudFile("public", filePath);
 		          cloudFileStorage.storeFile(stream, cloudFile);
@@ -101,10 +115,16 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
 		          
-		          WBFile addedFile = adminStorage.add(wbFile);
+		          if (wbFile.getKey() != null)
+		          {
+		        	  wbFile = adminStorage.update(wbFile);
+		          } else
+		          {
+		        	  wbFile = adminStorage.add(wbFile);
+		          }
 		          
 				org.json.JSONObject returnJson = new org.json.JSONObject();
-				returnJson.put(DATA, jsonObjectConverter.JSONFromObject(addedFile));			
+				returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));			
 				httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 		        }
 		      }		

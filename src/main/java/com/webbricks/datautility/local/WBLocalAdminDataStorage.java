@@ -77,7 +77,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "delete record %s", recordid);
+			log.log(Level.INFO, "delete records {0}", recordid);
 			localDataStorageDao.deleteRecord(dataClass, "key", recordid);			
 			Object obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, "key", recordid);
@@ -93,7 +93,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "delete record %d", recordid);
+			log.log(Level.INFO, "delete records {0}", recordid);
 			localDataStorageDao.deleteRecord(dataClass, "key", recordid);
 			Object obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, "key", recordid);
@@ -108,7 +108,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "delete records with property condition %s ", property);		
+			log.log(Level.INFO, "delete records with property condition {0}", property);		
 			Set<String> properties = new HashSet<String>();
 			properties.add(property);
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
@@ -128,7 +128,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "get all record %s", dataClass.getSimpleName());			
+			log.log(Level.INFO, "get all records {0}", dataClass.getSimpleName());			
 			List<T> result = (List<T>) localDataStorageDao.getAllRecords(dataClass);
 			return result;
 		} catch (Exception e)
@@ -142,7 +142,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		try
 		{
 			Object [] logObjects = { dataClass.getSimpleName(), property};
-			log.log(Level.INFO, "get all record %s with condition on property %s", logObjects);			
+			log.log(Level.INFO, "get all records {0} with condition on property {1}", logObjects);			
 			
 			Set<String> properties = new HashSet();
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
@@ -160,7 +160,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "add record for class %s", t.getClass().getSimpleName());			
+			log.log(Level.INFO, "add record for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecord(t, KEY_FILED_NAME);			
 			notifyOperation(t, AdminDataStorageOperation.CREATE);			
 			return res;
@@ -174,7 +174,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "add record with key for class %s", t.getClass().getSimpleName());			
+			log.log(Level.INFO, "add record with key for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
 			notifyOperation(t, AdminDataStorageOperation.CREATE);			
 			return res;
@@ -188,7 +188,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "get record for key %d", dataid);			
+			log.log(Level.INFO, "get record for key {0}", dataid);			
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
@@ -200,7 +200,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "get record for key %s", dataid);
+			log.log(Level.INFO, "get record for key {0}", dataid);
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
@@ -212,7 +212,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	{
 		try
 		{
-			log.log(Level.INFO, "update record for class %s", t.getClass().getSimpleName());
+			log.log(Level.INFO, "update record for class {0}", t.getClass().getSimpleName());
 			localDataStorageDao.updateRecord(t, KEY_FILED_NAME);
 			notifyOperation(t, AdminDataStorageOperation.UPDATE);			
 			return t;
