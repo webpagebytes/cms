@@ -26,6 +26,8 @@ public class XMLConfigContentHandler extends DefaultHandler {
 			currentSection = WBConfiguration.SECTION.SECTION_DATASTORAGE;
 		} else if (qName.equals("wpbcloudfilestorage")) {
 			currentSection = WBConfiguration.SECTION.SECTION_FILESTORAGE;
+		} else if (qName.equals("wpbimageprocessor")) {
+			currentSection = WBConfiguration.SECTION.SECTION_IMAGEPROCESSOR;
 		} else if (qName.equals("wpbconfiguration"))
 		{
 			if (activeConfiguration.length()>0 && attributes.getValue("name")!=null && attributes.getValue("name").equals(activeConfiguration))

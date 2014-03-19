@@ -12,7 +12,7 @@ public class WBCloudFileStorageFactory {
 	private WBCloudFileStorageFactory() {}
 	private static final Object lock = new Object();
 	
-	public static synchronized WBCloudFileStorage getInstance()
+	public static WBCloudFileStorage getInstance()
 	{
 		if (instance == null) {
 				synchronized (lock) {

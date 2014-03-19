@@ -16,11 +16,9 @@ import com.webbricks.exception.WBException;
 
 public class WBImageProcessor {
 
-	private WBCloudFileStorage cloudStorage;
-	public WBImageProcessor(WBCloudFileStorage cloudStorage) {
-		this.cloudStorage = cloudStorage;
+	public WBImageProcessor() {
 	}
-	public boolean resizeImage(WBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WBException
+	public boolean resizeImage(WBCloudFileStorage cloudStorage, WBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WBException
 	{
 		InputStream is = null;
 		try

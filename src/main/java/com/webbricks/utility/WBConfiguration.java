@@ -7,7 +7,8 @@ public interface WBConfiguration {
 	{
 		SECTION_CACHE,
 		SECTION_DATASTORAGE,
-		SECTION_FILESTORAGE
+		SECTION_FILESTORAGE,
+		SECTION_IMAGEPROCESSOR
 	};
 
 	public String getSectionClassFactory(SECTION section);

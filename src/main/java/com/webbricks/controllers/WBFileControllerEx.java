@@ -31,6 +31,7 @@ import com.webbricks.datautility.WBCloudFileInfo;
 import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.datautility.WBCloudFileStorageFactory;
 import com.webbricks.datautility.WBImageProcessor;
+import com.webbricks.datautility.WBImageProcessorFactory;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
@@ -58,7 +59,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.createWBImagesCacheInstance();	
 		adminStorage.addStorageListener(this);
-		imageProcessor = new WBImageProcessor(cloudFileStorage);
+		imageProcessor = WBImageProcessorFactory.getInstance();
 	}
 	
 	public void notify (Object t, AdminDataStorageOperation o)
@@ -97,6 +98,13 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		              String oldFilePath = wbFile.getBlobKey();
 			          WBCloudFile oldCloudFile = new WBCloudFile("public", oldFilePath);
 			          cloudFileStorage.deleteFile(oldCloudFile);
+			          
+			          // if there is a thumbnail then that needs to be deleted too
+			          if (wbFile.getThumbnailBlobKey() != null)
+			          {
+			        	  WBCloudFile oldThumbnail = new WBCloudFile("public", wbFile.getThumbnailBlobKey());
+			        	  cloudFileStorage.deleteFile(oldThumbnail);
+			          }
 		          } else
 		          {
 		        	  // this is a new upload
@@ -124,7 +132,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
 		          WBCloudFile thumbnailCloudFile = new WBCloudFile("public", thumbnailfilePath);
 		          ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		          imageProcessor.resizeImage(cloudFile, 60, "jpg", bos);
+		          imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
 		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 		          cloudFileStorage.storeFile(bis, thumbnailCloudFile);
 		          cloudFileStorage.updateContentType(thumbnailCloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
@@ -190,13 +198,20 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile tempImage = adminStorage.get(key, WBFile.class);
-			if (tempImage.getBlobKey() != null)
+			WBFile tempFile = adminStorage.get(key, WBFile.class);
+			if (tempFile != null)
 			{
-				WBCloudFile cloudFile = new WBCloudFile("public", tempImage.getBlobKey());
-				cloudFileStorage.deleteFile(cloudFile);
+				if (tempFile.getBlobKey() != null)
+				{
+					WBCloudFile cloudFile = new WBCloudFile("public", tempFile.getBlobKey());
+					cloudFileStorage.deleteFile(cloudFile);
+				}
+				if (tempFile.getThumbnailBlobKey() != null)
+				{
+					WBCloudFile cloudThumbnailFile = new WBCloudFile("public", tempFile.getThumbnailBlobKey());
+					cloudFileStorage.deleteFile(cloudThumbnailFile);
+				}
 			}
-			
 			adminStorage.delete(key, WBFile.class);
 			
 			WBFile param = new WBFile();
