@@ -52,7 +52,7 @@ $().ready( function () {
 		if (fieldId=="blobKey"){
 			switch (record["shortType"]) {
 				case "image":
-					return '<img src="./wbservefile?size=50&blobKey=' + encodeURIComponent(record['blobKey']) + '">';
+					return '<img src="{0}">'.format( encodeURI(record['thumbnailPublicUrl']) );
 				default:
 					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['key']),escapehtml(record['fileName']));				
 			}

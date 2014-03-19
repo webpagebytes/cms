@@ -1,7 +1,8 @@
 package com.webbricks.controllers;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import com.webbricks.datautility.WBCloudFile;
 import com.webbricks.datautility.WBCloudFileInfo;
 import com.webbricks.datautility.WBCloudFileStorage;
 import com.webbricks.datautility.WBCloudFileStorageFactory;
+import com.webbricks.datautility.WBImageProcessor;
 import com.webbricks.datautility.WBJSONToFromObjectConverter;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webbricks.datautility.AdminDataStorage.AdminSortOperator;
@@ -44,6 +46,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	private WBCloudFileStorage cloudFileStorage;
 	private WBFileValidator validator;
 	private WBFilesCache filesCache;
+	private WBImageProcessor imageProcessor;
 	
 	public WBFileControllerEx()
 	{
@@ -55,6 +58,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.createWBImagesCacheInstance();	
 		adminStorage.addStorageListener(this);
+		imageProcessor = new WBImageProcessor(cloudFileStorage);
 	}
 	
 	public void notify (Object t, AdminDataStorageOperation o)
@@ -117,12 +121,15 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
 		          wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
 		          
-		          //String thumbnailfilePath = uniqueId + "/thumbnail/" + item.getName();
-		          //WBCloudFile thumbnailCloudFile = new WBCloudFile("public", thumbnailfilePath);
-		          //cloudFileStorage.storeFile(stream, thumbnailCloudFile);
-		          //cloudFileStorage.updateContentType(thumbnailCloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
-		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
-		          wbFile.setThumbnailBlobKey(cloudFile.getPath());
+		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
+		          WBCloudFile thumbnailCloudFile = new WBCloudFile("public", thumbnailfilePath);
+		          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		          imageProcessor.resizeImage(cloudFile, 60, "jpg", bos);
+		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+		          cloudFileStorage.storeFile(bis, thumbnailCloudFile);
+		          cloudFileStorage.updateContentType(thumbnailCloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
+		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(thumbnailCloudFile));
+		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
 		          
 		          if (wbFile.getKey() != null)
 		          {
