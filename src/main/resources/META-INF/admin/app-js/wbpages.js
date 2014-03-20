@@ -77,7 +77,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModal').modal('hide');
-		window.location.reload();			
+		populatePages();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageForm').wbObjectManager().setErrors(errors);
@@ -100,7 +100,7 @@ $().ready( function () {
 
 	var fSuccessDuplicateParams = function ( data ) {
 		$('#wbDuplicatePageModal').modal('hide');
-		window.location.reload();			
+		populatePages();			
 	};
 	var fErrorDuplicateParams = function (errors, data) {
 		alert(errors);
@@ -159,7 +159,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModal').modal('hide');	
-		window.location.reload();			
+		populatePages();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageForm').wbObjectManager().setErrors(errors);
@@ -177,32 +177,35 @@ $().ready( function () {
 		
 	});
 
-	var fSuccessGetPages = function (data) {
-		$('#wbPagesTable').wbSimpleTable().setRows(data.data);
-		$('#wbPagesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
-		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+	var populatePages = function() {
+		
+		var fSuccessGetPages = function (data) {
+			$('#wbPagesTable').wbSimpleTable().setRows(data.data);
+			$('#wbPagesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
+			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+		
+		}
+		var fErrorGetPages = function (errors, data) {
+			alert(data);
+		}
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		$('#wbPagesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var pages_url = "./wbpage?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
 	
+		
+		$('#wbAddPagesForm').wbCommunicationManager().ajax ( { url: pages_url,
+														 httpOperation:"GET", 
+														 payloadData:"",
+														 functionSuccess: fSuccessGetPages,
+														 functionError: fErrorGetPages
+														} );
 	}
-	var fErrorGetPages = function (errors, data) {
-	
-	}
-	
-	var page = getURLParameter('page') || 1;
-	if (page <= 0) page = 1;
-	var index_start = (page-1)*itemsOnPage;
-	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
-	$('#wbPagesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
-	
-	var pages_url = "./wbpage?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
-
-	
-	$('#wbAddPagesForm').wbCommunicationManager().ajax ( { url: pages_url,
-													 httpOperation:"GET", 
-													 payloadData:"",
-													 functionSuccess: fSuccessGetPages,
-													 functionError: fErrorGetPages
-													} );
-
+	populatePages();
 });

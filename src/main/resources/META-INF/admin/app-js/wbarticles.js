@@ -73,7 +73,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddArticleModal').modal('hide');
-		window.location.reload();			
+		populateArticles();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddArticleForm').wbObjectManager().setErrors(errors);
@@ -114,7 +114,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteArticleModal').modal('hide');	
-		window.location.reload();			
+		populateArticles();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteArticleForm').wbObjectManager().setErrors(errors);
@@ -122,7 +122,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicateArticleModal').modal('hide');
-		window.location.reload();			
+		populateArticles();			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicateArticleForm').wbObjectManager().setErrors(errors);
@@ -158,31 +158,33 @@ $().ready( function () {
 		
 	});
 
-	var fSuccessGetAll = function (data) {
-		$('#wbArticlesTable').wbSimpleTable().setRows(data.data);
-		$('#wbArticlesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
-		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+	var populateArticles = function() {
+		var fSuccessGetAll = function (data) {
+			$('#wbArticlesTable').wbSimpleTable().setRows(data.data);
+			$('#wbArticlesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
+			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+		
+		}
+		var fErrorGetAll = function (errors, data) {
+			alert(data);
+		}
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "title");	
+		$('#wbArticlesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var page_articles_url = "./wbarticle?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
 	
+		$('#wbAddArticleForm').wbCommunicationManager().ajax ( { url:page_articles_url,
+														 httpOperation:"GET", 
+														 payloadData:"",
+														 functionSuccess: fSuccessGetAll,
+														 functionError: fErrorGetAll
+														} );
 	}
-	var fErrorGetAll = function (errors, data) {
-	
-	}
-	
-	var page = getURLParameter('page') || 1;
-	if (page <= 0) page = 1;
-	var index_start = (page-1)*itemsOnPage;
-	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "title");	
-	$('#wbArticlesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
-	
-	var page_articles_url = "./wbarticle?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
-
-	$('#wbAddArticleForm').wbCommunicationManager().ajax ( { url:page_articles_url,
-													 httpOperation:"GET", 
-													 payloadData:"",
-													 functionSuccess: fSuccessGetAll,
-													 functionError: fErrorGetAll
-													} );
-
+	populateArticles();
 });

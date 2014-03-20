@@ -75,7 +75,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
-		window.location.reload();			
+		populateParameters();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddParameterForm').wbObjectManager().setErrors(errors);
@@ -100,7 +100,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		window.location.reload();			
+		populateParameters();			
 	}
 	
 	var fErrorUpdate = function (errors, data) {
@@ -126,7 +126,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		window.location.reload();			
+		populateParameters();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -166,32 +166,34 @@ $().ready( function () {
 		$('#wbDeleteParameterModal').modal('show');		
 	});
 
-	var fSuccessGetParameters = function (data) {
-		$('#wbGlobalParamsTable').wbSimpleTable().setRows(data.data);
-		$('#wbGlobalParamsTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
-		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+	var populateParameters = function () {
+		var fSuccessGetParameters = function (data) {
+			$('#wbGlobalParamsTable').wbSimpleTable().setRows(data.data);
+			$('#wbGlobalParamsTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
+			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+		
+		}
+		var fErrorGetParameters = function (errors, data) {
+			alert(errors);
+		}
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		$('#wbGlobalParamsTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var parameters_url = "./wbparameter?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&ownerExternalKey=&".format(sort_dir, sort_field, index_start, itemsOnPage); 
 	
+		$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: parameters_url,
+														 httpOperation:"GET", 
+														 payloadData:"",
+														 functionSuccess: fSuccessGetParameters,
+														 functionError: fErrorGetParameters
+														} );
 	}
-	var fErrorGetParameters = function (errors, data) {
-		alert(errors);
-	}
-	
-	var page = getURLParameter('page') || 1;
-	if (page <= 0) page = 1;
-	var index_start = (page-1)*itemsOnPage;
-	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
-	$('#wbGlobalParamsTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
-	
-	var parameters_url = "./wbparameter?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&ownerExternalKey=&".format(sort_dir, sort_field, index_start, itemsOnPage); 
-
-	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: parameters_url,
-													 httpOperation:"GET", 
-													 payloadData:"",
-													 functionSuccess: fSuccessGetParameters,
-													 functionError: fErrorGetParameters
-													} );
-
+	populateParameters();
 												
 });

@@ -108,18 +108,37 @@ $().ready( function () {
 		$('#wbsupportedlanguages').css('min-height', $('.tab-content').css('height'));
 	}
 	
-	var fSuccessGetMessages = function (data) {
-		$('#wbmessagestable').wbSimpleTable().setRows(data.data);
-		$('#wbmessagestable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+	var populateMessages = function() {
+		var fSuccessGetMessages = function (data) {
+			$('#wbmessagestable').wbSimpleTable().setRows(data.data);
+			$('#wbmessagestable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+	
+			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
+			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+		
+			fFixHeightMessages();		
+		}
+		
+		var fErrorGetMessages = function (errors, data) {
+			alert(errors);
+		}
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		$('#wbmessagestable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var messages_url = "./wbmessagecompare?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&lcid={4}&dlcid={5}".format(sort_dir, sort_field, index_start, itemsOnPage, encodeURIComponent(selectedLcid), encodeURIComponent(defaultLcid)); 
 
-		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
-	
-		fFixHeightMessages();		
-	}
-	
-	var fErrorGetMessages = function (errors, data) {
-		alert(errors);
+		$("#wbmessagestable").wbCommunicationManager().ajax( { url: messages_url,
+												 httpOperation:"GET", 
+												 payloadData:"",
+												 functionSuccess: fSuccessGetMessages,
+												 functionError: fErrorGetMessages
+												} );			
+
 	}
 	
 	var fSuccessGetSupportedLanguages = function (payload) {
@@ -146,21 +165,8 @@ $().ready( function () {
 		}
 		$("#wbsupportedlanguages").html(html);
 		
-		var page = getURLParameter('page') || 1;
-		if (page <= 0) page = 1;
-		var index_start = (page-1)*itemsOnPage;
-		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
-		$('#wbmessagestable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		populateMessages();
 		
-		var messages_url = "./wbmessagecompare?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&lcid={4}&dlcid={5}".format(sort_dir, sort_field, index_start, itemsOnPage, encodeURIComponent(selectedLcid), encodeURIComponent(defaultLcid)); 
-
-		$("#wbmessagestable").wbCommunicationManager().ajax( { url: messages_url,
-												 httpOperation:"GET", 
-												 payloadData:"",
-												 functionSuccess: fSuccessGetMessages,
-												 functionError: fErrorGetMessages
-												} );			
 	}
 	var fErrorGetSupportedLanguages = function (errors, data) {
 		alert(errors);
@@ -183,7 +189,7 @@ $().ready( function () {
 	
 	var fSuccessAdd = function (data) {	
 		$('#wbAddMessageModal').modal('hide');
-		window.location.reload();	
+		populateMessages();	
 	};
 	
 	var fErrorAdd = function (errors, data) {
@@ -209,7 +215,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function (data) {	
 		$('#wbDuplicateMessageModal').modal('hide');
-		window.location.reload();	
+		populateMessages();	
 	};
 	
 	var fErrorDuplicate = function (errors, data) {
@@ -235,7 +241,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function (data) {	
 		$('#wbUpdateMessageModal').modal('hide');
-		window.location.reload();
+		populateMessages();
 	};
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateMessageForm').wbObjectManager().setErrors(errors);
@@ -259,7 +265,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function (data) {	
 		$('#wbDeleteMessageModal').modal('hide');		
-		window.location.reload();
+		populateMessages();
 	};
 	
 	var fErrorDelete = function (errors, data) {

@@ -76,7 +76,7 @@ $().ready( function () {
 
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddPageModuleModal').modal('hide');
-		window.location.reload();			
+		populatePage();			
 	}
 	var fErrorAdd = function (errors, data) {
 		$('#wbAddPageModuleForm').wbObjectManager().setErrors(errors);
@@ -84,7 +84,7 @@ $().ready( function () {
 
 	var fSuccessDuplicate = function ( data ) {
 		$('#wbDuplicatePageModuleModal').modal('hide');
-		window.location.reload();			
+		populatePage();			
 	}
 	var fErrorDuplicate = function (errors, data) {
 		$('#wbDuplicatePageModuleForm').wbObjectManager().setErrors(errors);
@@ -142,7 +142,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeletePageModuleModal').modal('hide');	
-		window.location.reload();			
+		populatePage();			
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeletePageModuleForm').wbObjectManager().setErrors(errors);
@@ -160,31 +160,34 @@ $().ready( function () {
 		
 	});
 
-	var fSuccessGetModules = function (data) {
-		$('#wbPageModulesTable').wbSimpleTable().setRows(data.data);
-		$('#wbPageModulesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
-		textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-		$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
-	
-	}
-	var fErrorGetModules = function (errors, data) {
-	
-	}
-	
-	var page = getURLParameter('page') || 1;
-	if (page <= 0) page = 1;
-	var index_start = (page-1)*itemsOnPage;
-	var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-	var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
-	$('#wbPageModulesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
-	
-	var page_modules_url = "./wbpagemodule?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
+	var populatePage = function() {
+		var fSuccessGetModules = function (data) {
+			$('#wbPageModulesTable').wbSimpleTable().setRows(data.data);
+			$('#wbPageModulesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
+			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
+			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+		
+		}
+		var fErrorGetModules = function (errors, data) {
+			alert(data);
+		}
+		
+		var page = getURLParameter('page') || 1;
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		$('#wbPageModulesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
+		
+		var page_modules_url = "./wbpagemodule?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
 
-	$('#wbAddPageModuleForm').wbCommunicationManager().ajax ( { url:page_modules_url ,
-													 httpOperation:"GET", 
-													 payloadData:"",
-													 functionSuccess: fSuccessGetModules,
-													 functionError: fErrorGetModules
-													} );
-
+		$('#wbAddPageModuleForm').wbCommunicationManager().ajax ( { url:page_modules_url ,
+														 httpOperation:"GET", 
+														 payloadData:"",
+														 functionSuccess: fSuccessGetModules,
+														 functionError: fErrorGetModules
+														} );
+	}
+	
+	populatePage();
 });
