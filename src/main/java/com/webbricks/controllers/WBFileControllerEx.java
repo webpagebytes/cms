@@ -135,7 +135,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
 		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 		          cloudFileStorage.storeFile(bis, thumbnailCloudFile);
-		          cloudFileStorage.updateContentType(thumbnailCloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
+		          cloudFileStorage.updateContentType(thumbnailCloudFile, "image/jpg");
 		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(thumbnailCloudFile));
 		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
 		          

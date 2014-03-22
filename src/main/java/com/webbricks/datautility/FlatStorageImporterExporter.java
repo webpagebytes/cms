@@ -1,7 +1,6 @@
 package com.webbricks.datautility;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +30,9 @@ import com.webbricks.cmsdata.WBUri;
 import com.webbricks.cmsdata.WBWebPage;
 import com.webbricks.cmsdata.WBWebPageModule;
 import com.webbricks.datautility.AdminDataStorage.AdminQueryOperator;
+import com.webbricks.exception.WBException;
 import com.webbricks.exception.WBIOException;
+import com.webbricks.utility.ContentTypeDetector;
 
 public class FlatStorageImporterExporter {
 	private static final Logger log = Logger.getLogger(FlatStorageImporterExporter.class.getName());
@@ -55,7 +56,7 @@ public class FlatStorageImporterExporter {
 	
 	private AdminDataStorage dataStorage = AdminDataStorageFactory.getInstance();
 	private WBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
-	
+	private WBImageProcessor imageProcessor = WBImageProcessorFactory.getInstance();
 	
 	private void exportToXMLFormat(Map<String, Object> props, OutputStream os) throws IOException
 	{
@@ -279,13 +280,40 @@ public class FlatStorageImporterExporter {
 			{
 				// just take the first file, normally there should be a single file
 				WBFile file = files.get(0);
-				String cloudPath = dataStorage.getUniqueId() + "/" + file.getFileName();
+				String uniqueId = dataStorage.getUniqueId();
+				String cloudPath = uniqueId + "/" + file.getFileName();
 				WBCloudFile cloudFile = new WBCloudFile("public", cloudPath);
 				cloudFileStorage.storeFile(zis, cloudFile);
+				cloudFileStorage.updateContentType(cloudFile, file.getAdjustedContentType());
 			    WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
+		        file.setPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
+		        if (file.getShortType().compareToIgnoreCase("image") == 0)
+		        {
+		        	// build the thumbnail for this image
+		        	try
+		        	{
+		        		String thumbnailPath = uniqueId + "/thumnail/" + uniqueId + ".jpg";
+		        		WBCloudFile cloudThumbnailFile = new WBCloudFile("public", thumbnailPath);
+		        		
+		        		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				        imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
+				        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());   
+						cloudFileStorage.storeFile(bis, cloudThumbnailFile);
+						file.setThumbnailBlobKey(cloudThumbnailFile.getPath());
+						cloudFileStorage.updateContentType(cloudThumbnailFile, "image/jpg");
+				          
+						bos.close();
+						bis.close();
+						file.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(cloudThumbnailFile));
+		        	} catch (WBException e)
+		        	{
+		        		// do nothing as thumbnail fail might because by an unsupported image type
+		        		
+		        	}
+		        }
 				dataStorage.update(file);
 			} else
 			{
