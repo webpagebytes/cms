@@ -39,7 +39,13 @@
 			</div>
 			<div class="clear"></div>
 			
+			<div id="spinnerTable">
+				<img src="./${timestamp}/img/spinner.gif" > Loading
+			</div>	
 			<div id="wbArticlesTable"></div>
+			<script type="text/javascript">
+				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbArticlesTable'), delayDisplay: 300 });
+			</script>
 		</div>
 	</div>
 	

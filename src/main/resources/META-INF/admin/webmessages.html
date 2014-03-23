@@ -44,8 +44,13 @@
 						</div>
 						<div class="clear"></div>
 			
-						<div id="wbmessagestable" class="wbmessagestable">
-						</div>
+						<div id="spinnerTable">
+							<img src="./${timestamp}/img/spinner.gif" > Loading
+						</div>	
+						<div id="wbmessagestable" class="wbmessagestable"></div>
+						<script type="text/javascript">
+							$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbmessagestable'), delayDisplay: 300 });
+						</script>
 			</div>		
 		</div>
 	</div>

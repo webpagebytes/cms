@@ -172,12 +172,16 @@ $().ready( function () {
 			$('#wbGlobalParamsTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
 			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
-		
+			$('#spinnerTable').WBSpinner().hide();
 		}
 		var fErrorGetParameters = function (errors, data) {
 			alert(errors);
+			$('#spinnerTable').WBSpinner().hide();
 		}
 		
+		if (false == $('#spinnerTable').WBSpinner().visible()) {
+			$('#spinnerTable').WBSpinner().show();
+		}
 		var page = getURLParameter('page') || 1;
 		if (page <= 0) page = 1;
 		var index_start = (page-1)*itemsOnPage;

@@ -1045,4 +1045,114 @@ if (!Array.prototype.indexOf) {
 			if (!data) $this.data('wbTable', (data = new WBTable ($this, options)));	
 			if (param == undefined) return data;
 	}	
-})(window.jQuery)
+})(window.jQuery);
+
+(function ($) {
+
+	WBSpinner = function ( thisElement, options ) {
+		
+		var myCurrentTime = function (){
+			if (window.performance.now) {
+				return window.performance.now();
+			} else
+			{
+				return (new Date()).getTime();
+			}
+		};
+
+		this.defaults = { 
+				imageFile: "",
+				contentElem: undefined,
+				delayDisplay: 0,
+				visible: false
+			};
+			
+		this.init = function ( thisElement, options ) {			
+				this.thisElement = $(thisElement);
+				this.displayTime = 0;
+				this.options = $.extend ( {} , this.defaults, options );
+				if ( false == this.getOptions().visible) {
+					this.hide();
+				} else {
+					this.show();
+				}	
+			};
+			
+		this.getOptions = function () {
+				if (! this.options) 
+					return this.defaults
+				else
+					return this.options;
+			};
+		this.visible = function () {
+				return this.getOptions().visible;
+			};
+		this.show = function ( ) {	
+				this.options.visible = true;
+				if (this.displayTime == 0) {
+					this.displayTime = myCurrentTime();
+				}
+				$(this.thisElement).show();
+				if (this.getOptions().contentElem)
+					$(this.getOptions().contentElem).hide();
+			};
+		this.hide = function ( ) {
+				this.options.visible = false;
+				if (this.getOptions().delayDisplay>0) {
+					var diff = myCurrentTime() - this.displayTime;
+					console.log("initial diff " + diff);
+					if (diff < this.getOptions().delayDisplay) {
+						var timerHandler = undefined;
+						var X = this;
+						var timeOutFunc = function() {
+							diff = myCurrentTime() - X.displayTime;
+							console.log(" diff " + diff);
+							if (diff >= X.getOptions().delayDisplay)
+							{
+								console.log("clear handler");
+								if (timerHandler) {
+									clearInterval(timerHandler);
+								}
+								X.displayTime = 0;
+								$(X.thisElement).hide();
+								if (X.getOptions().contentElem)
+									$(X.getOptions().contentElem).show();
+							}
+						}
+						timerHandler = setInterval(timeOutFunc, 50);
+					} else
+					{
+						this.displayTime = 0;
+						$(this.thisElement).hide();
+						if (this.getOptions().contentElem)
+							$(this.getOptions().contentElem).show();
+					}
+				} else {
+					this.displayTime = 0;
+					$(this.thisElement).hide();
+					if (this.getOptions().contentElem)
+						$(this.getOptions().contentElem).show();				
+				}
+			}
+		this.toggle = function ( ) {	
+				
+				if (true == this.getOptions().visible) {
+					this.hide();
+				} else {
+					this.show();
+				}
+			};
+		this.init( thisElement, options );
+	
+	};
+
+	$.fn.WBSpinner = function ( params ) {
+		var $this = $(this),
+		data = $this.data('wbSpinner');			
+		var options = (typeof params == 'object') ? params : {} ; 
+		if (!data) $this.data('wbSpinner', (data = new WBSpinner ($this, options)));	
+		if (params == undefined) return data;
+	}		
+
+
+}) (window.jQuery);

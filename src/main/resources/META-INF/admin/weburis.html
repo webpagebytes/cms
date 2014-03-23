@@ -37,8 +37,14 @@
 					<div class="tablebutton"> <a href="#" id="wbaddnewpage"><i class="icon-plus"> </i> New site url </a> </div>  
 				</div>
 				<div class="clear"></div>
-									
+			
+			<div id="spinnerTable">
+				<img src="./${timestamp}/img/spinner.gif" > Loading
+			</div>						
 			<div id="wbtable"> </div>
+			<script type="text/javascript">
+				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbtable'), delayDisplay: 300 });
+			</script>
 		</div>
 	</div>
 	

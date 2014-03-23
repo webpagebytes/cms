@@ -61,10 +61,6 @@ $().ready( function () {
 	var wbhelpcontent = function(){
 		return "TBD"
 	}
-	$(document).on('click', '.wbhelpclose', function (evente) {
-		    $(".wbhelp-urls").popover('hide');
-		  });
-	$('.wbhelp-urls').popover({animation: false, html:true, placement: 'right', content: wbhelpcontent , title: "About site urls <button class='close wbhelpclose' type='button'>&times;</button>"});
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == "_operations") {
@@ -184,9 +180,16 @@ $().ready( function () {
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};
 			
 			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+			
+			$('#spinnerTable').WBSpinner().hide();			
 		}
 		var fErrorGetUris = function (errors, data) {
 			alert(data);
+			$('#spinnerTable').WBSpinner().hide();
+		}
+		
+		if (false == $('#spinnerTable').WBSpinner().visible()) {
+			$('#spinnerTable').WBSpinner().show();
 		}
 			
 		var page = getURLParameter('page') || 1;
