@@ -1100,16 +1100,13 @@ if (!Array.prototype.indexOf) {
 				this.options.visible = false;
 				if (this.getOptions().delayDisplay>0) {
 					var diff = myCurrentTime() - this.displayTime;
-					console.log("initial diff " + diff);
 					if (diff < this.getOptions().delayDisplay) {
 						var timerHandler = undefined;
 						var X = this;
 						var timeOutFunc = function() {
 							diff = myCurrentTime() - X.displayTime;
-							console.log(" diff " + diff);
 							if (diff >= X.getOptions().delayDisplay)
 							{
-								console.log("clear handler");
 								if (timerHandler) {
 									clearInterval(timerHandler);
 								}
