@@ -35,6 +35,7 @@ $().ready( function () {
 		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
 			tinyMCE.activeEditor.setContent(htmlSource);
 			clearTimeout(prevTimeout);
+			$('#spinnerTable').WBSpinner().hide();
 		}
 	}
 
@@ -43,6 +44,7 @@ $().ready( function () {
 		$('#wbArticleView').wbDisplayObject().display(data.data);
 		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
 			tinyMCE.activeEditor.setContent(data.data['htmlSource']);
+			$('#spinnerTable').WBSpinner().hide();
 		} else {
 			htmlSource = data.data['htmlSource'];
 			prevTimeout = setTimeout(delayDisplay, 500);
@@ -50,6 +52,7 @@ $().ready( function () {
 	}
 	var fErrorGetArticle = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 
 	var pageKey = getURLParameter('key'); 

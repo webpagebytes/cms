@@ -33,120 +33,127 @@
 		</div>
 	</div>
 
-	<div id="wbFileView">
-		<div class="row-fluid">
-			<div class="well wbwell">
-		    <ul class=" wbbreadcrumb" >
-		        <li> <a id="wbfileshortType" href="./webfiles.html"> Files </a> <span class="wbdivider">/</span> </li>
-		        <li> <span id="wbfilename"></span> </li>
-		    </ul>
-		    <div class="wblastmodified">
-		    	 <span class="badge badge-info" id="wbfilelastModified"></span>
-		    </div>
-		    </div>
-    	</div>
-	
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="span7"> 	
-							<div class="well marginv">
-								<form class="form-inline">
-								<div class="control-group">
-									<div class="controls">
-										<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit file data </button>
-										<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
-										<a href="#" class="btn btn-primary wbDownloadFileDataBtnClass"> <i class="icon-download icon-white"> </i> Download file</a>
+	<div id="spinnerTable" class="spinner">
+		<img src="./${timestamp}/img/spinner.gif" > Loading...
+	</div>							
+	<div id="wbbodycontent">
+		<div id="wbFileView">
+			<div class="row-fluid">
+				<div class="well wbwell">
+			    <ul class=" wbbreadcrumb" >
+			        <li> <a id="wbfileshortType" href="./webfiles.html"> Files </a> <span class="wbdivider">/</span> </li>
+			        <li> <span id="wbfilename"></span> </li>
+			    </ul>
+			    <div class="wblastmodified">
+			    	 <span class="badge badge-info" id="wbfilelastModified"></span>
+			    </div>
+			    </div>
+	    	</div>
+		
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="span7"> 	
+								<div class="well marginv">
+									<form class="form-inline">
+									<div class="control-group">
+										<div class="controls">
+											<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit file data </button>
+											<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
+											<a href="#" class="btn btn-primary wbDownloadFileDataBtnClass"> <i class="icon-download icon-white"> </i> Download file</a>
+										</div>
 									</div>
-								</div>
-								</form>
-								
-								<div class="accordion" id="accordionFileDetails">
-  									<div class="accordion-group">
-    									<div class="accordion-heading">
-      										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-        										File details...
-      										</a>
-   										 </div>
-    									<div id="collapseOne" class="accordion-body collapse in">
-      										<div class="accordion-inner">
-        
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label for="externalKey" class="control-label wblabel-left">External Key</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="externalKey" id="wbfileexternalKey" readonly>
-														<input data-clipboard-target="wbfileexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+									</form>
+									
+									<div class="accordion" id="accordionFileDetails">
+	  									<div class="accordion-group">
+	    									<div class="accordion-heading">
+	      										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+	        										File details...
+	      										</a>
+	   										 </div>
+	    									<div id="collapseOne" class="accordion-body collapse in">
+	      										<div class="accordion-inner">
+	        
+												<form class="form-horizontal">
+													<div class="control-group">
+														<label for="externalKey" class="control-label wblabel-left">External Key</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="externalKey" id="wbfileexternalKey" readonly>
+															<input data-clipboard-target="wbfileexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="name" class="control-label wblabel-left">Name</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="name" id="wbfilename" readonly>
+													<div class="control-group">
+														<label for="name" class="control-label wblabel-left">Name</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="name" id="wbfilename" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="fileName" class="control-label wblabel-left">File Name</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="fileName" id="wbfilefileName" readonly>
+													<div class="control-group">
+														<label for="fileName" class="control-label wblabel-left">File Name</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="fileName" id="wbfilefileName" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="size" class="control-label wblabel-left">Size (bytes)</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="size" id="wbfilesize" readonly>
+													<div class="control-group">
+														<label for="size" class="control-label wblabel-left">Size (bytes)</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="size" id="wbfilesize" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="hash" class="control-label wblabel-left">CRC32 hash</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilehash" readonly>
+													<div class="control-group">
+														<label for="hash" class="control-label wblabel-left">CRC32 hash</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="hash" id="wbfilehash" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="contentType" class="control-label wblabel-left">Content type</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="contentType" id="wbfilecontentType" readonly>
+													<div class="control-group">
+														<label for="contentType" class="control-label wblabel-left">Content type</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="contentType" id="wbfilecontentType" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="adjustedContentType" class="control-label wblabel-left">Adjusted content type</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfileadjustedContentType" readonly>
+													<div class="control-group">
+														<label for="adjustedContentType" class="control-label wblabel-left">Adjusted content type</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="hash" id="wbfileadjustedContentType" readonly>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="blobKey" class="control-label wblabel-left">Blob key</label>
-													<div class="controls">
-														<textarea class="wb-input-xlarge" type="text" name="blobKey" id="wbfileblobKey" readonly> </textarea>
+													<div class="control-group">
+														<label for="blobKey" class="control-label wblabel-left">Blob key</label>
+														<div class="controls">
+															<textarea class="wb-input-xlarge" type="text" name="blobKey" id="wbfileblobKey" readonly> </textarea>
+														</div>
 													</div>
-												</div>
-												<div class="control-group">
-													<label for="lastModified" class="control-label wblabel-left">Last modified</label>
-													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilelastModified_" readonly>
+													<div class="control-group">
+														<label for="lastModified" class="control-label wblabel-left">Last modified</label>
+														<div class="controls">
+															<input class="wb-input-xlarge" type="text" name="hash" id="wbfilelastModified_" readonly>
+														</div>
 													</div>
+													
+												</form>
 												</div>
-												
-											</form>
-											</div>
-    									</div>
-  									</div>
-								</div>
+	    									</div>
+	  									</div>
+									</div>
+						</div>
 					</div>
-				</div>
-				<div class="span5">
-					<div class="well marginv">
-						<div id="wbUrlsTable"></div>
+					<div class="span5">
+						<div class="well marginv">
+							<div id="wbUrlsTable"></div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="wbimagecontent"> </div>
-	<div class="wbapplicationcontent"> </div>
-	<div class="wbaudiocontent"> </div>
-	<div id="wbvideocontent"> </div>
-					
+		<div class="wbimagecontent"> </div>
+		<div class="wbapplicationcontent"> </div>
+		<div class="wbaudiocontent"> </div>
+		<div id="wbvideocontent"> </div>
+	</div>			
+	<script type="text/javascript">
+		$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
+	</script>		
 	<div class="modal hide" id="wbModalFileDataUpdate">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

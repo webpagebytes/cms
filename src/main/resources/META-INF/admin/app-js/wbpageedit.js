@@ -51,6 +51,7 @@ $().ready( function () {
 		} else {
 			$('.wbModelProviderContainer').show();
 		}
+		$('#spinnerTable').WBSpinner().hide();
 	}
 	
 	$('input[name="isTemplateSource"]').on("change", function() {
@@ -59,6 +60,7 @@ $().ready( function () {
 	
 	var fErrorGetPage = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 
 	var pageKey = getURLParameter('key'); 

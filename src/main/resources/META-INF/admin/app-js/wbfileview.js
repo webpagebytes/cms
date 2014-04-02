@@ -109,7 +109,7 @@ $().ready( function () {
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
-
+		$('#spinnerTable').WBSpinner().hide();
 		switch (data['shortType']) {
 			case "image":
 				var imgHtml = "<img src='{0}'>".format(data['publicUrl']);
@@ -136,6 +136,7 @@ $().ready( function () {
 	}
 	var fErrorGetFile = function (errors, data) {
 		alert(data);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 	
 	$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/{0}?include_links=1".format(encodeURIComponent(fileKey)),

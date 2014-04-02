@@ -130,12 +130,6 @@ $().ready( function () {
 		window.location.href = "./webpageedit.html?key={0}&externalKey={1}".format(encodeURIComponent(pageKey),encodeURIComponent(pageExternalKey));
 	} );
 	
-	$('#wbPageSummary').wbCommunicationManager().ajax ( { url:"./wbpage/{0}?include_links=1".format(encodeURIComponent(pageKey)),
-												 httpOperation:"GET", 
-												 payloadData:"",
-												 functionSuccess: fSuccessGetPage,
-												 functionError: fErrorGetPage
-												} );
 	$('#wbAddParameterBtn').click ( function (e) {
 		e.preventDefault();
 		$('#wbAddParameterForm').wbObjectManager().resetFields();
@@ -241,12 +235,22 @@ $().ready( function () {
 	
 	}
 	
-	$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(pageExternalKey),
-													 httpOperation:"GET", 
-													 payloadData:"",
-													 functionSuccess: fSuccessGetParameters,
-													 functionError: fErrorGetParameters
-													} );
-
+	var allAjaxOK = function () {
+		$('#spinnerTable').WBSpinner().hide();
+	}
+	
+	var arrayAjax = [ { url:"./wbpage/{0}?include_links=1".format(encodeURIComponent(pageKey)),
+		 httpOperation:"GET", 
+		 payloadData:"",
+		 functionSuccess: fSuccessGetPage,
+		 functionError: fErrorGetPage
+		},
+		{ url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(pageExternalKey),
+			 httpOperation:"GET", 
+			 payloadData:"",
+			 functionSuccess: fSuccessGetParameters,
+			 functionError: fErrorGetParameters
+			} ];
+	$('#wbPageSummary').wbCommunicationManager().ajaxArray (arrayAjax, allAjaxOK, allAjaxOK);
 												
 });

@@ -40,12 +40,14 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	$('#wbPageModuleView').wbDisplayObject( { fieldsPrefix: 'wbPageModuleView', customHandler: pageModuleSourceHandler} );
 	
-	var fSuccessGetPage = function (data) {
+	var fSuccessGetModule = function (data) {
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleView').wbDisplayObject().display(data.data);
+		$('#spinnerTable').WBSpinner().hide();
 	}
-	var fErrorGetPage = function (errors, data) {
+	var fErrorGetModule = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 
 	var pageKey = getURLParameter('key'); 
@@ -59,8 +61,8 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbCommunicationManager().ajax ( { url:"./wbpagemodule/" + pageKey,
 												 httpOperation:"GET", 
 												 payloadData:"",
-												 functionSuccess: fSuccessGetPage,
-												 functionError: fErrorGetPage
+												 functionSuccess: fSuccessGetModule,
+												 functionError: fErrorGetModule
 												} );
 	
 												

@@ -30,8 +30,11 @@
 		</div>
 	</div>
 
+	<div id="spinnerTable" class="spinner">
+		<img src="./${timestamp}/img/spinner.gif" > Loading...
+	</div>	
 	
-	<div class="wbcolorcontent">
+	<div class="wbcolorcontent" id="wbbodycontent">
 		<div class="wbinnercontent">
 			<div class="tableheader"> 
 				<div class="tabletitle"> Site articles </div> <div class="tablestats"> </div> 
@@ -39,12 +42,9 @@
 			</div>
 			<div class="clear"></div>
 			
-			<div id="spinnerTable">
-				<img src="./${timestamp}/img/spinner.gif" > Loading
-			</div>	
 			<div id="wbArticlesTable"></div>
 			<script type="text/javascript">
-				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbArticlesTable'), delayDisplay: 300 });
+				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
 			</script>
 		</div>
 	</div>

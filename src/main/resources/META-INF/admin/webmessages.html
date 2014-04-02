@@ -29,7 +29,10 @@
 		</div>
 	</div>
 
-	<div class="well">
+	<div id="spinnerTable" class="spinner">
+		<img src="./${timestamp}/img/spinner.gif" > Loading...
+	</div>	
+	<div class="well" id="wbbodycontent">
 		<div class="marginv">
 			<a href="./websettingslangsedit.html" class="btn btn-primary"> <i class="icon-pencil icon-white"> </i> Edit supported languages </a>
 		</div>
@@ -44,12 +47,9 @@
 						</div>
 						<div class="clear"></div>
 			
-						<div id="spinnerTable">
-							<img src="./${timestamp}/img/spinner.gif" > Loading
-						</div>	
 						<div id="wbmessagestable" class="wbmessagestable"></div>
 						<script type="text/javascript">
-							$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbmessagestable'), delayDisplay: 300 });
+							$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
 						</script>
 			</div>		
 		</div>

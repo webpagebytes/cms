@@ -196,6 +196,7 @@ $().ready( function () {
 	$("#wberesourceExternalKey").on("change", ResourceExternalBlur);
 	var fErrorGetUri = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	};
 
 	// now handle the parameters
@@ -299,9 +300,11 @@ $().ready( function () {
 	
 	var fSuccessGetParameters = function (data) {
 		$('#wbUriParametersTable').wbSimpleTable().setRows(data.data);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 	var fErrorGetParameters = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 
 	// end handle parameters

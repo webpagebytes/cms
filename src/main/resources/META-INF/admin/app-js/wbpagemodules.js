@@ -173,9 +173,6 @@ $().ready( function () {
 			$('#spinnerTable').WBSpinner().hide();
 		}
 		
-		if (false == $('#spinnerTable').WBSpinner().visible()) {
-			$('#spinnerTable').WBSpinner().show();
-		}
 		var page = getURLParameter('page') || 1;
 		if (page <= 0) page = 1;
 		var index_start = (page-1)*itemsOnPage;

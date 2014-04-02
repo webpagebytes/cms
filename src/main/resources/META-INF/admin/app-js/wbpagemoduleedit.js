@@ -35,10 +35,12 @@ $().ready( function () {
 	var fSuccessGetPage = function (data) {
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 	
 	var fErrorGetPage = function (errors, data) {
 		alert(errors);
+		$('#spinnerTable').WBSpinner().hide();
 	}
 
 	var pageKey = getURLParameter('key'); 

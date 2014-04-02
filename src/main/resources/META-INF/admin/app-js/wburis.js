@@ -187,10 +187,6 @@ $().ready( function () {
 			alert(data);
 			$('#spinnerTable').WBSpinner().hide();
 		}
-		
-		if (false == $('#spinnerTable').WBSpinner().visible()) {
-			$('#spinnerTable').WBSpinner().show();
-		}
 			
 		var page = getURLParameter('page') || 1;
 		if (page <= 0) page = 1;
