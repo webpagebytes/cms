@@ -11,7 +11,11 @@ import com.webbricks.controllers.WBController;
 import com.webbricks.exception.WBException;
 
 public class AjaxRequestProcessor {
-
+	public static final String PRAGMA_HEADER = "Pragma";
+	public static final String NO_CACHE_HEADER = "no-cache";
+	public static final String CACHE_CONTROL_HEADER = "Cache-Control";
+	
+	
 	private final String keyUrlPart = "/{key}";
 	private AdminServletOperationsReader operationsReader;
 	private String adminUriPart;
@@ -105,6 +109,9 @@ public class AjaxRequestProcessor {
 			   HttpServletResponse resp, 
 			   String reqUri) throws WBException
 	{
+		// no matter the response add the pragma no cache
+		resp.addHeader(CACHE_CONTROL_HEADER, NO_CACHE_HEADER);
+		resp.addHeader(PRAGMA_HEADER, NO_CACHE_HEADER);
 		Pair<String, String> genericUri = matchUrlForController(reqUri, req.getMethod());
 		if (genericUri == null)
 		{

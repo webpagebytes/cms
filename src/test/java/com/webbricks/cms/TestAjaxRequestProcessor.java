@@ -77,6 +77,10 @@ public class TestAjaxRequestProcessor {
 			EasyMock.expect(request.getMethod()).andReturn("GET");
 			Capture<String> contentType = new Capture<String>();
 			response.setContentType( EasyMock.capture(contentType));
+			
+			response.addHeader(AjaxRequestProcessor.PRAGMA_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+			response.addHeader(AjaxRequestProcessor.CACHE_CONTROL_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+
 			EasyMock.replay(operationsReader, request, response);
 			
 			ajaxProcessor.process(request, response, reqUri);
@@ -107,7 +111,9 @@ public class TestAjaxRequestProcessor {
 			
 			EasyMock.expect(request.getMethod()).andReturn("GET");
 			EasyMock.expect(request.getMethod()).andReturn("GET");
-			
+			response.addHeader(AjaxRequestProcessor.PRAGMA_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+			response.addHeader(AjaxRequestProcessor.CACHE_CONTROL_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+	
 			EasyMock.replay(operationsReader, request, response);
 			
 			ajaxProcessor.process(request, response, reqUri);
@@ -167,6 +173,10 @@ public class TestAjaxRequestProcessor {
 			ajaxProcessor.setOperationsReader(operationsReader);
 			Capture<Integer> capture = new Capture<Integer>();
 			response.setStatus(EasyMock.captureInt(capture));
+			
+			response.addHeader(AjaxRequestProcessor.PRAGMA_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+			response.addHeader(AjaxRequestProcessor.CACHE_CONTROL_HEADER, AjaxRequestProcessor.NO_CACHE_HEADER);
+
 			EasyMock.replay(operationsReader, request, response);			
 			ajaxProcessor.process(request, response, "/test");
 			
