@@ -178,5 +178,21 @@ $().ready( function () {
 		window.location.href = "./weburis.html";
 	});
 
+	var qType = getURLParameter("qtype") || "";
+	var qParam = false;
+	if (qType == 'file') {
+		$('input[name="resourceType"]').val(["2"]);
+		qParam = true;
+	} if (qType == 'page') {
+		$('input[name="resourceType"]').val(["1"]);
+		qParam = true;
+	} 
+	var qValue = getURLParameter("qkey") || ""
+	qParam = qParam && (qValue.length > 0);
+	if (qParam) {
+		$("#wbaresourceExternalKey").val(qValue);
+		$("#wbaresourceExternalKey").trigger("change");
+	}
+	
 		
 });

@@ -101,12 +101,13 @@ $().ready( function () {
 
 	var fileKey = getURLParameter('key'); 
 	var fileBlobKey = "";
-	
+	var fileExternalKey = "";
 	$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));
 	
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
 		$('#wbFileView').wbDisplayObject().display(data);
+		fileExternalKey = data['externalKey'];
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 		$('#spinnerTable').WBSpinner().hide();
@@ -206,5 +207,10 @@ $().ready( function () {
 		}
 	});
 
+	$("#wbAddUrlBtn").click ( function (e) {
+		e.preventDefault();
+		window.location.href = "./weburiadd.html?qtype=file&qkey={0}".format(encodeURIComponent(fileExternalKey));
+	});
+	
 	
 });

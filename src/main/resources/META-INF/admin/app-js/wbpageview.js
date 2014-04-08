@@ -136,6 +136,11 @@ $().ready( function () {
 		$('#wbAddParameterModal').modal('show');
 	});
 	
+	$("#wbAddUrlBtn").click ( function (e) {
+		e.preventDefault();
+		window.location.href = "./weburiadd.html?qtype=page&qkey={0}".format(encodeURIComponent(pageExternalKey));
+	});
+	
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddParameterModal').modal('hide');
 		$('#wbPageParametersTable').wbSimpleTable().insertRow(data.data);			
