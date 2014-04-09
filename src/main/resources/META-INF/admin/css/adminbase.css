@@ -235,6 +235,7 @@ border-bottom: 2px solid #DDDDDD;
 color: #777777;
 text-shadow: 0 1px 0 #ffffff;
 height: 30px;
+padding-bottom: 6px;
 margin-bottom: 20px;
 }
 .tableheader .tabletitle
