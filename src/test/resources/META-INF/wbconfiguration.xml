@@ -5,13 +5,13 @@
 		<factoryclass>com.xyz.cache</factoryclass>
 	</wpbcache>
 	<wpbadmindatastorage>
-		<factoryclass>com.webbricks.datautility.local.WBLocalAdminDataStorage</factoryclass>
+		<factoryclass>com.webpagebytes.datautility.local.WBLocalAdminDataStorage</factoryclass>
 		<params>
 			<param name="dbpath" value="~/test" />
 		</params>
 	</wpbadmindatastorage>
 	<wpbcloudfilestorage>
-		<factoryclass>com.webbricks.datautility.local.WBLocalCloudFileStorage</factoryclass>
+		<factoryclass>com.webpagebytes.datautility.local.WBLocalCloudFileStorage</factoryclass>
 		<params>
 			<param name="dataDirectory" value="D:\Tree"/>
 			<param name="basePublicUrlPath" value=""/> 
