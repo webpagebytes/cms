@@ -9,14 +9,14 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.webpagebytes.appinterfaces.IPageModelProvider;
-import com.webpagebytes.appinterfaces.WBModel;
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cmsdata.WBProject;
-import com.webpagebytes.cmsdata.WBWebPage;
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.template.WBFreeMarkerTemplateEngine;
-import com.webpagebytes.template.WBTemplateEngine;
+import com.webpagebytes.cms.appinterfaces.IPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cmsdata.WBProject;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.template.WBFreeMarkerTemplateEngine;
+import com.webpagebytes.cms.template.WBTemplateEngine;
 
 public class PageContentBuilder {
 		

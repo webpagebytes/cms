@@ -12,18 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.appinterfaces.WBForward;
-import com.webpagebytes.appinterfaces.WBModel;
-import com.webpagebytes.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cache.WBCacheFactory;
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cmsdata.WBFile;
-import com.webpagebytes.cmsdata.WBProject;
-import com.webpagebytes.cmsdata.WBUri;
-import com.webpagebytes.cmsdata.WBWebPage;
-import com.webpagebytes.exception.WBIOException;
-import com.webpagebytes.exception.WBLocaleException;
-import com.webpagebytes.exception.WBTemplateException;
+import com.webpagebytes.cms.appinterfaces.WBForward;
+import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
+import com.webpagebytes.cms.cache.WBCacheFactory;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WBProject;
+import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.exception.WBTemplateException;
 
 public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());

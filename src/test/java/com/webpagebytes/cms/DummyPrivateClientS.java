@@ -1,7 +1,7 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.datautility.AdminFieldKey;
-import com.webpagebytes.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.AdminFieldKey;
+import com.webpagebytes.cms.datautility.AdminFieldStore;
 
 public class DummyPrivateClientS {
 	@AdminFieldKey

@@ -2,8 +2,8 @@ package com.webpagebytes.cms;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.webpagebytes.appinterfaces.IPageModelProvider;
-import com.webpagebytes.appinterfaces.WBModel;
+import com.webpagebytes.cms.appinterfaces.IPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WBModel;
 
 public class DummyPageModelProvider implements IPageModelProvider  {
 

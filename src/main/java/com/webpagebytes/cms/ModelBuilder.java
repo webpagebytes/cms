@@ -7,16 +7,16 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.webpagebytes.appinterfaces.WBModel;
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cache.WBParametersCache;
-import com.webpagebytes.cache.WBProjectCache;
-import com.webpagebytes.cmsdata.WBParameter;
-import com.webpagebytes.cmsdata.WBPredefinedParameters;
-import com.webpagebytes.cmsdata.WBUri;
-import com.webpagebytes.cmsdata.WBWebPage;
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBLocaleException;
+import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cache.WBProjectCache;
+import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WBPredefinedParameters;
+import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBLocaleException;
 
 public class ModelBuilder {
 	

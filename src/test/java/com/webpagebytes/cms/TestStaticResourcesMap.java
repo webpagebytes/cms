@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.webpagebytes.cms.ResourceReader;
 import com.webpagebytes.cms.StaticResourceMap;
-import com.webpagebytes.exception.*;
+import com.webpagebytes.cms.exception.*;
 
 import junit.framework.*;
 

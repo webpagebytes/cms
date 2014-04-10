@@ -23,18 +23,18 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cache.WBArticlesCache;
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cache.WBFilesCache;
-import com.webpagebytes.cache.WBMessagesCache;
-import com.webpagebytes.cache.WBParametersCache;
-import com.webpagebytes.cache.WBProjectCache;
-import com.webpagebytes.cache.WBUrisCache;
-import com.webpagebytes.cache.WBWebPageModulesCache;
-import com.webpagebytes.cache.WBWebPagesCache;
 import com.webpagebytes.cms.PublicContentServlet;
 import com.webpagebytes.cms.WBServletUtility;
-import com.webpagebytes.exception.WBIOException;
+import com.webpagebytes.cms.cache.WBArticlesCache;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cache.WBProjectCache;
+import com.webpagebytes.cms.cache.WBUrisCache;
+import com.webpagebytes.cms.cache.WBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.exception.WBIOException;
 
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;

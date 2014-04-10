@@ -3,7 +3,7 @@ package com.webpagebytes.cms;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.exception.*;
+import com.webpagebytes.cms.exception.*;
 
 import java.util.Set;
 import java.util.zip.CRC32;

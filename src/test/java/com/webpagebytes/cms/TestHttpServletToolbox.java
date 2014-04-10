@@ -31,9 +31,9 @@ import org.powermock.reflect.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.json.JSONException;
 
-import com.webpagebytes.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.utility.HttpServletToolbox;
-import com.webpagebytes.utility.IOFactory;
+import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+import com.webpagebytes.cms.utility.HttpServletToolbox;
+import com.webpagebytes.cms.utility.IOFactory;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest ({WBJSONToFromObjectConverter.class, ServletOutputStream.class})

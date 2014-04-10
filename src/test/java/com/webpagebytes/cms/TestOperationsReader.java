@@ -1,7 +1,7 @@
 package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.*;
-import com.webpagebytes.exception.*;
+import com.webpagebytes.cms.exception.*;
 
 import java.util.Arrays;
 import java.util.HashSet;

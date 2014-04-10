@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBFileNotFoundException;
-import com.webpagebytes.exception.WBIOException;
-import com.webpagebytes.exception.WBReadConfigException;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBFileNotFoundException;
+import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.exception.WBReadConfigException;
 
 import java.util.Locale;
 

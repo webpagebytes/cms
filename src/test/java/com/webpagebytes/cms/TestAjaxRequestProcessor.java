@@ -3,7 +3,7 @@ package com.webpagebytes.cms;
 import com.webpagebytes.cms.AdminServletOperationsReader;
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.Pair;
-import com.webpagebytes.exception.*;
+import com.webpagebytes.cms.exception.*;
 
 import java.util.ArrayList;
 

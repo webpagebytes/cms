@@ -6,12 +6,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.appinterfaces.IWBRequestHandler;
-import com.webpagebytes.appinterfaces.WBForward;
-import com.webpagebytes.appinterfaces.WBModel;
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cmsdata.WBUri;
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.appinterfaces.IWBRequestHandler;
+import com.webpagebytes.cms.appinterfaces.WBForward;
+import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.exception.WBException;
 
 public class UriContentBuilder {
 

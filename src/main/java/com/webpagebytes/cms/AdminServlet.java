@@ -3,7 +3,7 @@ package com.webpagebytes.cms;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.exception.WBException;
 
 public class AdminServlet extends HttpServlet {
 

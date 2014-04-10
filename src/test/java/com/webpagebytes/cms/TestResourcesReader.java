@@ -12,7 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import com.webpagebytes.cms.*;
-import com.webpagebytes.exception.*;
+import com.webpagebytes.cms.exception.*;
 
 import java.util.Arrays;
 import java.util.HashSet;

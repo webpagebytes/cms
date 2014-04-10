@@ -8,9 +8,9 @@ import java.io.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBIOException;
-import com.webpagebytes.exception.WBResourceNotFoundException;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.exception.WBResourceNotFoundException;
 
 public class ResourceRequestProcessor {
 

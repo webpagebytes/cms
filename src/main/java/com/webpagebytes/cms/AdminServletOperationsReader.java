@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBFileNotFoundException;
-import com.webpagebytes.exception.WBReadConfigException;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBFileNotFoundException;
+import com.webpagebytes.cms.exception.WBReadConfigException;
 
 public class AdminServletOperationsReader {
 

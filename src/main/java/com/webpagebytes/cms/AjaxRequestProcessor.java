@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.controllers.WBController;
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.controllers.WBController;
+import com.webpagebytes.cms.exception.WBException;
 
 public class AjaxRequestProcessor {
 	public static final String PRAGMA_HEADER = "Pragma";

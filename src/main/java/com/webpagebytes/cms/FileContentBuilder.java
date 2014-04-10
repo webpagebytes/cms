@@ -7,14 +7,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cache.WBFilesCache;
-import com.webpagebytes.cmsdata.WBFile;
-import com.webpagebytes.datautility.WBCloudFile;
-import com.webpagebytes.datautility.WBCloudFileStorage;
-import com.webpagebytes.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBIOException;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.datautility.WBCloudFile;
+import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBIOException;
 
 public class FileContentBuilder {
 	private WBCloudFileStorage cloudFileStorage;

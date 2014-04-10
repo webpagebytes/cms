@@ -16,12 +16,12 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cache.WBCacheInstances;
-import com.webpagebytes.cache.WBFilesCache;
 import com.webpagebytes.cms.FileContentBuilder;
-import com.webpagebytes.cmsdata.WBFile;
-import com.webpagebytes.datautility.WBBlobHandler;
-import com.webpagebytes.exception.WBIOException;
+import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.datautility.WBBlobHandler;
+import com.webpagebytes.cms.exception.WBIOException;
 
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest({FileContentBuilder.class})

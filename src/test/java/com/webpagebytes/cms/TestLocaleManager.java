@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.LanguageLocaleManager;
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.exception.WBException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LanguageLocaleManager.class})

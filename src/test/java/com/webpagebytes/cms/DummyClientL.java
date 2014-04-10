@@ -1,8 +1,8 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.datautility.AdminFieldKey;
-import com.webpagebytes.datautility.AdminFieldStore;
-import com.webpagebytes.datautility.AdminFieldTextStore;
+import com.webpagebytes.cms.datautility.AdminFieldKey;
+import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.AdminFieldTextStore;
 
 public class DummyClientL {
 

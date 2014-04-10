@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.webpagebytes.exception.WBException;
-import com.webpagebytes.exception.WBFileNotFoundException;
-import com.webpagebytes.exception.WBReadConfigException;
+import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WBFileNotFoundException;
+import com.webpagebytes.cms.exception.WBReadConfigException;
 
 public class ResourceReader {
 

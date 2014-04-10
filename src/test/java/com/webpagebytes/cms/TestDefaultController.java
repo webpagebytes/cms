@@ -3,8 +3,8 @@ package com.webpagebytes.cms;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.controllers.WBController;
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.controllers.WBController;
+import com.webpagebytes.cms.exception.WBException;
 
 public class TestDefaultController extends WBController {
 	String uriValue;

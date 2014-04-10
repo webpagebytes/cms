@@ -24,7 +24,7 @@ import com.webpagebytes.cms.AdminServlet;
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.ResourceRequestProcessor;
 import com.webpagebytes.cms.WBServletUtility;
-import com.webpagebytes.exception.WBException;
+import com.webpagebytes.cms.exception.WBException;
 
 public class TestAdminServlet {
 
