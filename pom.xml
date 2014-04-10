@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.webpagebytes.cms</groupId>
-  <artifactId>wbgae</artifactId>
+  <artifactId>webpagebytes-cms</artifactId>
   <version>1.1</version>
   <packaging>jar</packaging>
 
@@ -142,12 +142,12 @@
             <configuration>
                 <instrumentation>
                     <excludes>
-                        <exclude>com/webbricks/cms/DefaultController.class</exclude>
-                        <exclude>com/webbricks/utility/WBIOFactory.class</exclude>
-                        <exclude>com/webbricks/controllers/WBErrors.class</exclude>
-                        <exclude>com/webbricks/cms/URLMatcherResult.class</exclude>
-                        <exclude>com/webbricks/exception/*.class</exclude>
-                        <exclude>com/webbricks/cmsdata/*.class</exclude>
+                        <exclude>com/webpagebytes/cms/DefaultController.class</exclude>
+                        <exclude>com/webpagebytes/cms/utility/WBIOFactory.class</exclude>
+                        <exclude>com/webpagebytes/cms/controllers/WBErrors.class</exclude>
+                        <exclude>com/webpagebytes/cms/cms/URLMatcherResult.class</exclude>
+                        <exclude>com/webpagebytes/cms/exception/*.class</exclude>
+                        <exclude>com/webpagebytes/cms/cmsdata/*.class</exclude>
                     </excludes>
                 </instrumentation>
             </configuration>
