@@ -72,20 +72,18 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>							
-	<div id="wbbodycontent">
-		<div id="wbArticleSummary" class="row-fluid">
-			<div class="well wbwell">
-		    <ul class=" wbbreadcrumb" >
-		        <li> <a href="./webarticles.html"> Articles </a> <span class="wbdivider">/</span> </li>
-		        <li> <span id="wbsummarytitle"></span> </li>
-		    </ul>
-		    <div class="wblastmodified">
-		    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
-		    </div>
-		    </div>
-	    </div>
+	<div id="wbbodycontent" class="well">
 		<div class="row-fluid">
-			<div class="well">	
+			<div class="tableheader" id="wbArticleSummary">
+			    <div class="tabletitle">
+			        <a href="./webarticles.html"> Articles </a> <span>/</span>
+			        <span id="wbsummarytitle"></span>
+			    </div>
+			    <div class="wblastmodified">
+			    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
+			    </div>
+		    </div>
+			<div>	
 			<form class="form-horizontal" id="wbArticleEditForm">
 				<input id="wbekey" type="hidden">
 				<div class="marginv control-group">

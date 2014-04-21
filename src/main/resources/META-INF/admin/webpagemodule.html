@@ -33,48 +33,46 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>							
-	<div id="wbbodycontent">
-		<div id="wbPageModuleSummary" class="row-fluid">
-			<div class="well wbwell">
-		    <ul class=" wbbreadcrumb" >
-		        <li> <a href="./webpagemodules.html"> Page modules </a> <span class="wbdivider">/</span> </li>
-		        <li> <span id="wbsummaryname"></span> </li>
-		    </ul>
-		    <div class="wblastmodified">
-		    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
-		    </div>
-		    </div>
-	    </div>
-	    <div class="clear"></div>
-	    <div class="row-fluid">
-	                <div class="wbPageModuleView well" id="wbPageModuleView">
-	                	<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
-						<form class="form-horizontal">
-							<div class="marginv control-group">
-								<label for="name" class="control-label wblabel-left">Module name</label>
-								<div class="controls">
-									<input class="wb-input-xlarge" type="text" name="name" id="wbPageModuleViewname" readonly>
-								</div>
+	<div id="wbbodycontent" class="well">
+		<div class="row-fluid">
+			<div class="tableheader" id="wbPageModuleSummary">
+			    <div class="tabletitle">
+			        <a href="./webpagemodules.html"> Page modules </a> <span>/</span>
+			        <span id="wbsummaryname"></span>
+			    </div>
+			    <div class="wblastmodified">
+			    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
+			    </div>
+		   	</div>
+	    	<div>
+                <div class="wbPageModuleView" id="wbPageModuleView">
+                	<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
+					<form class="form-horizontal">
+						<div class="marginv control-group">
+							<label for="name" class="control-label wblabel-left">Module name</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="name" id="wbPageModuleViewname" readonly>
 							</div>
-							<div class="marginv control-group">
-								<label for="externalKey" class="control-label wblabel-left">External Key</label>
-								<div class="controls">
-									<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageModuleViewexternalKey" readonly>
-									<input data-clipboard-target="wbPageModuleViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">		
-								</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="externalKey" class="control-label wblabel-left">External Key</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageModuleViewexternalKey" readonly>
+								<input data-clipboard-target="wbPageModuleViewexternalKey" type="button" class="btn btn-clipboard" value="Copy to clipboard">		
 							</div>
-							<div class="marginv control-group">
-								<label for="name" class="control-label wblabel-left">Source interpretation</label>
-								<div class="controls">
-									<div id="wbPageModuleViewisTemplateSource" class="marginv"> </div>
-								</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="name" class="control-label wblabel-left">Source interpretation</label>
+							<div class="controls">
+								<div id="wbPageModuleViewisTemplateSource" class="marginv"> </div>
 							</div>
-		
-		                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
-		                </form>
-						<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
-							
-	                </div>
+						</div>
+	
+	                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
+	                </form>
+					<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>						
+                </div>
+	    	</div>
 	    </div>
 	</div>
    	<script type="text/javascript">

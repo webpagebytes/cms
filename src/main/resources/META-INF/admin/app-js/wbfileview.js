@@ -118,7 +118,7 @@ $().ready( function () {
 				break;
 			case 'video':
 				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['key']));
-				$("#wbvideocontent").html(videoHtml);
+				$(".wbvideocontent").html(videoHtml);
 				var player = new MediaElementPlayer('#idvideocontent');
 				player.load();
 				break;
