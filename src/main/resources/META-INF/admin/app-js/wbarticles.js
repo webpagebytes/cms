@@ -32,7 +32,7 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webarticle.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
+			return '<a href="./webarticleedit.html?key=' + encodeURIComponent(record['key'])+'"><i class="icon-pencil"></i> Edit </a>'
 			      +'| <a href="#" class="wbDeleteArticleClass" id="wbDeleteArticle_' + encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'
 				  +'| <a href="#" class="wbDuplicateArticleClass" id="wbDupArticle_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a>';				  
 		} else

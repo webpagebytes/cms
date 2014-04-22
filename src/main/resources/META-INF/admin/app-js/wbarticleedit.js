@@ -44,13 +44,17 @@ $().ready( function () {
 	var fSuccessGetArticle = function (data) {
 		$('#wbArticleSummary').wbDisplayObject().display(data.data);
 		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
+		
+		$("textarea").sceditor("instance").val(data.data['htmlSource']);
+		$('#spinnerTable').WBSpinner().hide();
+		/*
 		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
 			tinyMCE.activeEditor.setContent(data.data['htmlSource']);
 			$('#spinnerTable').WBSpinner().hide();
 		} else {
 			htmlSource = data.data['htmlSource'];
 			prevTimeout = setTimeout(delayDisplay, 500);
-		}		
+		}*/		
 
 	}
 	
@@ -79,7 +83,7 @@ $().ready( function () {
 		var errors = $('#wbArticleEditForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var article = $('#wbArticleEditForm').wbObjectManager().getObjectFromFields();
-			article['htmlSource'] = tinyMCE.activeEditor.getContent();
+			article['htmlSource'] = $("textarea").sceditor("instance").val();
 			var jsonText = JSON.stringify(article);
 			$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(pageKey),
 															 httpOperation:"PUT", 
