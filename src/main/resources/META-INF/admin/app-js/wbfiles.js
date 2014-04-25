@@ -156,8 +156,8 @@ $().ready( function () {
 		var page = getURLParameter('page') || 1;
 		if (page <= 0) page = 1;
 		var index_start = (page-1)*itemsOnPage;
-		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "name");	
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "dsc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");	
 		$('#wbFilesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
 		
 		var files_url = "./wbfile?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 

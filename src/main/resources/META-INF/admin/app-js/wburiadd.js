@@ -32,7 +32,7 @@ $().ready( function () {
 									  errorGeneral:"erregeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', enabled: 0, 'resourceType': 1 },
+									  fieldsDefaults: { 'uri': '/', 'httpOperation': 'GET', 'enabled': 0, 'resourceType': 1 },
 									  validationRules: wbUriValidationRules
 									});
 	
@@ -70,7 +70,6 @@ $().ready( function () {
 	
 	$("#wbaresourceType").trigger("change");
 	
-	$('#wburiadd').wbObjectManager().resetFields();
 	var oResourceExternalKey = "";
 	var externalKeysArrays = { 'files':[], 'pages': [] }
 

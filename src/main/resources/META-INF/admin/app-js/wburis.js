@@ -191,8 +191,8 @@ $().ready( function () {
 		var page = getURLParameter('page') || 1;
 		if (page <= 0) page = 1;
 		var index_start = (page-1)*itemsOnPage;
-		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "asc");
-		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "uri");
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "dsc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");
 		
 		$('#wbtable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
 		
