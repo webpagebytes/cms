@@ -178,13 +178,15 @@
 		addSortIconToColumnHeader: function(field, dir)
 		{
 			var column = this.getColumnHeader(field);
-			column['isHtmlDisplay'] = true;
-			if (dir == 'asc' || dir == 'dsc'){
-				column['sortDirection'] = dir;
+			if (column) {
+				column['isHtmlDisplay'] = true;
+				if (dir == 'asc' || dir == 'dsc'){
+					column['sortDirection'] = dir;
+				}
+				column['fieldId'] = field;
+				column.display = column.display;
+				this.updateColumnHeader(column);
 			}
-			column['fieldId'] = field;
-			column.display = column.display;
-			this.updateColumnHeader(column)
 		},
 		
 		_setPagination: function(pages) {
