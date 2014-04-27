@@ -30,32 +30,12 @@ $().ready( function () {
 	}
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
-	var htmlSource = "";
-	var prevTimeout = undefined;
-	var delayDisplay = function()
-	{
-		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
-			tinyMCE.activeEditor.setContent(htmlSource);
-			clearTimeout(prevTimeout);
-			$('#spinnerTable').WBSpinner().hide();
-		}
-	}
-
 	var fSuccessGetArticle = function (data) {
 		$('#wbArticleSummary').wbDisplayObject().display(data.data);
 		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		
 		$("textarea").sceditor("instance").val(data.data['htmlSource']);
 		$('#spinnerTable').WBSpinner().hide();
-		/*
-		if (tinyMCE && tinyMCE.activeEditor && tinyMCE.activeEditor.initialized) {
-			tinyMCE.activeEditor.setContent(data.data['htmlSource']);
-			$('#spinnerTable').WBSpinner().hide();
-		} else {
-			htmlSource = data.data['htmlSource'];
-			prevTimeout = setTimeout(delayDisplay, 500);
-		}*/		
-
 	}
 	
 	var fErrorGetArticle = function (errors, data) {
@@ -72,7 +52,7 @@ $().ready( function () {
 												} );
 	
 	var fSuccessEdit = function ( data ) {
-		window.location.href = "./webarticle.html?key=" + encodeURIComponent(pageKey);
+		window.location.href = "./webarticles.html";
 	}
 	var fErrorEdit = function (errors, data) {
 		$('#wbEditPageModuleForm').wbObjectManager().setErrors(errors);
