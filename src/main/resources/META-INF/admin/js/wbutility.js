@@ -296,27 +296,8 @@ if (!Array.prototype.indexOf) {
 			$.each( elements, function (index, value) {
 				var key = $(value).attr('id').substring( tempThis.getOptions().fieldsPrefix.length );
 				switch (value.type) {
-					case 'text':
-					case 'file':
-					case 'hidden':
-					case 'password':
-					case 'textarea':
-					case 'select-multiple':
-					case 'select-one':
-						var valueToSet = "";
-						if (key in tempThis.getOptions().fieldsDefaults)
-							valueToSet = tempThis.getOptions().fieldsDefaults[key];
-						$(value).val (valueToSet);
-						break;
-					case 'checkbox':
-						var valueToSet = 0;
-						if (key in tempThis.getOptions().fieldsDefaults)
-							valueToSet = tempThis.getOptions().fieldsDefaults[key];
-						$(value).attr('checked', valueToSet==1 ? true: false);
-						break;
-					case 'radio':
+					case 'radio': {
 						var name = $(value).attr('name');
-						tempThis.thisElement.find('input[name^=' + name + ']').attr('checked', false);
 						if (key in tempThis.getOptions().fieldsDefaults)
 							var valueToSet = tempThis.getOptions().fieldsDefaults[key];
 							var radioElements = tempThis.thisElement.find('input[name^=' + name + '][value="' + valueToSet + '"]');
@@ -324,6 +305,27 @@ if (!Array.prototype.indexOf) {
 								$(radioItem).attr('checked', true);
 							});
 						break;
+						}
+					case 'text':
+					case 'file':
+					case 'hidden':
+					case 'password':
+					case 'textarea':
+					case 'select-multiple':
+					case 'select-one': {
+						var valueToSet = "";
+						if (key in tempThis.getOptions().fieldsDefaults)
+							valueToSet = tempThis.getOptions().fieldsDefaults[key];
+						$(value).val (valueToSet);
+						break; 
+						}
+					case 'checkbox': {
+						var valueToSet = 0;
+						if (key in tempThis.getOptions().fieldsDefaults)
+							valueToSet = tempThis.getOptions().fieldsDefaults[key];
+						$(value).attr('checked', valueToSet==1 ? true: false);
+						break;
+						}
 				}				
 			} );
 			

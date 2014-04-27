@@ -32,7 +32,7 @@ test ("test wbobjectmanager - populateFieldsFromObject", function () {
 		'<input type="radio" value="0" name="enabled"> '+
 		'<input type="radio" value="3" name="live" id="wbxlive"> '+
 		'<input type="radio" value="4" name="live"> '+
-		'<select id="wbxhttpOperation"> <option>GET </option> <option selected="selected">POST</option></select> '+
+		'<select id="wbxhttpOperation"> <option value="GET">GET </option> <option value="POST" selected="selected">POST</option></select> '+
 		'</form>';
 	$fixture.append(htmlString);
 	var objectToSet = { key: "1234", uri: "testtext", enabled: "1", live:"4", httpOperation: "GET", summary:"test summary" };
@@ -55,7 +55,7 @@ test ("test wbobjectmanager - resetFields", function () {
 		'<input type="text" id="wbxuri""> '+ 
 		'<input type="hidden" id="wbxkey""> '+ 
 		'<input type="checkbox" value="1" id="wbxenabled"> '+
-		'<input id="wbxvisible" type="radio" name="enabled" value="1"> One <input type="radio" name="enabled" value="2"> TWO <input type="radio" name="enabled" value="3"> THREE' +
+		'<input id="wbxvisible" type="radio" name="visible" value="1"> One <input type="radio" name="visible" value="2"> TWO <input type="radio" name="visible" value="3"> THREE' +
 		'<select id="wbxhttpOperation"> <option>GET </option> <option>POST</option></select> '+
 		'</form>';
 	$fixture.append(htmlString);
@@ -65,7 +65,7 @@ test ("test wbobjectmanager - resetFields", function () {
 	equal ( $("#wbxkey").val(), "0");
 	equal ( $("#wbxhttpOperation").val(), "POST");
 	equal ( $("#wbxenabled").filter(":checked").val(), 1);
-	equal ( $("[name^='enabled']").filter(":checked").val(), 3);
+	equal ( $("[name^='visible']").filter(":checked").val(), 3);
 	
 });
 
