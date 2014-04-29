@@ -18,7 +18,7 @@ import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.PageContentBuilder;
-import com.webpagebytes.cms.appinterfaces.IPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cache.WBWebPagesCache;
@@ -105,7 +105,7 @@ public void test_buildPageContent_null_isTemplateSource()
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(null);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
 		assertTrue (result.equals(htmlSource));
 
@@ -126,7 +126,7 @@ public void test_buildPageContent_zero_isTemplateSource()
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
 		assertTrue (result.equals(htmlSource));
 
@@ -148,7 +148,7 @@ public void test_buildPageContent_zero_ok_nullController()
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
-		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(null);
 		EasyMock.expect(pageMock.getName()).andReturn(pageName);
@@ -156,7 +156,7 @@ public void test_buildPageContent_zero_ok_nullController()
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
 		
 
@@ -183,7 +183,7 @@ public void test_buildPageContent_validController()
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
-		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(controllerClass);
 		
@@ -192,7 +192,7 @@ public void test_buildPageContent_validController()
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
 		
 
@@ -214,7 +214,7 @@ public void test_buildPageContent_zero_ok_emptyController()
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
-		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn("");
 		EasyMock.expect(pageMock.getName()).andReturn(pageName);
@@ -222,7 +222,7 @@ public void test_buildPageContent_zero_ok_emptyController()
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 		EasyMock.verify(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);		
 		
 
@@ -244,7 +244,7 @@ public void test_buildPageContent_templateException()
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
-		modelBuilderMock.populateModelForWebPage(requestMock, pageMock, model);
+		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(null);
 		EasyMock.expect(pageMock.getName()).andReturn(pageName);
@@ -252,7 +252,7 @@ public void test_buildPageContent_templateException()
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		EasyMock.expectLastCall().andThrow(new WBTemplateException(""));
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
-		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, projectMock, model);
+		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 				
 	}
 	catch (WBTemplateException e)
@@ -270,14 +270,14 @@ public void test_buildPageContent_templateException()
 public void test_getPageModelProvider_exists_in_map()
 {
 	String controllerClass = "com.webpagebytes.cms.DefaultPageModelProvider";
-	Map<String, IPageModelProvider> customControllers = new HashMap<String, IPageModelProvider>();
-	IPageModelProvider instController = new DummyPageModelProvider();
+	Map<String, WBPageModelProvider> customControllers = new HashMap<String, WBPageModelProvider>();
+	WBPageModelProvider instController = new DummyPageModelProvider();
 	customControllers.put(controllerClass, instController);	
 	Whitebox.setInternalState(pageContentBuilder, "customControllers", customControllers);
 	
 	try
 	{
-		IPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);
+		WBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);
 		
 		assertTrue (result == instController);
 	} catch (Exception e)
@@ -292,10 +292,10 @@ public void test_getPageModelProvider_not_exists_in_map()
 	String controllerClass = "com.webpagebytes.cms.DummyPageModelProvider";
 	try
 	{
-		IPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
+		WBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
 		assertTrue (result != null);
 		
-		Map<String, IPageModelProvider> controllers = Whitebox.getInternalState(pageContentBuilder, "customControllers");
+		Map<String, WBPageModelProvider> controllers = Whitebox.getInternalState(pageContentBuilder, "customControllers");
 		assertTrue (controllers.get(controllerClass) != null);
 	} catch (Exception e)
 	{

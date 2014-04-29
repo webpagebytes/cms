@@ -16,7 +16,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.appinterfaces.IWBRequestHandler;
+import com.webpagebytes.cms.appinterfaces.WBRequestHandler;
 import com.webpagebytes.cms.appinterfaces.WBForward;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBCacheInstances;
@@ -70,7 +70,7 @@ public void test_buildUriContent()
 		EasyMock.verify(responseMock, requestMock, uriMock, cacheInstancesMock, modelBuilderMock);
 		
 		//verify that the controller is in customControllers map
-		Map<String, IWBRequestHandler> controllers =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
+		Map<String, WBRequestHandler> controllers =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
 		assertTrue (controllers.get(controllerClass) != null);
 		
 	}catch (Exception e)
@@ -116,15 +116,15 @@ public void test_buildUriContent_controller_already_exists()
 	
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	
-	IWBRequestHandler controllerInst = null;
+	WBRequestHandler controllerInst = null;
 	try
 	{
-		controllerInst = (IWBRequestHandler) Class.forName(controllerClass).newInstance();
+		controllerInst = (WBRequestHandler) Class.forName(controllerClass).newInstance();
 	} catch (Exception e)
 	{
 		assertTrue(false);
 	}
-	Map<String, IWBRequestHandler> controllers = Whitebox.getInternalState(uriContentBuilder, "customControllers");
+	Map<String, WBRequestHandler> controllers = Whitebox.getInternalState(uriContentBuilder, "customControllers");
 	controllers.put(controllerClass, controllerInst);
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
@@ -139,7 +139,7 @@ public void test_buildUriContent_controller_already_exists()
 		EasyMock.verify(responseMock, requestMock, uriMock, cacheInstancesMock, modelBuilderMock);
 		
 		//verify that the controller is in customControllers map
-		Map<String, IWBRequestHandler> controllers_ =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
+		Map<String, WBRequestHandler> controllers_ =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
 		assertTrue (controllers_.get(controllerClass) == controllerInst);
 		assertTrue (controllers_.size() == 1);
 		

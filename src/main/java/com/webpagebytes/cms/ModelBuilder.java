@@ -22,7 +22,7 @@ public class ModelBuilder {
 	
 	public static final String GLOBALS_KEY = "wbGlobals";
 	public static final String REQUEST_KEY = "wbRequest";
-	public static final String URL_REQUEST_PARAMETERS_KEY = "wbRequestUrlParams";
+	public static final String URL_REQUEST_PARAMETERS_KEY = "wbQueryParams";
 	public static final String PAGE_PARAMETERS_KEY = "wbPageParams";
 	public static final String URI_PARAMETERS_KEY = "wbUriParams";
 	
@@ -66,7 +66,7 @@ public class ModelBuilder {
 		populateStaticParameters(request, model);
 	}
 
-	public void populateModelForWebPage(HttpServletRequest request, WBWebPage page, WBModel model) throws WBException
+	public void populateModelForWebPage(WBWebPage page, WBModel model) throws WBException
 	{
 		WBParametersCache parametersCache = cacheInstances.getWBParameterCache();
 		

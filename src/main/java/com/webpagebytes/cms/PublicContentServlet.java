@@ -1,5 +1,6 @@
 package com.webpagebytes.cms;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBLocaleException;
 import com.webpagebytes.cms.exception.WBTemplateException;
@@ -102,18 +104,8 @@ public class PublicContentServlet extends HttpServlet {
 		}
     }
 	
-	private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
-    	throws ServletException,
-    	java.io.IOException
-    {
-		String uri = req.getRequestURI();
-		if (uriCommonPrefix.length()>0 && uri.startsWith(uriCommonPrefix))
-		{
-			uri = uri.substring(uriCommonPrefix.length());
-		}
-		
-		req.setAttribute(URI_PREFIX, uriCommonPrefix);
-		
+	private URLMatcher getUrlMatcher(HttpServletRequest req)
+	{
 		int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 		URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
 		//reinitialize the matchurlToPattern if needed
@@ -129,6 +121,71 @@ public class PublicContentServlet extends HttpServlet {
 				// do not fail as some urls may still work
 			}
 		}
+		return urlMatcher;
+	}
+	
+	private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WBModel model) throws WBException, IOException
+	{
+		if (webPage == null)
+		{
+			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		String content = pageContentBuilder.buildPageContent(req, webPage, model);
+		resp.setCharacterEncoding("UTF-8");
+		if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
+		{
+			String cqp = req.getParameter(CACHE_QUERY_PARAM);
+			if (cqp != null && cqp.equals(webPage.getHash().toString()))
+			{
+				// this is a request that can be cached, todo customize the cache time
+				resp.addHeader("cache-control", "max-age=86400");
+			}
+		} else
+		{
+			resp.addHeader("cache-control", "no-cache;no-store;");
+		}
+		resp.setContentType(webPage.getContentType());			
+		ServletOutputStream os = resp.getOutputStream();
+		os.write(content.getBytes("UTF-8"));
+		os.flush();		
+	}
+
+	private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WBException, IOException
+	{
+		WBFile wbFile = fileContentBuilder.find(fileExternalKey);
+		if (wbFile == null)
+		{
+			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;						
+		}
+		String cqp = req.getParameter(CACHE_QUERY_PARAM);
+		if (cqp != null && cqp.equals(wbFile.getHash().toString()))
+		{
+			// there is a request that can be cached
+			resp.addHeader("cache-control", "max-age=86400");
+		}
+		ServletOutputStream os = resp.getOutputStream();
+		resp.setContentType(wbFile.getAdjustedContentType());													
+		fileContentBuilder.writeFileContent(wbFile, os);
+		os.flush();
+	}
+
+	
+	private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
+    	throws ServletException,
+    	java.io.IOException
+    {
+		String uri = req.getRequestURI();
+		if (uriCommonPrefix.length()>0 && uri.startsWith(uriCommonPrefix))
+		{
+			uri = uri.substring(uriCommonPrefix.length());
+		}
+		
+		req.setAttribute(URI_PREFIX, uriCommonPrefix);
+		
+		URLMatcher urlMatcher = getUrlMatcher(req);
+		
 		URLMatcherResult urlMatcherResult = urlMatcher.matchUrlToPattern(uri);
 		if (urlMatcherResult == null)
 		{
@@ -149,7 +206,7 @@ public class PublicContentServlet extends HttpServlet {
 		{
 			try
 			{
-				WBProject wbProject = cacheInstances.getProjectCache().getProject();
+				int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 				WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
 				
 				if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
@@ -182,49 +239,11 @@ public class PublicContentServlet extends HttpServlet {
 					{					
 						webPage = pageContentBuilder.findWebPage(wbUri.getResourceExternalKey());
 					}
-					if (webPage == null)
-					{
-						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-						return;
-					}
-					String content = pageContentBuilder.buildPageContent(req, webPage, wbProject, model);
-					resp.setCharacterEncoding("UTF-8");
-					if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
-					{
-						String cqp = req.getParameter(CACHE_QUERY_PARAM);
-						if (cqp != null && cqp.equals(webPage.getHash().toString()))
-						{
-							// this is a request that can be cached, todo customize the cache time
-							resp.addHeader("cache-control", "max-age=86400");
-						}
-					} else
-					{
-						resp.addHeader("cache-control", "no-cache;no-store;");
-					}
-					resp.setContentType(webPage.getContentType());			
-					ServletOutputStream os = resp.getOutputStream();
-					os.write(content.getBytes("UTF-8"));
-					os.flush();
+					handleRequestTypeText(webPage, req, resp, model);
 				} else
 				if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
 				{
-					WBFile wbFile = fileContentBuilder.find(wbUri.getResourceExternalKey());
-					if (wbFile == null)
-					{
-						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-						return;						
-					}
-					String cqp = req.getParameter(CACHE_QUERY_PARAM);
-					if (cqp != null && cqp.equals(wbFile.getHash().toString()))
-					{
-						// there is a request that can be cached
-						resp.addHeader("cache-control", "max-age=86400");
-					}
-					ServletOutputStream os = resp.getOutputStream();
-					resp.setContentType(wbFile.getAdjustedContentType());													
-					fileContentBuilder.writeFileContent(wbFile, os);
-					os.flush();
-					
+					handleRequestTypeFile(wbUri.getResourceExternalKey(), req, resp);
 				} else
 				{
 					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

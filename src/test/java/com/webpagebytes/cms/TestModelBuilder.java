@@ -109,7 +109,7 @@ public void test_populateModelForWebPage()
 		
 		EasyMock.replay(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock);
 		
-		modelBuilder.populateModelForWebPage(requestMock, webPageMock, model);		
+		modelBuilder.populateModelForWebPage(webPageMock, model);		
 		EasyMock.verify(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock);
 		
 		assertTrue (model.getCmsModel().get(ModelBuilder.PAGE_PARAMETERS_KEY).equals(mapParams));

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.webpagebytes.cms.appinterfaces.IPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBProject;
@@ -22,13 +22,13 @@ public class PageContentBuilder {
 		
 	private WBTemplateEngine templateEngine;
 	private WBCacheInstances cacheInstances;
-	private Map<String, IPageModelProvider> customControllers;
+	private Map<String, WBPageModelProvider> customControllers;
 	private ModelBuilder modelBuilder;
 
 	public PageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 							
 	{
-		this.customControllers = new HashMap<String, IPageModelProvider>();
+		this.customControllers = new HashMap<String, WBPageModelProvider>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
 		this.templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
@@ -45,16 +45,16 @@ public class PageContentBuilder {
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
-	private IPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
+	private WBPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
 	{
-		IPageModelProvider controllerInst = null;
+		WBPageModelProvider controllerInst = null;
 		if (customControllers.containsKey(controllerClassName))
 		{
-			controllerInst = (IPageModelProvider) customControllers.get(controllerClassName);
+			controllerInst = (WBPageModelProvider) customControllers.get(controllerClassName);
 		} else
 		{
 			try {
-			controllerInst = (IPageModelProvider) Class.forName(controllerClassName).newInstance();
+			controllerInst = (WBPageModelProvider) Class.forName(controllerClassName).newInstance();
 			customControllers.put(controllerClassName, controllerInst);
 			} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
 		}
@@ -63,7 +63,6 @@ public class PageContentBuilder {
 	
 	public String buildPageContent(HttpServletRequest request,
 			WBWebPage wbWebPage, 
-			WBProject project,
 			WBModel model) throws WBException
 	{
 
@@ -73,19 +72,64 @@ public class PageContentBuilder {
 			return wbWebPage.getHtmlSource();
 		}
 						
-		modelBuilder.populateModelForWebPage(request, wbWebPage, model);
+		modelBuilder.populateModelForWebPage(wbWebPage, model);
 		
 		String controllerClassName = wbWebPage.getPageModelProvider();
 
 		Map<String, Object> rootModel = new HashMap<String, Object>();
 		
-		boolean hasController = controllerClassName !=null && controllerClassName.length()>0;
+		boolean hasController = controllerClassName!=null && controllerClassName.length()>0;
 		
 		if (hasController)
 		{
+			WBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
+			controllerInst.populatePageModel(request, model);
+		}
+		model.transferModel(rootModel);
+		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		
+		if (model.getCmsModel().containsKey(ModelBuilder.LOCALE_KEY))
+		{
+			rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
+			rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
+		}
+		
+		String result = "";
+		try {
+			StringWriter out = new StringWriter();			
+			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
+			result += out.toString();
+		} catch (WBException e)
+		{
+			throw e;
+		}
+		
+		return result;
+	}
 
-			IPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
-			controllerInst.getPageModel(request, model);
+	public String buildPageContent(
+			WBWebPage wbWebPage, 
+			WBModel model) throws WBException
+	{
+
+		Integer istemplateSource = wbWebPage.getIsTemplateSource();
+		if (istemplateSource == null || istemplateSource == 0)
+		{
+			return wbWebPage.getHtmlSource();
+		}
+						
+		modelBuilder.populateModelForWebPage(wbWebPage, model);
+		
+		String controllerClassName = wbWebPage.getPageModelProvider();
+
+		Map<String, Object> rootModel = new HashMap<String, Object>();
+		
+		boolean hasController = controllerClassName!=null && controllerClassName.length()>0;
+		
+		if (hasController)
+		{
+			WBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
+			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
 		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());

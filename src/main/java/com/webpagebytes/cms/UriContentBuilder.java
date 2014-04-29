@@ -6,7 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.appinterfaces.IWBRequestHandler;
+import com.webpagebytes.cms.appinterfaces.WBContentProvider;
+import com.webpagebytes.cms.appinterfaces.WBRequestHandler;
 import com.webpagebytes.cms.appinterfaces.WBForward;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBCacheInstances;
@@ -15,11 +16,12 @@ import com.webpagebytes.cms.exception.WBException;
 
 public class UriContentBuilder {
 
-	private Map<String, IWBRequestHandler> customControllers;
+	private Map<String, WBRequestHandler> customControllers;
+	private WBContentProvider contentProvider;
 	
 	UriContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 	{
-		customControllers = new HashMap<String, IWBRequestHandler>();
+		customControllers = new HashMap<String, WBRequestHandler>();
 	}
 	
 	public void initialize()
@@ -35,18 +37,18 @@ public class UriContentBuilder {
 		String controllerClassName = wburi.getControllerClass();
 		if (controllerClassName !=null && controllerClassName.length()>0)
 		{
-			IWBRequestHandler controllerInst = null;
+			WBRequestHandler controllerInst = null;
 			if (customControllers.containsKey(controllerClassName))
 			{
 				controllerInst = customControllers.get(controllerClassName);
 			} else
 			{
 				try {
-				controllerInst = (IWBRequestHandler) Class.forName(controllerClassName).newInstance();
+				controllerInst = (WBRequestHandler) Class.forName(controllerClassName).newInstance();
 				customControllers.put(controllerClassName, controllerInst);
 				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
 			}
-			controllerInst.handleRequest(request, response, model, forward);
+			controllerInst.handleRequest(request, response, model, forward, contentProvider);
 		}
 	}
 
