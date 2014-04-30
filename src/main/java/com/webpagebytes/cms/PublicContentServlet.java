@@ -93,7 +93,7 @@ public class PublicContentServlet extends HttpServlet {
 			fileContentBuilder = new FileContentBuilder(cacheInstances);
 			fileContentBuilder.initialize();
 			
-			uriContentBuilder = new UriContentBuilder(cacheInstances, modelBuilder);
+			uriContentBuilder = new UriContentBuilder(cacheInstances, modelBuilder, fileContentBuilder, pageContentBuilder);
 			uriContentBuilder.initialize();
 
 			

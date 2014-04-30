@@ -11,8 +11,15 @@ import com.webpagebytes.cms.exception.WBException;
 
 public class WBDefaultContentProvider implements WBContentProvider {
 
-	FileContentBuilder fileContentBuilder;
-	PageContentBuilder pageContentBuilder;
+	private FileContentBuilder fileContentBuilder;
+	private PageContentBuilder pageContentBuilder;
+
+	public WBDefaultContentProvider(FileContentBuilder fileContentBuilder, PageContentBuilder pageContentBuilder)
+	{
+		this.fileContentBuilder = fileContentBuilder;
+		this.pageContentBuilder = pageContentBuilder;
+	}
+	
 	@Override
 	public boolean writeFileContent(String externalKey, OutputStream os) 
 	{

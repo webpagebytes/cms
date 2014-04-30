@@ -174,9 +174,9 @@ public void test_buildPageContent_validController()
 	{
 		WBModel model = new WBModel();
 		Map<String, String> locale = new HashMap<String, String>();
-		locale.put(ModelBuilder.LOCALE_COUNTRY_KEY, "");
-		locale.put(ModelBuilder.LOCALE_LANGUAGE_KEY, "en");
-		model.getCmsModel().put(ModelBuilder.LOCALE_KEY, locale);
+		locale.put(WBModel.LOCALE_COUNTRY_KEY, "");
+		locale.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
+		model.getCmsModel().put(WBModel.LOCALE_KEY, locale);
 		
 		String pageName = "index";
 		String controllerClass = "com.webpagebytes.cms.DummyPageModelProvider";

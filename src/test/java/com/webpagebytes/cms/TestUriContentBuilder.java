@@ -32,13 +32,17 @@ public class TestUriContentBuilder {
 WBCacheInstances cacheInstancesMock;
 ModelBuilder modelBuilderMock;
 UriContentBuilder uriContentBuilder;
+PageContentBuilder pageContentBuilder;
+FileContentBuilder fileContentBuilder;
 
 @Before
 public void setUp()
 {
 cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
 modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
-uriContentBuilder = new UriContentBuilder(cacheInstancesMock, modelBuilderMock);
+pageContentBuilder = EasyMock.createMock(PageContentBuilder.class);
+fileContentBuilder = EasyMock.createMock(FileContentBuilder.class);
+uriContentBuilder = new UriContentBuilder(cacheInstancesMock, modelBuilderMock, fileContentBuilder, pageContentBuilder);
 
 }
 

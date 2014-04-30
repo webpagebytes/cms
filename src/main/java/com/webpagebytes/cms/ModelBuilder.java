@@ -19,7 +19,7 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBLocaleException;
 
 public class ModelBuilder {
-	
+/*	
 	public static final String GLOBALS_KEY = "wbGlobals";
 	public static final String REQUEST_KEY = "wbRequest";
 	public static final String URL_REQUEST_PARAMETERS_KEY = "wbQueryParams";
@@ -43,7 +43,7 @@ public class ModelBuilder {
 	public static final String GLOBAL_PROTOCOL = "WB_GLOBAL_PROTOCOL";
 	public static final String GLOBAL_DOMAIN = "WB_GLOBAL_DOMAIN";
 	public static final String GLOBAL_URI_PREFIX = "WB_GLOBAL_URI_PREFIX";
-
+*/
 
 	private WBCacheInstances cacheInstances;
 	
@@ -77,7 +77,7 @@ public class ModelBuilder {
 			pageParams.put(param.getName(), param.getValue());
 		}
 				
-		model.getCmsModel().put(PAGE_PARAMETERS_KEY, pageParams);	
+		model.getCmsModel().put(WBModel.PAGE_PARAMETERS_KEY, pageParams);	
 	}
 
 	private void populateUriParameters(HttpServletRequest request, String uriExternalKey,
@@ -95,22 +95,23 @@ public class ModelBuilder {
 		Set<String> supportedLanguages = projectCache.getSupportedLanguages();
 		
 		Map<String, String> urlPatternParams = urlMatcherResult.getPatternParams();
-		Map<String, String> requestParams = new HashMap<String, String>();
+		Map<String, String> uriParams = new HashMap<String, String>();
+		
 		List<WBParameter> wbUriParams = parametersCache.getAllForOwner(uriExternalKey);
 		for(WBParameter param: wbUriParams)
 		{
 			String paramKey = param.getName();
 			if (urlPatternParams == null)
 			{
-				requestParams.put(paramKey, param.getValue());
+				uriParams.put(paramKey, param.getValue());
 				continue;
 			}
 			if (urlPatternParams.containsKey(paramKey) && param.getOverwriteFromUrl() == 1)
 			{
-				requestParams.put(paramKey, urlPatternParams.get(paramKey));
+				uriParams.put(paramKey, urlPatternParams.get(paramKey));
 			} else
 			{
-				requestParams.put(paramKey, param.getValue());
+				uriParams.put(paramKey, param.getValue());
 			}
 			if (param.getLocaleType() == WBParameter.PARAMETER_LOCALE_LANGUAGE)
 			{
@@ -141,7 +142,7 @@ public class ModelBuilder {
 			}
 		}
 			
-		model.getCmsModel().put(URL_REQUEST_PARAMETERS_KEY, requestParams);
+		model.getCmsModel().put(WBModel.URI_PARAMETERS_KEY, uriParams);
 		
 		populateLocale(languageParam, countryParam, model);
 	}
@@ -150,9 +151,9 @@ public class ModelBuilder {
 	{
 		// populate the LOCALE_KEY
 		Map<String, String> localeMap = new HashMap<String, String>();
-		localeMap.put(LOCALE_LANGUAGE_KEY, language);
-		localeMap.put(LOCALE_COUNTRY_KEY, country);
-		model.getCmsModel().put(LOCALE_KEY, localeMap);				
+		localeMap.put(WBModel.LOCALE_LANGUAGE_KEY, language);
+		localeMap.put(WBModel.LOCALE_COUNTRY_KEY, country);
+		model.getCmsModel().put(WBModel.LOCALE_KEY, localeMap);				
 	}
 	
 	private void populateGlobalParameters (WBModel model) throws WBException
@@ -164,7 +165,7 @@ public class ModelBuilder {
 		{
 			globalParams.put(param.getName(), param.getValue());
 		}
-		model.getCmsModel().put(GLOBALS_KEY, globalParams);
+		model.getCmsModel().put(WBModel.GLOBALS_KEY, globalParams);
 		
 	}
 	private void populateStaticParameters(HttpServletRequest request, WBModel model)
@@ -179,14 +180,14 @@ public class ModelBuilder {
 			domain = domain.substring(0, indexUri);
 		}
 		Map<String, String> result = new HashMap<String, String>();
-		result.put(WBPredefinedParameters.GLOBAL_PROTOCOL, protocol);
-		result.put(WBPredefinedParameters.GLOBAL_DOMAIN, domain);
+		result.put(WBModel.GLOBAL_PROTOCOL, protocol);
+		result.put(WBModel.GLOBAL_DOMAIN, domain);
 		Object objUriPrefix = request.getAttribute(PublicContentServlet.URI_PREFIX);
 		if (objUriPrefix != null)
 		{
-			result.put(WBPredefinedParameters.GLOBAL_URI_PREFIX, (String)objUriPrefix);
+			result.put(WBModel.GLOBAL_URI_PREFIX, (String)objUriPrefix);
 		}	
-		model.getCmsModel().put(REQUEST_KEY, result);
+		model.getCmsModel().put(WBModel.REQUEST_KEY, result);
 	}
 
 }

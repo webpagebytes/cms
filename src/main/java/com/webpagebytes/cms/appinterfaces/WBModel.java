@@ -7,7 +7,6 @@ public class WBModel {
 	
 	public static final String GLOBALS_KEY = "wbGlobals";
 	public static final String REQUEST_KEY = "wbRequest";
-	public static final String URL_REQUEST_PARAMETERS_KEY = "wbRequestUrlParams";
 	public static final String PAGE_PARAMETERS_KEY = "wbPageParams";
 	public static final String URI_PARAMETERS_KEY = "wbUriParams";
 	

@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.ModelBuilder;
+import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.datautility.WBBlobHandler;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
@@ -59,15 +59,15 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 		
 		WBFreeMarkerModuleDirective moduleDirective = wbFreeMarkerFactory.createWBFreeMarkerModuleDirective();
 		moduleDirective.initialize(this, cacheInstances);
-		configuration.setSharedVariable(ModelBuilder.MODULE_DIRECTIVE, moduleDirective);
+		configuration.setSharedVariable(WBModel.MODULE_DIRECTIVE, moduleDirective);
 		
 		WBFreeMarkerImageDirective imageDirective = wbFreeMarkerFactory.createWBFreeMarkerImageDirective();
 		imageDirective.initialize(cloudFileStorage, cacheInstances);
-		configuration.setSharedVariable(ModelBuilder.IMAGE_DIRECTIVE, imageDirective);
+		configuration.setSharedVariable(WBModel.IMAGE_DIRECTIVE, imageDirective);
 		
 		WBFreeMarkerArticleDirective articleDirective = wbFreeMarkerFactory.createWBFreeMarkerArticleDirective();
 		articleDirective.initialize(this, cacheInstances);
-		configuration.setSharedVariable(ModelBuilder.ARTICLE_DIRECTIVE, articleDirective);
+		configuration.setSharedVariable(WBModel.ARTICLE_DIRECTIVE, articleDirective);
 				
 	}
 	public void process(String templateName, Map<String, Object> rootMap, Writer out) throws WBException
@@ -77,18 +77,18 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 					
 			Template t = configuration.getTemplate(templateName);
 			
-			Object textFormatMethod = rootMap.get(ModelBuilder.FORMAT_TEXT_METHOD);
+			Object textFormatMethod = rootMap.get(WBModel.FORMAT_TEXT_METHOD);
 			if (textFormatMethod == null)
 			{
 				textFormatMethod = new WBFreeMarkerTextFormatMethod();
-				rootMap.put(ModelBuilder.FORMAT_TEXT_METHOD, textFormatMethod);
+				rootMap.put(WBModel.FORMAT_TEXT_METHOD, textFormatMethod);
 			}
 					
-			if (null == rootMap.get(ModelBuilder.LOCALE_MESSAGES))
+			if (null == rootMap.get(WBModel.LOCALE_MESSAGES))
 			{
 				Locale locale = null;
-				String localeLanguage = (String) rootMap.get(ModelBuilder.LOCALE_LANGUAGE_KEY);
-				String localeCountry = (String) rootMap.get(ModelBuilder.LOCALE_COUNTRY_KEY);
+				String localeLanguage = (String) rootMap.get(WBModel.LOCALE_LANGUAGE_KEY);
+				String localeCountry = (String) rootMap.get(WBModel.LOCALE_COUNTRY_KEY);
 
 				if (localeCountry !=null && localeCountry.length()>0)
 				{
@@ -100,7 +100,7 @@ public class WBFreeMarkerTemplateEngine implements WBTemplateEngine {
 				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process create resource bundle for " + locale.toString());	
 				WBResourceBundle r = wbFreeMarkerFactory.createResourceBundle(cacheInstances.getWBMessageCache(), locale);
 				ResourceBundleModel fmBundle = new ResourceBundleModel(r, new DefaultObjectWrapper()); 
-				rootMap.put(ModelBuilder.LOCALE_MESSAGES, fmBundle);
+				rootMap.put(WBModel.LOCALE_MESSAGES, fmBundle);
 			} else
 			{
 				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process found wbmessages in root " + templateName);	

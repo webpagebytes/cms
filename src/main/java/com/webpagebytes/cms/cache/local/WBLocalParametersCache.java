@@ -38,18 +38,23 @@ public class WBLocalParametersCache implements WBParametersCache {
 	{
 		if (cacheParameters != null) 
 		{
-			cacheParameters.get(externalKey);
+			return cacheParameters.get(externalKey);
 		}
 		return null;
 	}
 	
 	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WBIOException
 	{
+		List<WBParameter> result = null;
 		if (cacheOwnerParameters != null)
 		{
-			cacheOwnerParameters.get(ownerExternalKey);
+			result = cacheOwnerParameters.get(ownerExternalKey);
 		}
-		return new ArrayList<WBParameter>();
+		if (result == null)
+		{
+			result = new ArrayList<WBParameter>();
+		}
+		return result;
 	}
 
 	@Override

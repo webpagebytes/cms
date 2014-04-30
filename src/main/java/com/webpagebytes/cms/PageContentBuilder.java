@@ -86,12 +86,12 @@ public class PageContentBuilder {
 			controllerInst.populatePageModel(request, model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WBModel.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
-		if (model.getCmsModel().containsKey(ModelBuilder.LOCALE_KEY))
+		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
 		{
-			rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
-			rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
+			rootModel.put(WBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_COUNTRY_KEY));
+			rootModel.put(WBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_LANGUAGE_KEY));
 		}
 		
 		String result = "";
@@ -132,12 +132,12 @@ public class PageContentBuilder {
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(ModelBuilder.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WBModel.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
-		if (model.getCmsModel().containsKey(ModelBuilder.LOCALE_KEY))
+		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
 		{
-			rootModel.put(ModelBuilder.LOCALE_COUNTRY_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_COUNTRY_KEY));
-			rootModel.put(ModelBuilder.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(ModelBuilder.LOCALE_KEY).get(ModelBuilder.LOCALE_LANGUAGE_KEY));
+			rootModel.put(WBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_COUNTRY_KEY));
+			rootModel.put(WBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_LANGUAGE_KEY));
 		}
 		
 		String result = "";

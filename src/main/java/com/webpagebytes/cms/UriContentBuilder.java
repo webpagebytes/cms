@@ -19,9 +19,12 @@ public class UriContentBuilder {
 	private Map<String, WBRequestHandler> customControllers;
 	private WBContentProvider contentProvider;
 	
-	UriContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
+	UriContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder, 
+			FileContentBuilder fileContentBuilder,
+			PageContentBuilder pageContentBuilder)
 	{
 		customControllers = new HashMap<String, WBRequestHandler>();
+		contentProvider = new WBDefaultContentProvider(fileContentBuilder, pageContentBuilder);
 	}
 	
 	public void initialize()
