@@ -48,10 +48,11 @@ public class UriContentBuilder {
 			{
 				try {
 				controllerInst = (WBRequestHandler) Class.forName(controllerClassName).newInstance();
+				controllerInst.initialize(contentProvider);
 				customControllers.put(controllerClassName, controllerInst);
 				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
 			}
-			controllerInst.handleRequest(request, response, model, forward, contentProvider);
+			controllerInst.handleRequest(request, response, model, forward);
 		}
 	}
 

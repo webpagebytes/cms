@@ -12,10 +12,14 @@ public class DummyRequestHandler implements WBRequestHandler {
 	public void handleRequest(HttpServletRequest request, 
 			  HttpServletResponse response, 
 			  WBModel model,
-			  WBForward forward,
-			  WBContentProvider contentProvider)
+			  WBForward forward)
 	{
 		
 	}
 
+	@Override
+	public void initialize(WBContentProvider contentProvider) {
+		// TODO Auto-generated method stub
+		
+	}
 }
