@@ -23,8 +23,6 @@ import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBArticleController extends WBController implements AdminDataStorageListener<Object>{
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBArticleValidator validator;
 	private WBArticlesCache wbArticleCache;

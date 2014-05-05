@@ -32,16 +32,12 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBPageController extends WBController implements AdminDataStorageListener<Object>{
 
 	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBPageValidator pageValidator;
 	private WBWebPagesCache wbWebPageCache;
 	
 	public WBPageController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		pageValidator = new WBPageValidator();
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();

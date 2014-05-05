@@ -23,15 +23,11 @@ import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBPageModuleController extends WBController implements AdminDataStorageListener<Object>{
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBPageModuleValidator validator;
 	private WBWebPageModulesCache wbPageModuleCache;
 	public WBPageModuleController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBPageModuleValidator();
 		

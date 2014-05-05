@@ -32,8 +32,6 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBLanguagesController extends WBController implements AdminDataStorageListener<Object> {
 
 	private LanguageLocaleManager localeManager;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
-	private HttpServletToolbox httpServletToolbox;
 	private AdminDataStorage adminStorage;
 	private ArrayList<String> sortedLanguages;
 	private Map<String, Locale> allLocales;
@@ -70,8 +68,6 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 
 	public WBLanguagesController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		localeManager = LanguageLocaleManager.getInstance();
 		sortedLanguages = new ArrayList<String>();

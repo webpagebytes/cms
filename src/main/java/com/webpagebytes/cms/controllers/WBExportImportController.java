@@ -18,16 +18,11 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBExportImportController extends WBController {
-	private HttpServletToolbox httpServletToolbox;
 	private FlatStorageImporterExporter storageExporter;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	
 	public WBExportImportController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
 		storageExporter = new FlatStorageImporterExporter();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		
 	}
 
 	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException

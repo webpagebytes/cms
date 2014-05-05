@@ -25,15 +25,11 @@ public class WBReadOnlyDataController  extends WBController {
 	public static final String DATA_FILES = "data_files";
 	public static final String DATA_PAGES = "data_pages";
 	
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 
 
 	public WBReadOnlyDataController() 
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 	}
 	

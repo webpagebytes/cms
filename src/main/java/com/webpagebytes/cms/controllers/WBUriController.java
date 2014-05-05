@@ -29,15 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 public class WBUriController extends WBController implements AdminDataStorageListener<Object> {
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBUriValidator uriValidator;
 	private WBUrisCache wbUriCache;
 	
 	public WBUriController() {
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		uriValidator = new WBUriValidator();
 		WBCacheFactory cacheFactory = DefaultWBCacheFactory.getInstance();

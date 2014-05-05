@@ -1,11 +1,15 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONException;
+
+import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBController {
 	public static final String SORT_PARAMETER_DIRECTION = "sort_dir";
@@ -123,6 +127,9 @@ public class WBController {
 	
 	private String adminUriPart;
 
+	protected HttpServletToolbox httpServletToolbox;
+	protected WBJSONToFromObjectConverter jsonObjectConverter;
+
 	public String getAdminUriPart() {
 		return adminUriPart;
 	}
@@ -131,5 +138,9 @@ public class WBController {
 		this.adminUriPart = adminUriPart;
 	}
 	
+	public WBController() {
+		httpServletToolbox = new HttpServletToolbox();
+		jsonObjectConverter = new WBJSONToFromObjectConverter();
+	}
 	
 }

@@ -41,8 +41,6 @@ import com.webpagebytes.cms.utility.ContentTypeDetector;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBFileControllerEx extends WBController implements AdminDataStorageListener<Object>{
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBCloudFileStorage cloudFileStorage;
 	private WBFileValidator validator;
@@ -51,8 +49,6 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	
 	public WBFileControllerEx()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();

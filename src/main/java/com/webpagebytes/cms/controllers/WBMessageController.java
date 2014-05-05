@@ -30,16 +30,12 @@ import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBMessageController extends WBController implements AdminDataStorageListener<Object> {
-	private HttpServletToolbox httpServletToolbox;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
 	private AdminDataStorage adminStorage;
 	private WBMessageValidator validator;
 	private WBMessagesCache wbMessageCache;
 
 	public WBMessageController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBMessageValidator();
 		validator.setAdminStorage(adminStorage);
