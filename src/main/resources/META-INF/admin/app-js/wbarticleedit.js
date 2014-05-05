@@ -77,7 +77,7 @@ $().ready( function () {
 	
 	$('.wbArticleEditCancelBtnClass').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webarticle.html?key=" + encodeURIComponent(pageKey);
+		window.location.href = "./webarticles.html";
 	});
 
 
