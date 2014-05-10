@@ -255,6 +255,12 @@ margin: 0px 20px 0px 5px;
 float:left;
 }
 
+.tableheader .tablenumber
+{
+font-size: 35px;
+padding-right: 5px;
+}
+
 
 .tableheader .tablebutton
 {
@@ -280,4 +286,9 @@ display: none;
 {
 margin: 40px auto;
 width: 200px;
+}
+
+.dashbordline
+{
+margin-bottom: 20px;
 }

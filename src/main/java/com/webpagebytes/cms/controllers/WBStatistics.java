@@ -3,6 +3,7 @@ package com.webpagebytes.cms.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBMessage;
+import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
@@ -28,7 +31,6 @@ public class WBStatistics extends WBController {
 		URIS,
 		PAGES,
 		MODULES,
-		MESSAGES,
 		ARTICLES,
 		FILES,
 		LANGUAGES,
@@ -67,6 +69,24 @@ public class WBStatistics extends WBController {
 		payloadJson.put(entityName, returnEntity);		
 	}
 
+	private void getLanguagesStats(HttpServletRequest request, org.json.JSONObject payloadJson, String entityName) throws Exception
+	{
+		org.json.JSONObject returnEntity = new org.json.JSONObject();
+		org.json.JSONObject languagesJson = new org.json.JSONObject();					
+		try
+		{
+			WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			Set<String> languages = project.getSupportedLanguagesSet();
+			languagesJson.put("languages", languages);
+			languagesJson.put("defaultLanguage", project.getDefaultLanguage());
+			returnEntity.put(DATA, languagesJson);
+		} catch (Exception e)
+		{
+			returnEntity.put(ERROR_FIELD, WBErrors.WB_CANT_GET_RECORDS);
+		}
+		payloadJson.put(entityName, returnEntity);		
+	}
+
 	
 	public void getStatistics(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
@@ -75,35 +95,36 @@ public class WBStatistics extends WBController {
 		
 		try
 		{
-			for (String entity: entities)
+			if (entities != null)
 			{
-				entity = entity.toUpperCase();
-				WBEntities paramEntity = WBEntities.valueOf(entity.toUpperCase());
-				switch (paramEntity)
+				for (String entity: entities)
 				{
-					case URIS:
-						getRecordsStats(request, WBUri.class, payloadJson, entity);
-						break;
-					case PAGES:
-						getRecordsStats(request, WBUri.class, payloadJson, entity);
-						break;
-					case MODULES:
-						getRecordsStats(request, WBWebPageModule.class, payloadJson, entity);
-						break;
-					case ARTICLES:
-						getRecordsStats(request, WBArticle.class, payloadJson, entity);
-						break;
-					case MESSAGES:
-						getRecordsStats(request, WBMessage.class, payloadJson, entity);
-						break;
-					case FILES:
-						getRecordsStats(request, WBFile.class, payloadJson, entity);
-						break;
-					case LANGUAGES:
-						break;
-					case GLOBALPARAMS:
-						break;
-	
+					entity = entity.toUpperCase();
+					WBEntities paramEntity = WBEntities.valueOf(entity.toUpperCase());
+					switch (paramEntity)
+					{
+						case URIS:
+							getRecordsStats(request, WBUri.class, payloadJson, entity);
+							break;
+						case PAGES:
+							getRecordsStats(request, WBWebPage.class, payloadJson, entity);
+							break;
+						case MODULES:
+							getRecordsStats(request, WBWebPageModule.class, payloadJson, entity);
+							break;
+						case ARTICLES:
+							getRecordsStats(request, WBArticle.class, payloadJson, entity);
+							break;
+						case FILES:
+							getRecordsStats(request, WBFile.class, payloadJson, entity);
+							break;
+						case LANGUAGES:
+							getLanguagesStats(request, payloadJson, entity);
+							break;
+						case GLOBALPARAMS:
+							break;
+		
+					}
 				}
 			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
