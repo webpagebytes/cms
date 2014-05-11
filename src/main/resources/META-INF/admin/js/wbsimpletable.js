@@ -37,7 +37,9 @@
 			
 			headerColumnBaseClass:undefined,
 			
-			noLinesContent:""
+			noLinesContent:"",
+			
+			includeHeader: true
 			},
 		getOptions: function () {
 			if (! this.options) 
@@ -50,18 +52,20 @@
 			this.options = $.extend ( {} , this.defaults, options );	
 			var header ='<tr>';
 			var _this = this;
-			$.each(this.getOptions().columns, function(index, item) {
-				item.isHtmlDisplay = item.isHtmlDisplay || false;
-				var value = escapehtml(item.display);
-				if (item.isHtmlDisplay) {
-					value = "<a href='' class='{0} {1}{2}' > {3} </a>".format(escapehtml(_this.getOptions().headerColumnBaseClass),
-																	   escapehtml(_this.getOptions().headerColumnIdClassPrefix),
-																	   escapehtml(item.fieldId),
-																	   escapehtml(item.display)
-																	   );
-				}
-				header += '<th>{0}</th>'.format(value);
-			});
+			if (this.getOptions().includeHeader) {
+				$.each(this.getOptions().columns, function(index, item) {
+					item.isHtmlDisplay = item.isHtmlDisplay || false;
+					var value = escapehtml(item.display);
+					if (item.isHtmlDisplay) {
+						value = "<a href='' class='{0} {1}{2}' > {3} </a>".format(escapehtml(_this.getOptions().headerColumnBaseClass),
+																		   escapehtml(_this.getOptions().headerColumnIdClassPrefix),
+																		   escapehtml(item.fieldId),
+																		   escapehtml(item.display)
+																		   );
+					}
+					header += '<th>{0}</th>'.format(value);
+				});
+			}
 			header += '</tr>';
 			var html = ("<table class='{0} {1}'> <thead>{2}</thead><tbody></tbody></table> " +
 					   "<div class='__wbPagclass {3}'> </div> ").format(this.priv.intTableClass, 

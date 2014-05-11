@@ -292,3 +292,19 @@ width: 200px;
 {
 margin-bottom: 20px;
 }
+.dashboardop
+{
+float:right;	
+}
+.dashboardnumber
+{
+font-size: 35px;
+padding-right: 5px;
+}
+.dashdboarditem
+{
+color: #777777;
+text-shadow: 0 1px 0 #ffffff;
+font-size: 20px;
+margin:	10px 0px 0px;
+}
