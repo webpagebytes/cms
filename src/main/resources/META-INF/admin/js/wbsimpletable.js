@@ -315,6 +315,10 @@
 			var array = this.thisElement.data('tableData');
 			return array;
 		},		
+		length: function () {
+			var array = this.thisElement.data('tableData') || [];
+			return array.length;
+		},
 		findIndexWithKey: function(key) {
 			var tempThis = this;
 			var array = this.getAllRowsData();
