@@ -1,26 +1,21 @@
 package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.AdminServletOperationsReader;
+
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.Pair;
 import com.webpagebytes.cms.exception.*;
-
-import java.util.ArrayList;
-
 import javax.servlet.http.*;
 
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.After;
 import org.easymock.EasyMock;
 import org.easymock.Capture;
 
 import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @RunWith(PowerMockRunner.class)
 public class TestAjaxRequestProcessor {

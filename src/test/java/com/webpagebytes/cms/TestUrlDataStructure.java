@@ -1,18 +1,11 @@
 package com.webpagebytes.cms;
 
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.URLDataStructure;

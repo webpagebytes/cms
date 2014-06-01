@@ -1,37 +1,15 @@
 package com.webpagebytes.cms;
-import java.io.File;
-
-
 import java.util.Arrays;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
 
 import com.webpagebytes.cms.ResourceReader;
 import com.webpagebytes.cms.StaticResourceMap;
 import com.webpagebytes.cms.exception.*;
-
-import junit.framework.*;
-
-import java.util.Date;
-import java.util.Map;
 import java.util.HashSet;
-import java.util.zip.CRC32;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
-
 import static org.junit.Assert.*;
-
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 public class TestStaticResourcesMap {
 

@@ -1,37 +1,20 @@
 package com.webpagebytes.cms;
 
 import java.io.IOException;
-
-
-
-
-
-
-
-
-
-
 import com.webpagebytes.cms.ResourceRequestProcessor;
 import com.webpagebytes.cms.StaticResourceMap;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBResourceNotFoundException;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.*;
-
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.After;
 import org.easymock.EasyMock;
 import org.easymock.Capture;
-
 import static org.junit.Assert.*;
-
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @RunWith(PowerMockRunner.class)
 public class TestResourceRequestProcessor{

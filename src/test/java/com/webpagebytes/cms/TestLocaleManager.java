@@ -2,24 +2,17 @@ package com.webpagebytes.cms;
 
 import static org.junit.Assert.assertTrue;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-
 import org.junit.Before;
-import org.junit.After;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
-
 import com.webpagebytes.cms.LanguageLocaleManager;
-import com.webpagebytes.cms.exception.WBException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LanguageLocaleManager.class})
