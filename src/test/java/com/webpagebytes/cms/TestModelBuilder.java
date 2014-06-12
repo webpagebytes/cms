@@ -620,6 +620,7 @@ public void test_populateStaticParameters_http()
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://www.example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
@@ -647,6 +648,7 @@ public void test_populateStaticParameters_https()
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "https");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
@@ -673,6 +675,7 @@ public void test_populateStaticParameters_uppercase()
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
 	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
@@ -699,6 +702,7 @@ public void test_populateStaticParameters_justdomain()
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
 	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/");
 	
 	WBModel model = new WBModel();
 	
@@ -725,6 +729,7 @@ public void test_populateStaticParameters_nouriprefix()
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com");
 	
 	WBModel model = new WBModel();
 	

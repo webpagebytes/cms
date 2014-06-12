@@ -62,11 +62,7 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	{
 		params.put(WBModel.LOCALE_KEY, locale);
 	}
-	TemplateModel protocols = dataModel.get(WBModel.GLOBAL_PROTOCOL);
-	if (protocols != null) 
-	{
-		params.put(WBModel.GLOBAL_PROTOCOL, protocols);
-	}
+
 	TemplateModel request = dataModel.get(WBModel.REQUEST_KEY);
 	if (request != null) 
 	{
