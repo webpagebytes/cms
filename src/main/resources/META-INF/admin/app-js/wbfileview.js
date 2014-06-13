@@ -30,7 +30,6 @@ $().ready( function () {
 								});
 	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
 
-	$('#collapseOne').collapse();
 	$('#wbudadjustedContentType').typeahead({ items: 4,
 											  source:[ "image/jpeg", "image/png", "image/bmp", "image/gif", "image/jpg", "image/tiff", 
 	                                                   "video/mpeg", "video/quicktime",
@@ -39,6 +38,13 @@ $().ready( function () {
 	                                                   "application/x-gzip", "application/x-gtar", "application/zip",
 	                                                   "text/css", "text/plain", "text/html", "text/javascript", "application/x-javascript", "application/json"
 	                                                   ]}); 
+	
+	var fileDetailsHandler = function (fieldId, record) {
+		if (fieldId == 'lastModified') {
+			return escapehtml( Date.toFormatString(record['lastModified'], "today|dd/mm/yyyy hh:mm"));
+		};
+		return escapehtml(record[fieldId]);	
+	}
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == 'shortType') {
@@ -73,7 +79,8 @@ $().ready( function () {
 	}
 	
 	$('#wbFileView').wbDisplayObject( { fieldsPrefix: 'wbfile', customHandler: displayHandler} );
-
+	$('#collapseFileDetails').wbDisplayObject( { fieldsPrefix: 'wbfile', customHandler: fileDetailsHandler} );
+	
 	var filesDisplayHandler = function (fieldId, record) {
 		if (fieldId=="uri") {
 			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
@@ -107,6 +114,7 @@ $().ready( function () {
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
 		$('#wbFileView').wbDisplayObject().display(data);
+		$('#collapseFileDetails').wbDisplayObject().display(data);
 		fileExternalKey = data['externalKey'];
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
