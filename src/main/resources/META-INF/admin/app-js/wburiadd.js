@@ -72,10 +72,10 @@ $().ready( function () {
 	
 	var oResourceExternalKey = "";
 	var externalKeysArrays = { 'files':[], 'pages': [] }
-
+	var notFoundMessage = "RESOURCE NOT FOUND";
 	var fSuccessSearch = function (data) {
 		var result = data.data;
-		var html = "NOT FOUND"
+		var html = escapehtml(notFoundMessage); 
 		if (result.length == 1) {
 			if ($('input[name="resourceType"]:checked').val() == "1") {
 				var page = result[0];

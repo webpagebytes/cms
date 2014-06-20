@@ -140,13 +140,15 @@ $().ready( function () {
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	var oResourceExternalKey = "";
 	var uriExternalKey = "";
+	var notFoundMessage = "RESOURCE NOT FOUND";
+	
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
 		$('#wburiedit').wbObjectManager().populateFieldsFromObject(data.data);
 		$("#wberesourceType").trigger("change");
 		oResourceExternalKey = data.data["resourceExternalKey"];
+		var html = escapehtml(notFoundMessage); 
 		
-		var html = "NOT FOUND";
 		if ('pages_links' in data.additional_data) {
 			if (data.additional_data.pages_links.length >= 1) {
 				var page = data.additional_data.pages_links[0];
@@ -176,7 +178,7 @@ $().ready( function () {
 	
 	var fSuccessSearch = function (data) {
 		var result = data.data;
-		var html = "NOT FOUND"
+		var html = escapehtml(notFoundMessage); 
 		if (result.length == 1) {
 			if ($('input[name="resourceType"]:checked').val() == "1") {
 				var page = result[0];
