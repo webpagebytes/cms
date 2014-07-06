@@ -10,8 +10,7 @@ public class WBModel {
 	public static final String PAGE_PARAMETERS_KEY = "wpbPageParams";
 	public static final String URI_PARAMETERS_KEY = "wpbUriParams";
 	
-	public static final String PAGE_CONTROLLER_MODEL_KEY = "wpbPageModel";
-	public static final String URI_CONTROLLER_MODEL_KEY = "wpbUriModel";
+	public static final String APPLICATION_CONTROLLER_MODEL_KEY = "wpbAppModel";
 	
 	public static final String LOCALE_KEY = "wpbLocale";
 	public static final String LOCALE_LANGUAGE_KEY = "wpbLocaleLanguage";
@@ -31,15 +30,15 @@ public class WBModel {
 	
 
 	protected WBCmsModel cmsModel = new WBCmsModel();
-	protected WBCustomModel customModel = new WBCustomModel();
+	protected WBApplicationModel applicationModel = new WBApplicationModel();
 	
 	public WBCmsModel getCmsModel()
 	{
 		return cmsModel;
 	}
-	public WBCustomModel getCmsCustomModel()
+	public WBApplicationModel getCmsCustomModel()
 	{
-		return customModel;
+		return applicationModel;
 	}
 	
 	public void transferModel(Map<String, Object> rootObject)

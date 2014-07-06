@@ -86,7 +86,7 @@ public class PageContentBuilder {
 			controllerInst.populatePageModel(request, model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WBModel.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
 		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
 		{
@@ -132,7 +132,7 @@ public class PageContentBuilder {
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WBModel.PAGE_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
 		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
 		{

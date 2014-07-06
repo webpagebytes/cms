@@ -53,6 +53,7 @@ public class ModelBuilder {
 		}
 				
 		model.getCmsModel().put(WBModel.PAGE_PARAMETERS_KEY, pageParams);	
+		
 	}
 
 	private void populateUriParameters(HttpServletRequest request, String uriExternalKey,
