@@ -46,7 +46,7 @@ public class FlatStorageImporterExporter {
 	public static final String PATH_FILES = "files/";
 	public static final String PATH_FILE_CONTENT = "files/%s/content/";
 	
-	public static final String PATH_ARTICLES = "aticles/";
+	public static final String PATH_ARTICLES = "articles/";
 	public static final String PATH_GLOBALS = "settings/globals/";
 	public static final String PATH_LOCALES = "settings/locales/";
 	
