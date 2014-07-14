@@ -98,11 +98,27 @@ $().ready( function () {
 							});
 	
 	
-	var fSuccessDuplicate = function ( data ) {
+	var fSuccessDuplicateParams = function ( data ) {
 		$('#wbModalUriDuplicate').modal('hide');
-		populateUris();			
+		populateUris();				
+	};
+	var fErrorDuplicateParams = function (errors, data) {
+		alert(errors);
 	};
 
+	var fSuccessDuplicate = function ( data ) {
+		var fromOwnerExternalKey = $('#wbcexternalKey').val();
+		var ownerExternalKey = data.data['externalKey'];
+		$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbparameter?fromOwnerExternalKey={0}&ownerExternalKey={1}".format(encodeURIComponent(fromOwnerExternalKey), encodeURIComponent(ownerExternalKey)),
+															 httpOperation:"POST", 
+															 payloadData:"",
+															 wbObjectManager : $('wburiduplicate').wbObjectManager(),
+															 functionSuccess: fSuccessDuplicateParams,
+															 functionError: fErrorDuplicateParams
+															 } );		
+	};
+
+	
 	var fErrorDuplicate = function (errors, data) {
 		$('#wburiduplicate').wbObjectManager().setErrors(errors);
 	};
@@ -146,7 +162,9 @@ $().ready( function () {
 		e.preventDefault();
 		var errors = $('#wburiduplicate').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
-			var jsonText = JSON.stringify($('#wburiduplicate').wbObjectManager().getObjectFromFields());
+			var obj = $('#wburiduplicate').wbObjectManager().getObjectFromFields();
+			delete obj["externalKey"];
+			var jsonText = JSON.stringify(obj);
 			$('#wburiduplicate').wbCommunicationManager().ajax ( { url: "./wburi",
 															 httpOperation:"POST", 
 															 payloadData:jsonText,
