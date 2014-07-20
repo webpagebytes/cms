@@ -55,7 +55,7 @@ public interface AdminDataStorage {
 	
 	public String getUploadUrl(String returnUrl);
 	
-	public void deleteAllRecords(Class dataClass);
+	public void deleteAllRecords(Class dataClass) throws WBIOException;
 	
 	public String getUniqueId();
 }

@@ -16,6 +16,7 @@ import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
@@ -46,11 +47,11 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBWebPage)
+			if (type.equals(WBWebPage.class))
 			{
 				log.log(Level.INFO, "WbWebPage datastore notification, going to refresh the cache");
 				wbWebPageCache.Refresh();
@@ -78,6 +79,15 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
 			WBWebPage newWebPage = adminStorage.add(webPage);
+			
+			WBResource resource = new WBResource(newWebPage.getExternalKey(), newWebPage.getName(), WBResource.PAGE_TYPE);
+			try
+			{
+				adminStorage.addWithKey(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -172,7 +182,13 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			
 			// delete the owned parameters
 			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempPage.getExternalKey());
-
+			try
+			{
+				adminStorage.delete(tempPage.getExternalKey(), WBResource.class);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
 			WBWebPage page = new WBWebPage();
 			page.setKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -209,6 +225,14 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBWebPage newWebPage = adminStorage.update(webPage);
 			
+			WBResource resource = new WBResource(newWebPage.getExternalKey(), newWebPage.getName(), WBResource.PAGE_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do not propate further
+			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

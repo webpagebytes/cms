@@ -13,6 +13,7 @@ import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBArticlesCache;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WBArticle;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
@@ -37,11 +38,11 @@ public class WBArticleController extends WBController implements AdminDataStorag
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBArticle)
+			if (type.equals(WBArticle.class))
 			{
 				wbArticleCache.Refresh();
 			}
@@ -67,6 +68,16 @@ public class WBArticleController extends WBController implements AdminDataStorag
 			article.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			article.setExternalKey(adminStorage.getUniqueId());
 			WBArticle newArticle = adminStorage.add(article);
+
+			WBResource resource = new WBResource(newArticle.getExternalKey(), newArticle.getTitle(), WBResource.ARTICLE_TYPE);
+			try
+			{
+				adminStorage.addWithKey(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newArticle));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -148,10 +159,20 @@ public class WBArticleController extends WBController implements AdminDataStorag
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBArticle article = adminStorage.get(key, WBArticle.class);
 			adminStorage.delete(key, WBArticle.class);
 			
-			WBArticle article = new WBArticle();
-			article.setKey(key);
+			try
+			{
+				if (article != null)
+				{
+					adminStorage.delete(article.getExternalKey(), WBResource.class);
+				}
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(article));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -182,6 +203,14 @@ public class WBArticleController extends WBController implements AdminDataStorag
 			article.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBArticle newArticle = adminStorage.update(article);
 			
+			WBResource resource = new WBResource(newArticle.getExternalKey(), newArticle.getTitle(), WBResource.ARTICLE_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newArticle));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

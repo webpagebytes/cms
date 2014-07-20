@@ -19,6 +19,7 @@ import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WBMessage;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
@@ -44,11 +45,11 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBMessage)
+			if (type.equals(WBMessage.class))
 			{
 				wbMessageCache.Refresh();
 			}
@@ -76,6 +77,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
 			WBMessage newRecord = adminStorage.add(record);
+			WBResource resource = new WBResource(newRecord.getExternalKey(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			try
+			{
+				adminStorage.addWithKey(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -280,10 +290,20 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			adminStorage.delete(key, WBMessage.class);
+			WBMessage record = adminStorage.get(key, WBMessage.class);
 			
-			WBMessage record = new WBMessage();
-			record.setKey(key);
+			adminStorage.delete(key, WBMessage.class);
+			try
+			{
+				if (record != null)
+				{
+					adminStorage.delete(record.getExternalKey(), WBResource.class);
+				}
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -316,6 +336,15 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			existingMessage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBMessage newRecord = adminStorage.update(existingMessage);
 			
+			WBResource resource = new WBResource(newRecord.getExternalKey(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBWebPageModulesCache;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
@@ -38,11 +39,11 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 
 	}
 
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBWebPageModule)
+			if (type.equals(WBWebPageModule.class))
 			{
 				wbPageModuleCache.Refresh();
 			}
@@ -133,10 +134,19 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 				return;
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBWebPageModule newParameter = adminStorage.update(wbmodule);
+			WBWebPageModule newModule = adminStorage.update(wbmodule);
 			
+			WBResource resource = new WBResource(newModule.getExternalKey(), newModule.getName(), WBResource.PAGE_MODULE_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
-			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newModule));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
@@ -152,7 +162,19 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBWebPageModule pageModule = adminStorage.get(key, WBWebPageModule.class);
+			
 			adminStorage.delete(key, WBWebPageModule.class);
+			try
+			{
+				if (pageModule != null)
+				{
+					adminStorage.delete(pageModule.getExternalKey(), WBResource.class);
+				}
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
 			
 			WBWebPageModule param = new WBWebPageModule();
 			param.setKey(key);
@@ -185,6 +207,15 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 			wbmodule.setExternalKey(adminStorage.getUniqueId());
 			WBWebPageModule newModule = adminStorage.add(wbmodule);
 			
+			WBResource resource = new WBResource(newModule.getExternalKey(), newModule.getName(), WBResource.PAGE_MODULE_TYPE);
+			try
+			{
+				adminStorage.addWithKey(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newModule));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

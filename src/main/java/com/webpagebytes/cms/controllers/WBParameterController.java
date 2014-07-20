@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
@@ -38,11 +40,11 @@ public class WBParameterController extends WBController implements AdminDataStor
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBParameter)
+			if (type.equals(WBParameter.class))
 			{
 				wbParameterCache.Refresh();
 			}
@@ -159,6 +161,18 @@ public class WBParameterController extends WBController implements AdminDataStor
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBParameter newParameter = adminStorage.update(wbParameter);
+			
+			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
+			{
+				WBResource resource = new WBResource(newParameter.getExternalKey(), newParameter.getName(), WBResource.ARTICLE_TYPE);
+				try
+				{
+					adminStorage.update(resource);
+				} catch (Exception e)
+				{
+					// do nothing
+				}
+			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
@@ -176,9 +190,22 @@ public class WBParameterController extends WBController implements AdminDataStor
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBParameter param = adminStorage.get(key, WBParameter.class);
+			
 			adminStorage.delete(key, WBParameter.class);
-			WBParameter param = new WBParameter();
-			param.setKey(key);
+			if (param != null)
+			{
+				try
+				{
+					if (param != null)
+					{
+						adminStorage.delete(param.getExternalKey(), WBResource.class);
+					}
+				} catch (Exception e)
+				{
+					// do nothing
+				}
+			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
@@ -209,6 +236,18 @@ public class WBParameterController extends WBController implements AdminDataStor
 			wbParameter.setExternalKey(adminStorage.getUniqueId());
 			WBParameter newParameter = adminStorage.add(wbParameter);
 			
+			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
+			{
+				WBResource resource = new WBResource(newParameter.getExternalKey(), newParameter.getName(), WBResource.ARTICLE_TYPE);
+				try
+				{
+					adminStorage.addWithKey(resource);
+				} catch (Exception e)
+				{
+					// do nothing
+				}
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

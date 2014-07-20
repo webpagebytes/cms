@@ -4,9 +4,11 @@ public interface AdminDataStorageListener<T> {
 
 	enum AdminDataStorageOperation
 	{
-		CREATE,
-		UPDATE,
-		DELETE
+		CREATE_RECORD,
+		UPDATE_RECORD,
+		DELETE_RECORD,
+		DELETE_RECORDS
+		
 	}
-	public void notify (T t, AdminDataStorageOperation o);
+	public void notify (T t, AdminDataStorageOperation o, Class type);
 }

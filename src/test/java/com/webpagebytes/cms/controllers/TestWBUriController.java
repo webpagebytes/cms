@@ -332,7 +332,7 @@ public void test_notify_ok()
 	WBUri uriMock = PowerMock.createMock(WBUri.class);
 	cacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, cacheMock, uriMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(uriMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);
+	controllerForTest.notify(uriMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBUri.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -348,7 +348,7 @@ public void test_notify_exception()
 	cacheMock.Refresh();
 	EasyMock.expectLastCall().andThrow(new WBIOException(""));
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, cacheMock, uriMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(uriMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);
+	controllerForTest.notify(uriMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBUri.class);
 	
 	} catch (Exception e)
 	{

@@ -52,11 +52,11 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		return project;
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t.getClass().equals(this.getClass()))
+			if (type.equals(WBProject.class))
 			{
 				projectCache.Refresh();
 			}

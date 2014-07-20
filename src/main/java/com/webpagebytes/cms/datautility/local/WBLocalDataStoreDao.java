@@ -1,7 +1,6 @@
 package com.webpagebytes.cms.datautility.local;
 
 import java.beans.PropertyDescriptor;
-
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -53,8 +52,6 @@ public class WBLocalDataStoreDao {
 	
 	private static final String QUERY_RECORD = "SELECT * FROM %s WHERE %s=?";
 	private static final String QUERY_ALL_RECORDS = "SELECT * FROM %s";
-	private static final String QUERY_FOR_INSERT = "SELECT * FROM %s LIMIT 0";
-	
 	
 	public WBLocalDataStoreDao(String dbPath)
 	{
@@ -516,6 +513,36 @@ public class WBLocalDataStoreDao {
 		return advanceDelete(kind, propertyNames, operators, values);
 	}
 
+	@SuppressWarnings("rawtypes")
+	public boolean deleteRecords(Class kind) throws SQLException
+	{
+		String tableName = kind.getSimpleName();
+		String queryString = String.format("DELETE FROM %s", tableName);
+		
+		Connection connection = getConnection();
+		PreparedStatement preparedStatement = null;
+		try
+		{
+			preparedStatement = connection.prepareStatement(queryString);			
+			return preparedStatement.execute();
+
+		} catch (Exception e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			if (preparedStatement != null)
+			{
+				preparedStatement.close();
+			}
+			if (connection!=null)
+			{
+				connection.close();
+			}
+		}
+	}
+	
 	public List<Object> queryWithSort(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values, String sortProperty, WBLocalSortDirection sortDirection) throws SQLException, WBSerializerException
 	{
 		return advanceQuery(kind, propertyNames, operators, values, sortProperty, sortDirection);

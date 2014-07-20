@@ -527,7 +527,7 @@ public void test_notify_ok()
 	WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
 	pageModuleCacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageModuleMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(pageModuleMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);
+	controllerForTest.notify(pageModuleMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -543,7 +543,7 @@ public void test_notify_exception()
 		pageModuleCacheMock.Refresh();
 		EasyMock.expectLastCall().andThrow(new WBIOException(""));
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-		controllerForTest.notify(pageMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);
+		controllerForTest.notify(pageMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);

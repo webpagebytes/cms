@@ -11,6 +11,7 @@ import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBUrisCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
@@ -41,11 +42,11 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBUri)
+			if (type.equals(WBUri.class))
 			{
 				wbUriCache.Refresh();
 			}
@@ -92,6 +93,15 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbUri.setExternalKey(adminStorage.getUniqueId());
 			WBUri newUri = adminStorage.add(wbUri);
+			
+			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
+			try
+			{
+				adminStorage.addWithKey(resource);
+			} catch (Exception e)
+			{
+				//just log error and do not consider the operation as failure
+			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));			
@@ -201,6 +211,14 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			// delete the owned parameters
 			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempUri.getExternalKey());
 			
+			try
+			{
+				adminStorage.delete(tempUri.getExternalKey(), WBResource.class);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			WBUri wburi = new WBUri();
 			wburi.setKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -233,6 +251,15 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBUri newUri = adminStorage.update(wbUri);
 			
+			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do not propagate further
+			}
+
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));						
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

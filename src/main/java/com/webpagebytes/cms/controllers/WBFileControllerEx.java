@@ -22,6 +22,7 @@ import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
@@ -58,11 +59,11 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		imageProcessor = WBImageProcessorFactory.getInstance();
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o)
+	public void notify (Object t, AdminDataStorageOperation o, Class type)
 	{
 		try
 		{
-			if (t instanceof WBFile)
+			if (type.equals(WBFile.class))
 			{
 				filesCache.Refresh();
 			}
@@ -135,12 +136,30 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(thumbnailCloudFile));
 		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
 		          
+		  		WBResource resource = new WBResource(wbFile.getExternalKey(), wbFile.getName(), WBResource.FILE_TYPE);
+
 		          if (wbFile.getKey() != null)
 		          {
-		        	  wbFile = adminStorage.update(wbFile);
+		        	  wbFile = adminStorage.update(wbFile);		        	  
+						try
+						{
+							adminStorage.update(resource);
+						} catch (Exception e)
+						{
+							// do not propagate further
+						}
+
 		          } else
 		          {
 		        	  wbFile = adminStorage.add(wbFile);
+						try
+						{
+							adminStorage.addWithKey(resource);
+						} catch (Exception e)
+						{
+							// do not propagate further
+						}
+
 		          }
 		          
 				org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -175,10 +194,19 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			existingImage.setName(wbimage.getName());
 			existingImage.setAdjustedContentType(wbimage.getAdjustedContentType());
-			WBFile newImage = adminStorage.update(existingImage);
+			WBFile newFile = adminStorage.update(existingImage);
+			
+			WBResource resource = new WBResource(newFile.getExternalKey(), newFile.getName(), WBResource.FILE_TYPE);
+			try
+			{
+				adminStorage.update(resource);
+			} catch (Exception e)
+			{
+				// do nothing
+			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
-			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newImage));			
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 	
 		} catch (Exception e)		
@@ -207,6 +235,15 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 					WBCloudFile cloudThumbnailFile = new WBCloudFile("public", tempFile.getThumbnailBlobKey());
 					cloudFileStorage.deleteFile(cloudThumbnailFile);
 				}
+				
+				try
+				{
+					adminStorage.delete(tempFile.getExternalKey(), WBResource.class);
+				} catch (Exception e)
+				{
+					// do not propagate further
+				}
+
 			}
 			adminStorage.delete(key, WBFile.class);
 			

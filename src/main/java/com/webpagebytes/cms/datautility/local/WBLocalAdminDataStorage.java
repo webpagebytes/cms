@@ -78,10 +78,10 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		try
 		{
 			log.log(Level.INFO, "delete records {0}", recordid);
-			localDataStorageDao.deleteRecord(dataClass, "key", recordid);			
+			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);			
 			Object obj = dataClass.newInstance();
-			localDataStorageDao.setObjectProperty(obj, "key", recordid);
-			notifyOperation(obj, AdminDataStorageOperation.DELETE);			
+			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
+			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 
 		} catch (Exception e)
 		{
@@ -94,10 +94,10 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		try
 		{
 			log.log(Level.INFO, "delete records {0}", recordid);
-			localDataStorageDao.deleteRecord(dataClass, "key", recordid);
+			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);
 			Object obj = dataClass.newInstance();
-			localDataStorageDao.setObjectProperty(obj, "key", recordid);
-			notifyOperation(obj, AdminDataStorageOperation.DELETE);			
+			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
+			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot delete record " + recordid, e);
@@ -116,8 +116,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 			Map<String, Object> values = new HashMap<String, Object>();
 			values.put(property, parameter);
 			localDataStorageDao.deleteRecords(dataClass, properties, operators, values);
-			Object obj = dataClass.newInstance();
-			notifyOperation(obj, AdminDataStorageOperation.DELETE);				
+			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
 		} catch (Exception e)
 		{
 			throw new WBIOException("Cannot delete records ", e);
@@ -162,7 +161,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		{
 			log.log(Level.INFO, "add record for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecord(t, KEY_FILED_NAME);			
-			notifyOperation(t, AdminDataStorageOperation.CREATE);			
+			notifyOperation(t, AdminDataStorageOperation.CREATE_RECORD, t.getClass());			
 			return res;
 		} catch (Exception e)
 		{
@@ -176,7 +175,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		{
 			log.log(Level.INFO, "add record with key for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
-			notifyOperation(t, AdminDataStorageOperation.CREATE);			
+			notifyOperation(t, AdminDataStorageOperation.CREATE_RECORD, t.getClass());			
 			return res;
 		} catch (Exception e)
 		{
@@ -214,7 +213,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		{
 			log.log(Level.INFO, "update record for class {0}", t.getClass().getSimpleName());
 			localDataStorageDao.updateRecord(t, KEY_FILED_NAME);
-			notifyOperation(t, AdminDataStorageOperation.UPDATE);			
+			notifyOperation(t, AdminDataStorageOperation.UPDATE_RECORD, t.getClass());			
 			return t;
 		} catch (Exception e)
 		{
@@ -318,13 +317,13 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	protected<T> void notifyOperation(Object obj, AdminDataStorageListener.AdminDataStorageOperation operation)
+	protected<T> void notifyOperation(Object obj, AdminDataStorageListener.AdminDataStorageOperation operation, Class type)
 	{
 		synchronized (storageListeners)
 		{
 			for(int i=0; i< storageListeners.size(); i++)
 			{
-				storageListeners.get(i).notify(obj, operation);
+				storageListeners.get(i).notify(obj, operation, type);
 			}
 		}		
 	}
@@ -335,9 +334,16 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 		return "";
 	}
 	
-	public void deleteAllRecords(Class dataClass)
+	public void deleteAllRecords(Class dataClass) throws WBIOException
 	{
-		
+		try
+		{
+			localDataStorageDao.deleteRecords(dataClass);
+			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
+		} catch (Exception e)
+		{
+			throw new WBIOException("Cannot delete all records for class records " + dataClass.getSimpleName(), e);
+		}
 	}
 	
 	public String getUniqueId()

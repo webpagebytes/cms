@@ -561,7 +561,7 @@ public void test_notify_ok()
 	WBParameter parameterMock = PowerMock.createMock(WBParameter.class);
 	parameterCacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, parameterCacheMock, parameterMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(parameterMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);
+	controllerForTest.notify(parameterMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBParameter.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -577,7 +577,7 @@ public void test_notify_exception()
 		parameterCacheMock.Refresh();
 		EasyMock.expectLastCall().andThrow(new WBIOException(""));
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, parameterCacheMock, parameterMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-		controllerForTest.notify(parameterMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE);	
+		controllerForTest.notify(parameterMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBParameter.class);	
 	} catch (Exception e)
 	{
 		assertTrue (false);
