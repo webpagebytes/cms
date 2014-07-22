@@ -1,0 +1,24 @@
+.searchlist
+{
+list-style-type:none;
+padding: 0px;
+margin: 0px;
+border: 1px solid #AAAAAA;
+max-width: 500px;
+}
+
+.searchlist .wbselected
+{
+background-color: #DDDDDD;
+}
+
+.searchlist li
+{
+background-color: #FAFAFA;
+margin: 0px;
+padding: 4px;
+}
+::-ms-clear
+{
+display:none;
+}

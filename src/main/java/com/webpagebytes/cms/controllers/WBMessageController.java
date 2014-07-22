@@ -77,7 +77,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
 			WBMessage newRecord = adminStorage.add(record);
-			WBResource resource = new WBResource(newRecord.getExternalKey(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			WBResource resource = new WBResource(newRecord.getName(), newRecord.getName(), WBResource.MESSAGE_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -297,7 +297,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			{
 				if (record != null)
 				{
-					adminStorage.delete(record.getExternalKey(), WBResource.class);
+					adminStorage.delete(record.getName(), WBResource.class);
 				}
 			} catch (Exception e)
 			{
@@ -336,7 +336,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			existingMessage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBMessage newRecord = adminStorage.update(existingMessage);
 			
-			WBResource resource = new WBResource(newRecord.getExternalKey(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			WBResource resource = new WBResource(newRecord.getName(), newRecord.getName(), WBResource.MESSAGE_TYPE);
 			try
 			{
 				adminStorage.update(resource);

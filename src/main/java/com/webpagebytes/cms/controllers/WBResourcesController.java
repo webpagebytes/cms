@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBMessage;
+import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
+import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBException;
 
@@ -94,6 +96,12 @@ public class WBResourcesController extends WBController {
 				adminStorage.addWithKey(res);
 			}
 
+			List<WBParameter> parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, "");
+			for(WBParameter param: parameters)
+			{
+				WBResource res = new WBResource(param.getExternalKey(), param.getName(), WBResource.GLOBAL_PARAMETER_TYPE);
+				adminStorage.addWithKey(res);
+			}
 
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

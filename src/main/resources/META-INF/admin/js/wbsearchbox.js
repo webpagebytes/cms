@@ -1,16 +1,18 @@
 (function ($) {
 
-	WBSearchBox = function ( thisElement, options ) {
-		this.init( thisElement, options );
+	WBSearchBox = function ( jQElement, options ) {
+		this.init( jQElement, options );
 	};
 	
 	// search toFind into the array objects and try to match against the fieldsSet fields 
-	function searchInArray(array, toFind, fieldsSet) {
+	function searchInArray(array, toFind, fieldsSet, count) {
 		var result = new Array()
 		for (var i = 0; i< array.length; i++ ) {
 			for (x in fieldsSet) {
 				if ( array[i][fieldsSet[x]].indexOf(toFind)>=0) {
-					result.push(array[i][fieldsSet[x]]);
+					result.push(array[i]);
+					if (count == 0) return result;
+					count-=1;
 					continue;
 				}
 			}
@@ -25,7 +27,9 @@
 			classInputText: "",
 			classSearchList: "",
 			searchListSize: 5,
-			searchFields: undefined
+			searchFields: [],
+			displayHandler: undefined,
+			emptySearchResult: "No results found"
 		},
 		getOptions: function () {
 			if (! this.options) 
@@ -33,17 +37,23 @@
 			else
 				return this.options;
 		},
-		timeoutHandler: function(event) {		
-			var val = this.searchBox.val();
+		timeoutHandler: function(elem, event) {		
+			var val = $(elem.searchBox).val();
+			console.log(event.which);
 			if (val.length == 0) {
-				// no string to serach so hide the options list
+				// no string to search so hide the options list
 				this.optionsWrapper.hide();
 				return;
 			}
 			if (event.keyCode == 27) {
 				//ESC so hide the options list
 				this.optionsWrapper.hide();
-				event.preventDefault();
+				return;
+			}
+
+			if (event.keyCode == 13) {
+				//ENTER so hide the options list
+				this.optionsWrapper.hide();
 				return;
 			}
 			
@@ -72,13 +82,17 @@
 			
 			if (val.length>0 && event.which >0) {
 				this.optionsList.empty();
-				var result = searchInArray(this.dataElements, val, this.getOptions().searchFields);
-				if (result.length > 0) {
-					this.optionsWrapper.show();
-				}				
+				var result = searchInArray(this.dataElements, val, this.getOptions().searchFields, this.getOptions().searchListSize);
+				this.optionsWrapper.show();
 				for(var x in result) {
-					var html = "<li>{0}</li>".format(escapehtml(result[x]));
-					this.optionsList.prepend(html);	
+					var html = "";
+					if (this.getOptions().displayHandler) {
+						html = this.getOptions().displayHandler(result[x]);
+					}
+					this.optionsList.prepend("<li>{0}</li>".format(html));	
+				}
+				if (result.length == 0) {
+					this.optionsList.prepend("<li>{0}</li>".format(this.getOptions().emptySearchResult));
 				}
 				this.optionsList.find('li').mouseenter(function () {
 					$(this).addClass('wbselected').siblings().removeClass('wbselected');
@@ -87,14 +101,14 @@
 			
 		},
 		privPressHandler: function (event) {
-			var tempThis = $(this).data('wbSearchBox');;
-			setTimeout( function () { 
-							tempThis.timeoutHandler(event) 
-							}, 10);
+			//event.preventDefault();
+			var tempThis = $(this).data('wbSearchBox');
+			setTimeout( function() {
+				tempThis.timeoutHandler(tempThis, event) }, 10);
 		},
 		
-		changeListener: function (operationName, objectValue, keyName, thisInstance) {
-			var tempThis = thisInstance;
+		crud: function (operationName, objectValue, keyName) {
+			var tempThis = this;
 			if (operationName == 'insert') {
 				tempThis.dataElements.push(objectValue);
 				return;
@@ -118,24 +132,25 @@
 			}
 			
 		},
-		init: function ( thisElem, options) {
-			this.thisElement = thisElem;
+		init: function ( jQElem, options) {
+			this.jQElement = jQElem;
 			this.options = $.extend ( {} , this.defaults, options );	
 			this.isListVisible = false;
-			var html = "<div class='wbsearchcontainer {0}'> <input type='text' class='wbsearchbox {1}'>" + 
-					   "<div class='wbsearchWrapTable'><ul class='wbsearchlist {2}'> </ul> </div></div>".format(escapehtml(this.options.classContainer), escapehtml(this.options.classInputText), escapehtml(this.options.classSearchList)); 			
-			this.thisElement.append(html);
-			this.searchBox = $(this.thisElement).find("input")[0];
+			var html = ("<div class='wbsearchcontainer {0}'> <input type='text' class='wbsearchbox {1}'>" + 
+					   "<div class='wbsearchWrapTable'><ul class='wbsearchlist {2}'> </ul> </div></div>").format(escapehtml(this.options.classContainer), escapehtml(this.options.classInputText), escapehtml(this.options.classSearchList)); 			
+			this.jQElement.append(html);
+			this.searchBox = $(this.jQElement).find("input")[0];
 			this.searchBox = $(this.searchBox);
 			this.searchBox.data('wbSearchBox', this);
 			
-			this.optionsWrapper = $(this.thisElement).find(".wbsearchWrapTable")[0];
+			this.optionsWrapper = $(this.jQElement).find(".wbsearchWrapTable")[0];
 			this.optionsWrapper = $(this.optionsWrapper);
+			this.optionsWrapper.hide();
 			
-			this.optionsList = $(this.thisElement).find("ul")[0];
+			this.optionsList = $(this.jQElement).find("ul")[0];
 			this.optionsList = $(this.optionsList);
 			this.optionsList.data('wbSearchBox', this);
-			$(this.searchBox).keydown (this.privPressHandler);		
+			$(this.searchBox).on("keydown", this.privPressHandler);		
 			this.dataElements = new Array();
 		
 			$(this.searchBox).blur( function () { 

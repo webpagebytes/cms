@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="search.css" type="text/css">
+<script src="./js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="./js/wbutility.js" type="text/javascript"></script>
+<script src="./js/wbsearchbox.js" type="text/javascript"></script>
+<script>
+$().ready ( function ()
+{
+	var displayHandlerFunction = function(item) {
+		return item['value'];
+	};
+	$(".search").wbSearchBox({searchFields:['value'], classSearchList:"searchlist", displayHandler: displayHandlerFunction });
+	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
+	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
+	
+	
+});
+
+</script>
+
+</head>
+<body>
+	<div class="search"> </div>
+	
+</body>
+</html>
