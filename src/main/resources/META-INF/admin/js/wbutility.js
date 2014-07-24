@@ -702,7 +702,8 @@ if (!Array.prototype.indexOf) {
 			functionSuccess: undefined,
 			functionError: undefined,
 			wbObjectManager: undefined,
-			clientData: undefined
+			clientData: undefined,
+			async: true
 		},
 		
 		init: function ( thisElement, options ) {			
@@ -724,7 +725,7 @@ if (!Array.prototype.indexOf) {
 			// create a closure
 			var createAjax = function (options) {
 				return $.ajax( { url: options.url , 
-					  async: true,
+					  async: options.async,
 				      contentType: 'application/json',
 				  	  data: options.payloadData,
 					  type: options.httpOperation,

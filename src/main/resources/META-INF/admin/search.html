@@ -12,7 +12,7 @@ $().ready ( function ()
 	var displayHandlerFunction = function(item) {
 		return item['value'];
 	};
-	$(".search").wbSearchBox({searchFields:['value'], classSearchList:"searchlist", displayHandler: displayHandlerFunction });
+	$(".search").wbSearchBox({searchFields:['value'], displayHandler: displayHandlerFunction, jQInputBox: $('#search'), jQSearchListContainer: $('#list') });
 	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
 	$(".search").wbSearchBox().crud('insert', {'id':'abc1', 'value':'abc 2<a href=""> mmm </a> <i>italic</i>'});
 	$(".search").wbSearchBox().crud('insert', {'id':'abc', 'value':'123 a qqq '});
@@ -32,6 +32,7 @@ $().ready ( function ()
 </head>
 <body>
 	<div class="search"> </div>
-	
+	<input type="text" id="search">
+	<div id="list"></div>
 </body>
 </html>

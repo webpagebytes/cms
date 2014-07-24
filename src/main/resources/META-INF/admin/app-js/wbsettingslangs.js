@@ -21,7 +21,33 @@ $().ready( function () {
 						});
 
 	$('#wblangstablediv').wbCommunicationManager();
+	$('#cmssearchbox').wbCommunicationManager({async:false});
 	
+	var displayHandlerFunction = function(item) {
+		return escapehtml(item['key']) + '-' + escapehtml(item['name']);
+	};
+	
+	var loadDataHandlerFunction = function(wbSearchBox) {
+		var fSuccessGetResources = function (data) {
+			console.log('received wbresources ' + data.data.length);
+			$.each(data.data, function(index, item) {
+				wbSearchBox.crud('insert', item, 'key');
+			});							
+		};
+		var fErrorGetResources = function (data) {
+			alert(data);
+		}
+		$('#cmssearchbox').wbCommunicationManager().ajax ( { url:"./wbresources",
+			 async: false,
+			 httpOperation:"GET", 
+			 payloadData:"",
+			 functionSuccess: fSuccessGetResources,
+			 functionError: fErrorGetResources
+			} );		
+	};
+	
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], displayHandler: displayHandlerFunction, 
+					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
 	
 	var fSuccessGetLanguages = function (data) {
 		$.each(data.data, function(index, item) {

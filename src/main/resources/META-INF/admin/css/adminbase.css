@@ -312,3 +312,18 @@ margin:	10px 0px 5px;
 {
 min-height: 150px;	
 }
+.wbsearchcontainer
+{
+position: relative;
+height: 1px;
+}
+.wbsearchbox
+{
+position: absolute;
+right: 0px;
+display:block;
+}
+.wbsearchbox input
+{
+width: 400px;
+}
