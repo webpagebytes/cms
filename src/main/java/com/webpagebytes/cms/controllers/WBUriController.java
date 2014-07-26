@@ -94,7 +94,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setExternalKey(adminStorage.getUniqueId());
 			WBUri newUri = adminStorage.add(wbUri);
 			
-			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
+			WBResource resource = new WBResource(newUri.getUri(), newUri.getUri(), WBResource.URI_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -213,7 +213,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			
 			try
 			{
-				adminStorage.delete(tempUri.getExternalKey(), WBResource.class);
+				adminStorage.delete(tempUri.getUri(), WBResource.class);
 			} catch (Exception e)
 			{
 				// do not propagate further
@@ -251,7 +251,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WBUri newUri = adminStorage.update(wbUri);
 			
-			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
+			WBResource resource = new WBResource(newUri.getUri(), newUri.getUri(), WBResource.URI_TYPE);
 			try
 			{
 				adminStorage.update(resource);

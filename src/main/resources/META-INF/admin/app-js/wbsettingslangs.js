@@ -46,7 +46,7 @@ $().ready( function () {
 			} );		
 	};
 	
-	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], displayHandler: displayHandlerFunction, 
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,displayHandler: displayHandlerFunction, 
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
 	
 	var fSuccessGetLanguages = function (data) {

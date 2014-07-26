@@ -327,3 +327,41 @@ display:block;
 {
 width: 400px;
 }
+
+.wbsearchresultcontainer
+{
+position: absolute;
+right: 0px;
+top: 30px;
+}
+
+.wbsearchresultlist
+{
+list-style-type:none;
+padding: 0px;
+margin: 0px;
+border: 1px solid #AAAAAA;
+max-width: 500px;
+}
+
+.wbsearchresultlist .wbsearchboxsel
+{
+background-color: #DDDDDD;
+}
+
+.wbsearchresultlist li
+{
+background-color: #FAFAFA;
+margin: 0px;
+padding: 5px;
+}
+
+.wbsearchbox::-ms-clear
+{
+display:none;
+}	
+
+.wbsearchbox .searchicon
+{
+width: 60px;	
+}

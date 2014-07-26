@@ -12,7 +12,7 @@
 			searchFields: [],
 			displayHandler: undefined,
 			emptySearchResult: "No results found",
-			delaySearch: 400,
+			delaySearch: 300,
 			loadDataHandler: undefined,
 			jQInputBox: undefined,
 			jQSearchListContainer: undefined
@@ -34,7 +34,7 @@
 						result.push(array[i]);
 						if (count == 0) return result;
 						count-=1;
-						continue;
+						break;
 					}
 				}
 			}
@@ -67,20 +67,20 @@
 				if (event.keyCode == 38) { // up
 					direction = 'prev';
 					siblingsSelector = ':not(:first-child)';
-					if (this.optionsList.find('.wbselected').length == 0) {
-						this.optionsList.find('li:last-child').addClass('wbselected');
+					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
+						this.optionsList.find('li:last-child').addClass('wbsearchboxsel');
 						return;
 					}
 					
 				} else if (event.keyCode == 40) { // down
 					direction = 'next';
 					siblingsSelector = ':not(:last-child)';
-					if (this.optionsList.find('.wbselected').length == 0) {
-						this.optionsList.find('li:first-child').addClass('wbselected');
+					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
+						this.optionsList.find('li:first-child').addClass('wbsearchboxsel');
 						return;
 					}					
 				}
-				this.optionsList.find('.wbselected')[direction]().addClass('wbselected').siblings(siblingsSelector).removeClass('wbselected');			
+				this.optionsList.find('.wbsearchboxsel')[direction]().addClass('wbsearchboxsel').siblings(siblingsSelector).removeClass('wbsearchboxsel');			
 				return;
 			}
 			
@@ -93,6 +93,7 @@
 					return;
 				}
 				this.optionsList.empty();
+				this.crud('deleteAll');
 				if (this.options.loadDataHandler) {
 					this.options.loadDataHandler(this);
 				}
@@ -109,7 +110,7 @@
 					this.optionsList.prepend("<li>{0}</li>".format(this.getOptions().emptySearchResult));
 				}
 				this.optionsList.find('li').mouseenter(function () {
-					$(this).addClass('wbselected').siblings().removeClass('wbselected');
+					$(this).addClass('wbsearchboxsel').siblings().removeClass('wbsearchboxsel');
 				});
 			}
 			
