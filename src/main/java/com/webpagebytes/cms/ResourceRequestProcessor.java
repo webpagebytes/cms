@@ -31,6 +31,10 @@ public class ResourceRequestProcessor {
 		resourcesContentType.put("swf", "application/x-shockwave-flash");
 		resourcesContentType.put("xap", "application/x-silverlight-app");
 		resourcesContentType.put("svg", "image/svg+xml");
+		resourcesContentType.put("otf", "application/x-font-otf");
+		resourcesContentType.put("eot", "application/vnd.ms-fontobject");
+		resourcesContentType.put("ttf", "application/x-font-ttf");
+		resourcesContentType.put("woff", "application/x-font-woff");	
 		
 		noCacheContentType.add("text/html");
 		noCacheContentType.add("application/json");

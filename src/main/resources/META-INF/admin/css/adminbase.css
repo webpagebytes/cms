@@ -312,6 +312,12 @@ margin:	10px 0px 5px;
 {
 min-height: 150px;	
 }
+
+.wbbtnclipboard
+{
+	margin: 0px 5px;
+	color: #000000;
+}
 .wbsearchcontainer
 {
 position: relative;

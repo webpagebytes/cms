@@ -26,7 +26,11 @@ $().ready( function () {
 									  validationRules: wbPageValidations
 									 });
 
-	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+		$(e.target).html("<i class='fa fa-paste'></i><i class='fa fa-check'></i>");
+	});
 
 	$('#wbecontentType').typeahead({ source: ["text/html", "text/plain", "text/javascript", "text/css", "application/json", "application/x-javascript"]});
 	

@@ -594,18 +594,31 @@ if (!Array.prototype.indexOf) {
 		defaults: { 
 			basePath: undefined,
 			selector: undefined,
-			buildStamp:"_"
+			buttonHtml: undefined
+		},
+		buttons: undefined,
+		
+		reset: function () {
+			var buttonHtml = this.options.buttonHtml;
+			var _buttons = $.find(this.options.selector);
+			$.each (_buttons , function (index, elem) {	
+				$(elem).html(buttonHtml);
+			});		
 		},
 		init: function ( thisElement, options ) {			
 			this.thisElement = $(thisElement);
-			this.options = $.extend ( {} , this.defaults, options );		
-			
-			var swfzc = this.options.basePath + '/{0}/zeroclipboard/ZeroClipboard.swf'.format(encodeURIComponent(this.options.buildStamp));
-			ZeroClipboard.setDefaults( { moviePath: swfzc } );
+			this.options = $.extend ( {} , this.defaults, options );					
+			var swfzc = this.options.basePath + '/_/zeroclipboard/ZeroClipboard.swf';
+			ZeroClipboard.config( { swfPath: swfzc } );
 			var zcButtons = $.find(this.options.selector);
+			var _buttons = new Array();
+			var buttonHtml = this.options.buttonHtml;
 			$.each (zcButtons, function (index, elem) {
 				var zc = new ZeroClipboard(elem);
+				_buttons.push(zc);
+				$(elem).html(buttonHtml);
 			});
+			this.buttons = _buttons;
 
 		},
 		getOptions: function () {
@@ -613,6 +626,11 @@ if (!Array.prototype.indexOf) {
 				return this.defaults
 			else
 				return this.options;
+		},
+		on: function (eventname, handler) {
+			$.each (this.buttons , function (index, elem) {
+				elem.on(eventname, handler);
+			});
 		}
 
 	}

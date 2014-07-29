@@ -35,7 +35,11 @@ $().ready( function () {
 									 errorLabelClassName: 'errorvalidationlabel',
 									} );							
 
-	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+		$(e.target).html("<i class='fa fa-paste'></i><i class='fa fa-check'></i>");
+	});
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {

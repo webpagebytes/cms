@@ -28,7 +28,11 @@ $().ready( function () {
 								  errorInputClassName: 'errorvalidationinput',
 								  validationRules: wbFileValidations
 								});
-	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+		$(e.target).html("<i class='fa fa-paste'></i><i class='fa fa-check'></i>");
+	});
 
 	$('#wbudadjustedContentType').typeahead({ items: 4,
 											  source:[ "image/jpeg", "image/png", "image/bmp", "image/gif", "image/jpg", "image/tiff", 

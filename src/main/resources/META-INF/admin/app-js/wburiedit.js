@@ -89,7 +89,11 @@ $().ready( function () {
 	               						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined for this url. </td></tr>"
 	               						});
 
-	$('.btn-clipboard').WBCopyClipboardButoon({basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+		$(e.target).html("<i class='fa fa-paste'></i><i class='fa fa-check'></i>");
+	});
 	
 	var wbhelpcontent = function(){
 		return "TBD"
