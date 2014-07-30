@@ -17,10 +17,10 @@ $().ready( function () {
 									  validationRules: wbPageModuleValidations
 									 });
 	
-	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-clipboard'});
 	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
 		$('.btn-clipboard').WBCopyClipboardButoon().reset();
-		$(e.target).html("<i class='fa fa-paste'></i><i class='fa fa-check'></i>");
+		$(e.target).html("<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copied!</div>");
 	});
 
 	var displayHandler = function (fieldId, record) {

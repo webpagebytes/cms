@@ -371,3 +371,24 @@ display:none;
 {
 width: 60px;	
 }
+
+.wbclipboardtooltip
+{
+display:none;
+}
+.zeroclipboard-is-hover
+{
+position: relative;
+}
+
+.zeroclipboard-is-hover .wbclipboardtooltip
+{
+display:inline;
+width: auto;
+border: 1px solid #334455;
+padding: 2px 3px;
+background-color: #FFFA88;
+position: relative;
+left: 10px;
+z-index: 120;
+}
