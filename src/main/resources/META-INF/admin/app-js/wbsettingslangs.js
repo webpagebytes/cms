@@ -45,8 +45,46 @@ $().ready( function () {
 			 functionError: fErrorGetResources
 			} );		
 	};
+	var displayHandlerFunction = function(item) {
+		var type="";
+		switch (item.type)
+		{
+			case "1": type ="site uri"; break;
+			case "2": type ="site page"; break;
+			case "3": type ="page module"; break;
+			case "4": type ="message"; break;
+			case "5": type ="article"; break;
+			case "6": type ="file"; break;
+			case "7": type ="global parameter"; break;	
+		}
+		var str=""; 
+		switch (item.type)
+		{
+			case "1": 
+			case "2": 
+			case "3": 
+			case "5": 
+			case "6": 
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-clipboard"></span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
+				break;
+			case "7": 	
+			case "4": 
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-clipboard"></span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
+				break;
+		}
+		return str;
+	};
+    var afterDisplayFunction = function(wbsearchbox) {
+    	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-clipboard'});
+    	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+    		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+    		$(e.target).html("<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copied!</div>");
+            wbsearchbox.getOptions().jQInputBox.focus();
+    	});
+    };
+
 	
-	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,displayHandler: displayHandlerFunction, 
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, 
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
 	
 	var fSuccessGetLanguages = function (data) {

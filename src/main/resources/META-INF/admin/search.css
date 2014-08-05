@@ -1,24 +1,68 @@
-.searchlist
+
+.wbsearchcontainer
+{
+position: relative;
+height: 1px;
+}
+.wbsearchbox
+{
+position: absolute;
+right: 0px;
+display:block;
+}
+.wbsearchbox input
+{
+width: 400px;
+}
+
+.wbsearchresultcontainer
+{
+position: absolute;
+right: 0px;
+top: 30px;
+}
+
+.wbsearchresultlist
 {
 list-style-type:none;
 padding: 0px;
 margin: 0px;
 border: 1px solid #AAAAAA;
-max-width: 500px;
+min-width: 500px;
 }
 
-.searchlist .wbselected
+.wbsearchresultlist .wbsearchboxsel
 {
 background-color: #DDDDDD;
 }
 
-.searchlist li
+.wbsearchresultlist li
 {
 background-color: #FAFAFA;
 margin: 0px;
-padding: 4px;
+padding: 5px;
 }
-::-ms-clear
+
+.wbsearchresultlist .itemelem
+{
+margin: 0px 5px 0px 0px;
+display: block;
+float:left;
+}
+
+.wbsearchresultlist .itemtype
+{
+font-size: 0.8em;
+color: #BABABA;
+width: 80px;
+}
+
+
+.wbsearchbox::-ms-clear
 {
 display:none;
+}	
+.clear
+{
+clear: both;
 }

@@ -11,6 +11,7 @@
 			searchListSize: 5,
 			searchFields: [],
 			displayHandler: undefined,
+			afterDisplayHandler: undefined,
 			emptySearchResult: "No results found",
 			delaySearch: 300,
 			loadDataHandler: undefined,
@@ -109,6 +110,10 @@
 				if (result.length == 0) {
 					this.optionsList.prepend("<li>{0}</li>".format(this.getOptions().emptySearchResult));
 				}
+				if (this.options.afterDisplayHandler) {
+					this.options.afterDisplayHandler(this);
+				}
+
 				this.optionsList.find('li').mouseenter(function () {
 					$(this).addClass('wbsearchboxsel').siblings().removeClass('wbsearchboxsel');
 				});
@@ -157,6 +162,8 @@
 			this.searchBox.data('wbSearchBox', this);
 			
 			this.optionsWrapper = $(this.options.jQSearchListContainer);
+			this.optionsWrapper.attr("tabindex", "-1");
+			
 			this.optionsWrapper.hide();
 			
 			this.optionsList = $(this.optionsWrapper).find("ul")[0];
@@ -164,11 +171,14 @@
 			this.optionsList.data('wbSearchBox', this);
 			$(this.searchBox).on("keydown", this.privPressHandler);		
 			this.dataElements = new Array();
-			
-			$(this.searchBox).blur( function () { 
-				// hide the options if focus is lost
-				var tempThis = $(this).data('wbSearchBox');;
-				tempThis.optionsWrapper.hide();
+			var tempOptionsWrapper = this.optionsWrapper;
+			$(this.optionsWrapper).on("keydown", function (event) { 
+				// hide the options if ESC on optionsWrapper
+				if (event.keyCode == 27) {
+					//ESC so hide the options list
+					tempOptionsWrapper.hide();
+					return;
+				}
 				});	
 			}
 	};
