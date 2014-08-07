@@ -3,10 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link rel="stylesheet" href="./${timestamp}/bs/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="./${timestamp}/fa/css/font-awesome.min.css" type="text/css" />
 <link rel="stylesheet" href="./${timestamp}/css/adminbase.css" type="text/css" />
 <script src="./${timestamp}/js/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="./${timestamp}/js/json2.js" type="text/javascript"></script>
 <script src="./${timestamp}/bs/js/bootstrap.js" type="text/javascript"></script>
+<script src="./${timestamp}/zeroclipboard/ZeroClipboard.min.js"  type="text/javascript"></script>
 <script src="./${timestamp}/js/wbutility.js" type="text/javascript"></script>
 <script src="./${timestamp}/js/wbsimpletable.js" type="text/javascript"></script>
 <script src="./${timestamp}/app-js/wbstats.js" type="text/javascript"></script>
@@ -31,6 +33,16 @@
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>							
 	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>
+		
 		<div class="row-fluid dashbordline">
 			<div class="span4">
 				<div id="wbbodycontent" class="wbcolorcontent">

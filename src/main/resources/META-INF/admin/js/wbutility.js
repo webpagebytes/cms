@@ -1190,3 +1190,262 @@ if (!Array.prototype.indexOf) {
 
 
 }) (window.jQuery);
+
+(function ($) {
+
+	WBSearchBox = function ( jQElement, options ) {
+		this.init( jQElement, options );
+	};
+	
+	WBSearchBox.prototype = 
+	{
+		defaults: {
+			classSearchList: "",
+			searchListSize: 5,
+			searchFields: [],
+			displayHandler: undefined,
+			afterDisplayHandler: undefined,
+			emptySearchResult: "No results found",
+			delaySearch: 300,
+			loadDataHandler: undefined,
+			jQInputBox: undefined,
+			jQSearchListContainer: undefined
+		},
+		lastKeyPressTimestamp: 0,
+		
+		getOptions: function () {
+			if (! this.options) 
+				return this.defaults
+			else
+				return this.options;
+		},
+		searchInArray: function(array, toFind, fieldsSet, count) {
+			console.log('wbsearchbox - search in array');
+			var result = new Array()
+			for (var i = 0; i< array.length; i++ ) {
+				for (x in fieldsSet) {
+					if ( array[i][fieldsSet[x]].indexOf(toFind)>=0) {
+						result.push(array[i]);
+						if (count == 0) return result;
+						count-=1;
+						break;
+					}
+				}
+			}
+			return result;
+		},
+	
+		timeoutHandler: function(elem, event) {		
+			var val = $(elem.searchBox).val();
+			console.log(event.which);
+			if (val.length == 0) {
+				// no string to search so hide the options list
+				this.optionsWrapper.hide();
+				return;
+			}
+			if (event.keyCode == 27) {
+				//ESC so hide the options list
+				this.optionsWrapper.hide();
+				return;
+			}
+
+			if (event.keyCode == 13) {
+				//ENTER so hide the options list
+				this.optionsWrapper.hide();
+				return;
+			}
+			
+			// handle arrow up and arrow down
+			if (event.keyCode == 40 || event.keyCode == 38) {	
+				var direction, siblingsSelector;
+				if (event.keyCode == 38) { // up
+					direction = 'prev';
+					siblingsSelector = ':not(:first-child)';
+					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
+						this.optionsList.find('li:last-child').addClass('wbsearchboxsel');
+						return;
+					}
+					
+				} else if (event.keyCode == 40) { // down
+					direction = 'next';
+					siblingsSelector = ':not(:last-child)';
+					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
+						this.optionsList.find('li:first-child').addClass('wbsearchboxsel');
+						return;
+					}					
+				}
+				this.optionsList.find('.wbsearchboxsel')[direction]().addClass('wbsearchboxsel').siblings(siblingsSelector).removeClass('wbsearchboxsel');			
+				return;
+			}
+			
+			if (val.length>0 && event.which >0) {
+				var timestamp = new Date();
+				var timestampPrev = this.lastKeyPressTimestamp;
+				console.log('diff ' + (timestamp-timestampPrev));
+				if (timestamp - timestampPrev < this.getOptions().delaySearch) {
+					console.log(' return ' + (timestamp - timestampPrev));
+					return;
+				}
+				this.optionsList.empty();
+				this.crud('deleteAll');
+				if (this.options.loadDataHandler) {
+					this.options.loadDataHandler(this);
+				}
+				var result = this.searchInArray(this.dataElements, val, this.getOptions().searchFields, this.getOptions().searchListSize);
+				this.optionsWrapper.show();
+				for(var x in result) {
+					var html = "";
+					if (this.getOptions().displayHandler) {
+						html = this.getOptions().displayHandler(result[x]);
+					}
+					this.optionsList.prepend("<li>{0}</li>".format(html));	
+				}
+				if (result.length == 0) {
+					this.optionsList.prepend("<li>{0}</li>".format(this.getOptions().emptySearchResult));
+				}
+				if (this.options.afterDisplayHandler) {
+					this.options.afterDisplayHandler(this);
+				}
+
+				this.optionsList.find('li').mouseenter(function () {
+					$(this).addClass('wbsearchboxsel').siblings().removeClass('wbsearchboxsel');
+				});
+			}
+			
+		},
+		privPressHandler: function (event) {
+			var tempThis = $(this).data('wbSearchBox');
+			tempThis.lastKeyPressTimestamp = new Date();	
+			setTimeout( function() {
+				tempThis.timeoutHandler(tempThis, event) }, tempThis.getOptions().delaySearch);
+		},
+		
+		crud: function (operationName, objectValue, keyName) {
+			var tempThis = this;
+			if (operationName == 'insert') {
+				tempThis.dataElements.push(objectValue);
+				return;
+			} else if (operationName == 'delete') {
+				for (var i = 0; i < tempThis.dataElements.length; i++) {
+					if (tempThis.dataElements[keyName] == objectValue[keyName]) {
+						tempThis.dataElements.splice(i, 1);
+						return;
+					}
+				}
+			} else if (operationName == 'update') {
+				for (var i = 0; i < tempThis.dataElements.length; i++) {
+					if (tempThis.dataElements[keyName] == objectValue[keyName]) {
+						tempThis.dataElements[i] = objectValue;
+						return;
+					}
+				}			
+			} else if (operationName == 'deleteAll') {
+				tempThis.dataElements.splice(0);
+				return;
+			}
+			
+		},
+		init: function ( jQElem, options) {
+			this.jQElement = jQElem;
+			this.options = $.extend ( {} , this.defaults, options );	
+			this.isListVisible = false;
+			var html = "<ul class=' {0}'> </ul>".format(escapehtml(this.options.classSearchList)); 			
+			$(this.options.jQSearchListContainer).html(html);
+			this.searchBox = $(this.options.jQInputBox);
+			this.searchBox.data('wbSearchBox', this);
+			
+			this.optionsWrapper = $(this.options.jQSearchListContainer);
+			this.optionsWrapper.attr("tabindex", "-1");
+			
+			this.optionsWrapper.hide();
+			
+			this.optionsList = $(this.optionsWrapper).find("ul")[0];
+			this.optionsList = $(this.optionsList);
+			this.optionsList.data('wbSearchBox', this);
+			$(this.searchBox).on("keydown", this.privPressHandler);		
+			this.dataElements = new Array();
+			var tempOptionsWrapper = this.optionsWrapper;
+			$(this.optionsWrapper).on("keydown", function (event) { 
+				// hide the options if ESC on optionsWrapper
+				if (event.keyCode == 27) {
+					//ESC so hide the options list
+					tempOptionsWrapper.hide();
+					return;
+				}
+				});	
+			}
+	};
+	
+	$.fn.wbSearchBox = function ( param ) {
+			var $this = $(this),
+			data = $this.data('wbSearchBox');			
+			var options = (typeof param == 'object') ? param : {} ; 
+			if (!data) $this.data('wbSearchBox', (data = new WBSearchBox ($this, options)));	
+			if (param == undefined) return data;
+	}	
+})(window.jQuery);
+
+$().ready( function () {
+	
+	$('#cmssearchbox').wbCommunicationManager({async:false});
+	
+	var loadDataHandlerFunction = function(wbSearchBox) {
+		var fSuccessGetResources = function (data) {
+			$.each(data.data, function(index, item) {
+				wbSearchBox.crud('insert', item, 'key');
+			});							
+		};
+		var fErrorGetResources = function (data) {
+			alert(data);
+		}
+		$('#cmssearchbox').wbCommunicationManager().ajax ( { url:"./wbresources",
+			 async: false,
+			 httpOperation:"GET", 
+			 payloadData:"",
+			 functionSuccess: fSuccessGetResources,
+			 functionError: fErrorGetResources
+			} );		
+	};
+	var displayHandlerFunction = function(item) {
+		var type="";
+		switch (item.type)
+		{
+			case "1": type ="site uri"; break;
+			case "2": type ="site page"; break;
+			case "3": type ="page module"; break;
+			case "4": type ="message"; break;
+			case "5": type ="article"; break;
+			case "6": type ="file"; break;
+			case "7": type ="global parameter"; break;	
+		}
+		var str=""; 
+		switch (item.type)
+		{
+			case "1": 
+			case "2": 
+			case "3": 
+			case "5": 
+			case "6": 
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
+				break;
+			case "7": 	
+			case "4": 
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
+				break;
+		}
+		return str;
+	};
+    var afterDisplayFunction = function(wbsearchbox) {
+    	$('.btn-s-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-s-clipboard'});
+    	$('.btn-s-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+    		$('.btn-s-clipboard').WBCopyClipboardButoon().reset();
+    		$(e.target).html("<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copied!</div>");
+            wbsearchbox.getOptions().jQInputBox.focus();
+    	});
+    };
+
+	
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, 
+					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
+
+});

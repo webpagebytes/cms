@@ -21,12 +21,9 @@ $().ready( function () {
 						});
 
 	$('#wblangstablediv').wbCommunicationManager();
+	/*
 	$('#cmssearchbox').wbCommunicationManager({async:false});
-	
-	var displayHandlerFunction = function(item) {
-		return escapehtml(item['key']) + '-' + escapehtml(item['name']);
-	};
-	
+		
 	var loadDataHandlerFunction = function(wbSearchBox) {
 		var fSuccessGetResources = function (data) {
 			console.log('received wbresources ' + data.data.length);
@@ -65,19 +62,19 @@ $().ready( function () {
 			case "3": 
 			case "5": 
 			case "6": 
-				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-clipboard"></span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
 				break;
 			case "7": 	
 			case "4": 
-				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-clipboard"></span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
 				break;
 		}
 		return str;
 	};
     var afterDisplayFunction = function(wbsearchbox) {
-    	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-clipboard'});
-    	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
-    		$('.btn-clipboard').WBCopyClipboardButoon().reset();
+    	$('.btn-s-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-s-clipboard'});
+    	$('.btn-s-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
+    		$('.btn-s-clipboard').WBCopyClipboardButoon().reset();
     		$(e.target).html("<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copied!</div>");
             wbsearchbox.getOptions().jQInputBox.focus();
     	});
@@ -86,7 +83,7 @@ $().ready( function () {
 	
 	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, 
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
-	
+	*/
 	var fSuccessGetLanguages = function (data) {
 		$.each(data.data, function(index, item) {
 			$('#wblangstablediv').wbTable().insertRow(item);

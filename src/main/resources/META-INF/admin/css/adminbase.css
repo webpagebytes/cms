@@ -347,7 +347,7 @@ list-style-type:none;
 padding: 0px;
 margin: 0px;
 border: 1px solid #AAAAAA;
-max-width: 700px;
+width: 600px;
 }
 
 .wbsearchresultlist .wbsearchboxsel
@@ -408,6 +408,11 @@ left: 10px;
 z-index: 120;
 }
 
+.wbsearchresultlist .wbbtndummy 
+{
+width: 14px;
+}
+
 .wbsearchresultlist .wbbtnclipboard 
 {
 display:none;
@@ -416,4 +421,9 @@ display:none;
 .wbsearchresultlist .wbsearchboxsel .wbbtnclipboard 
 {
 display:inline;
+}
+
+.wbsearchresultlist .wbsearchboxsel .wbbtndummy 
+{
+display:none;
 }
