@@ -33,40 +33,47 @@
 
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
-	</div>	
-	<div class="wbsearchcontainer">
-		<div class="wbsearchbox"> 
-			<div class="input-prepend">
-				<span class="add-on searchicon"><i class="icon-search"></i></span>
-				<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+	</div>
+	
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"> Site messages </span></h1>
+			<div class="wbtitle-offset"> 
+				<span> <a href="./websettingslangsedit.html"> <i class="icon-pencil"> </i> Edit supported languages </a> </span>
 			</div>
 		</div>
-		<div id="searchResultList" class="wbsearchresultcontainer"></div>		
-	</div>
+		<div class="wbcolorcontent">
+			<div class="wbinnercontent"> 				
 	
-	<div class="well" id="wbbodycontent">
-		<div class="marginv">
-			<a href="./websettingslangsedit.html" class="btn btn-primary"> <i class="icon-pencil icon-white"> </i> Edit supported languages </a>
+				<div class="tabbable tabs-left" id="wbmessagesid">
+					<ul class="nav nav-tabs wbverticalcatalog" id="wbsupportedlanguages">
+						<li class="active"> <a href="#"> Loading....</a>  </li>
+					</ul>
+					<div class="tab-content ">
+								<div class="tableheader"> 
+									<div class="tabletitle"> Text messages </div> <div class="tablestats"> </div> 
+									<div class="tablebutton"> <a href="#" class="wbCreateMessageBtnClass"><i class="icon-plus"> </i> New message </a> </div>  
+								</div>
+								<div class="clear"></div>
+					
+								<div id="wbmessagestable" class="wbmessagestable"></div>
+					</div>
+				</div>		
+			</div>
 		</div>
-		<div class="tabbable tabs-left" id="wbmessagesid">
-			<ul class="nav nav-tabs wbverticalcatalog" id="wbsupportedlanguages">
-				<li class="active"> <a href="#"> Loading....</a>  </li>
-			</ul>
-			<div class="tab-content ">
-						<div class="tableheader"> 
-							<div class="tabletitle"> Text messages </div> <div class="tablestats"> </div> 
-							<div class="tablebutton"> <a href="#" class="wbCreateMessageBtnClass"><i class="icon-plus"> </i> New message </a> </div>  
-						</div>
-						<div class="clear"></div>
-			
-						<div id="wbmessagestable" class="wbmessagestable"></div>
-						<script type="text/javascript">
-							$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
-						</script>
-			</div>		
-		</div>
+		<script type="text/javascript">
+			$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
+		</script>
 	</div>
-	
 	<div class="modal hide" id="wbAddMessageModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

@@ -31,32 +31,34 @@
 		</div>
 	</div>
 
-	<div class="wbsearchcontainer">
-		<div class="wbsearchbox"> 
-			<div class="input-prepend">
-				<span class="add-on searchicon"><i class="icon-search"></i></span>
-				<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
 			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"> Site backup and restore </span></h1>
 		</div>
-		<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		<div class="well">
+		   <div class="alert alert-info"> Backup takes the snapshot of the current site state, changes made during backup may not be included. </div>
+	       
+		   <div class="">
+			<a href="#" id="backuplink" class="btn btn-primary"> <i class="icon-download icon-white"></i>Backup </a> 
+		   </div>
+		   <div class="clear"></div>
+		</div>
+		<div class="well">
+		   <div class="alert alert-info"> Import a project that was previous backed up. </div>      
+		   <div class=""> 
+			  <button class="btn btn-primary restoreBtnClass"> <i class="icon-upload icon-white"></i> Import </button>
+		   </div> 		   
+		</div>
 	</div>
-
-	<div class="well">
-	   <div class="alert alert-info"> Backup takes the snapshot of the current site state, changes made during backup may not be included. </div>
-       
-	   <div class="">
-		<a href="#" id="backuplink" class="btn btn-primary"> <i class="icon-download icon-white"></i>Backup </a> 
-	   </div>
-	   <div class="clear"></div>
-	</div>
-	<div class="well">
-	   <div class="alert alert-info"> Import a project that was previous backed up. </div>      
-	   <div class=""> 
-		  <button class="btn btn-primary restoreBtnClass"> <i class="icon-upload icon-white"></i> Import </button>
-	   </div> 
-	   
-	</div>
-	
 	<div class="modal hide" id="wbModalRestoreUpload">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

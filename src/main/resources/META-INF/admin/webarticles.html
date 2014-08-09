@@ -35,7 +35,7 @@
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>	
 		
-	<div class="wbcolorcontent" id="wbbodycontent">
+	<div id="wbbodycontent">
 		<div class="wbsearchcontainer">
 			<div class="wbsearchbox"> 
 				<div class="input-prepend">
@@ -44,20 +44,22 @@
 				</div>
 			</div>
 			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
-		</div>
-	
-		<div class="wbinnercontent">
-			<div class="tableheader"> 
-				<div class="tabletitle"> Site articles </div> <div class="tablestats"> </div> 
-				<div class="tablebutton"> <a href="#" id="wbAddArticleBtn"><i class="icon-plus"> </i> New article </a> </div>  
+		</div>	
+		<div class="wbtitle">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"> Site articles </span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="wbstats wbtitle-text wbarticles-table-stats"> </span>
+				<span class="wbtitle-button"> <a href="#" id="wbAddArticleBtn"><i class="icon-plus"> </i> New article </a> </span>
 			</div>
-			<div class="clear"></div>
-			
-			<div id="wbArticlesTable"></div>
-			<script type="text/javascript">
-				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
-			</script>
 		</div>
+		<div class="wbcolorcontent">
+			<div class="wbinnercontent"> 				
+				<div id="wbArticlesTable"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
+		</script>
 	</div>
 	
 	<div class="modal hide" id="wbAddArticleModal">

@@ -34,19 +34,31 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>		
-	<div class="wbcolorcontent" id="wbbodycontent">
-		<div class="wbinnercontent">
-			<div class="tableheader"> 
-				<div class="tabletitle"> Page modules </div> <div class="tablestats"> </div> 
-				<div class="tablebutton"> <a href="#" id="wbAddPageModuleBtn"><i class="icon-plus"> </i> New page module </a> </div>  
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
 			</div>
-			<div class="clear"></div>
-		
-			<div id="wbPageModulesTable"></div>
-			<script type="text/javascript">
-				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
-			</script>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"> Page modules </span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="wbstats wbtitle-text wbmodules-table-stats"> </span>
+				<span class="wbtitle-button"> <a href="#" id="wbAddPageModuleBtn"><i class="icon-plus"> </i> New page module </a> </span>
+			</div>
 		</div>
+		<div class="wbcolorcontent">
+			<div class="wbinnercontent"> 				
+				<div id="wbPageModulesTable"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
+		</script>
 	</div>
 	
 	<div class="modal hide" id="wbAddPageModuleModal">

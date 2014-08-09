@@ -135,7 +135,7 @@ $().ready( function () {
 	$('#wburiadd').wbCommunicationManager();
 	$('#wburidelete').wbCommunicationManager(); 
 	
-	$('#wbaddnewpage').click( function (e) {
+	$('#wbAddUrlBtn').click( function (e) {
 		e.preventDefault();
 		window.location.href = "./weburiadd.html";
 	});
@@ -197,7 +197,7 @@ $().ready( function () {
 			
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};
 			
-			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+			$(".wburi-table-stats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
 			
 			$('#spinnerTable').WBSpinner().hide();			
 		}

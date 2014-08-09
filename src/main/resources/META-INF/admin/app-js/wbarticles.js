@@ -163,7 +163,7 @@ $().ready( function () {
 			$('#wbArticlesTable').wbSimpleTable().setRows(data.data);
 			$('#wbArticlesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+			$(".wbarticles-table-stats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
 			$('#spinnerTable').WBSpinner().hide();
 		}
 		var fErrorGetAll = function (errors, data) {
