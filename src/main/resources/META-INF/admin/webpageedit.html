@@ -33,75 +33,82 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>
-	<div id="wbbodycontent" class="well">	
-		<div class="row-fluid">
-			<div class="tableheader" id="wbPageSummary">
-				<div class="tabletitle">
-					<a href="./webpages.html"> Site pages </a> <span>/</span>
-					<span id="wbsummaryname"></span>
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
 				</div>
-				<div class="wblastmodified">
-					<span class="badge badge-info" id="wbsummarylastModified"></span>
-				</div>
-		    </div>
-	
-			<div>
-				<form class="form-horizontal" id="wbPageEditForm">
-					<div class="erregeneral"></div>
-					<fieldset>
-						<input id="wbekey" type="hidden">
-						<div class="marginv control-group">
-							<label for="name" class="control-label wblabel-left">Site page description</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="name" id="wbename">
-								<span id="errename" class="help-inline"></span>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbPageSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webpages.html">Site pages</a>/</span><span id="wbsummaryname"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
+			</div>
+			
+		</div>
+		
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid">	
+					<form class="form-horizontal" id="wbPageEditForm">
+						<div class="erregeneral"></div>
+						<fieldset>
+							<input id="wbekey" type="hidden">
+							<div class="marginv control-group">
+								<label for="name" class="control-label wblabel-left">Site page description</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="name" id="wbename">
+									<span id="errename" class="help-inline"></span>
+								</div>
 							</div>
-						</div>
-						<div class="marginv control-group">
-							<label for="externalKey" class="control-label wblabel-left">External Key</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
-								<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>
-								<span id="erreexternmalKey" class="help-inline"></span>
+							<div class="marginv control-group">
+								<label for="externalKey" class="control-label wblabel-left">External Key</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+									<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>
+									<span id="erreexternmalKey" class="help-inline"></span>
+								</div>
 							</div>
-						</div>
-						
-						<div class="marginv control-group">
-							<label for="contentType" class="control-label wblabel-left">Content type</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="contentType" id="wbecontentType">
-								<span id="errecontentType" class="help-inline"></span>
+							
+							<div class="marginv control-group">
+								<label for="contentType" class="control-label wblabel-left">Content type</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="contentType" id="wbecontentType">
+									<span id="errecontentType" class="help-inline"></span>
+								</div>
+							</div>					
+												
+							<div class="marginv control-group">
+								<label for="isTemplateSource" class="control-label wblabel-left">Source interpretation</label>
+								<div class="controls">
+									<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain text source
+									<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template text source
+									<span id="erreisTemplateSource" class="help-inline"></span>
+								</div>
 							</div>
-						</div>					
-											
-						<div class="marginv control-group">
-							<label for="isTemplateSource" class="control-label wblabel-left">Source interpretation</label>
-							<div class="controls">
-								<input id="wbeisTemplateSource" class="input-xlarge" type="radio" name="isTemplateSource" value="0" > Plain text source
-								<input class="input-xlarge" type="radio" name="isTemplateSource" value="1"> Template text source
-								<span id="erreisTemplateSource" class="help-inline"></span>
+							
+							<div class="marginv control-group wbModelProviderContainer">
+								<label for="pageModelProvider" class="control-label wblabel-left">Page model provider</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="pageModelProvider" id="wbepageModelProvider">
+									<span id="errepageModelProvider" class="help-inline"></span>
+								</div>
+							</div>					
+							
+							<div class="control-group">
+								<textarea rows="20" id="wbehtmlSource" class="input-block-level" spellcheck="false"> </textarea>	
+								<span id="errehtmlSource" class="help-inline"></span>
 							</div>
-						</div>
-						
-						<div class="marginv control-group wbModelProviderContainer">
-							<label for="pageModelProvider" class="control-label wblabel-left">Page model provider</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="pageModelProvider" id="wbepageModelProvider">
-								<span id="errepageModelProvider" class="help-inline"></span>
+							<div class="marginv">
+								<button class="btn btn-primary wbPageEditSaveBtnClass" type="submit">Save</button>
+								<button class="btn wbPageEditCancelBtnClass" type="submit">Cancel</button>
 							</div>
-						</div>					
-						
-						<div class="control-group">
-							<textarea rows="20" id="wbehtmlSource" class="input-block-level" spellcheck="false"> </textarea>	
-							<span id="errehtmlSource" class="help-inline"></span>
-						</div>
-						<div class="marginv">
-							<button class="btn btn-primary wbPageEditSaveBtnClass" type="submit">Save</button>
-							<button class="btn wbPageEditCancelBtnClass" type="submit">Cancel</button>
-						</div>
-					</fieldset>
-				</form>
-			</div>	
+						</fieldset>
+					</form>
+				</div>	
 		</div>
 	</div>
 	<script type="text/javascript">

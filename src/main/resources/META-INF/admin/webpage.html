@@ -34,74 +34,81 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>
-	<div id="wbbodycontent" class="well">
-		<div class="row-fluid">
-			<div class="tableheader" id="wbPageSummary">
-				<div class="tabletitle">
-					<a href="./webpages.html"> Site pages </a> <span>/</span>
-					<span id="wbsummaryname"></span>
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
 				</div>
-				<div class="wblastmodified">
-					<span class="badge badge-info" id="wbsummarylastModified"></span>
-				</div>
-		    </div>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbPageSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webpages.html">Site pages</a>/</span><span id="wbsummaryname"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
+			</div>
+			
+		</div>
 		
-		<div>
-			<div class="span7"> 
-				<div class="wbPageView" id="wbPageView">
-					<form class="form-horizontal">
-					<a href="#" class="wbPageViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
-					<div class="marginv control-group">
-						<label for="name" class="control-label wblabel-left">Site page description</label>
-						<div class="controls">
-							<input class="wb-input-xlarge" type="text" name="name" id="wbPageViewname" readonly>
-						</div>
-					</div>
-					<div class="marginv control-group">
-						<label for="externalKey" class="control-label wblabel-left">External Key</label>
-						<div class="controls">
-							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageViewexternalKey" readonly>
-							<span data-clipboard-target="wbPageViewexternalKey" class="wbbtnclipboard btn-clipboard"></span>
-							
-						</div>
-					</div>
-					<div class="marginv control-group">
-						<label for="contentType" class="control-label wblabel-left">Content Type</label>
-						<div class="controls">
-							<input class="wb-input-xlarge" type="text" name="contentType" id="wbPageViewcontentType" readonly>
-						</div>
-					</div>
-						
-					<div class="marginv control-group">
-						<label for="name" class="control-label wblabel-left">Source interpretation</label>
-						<div class="controls">
-							<div id="wbPageViewisTemplateSource" class="marginv"> </div>
-						</div>
-					</div>
-					<div class="marginv control-group wbModelProviderContainer">
-						<label for="pageModelProvider" class="control-label wblabel-left">Page model provider</label>
-						<div class="controls">
-							<input class="wb-input-xlarge" type="text" name="pageModelProvider" id="wbPageViewpageModelProvider" readonly>
-						</div>
-					</div>					
-					
-					<textarea rows="20" cols="100" id="wbPageViewhtmlSource" class="input-block-level" readonly> </textarea>					
-					<div class="marginv">
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid">
+				<div class="span7"> 
+					<div class="wbPageView" id="wbPageView">
+						<form class="form-horizontal">
 						<a href="#" class="wbPageViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
+						<div class="marginv control-group">
+							<label for="name" class="control-label wblabel-left">Site page description</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="name" id="wbPageViewname" readonly>
+							</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="externalKey" class="control-label wblabel-left">External Key</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageViewexternalKey" readonly>
+								<span data-clipboard-target="wbPageViewexternalKey" class="wbbtnclipboard btn-clipboard"></span>
+								
+							</div>
+						</div>
+						<div class="marginv control-group">
+							<label for="contentType" class="control-label wblabel-left">Content Type</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="contentType" id="wbPageViewcontentType" readonly>
+							</div>
+						</div>
+							
+						<div class="marginv control-group">
+							<label for="name" class="control-label wblabel-left">Source interpretation</label>
+							<div class="controls">
+								<div id="wbPageViewisTemplateSource" class="marginv"> </div>
+							</div>
+						</div>
+						<div class="marginv control-group wbModelProviderContainer">
+							<label for="pageModelProvider" class="control-label wblabel-left">Page model provider</label>
+							<div class="controls">
+								<input class="wb-input-xlarge" type="text" name="pageModelProvider" id="wbPageViewpageModelProvider" readonly>
+							</div>
+						</div>					
+						
+						<textarea rows="20" cols="100" id="wbPageViewhtmlSource" class="input-block-level" readonly> </textarea>					
+						<div class="marginv">
+							<a href="#" class="wbPageViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
+						</div>
+						</form>
 					</div>
-					</form>
 				</div>
-			</div>
-			<div class="span5"> 
-				<div class="well">
-					<button class="btn btn-primary" id="wbAddUrlBtn"><i class="icon-plus icon-white"> </i> New url to this page </button> <br></br>
-					<div id="wburistable"></div>
+				<div class="span5"> 
+					<div class="well">
+						<button class="btn btn-primary" id="wbAddUrlBtn"><i class="icon-plus icon-white"> </i> New url to this page </button> <br></br>
+						<div id="wburistable"></div>
+					</div>
+					<div class="well">
+						<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Customization parameter </button> <br></br>
+						<div id="wbPageParametersTable"></div>
+					</div>				
 				</div>
-				<div class="well">
-					<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Customization parameter </button> <br></br>
-					<div id="wbPageParametersTable"></div>
-				</div>				
-			</div>
 			</div>
 		</div>
 	</div>

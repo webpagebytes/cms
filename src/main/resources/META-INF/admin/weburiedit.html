@@ -35,108 +35,119 @@
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>						
 	
-	<div id="wbbodycontent" class="well">
-		<div class="tableheader" id="wbUriSummary">
-			<div class="tabletitle">
-				<a href="./weburis.html"> Site urls </a>
-				<span id="wbsummaryuri"></span>
+	<div id="wbbodycontent">
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
 			</div>
-			<div class="wblastmodified">
-				<span class="badge badge-info" id="wbsummarylastModified"></span>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbUriSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./weburis.htm">Site uris</a></span><span id="wbsummaryuri"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
 			</div>
-
+			
 		</div>
 		
-		<div class="row-fluid">
-			<div class="span7"> 
-					<form class="form-horizontal" id="wburiedit">
-						<fieldset>
-							<div class="control-group">
-								<div class="controls">
-									<span id="erregeneral" class="help-inline"></span>
-								</div>										
-							</div>
-							<div class="control-group">
-								<label for="externalKey" class="control-label">External Key</label>
-								<div class="controls">
-									<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
-									<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>
-									<span id="erreexternmalKey" class="help-inline"></span>
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid">
+				<div class="span7"> 
+						<form class="form-horizontal" id="wburiedit">
+							<fieldset>
+								<div class="control-group">
+									<div class="controls">
+										<span id="erregeneral" class="help-inline"></span>
+									</div>										
 								</div>
-							</div>
-			
-							<div class="control-group">
-								<label class="control-label" for="uri">Site url</label>
-								<div class="controls">
-									<input id="wbeuri" name="uri" class="wb-input-xlarge" type="text">
-									<span id="erreuri" class="help-inline"></span>
-								</div>										
-							</div>
-							
-							<div class="control-group">
-								<label class="control-label" for="enabled">Is the url live?</label>
+								<div class="control-group">
+									<label for="externalKey" class="control-label">External Key</label>
+									<div class="controls">
+										<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+										<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>
+										<span id="erreexternmalKey" class="help-inline"></span>
+									</div>
+								</div>
+				
+								<div class="control-group">
+									<label class="control-label" for="uri">Site url</label>
+									<div class="controls">
+										<input id="wbeuri" name="uri" class="wb-input-xlarge" type="text">
+										<span id="erreuri" class="help-inline"></span>
+									</div>										
+								</div>
 								
-								<div class="controls">
-									<input id="wbeenabled" type="radio" name="enabled" value="1"> YES
-									<input type="radio" name="enabled" value="0"> NO
-									<span id="erreenabled" class="help-inline"></span>
-								</div>										
-							</div>
-						
-						    <div class="control-group">
-			                    <label class="control-label" for="controllerClass"> Http operation</label>
-			                    <div class="controls">
-			                        <select name="controllerClass" id="wbehttpOperation">
-										<option>GET</option>
-										<option>POST</option>
-										<option>PUT</option>
-										<option>DELETE</option>
-									</select>
-									<span id="errehttpOperation" class="help-inline error"></span>
+								<div class="control-group">
+									<label class="control-label" for="enabled">Is the url live?</label>
+									
+									<div class="controls">
+										<input id="wbeenabled" type="radio" name="enabled" value="1"> YES
+										<input type="radio" name="enabled" value="0"> NO
+										<span id="erreenabled" class="help-inline"></span>
+									</div>										
 								</div>
-			                </div>
 							
-							<div class="control-group">
-								<label class="control-label" for="resourceType">Resource type</label>					
-								<div class="controls">
-									<input id="wberesourceType" type="radio" name="resourceType" value="1"> Site page
-									<input type="radio" name="resourceType" value="2"> File
-									<input type="radio" name="resourceType" value="3"> Url controller
-									<span id="erreresourceType" class="help-inline"></span>
-								</div>										
-							</div>
-			
-			                <div class="control-group wbResourceExternalKey">
-			                    <label class="control-label" for="wberesourceExternalKey"> Resource External Key </label>
-			                    <div class="controls">
-			                        <input id="wberesourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
-									<span id="erreresourceExternalKey" class="help-inline"></span>
-									<br>
-									<span> Url linked to: <span id="wbresourcelink"> </span></span>
+							    <div class="control-group">
+				                    <label class="control-label" for="controllerClass"> Http operation</label>
+				                    <div class="controls">
+				                        <select name="controllerClass" id="wbehttpOperation">
+											<option>GET</option>
+											<option>POST</option>
+											<option>PUT</option>
+											<option>DELETE</option>
+										</select>
+										<span id="errehttpOperation" class="help-inline error"></span>
+									</div>
+				                </div>
+								
+								<div class="control-group">
+									<label class="control-label" for="resourceType">Resource type</label>					
+									<div class="controls">
+										<input id="wberesourceType" type="radio" name="resourceType" value="1"> Site page
+										<input type="radio" name="resourceType" value="2"> File
+										<input type="radio" name="resourceType" value="3"> Url controller
+										<span id="erreresourceType" class="help-inline"></span>
+									</div>										
 								</div>
-			                </div>
-											
+				
+				                <div class="control-group wbResourceExternalKey">
+				                    <label class="control-label" for="wberesourceExternalKey"> Resource External Key </label>
+				                    <div class="controls">
+				                        <input id="wberesourceExternalKey" class="wb-input-xlarge" autocomplete="off" type="text" > 
+										<span id="erreresourceExternalKey" class="help-inline"></span>
+										<br>
+										<span> Url linked to: <span id="wbresourcelink"> </span></span>
+									</div>
+				                </div>
+												
+								<div class="control-group wbUrlController">
+				                    <label class="control-label" for="controllerClass"> Url controller </label>
+				                    <div class="controls">
+				                        <input id="wbecontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
+										<span id="errecontrollerClass" class="help-inline"></span>
+									</div>
+				                </div>
+							</fieldset>
+
 							<div class="control-group wbUrlController">
-			                    <label class="control-label" for="controllerClass"> Url controller </label>
-			                    <div class="controls">
-			                        <input id="wbecontrollerClass" name="controllerClass" class="wb-input-xlarge" autocomplete="off" type="text" > 
-									<span id="errecontrollerClass" class="help-inline"></span>
-								</div>
-			                </div>
-						</fieldset>
-					
-						<div class="marginv">
-							<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>
-							<button class="btn wbUriEditCancelBtnClass" type="submit">Cancel</button>
-						</div>
-					</form>
+			                    <label class="control-label"> </label>
+			                    	<div class="controls">
+										<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>
+										<button class="btn wbUriEditCancelBtnClass" type="submit">Cancel</button>
+									</div>
+							</div>
+						</form>
+				</div>
+				<div class="span5">
+					<div class="well">
+						<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Customization parameter </button> <br></br>
+						<div id="wbUriParametersTable"></div>
+					</div> 
+				</div>			
 			</div>
-			<div class="span5">
-				<div class="well">
-					<button class="btn btn-primary" id="wbAddParameterBtn"><i class="icon-plus icon-white"> </i> Customization parameter </button> <br></br>
-					<div id="wbUriParametersTable"></div>
-				</div> 
-			</div>			
 		</div>
 	</div>
 	<script type="text/javascript">
