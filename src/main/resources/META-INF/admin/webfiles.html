@@ -95,21 +95,22 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>	
-	<div class="wbcolorcontent" id="wbbodycontent">
-		<div class="wbinnercontent">
-			
-			<div class="tableheader"> 
-				<div class="tabletitle"> Uploaded files </div> <div class="tablestats"> </div> 
-				<div class="tablebutton"> <a href="#" id="wbAddFileBtn"><i class="icon-plus"> </i> Upload file </a> </div>  
+	<div id="wbbodycontent">				
+		<div class="wbtitle">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"> Uploaded files </span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="wbstats wbtitle-text wbfiles-table-stats"> </span>
+				<span class="wbtitle-button"> <i class="fa fa-upload"> </i> <a href="#" id="wbAddFileBtn"> Upload file </a> </span>
 			</div>
-			<div class="clear"></div>
+		</div>
 		
+		<div class="wbcolorcontent wbinnercontent">
 			<div id="wbFilesTable"></div>
-			<script type="text/javascript">
-				$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
-			</script>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
+	</script>
 	
 	<div class="modal hide" id="wbAddFileModal">
 		<div class="modal-header">

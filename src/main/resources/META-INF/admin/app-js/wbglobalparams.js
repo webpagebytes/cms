@@ -171,7 +171,7 @@ $().ready( function () {
 			$('#wbGlobalParamsTable').wbSimpleTable().setRows(data.data);
 			$('#wbGlobalParamsTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
-			$(".tablestats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
+			$(".wbparams-table-stats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
 			$('#spinnerTable').WBSpinner().hide();
 		}
 		var fErrorGetParameters = function (errors, data) {

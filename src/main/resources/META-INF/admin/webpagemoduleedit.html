@@ -33,19 +33,25 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>							
-	<div id="wbbodycontent" class="well">
-		<div class="row-fluid">
-			<div class="tableheader" id="wbPageModuleSummary">
-			    <div class="tabletitle">
-			        <a href="./webpagemodules.html"> Page modules </a> <span>/</span>
-			        <span id="wbsummaryname"></span>
-			    </div>
-			    <div class="wblastmodified">
-			    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
-			    </div>
-		    </div>
-	    	
-			<div spellcheck="false">
+	<div id="wbbodycontent">				
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbPageModuleSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webpagemodules.html">Page modules</a>/</span><span id="wbsummaryname"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
+			</div>
+		</div>
+		
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid" spellcheck="false">
 				<form class="form-horizontal" id="wbPageModuleEditForm">
 					<div class="erregeneral"></div>
 					<input id="wbekey" type="hidden">
@@ -79,9 +85,9 @@
 							<button class="btn btn-primary wbPageModuleEditSaveBtnClass" type="submit">Save</button>
 							<button class="btn wbPageEditCancelBtnClass" type="submit">Cancel</button>
 						</div>
-				</form>
-			</div>	
-		</div>
+					</form>
+				</div>	
+			</div>
 	</div>
 	 <script type="text/javascript">
 		$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });

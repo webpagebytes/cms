@@ -32,48 +32,57 @@
 
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
-	</div>							
-	<div id="wbbodycontent" class="well">
-		<div class="row-fluid">
-			<div class="tableheader" id="wbPageModuleSummary">
-			    <div class="tabletitle">
-			        <a href="./webpagemodules.html"> Page modules </a> <span>/</span>
-			        <span id="wbsummaryname"></span>
-			    </div>
-			    <div class="wblastmodified">
-			    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
-			    </div>
-		   	</div>
-	    	<div>
-                <div class="wbPageModuleView" id="wbPageModuleView">
-                	<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
-					<form class="form-horizontal">
-						<div class="marginv control-group">
-							<label for="name" class="control-label wblabel-left">Module name</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="name" id="wbPageModuleViewname" readonly>
+	</div>			
+	<div id="wbbodycontent">				
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
+				</div>
+			</div>
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbPageModuleSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webpagemodules.html">Page modules</a>/</span><span id="wbsummaryname"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
+			</div>
+		</div>
+		
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid">
+		    	<div>
+	                <div class="wbPageModuleView" id="wbPageModuleView">
+	                	<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>
+						<form class="form-horizontal">
+							<div class="marginv control-group">
+								<label for="name" class="control-label wblabel-left">Module name</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="name" id="wbPageModuleViewname" readonly>
+								</div>
 							</div>
-						</div>
-						<div class="marginv control-group">
-							<label for="externalKey" class="control-label wblabel-left">External Key</label>
-							<div class="controls">
-								<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageModuleViewexternalKey" readonly>
-								<span data-clipboard-target="wbPageModuleViewexternalKey" class="wbbtnclipboard btn-clipboard"></span>		
+							<div class="marginv control-group">
+								<label for="externalKey" class="control-label wblabel-left">External Key</label>
+								<div class="controls">
+									<input class="wb-input-xlarge" type="text" name="externalKey" id="wbPageModuleViewexternalKey" readonly>
+									<span data-clipboard-target="wbPageModuleViewexternalKey" class="wbbtnclipboard btn-clipboard"></span>		
+								</div>
 							</div>
-						</div>
-						<div class="marginv control-group">
-							<label for="name" class="control-label wblabel-left">Source interpretation</label>
-							<div class="controls">
-								<div id="wbPageModuleViewisTemplateSource" class="marginv"> </div>
+							<div class="marginv control-group">
+								<label for="name" class="control-label wblabel-left">Source interpretation</label>
+								<div class="controls">
+									<div id="wbPageModuleViewisTemplateSource" class="marginv"> </div>
+								</div>
 							</div>
-						</div>
-	
-	                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
-	                </form>
-					<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>						
-                </div>
-	    	</div>
-	    </div>
+		
+		                    <textarea rows="20" cols="100" id="wbPageModuleViewhtmlSource" class="input-block-level" readonly> </textarea>                    
+		                </form>
+						<a href="#" class="wbPageModuleViewEditLink btn btn-primary"> <i class="icon-pencil icon-white"></i> Edit </a>						
+	                </div>
+		    	</div>
+		    </div>
+		</div>
 	</div>
    	<script type="text/javascript">
 		$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });

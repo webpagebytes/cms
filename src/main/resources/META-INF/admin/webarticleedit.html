@@ -34,51 +34,58 @@
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>							
-	<div id="wbbodycontent" class="well">
-		<div class="row-fluid">
-			<div class="tableheader" id="wbArticleSummary">
-			    <div class="tabletitle">
-			        <a href="./webarticles.html"> Articles </a> <span>/</span>
-			        <span id="wbsummarytitle"></span>
-			    </div>
-			    <div class="wblastmodified">
-			    	 <span class="badge badge-info" id="wbsummarylastModified"></span>
-			    </div>
-		    </div>
-			<div>	
-			<form class="form-horizontal" id="wbArticleEditForm">
-				<input id="wbekey" type="hidden">
-				<div class="marginv control-group">
-					<label for="name" class="control-label wblabel-left">Article title</label>
-					<div class="controls">
-						<input class="wb-input-xlarge" type="text" name="name" id="wbetitle">
-					</div>
+	<div id="wbbodycontent">				
+		<div class="wbsearchcontainer">
+			<div class="wbsearchbox"> 
+				<div class="input-prepend">
+					<span class="add-on searchicon"><i class="icon-search"></i></span>
+					<input class="input-xlarge" id="cmssearchbox" type="text" placeholder="Search">
 				</div>
-				<div class="marginv control-group">
-					<label for="externalKey" class="control-label wblabel-left">External Key</label>
-					<div class="controls">
-						<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
-						<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>		
-					</div>
-				</div>
-				<div class="marginv">
-					<textarea rows="20" id="_wbehtmlSource" class="input-block-level"> </textarea>	
-					<script type="text/javascript">
-						$("textarea").sceditor({
-							plugins: 'xhtml',
-							style: "./${timestamp}/minified/jquery.sceditor.square.min.css"
-						});
-						$("textarea").sceditor("instance").updateOriginal();
-						
-					</script>	
-				</div>
-				<div class="marginv">
-					<button class="btn btn-primary wbArticleEditSaveBtnClass" type="submit">Save</button>
-					<button class="btn wbArticleEditCancelBtnClass" type="submit">Cancel</button>
-				</div>
-			</form>
 			</div>
-		</div>		
+			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
+		</div>	
+		<div class="wbtitle" id="wbArticleSummary">
+			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webpagemodules.html">Articles</a>/</span><span id="wbsummarytitle"></span></h1>
+			<div class="wbtitle-offset"> 
+				<span class="badge badge-info" id="wbsummarylastModified"> </span>
+			</div>
+		</div>
+		
+		<div class="wbcolorcontent wbinnercontent">
+			<div class="row-fluid">
+				<form class="form-horizontal" id="wbArticleEditForm">
+					<input id="wbekey" type="hidden">
+					<div class="marginv control-group">
+						<label for="name" class="control-label wblabel-left">Article title</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="name" id="wbetitle">
+						</div>
+					</div>
+					<div class="marginv control-group">
+						<label for="externalKey" class="control-label wblabel-left">External Key</label>
+						<div class="controls">
+							<input class="wb-input-xlarge" type="text" name="externalKey" id="wbeexternalKey" readonly>
+							<span data-clipboard-target="wbeexternalKey" class="wbbtnclipboard btn-clipboard"></span>		
+						</div>
+					</div>
+					<div class="marginv">
+						<textarea rows="20" id="_wbehtmlSource" class="input-block-level"> </textarea>	
+						<script type="text/javascript">
+							$("textarea").sceditor({
+								plugins: 'xhtml',
+								style: "./${timestamp}/minified/jquery.sceditor.square.min.css"
+							});
+							$("textarea").sceditor("instance").updateOriginal();
+							
+						</script>	
+					</div>
+					<div class="marginv">
+						<button class="btn btn-primary wbArticleEditSaveBtnClass" type="submit">Save</button>
+						<button class="btn wbArticleEditCancelBtnClass" type="submit">Cancel</button>
+					</div>
+				</form>
+			</div>		
+		</div>
 	</div>
 	<script type="text/javascript">
 		$("#spinnerTable").WBSpinner({visible: true, contentElem: $('#wbbodycontent'), delayDisplay: 300 });
