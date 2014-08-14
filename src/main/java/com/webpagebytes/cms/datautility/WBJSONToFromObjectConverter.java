@@ -95,6 +95,10 @@ public class WBJSONToFromObjectConverter {
 					if (storeAdn == null)
 					{
 						storeAdn = field.getAnnotation(AdminFieldTextStore.class);
+						if (storeAdn == null)
+						{
+							storeAdn = field.getAnnotation(AdminField.class);
+						}
 					}
 				}
 
@@ -140,6 +144,10 @@ public class WBJSONToFromObjectConverter {
 				if (storeAdn == null)
 				{
 					storeAdn = field.getAnnotation(AdminFieldTextStore.class);
+					if (storeAdn == null)
+					{
+						storeAdn = field.getAnnotation(AdminField.class);
+					}
 				}
 			}
 

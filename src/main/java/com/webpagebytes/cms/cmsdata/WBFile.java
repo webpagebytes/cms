@@ -3,6 +3,7 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.webpagebytes.cms.datautility.AdminField;
 import com.webpagebytes.cms.datautility.AdminFieldKey;
 import com.webpagebytes.cms.datautility.AdminFieldStore;
 
@@ -41,10 +42,10 @@ public class WBFile implements Serializable {
 	@AdminFieldStore
 	private Long hash;
 
-	@AdminFieldStore
+	@AdminField
 	private String publicUrl;
 
-	@AdminFieldStore
+	@AdminField
 	private String thumbnailPublicUrl;
 
 	@AdminFieldStore

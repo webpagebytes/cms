@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 public interface WBCloudFileStorage {
-
 	public void storeFile(InputStream is, WBCloudFile file) throws IOException;
 	public WBCloudFileInfo getFileInfo(WBCloudFile file) throws IOException;
 	public boolean deleteFile(WBCloudFile file) throws IOException;

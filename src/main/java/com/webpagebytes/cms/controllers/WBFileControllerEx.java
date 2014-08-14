@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,6 +43,8 @@ import com.webpagebytes.cms.utility.ContentTypeDetector;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBFileControllerEx extends WBController implements AdminDataStorageListener<Object>{
+	private static final String PUBLIC_BUCKET = "public";
+	
 	private AdminDataStorage adminStorage;
 	private WBCloudFileStorage cloudFileStorage;
 	private WBFileValidator validator;
@@ -93,13 +96,13 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		        	  
 		        	  //old file need to be deleted from cloud
 		              String oldFilePath = wbFile.getBlobKey();
-			          WBCloudFile oldCloudFile = new WBCloudFile("public", oldFilePath);
+			          WBCloudFile oldCloudFile = new WBCloudFile(PUBLIC_BUCKET, oldFilePath);
 			          cloudFileStorage.deleteFile(oldCloudFile);
 			          
 			          // if there is a thumbnail then that needs to be deleted too
 			          if (wbFile.getThumbnailBlobKey() != null)
 			          {
-			        	  WBCloudFile oldThumbnail = new WBCloudFile("public", wbFile.getThumbnailBlobKey());
+			        	  WBCloudFile oldThumbnail = new WBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey());
 			        	  cloudFileStorage.deleteFile(oldThumbnail);
 			          }
 		          } else
@@ -110,7 +113,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          }
 		          String uniqueId = adminStorage.getUniqueId();
 		          String filePath = uniqueId + "/" + item.getName();
-		          WBCloudFile cloudFile = new WBCloudFile("public", filePath);
+		          WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, filePath);
 		          cloudFileStorage.storeFile(stream, cloudFile);
 		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
 		          
@@ -124,16 +127,14 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
-		          wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
 		          
 		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
-		          WBCloudFile thumbnailCloudFile = new WBCloudFile("public", thumbnailfilePath);
+		          WBCloudFile thumbnailCloudFile = new WBCloudFile(PUBLIC_BUCKET, thumbnailfilePath);
 		          ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		          imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
 		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 		          cloudFileStorage.storeFile(bis, thumbnailCloudFile);
 		          cloudFileStorage.updateContentType(thumbnailCloudFile, "image/jpg");
-		          wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(thumbnailCloudFile));
 		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
 		          
 		  		WBResource resource = new WBResource(wbFile.getExternalKey(), wbFile.getName(), WBResource.FILE_TYPE);
@@ -227,12 +228,12 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			{
 				if (tempFile.getBlobKey() != null)
 				{
-					WBCloudFile cloudFile = new WBCloudFile("public", tempFile.getBlobKey());
+					WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, tempFile.getBlobKey());
 					cloudFileStorage.deleteFile(cloudFile);
 				}
 				if (tempFile.getThumbnailBlobKey() != null)
 				{
-					WBCloudFile cloudThumbnailFile = new WBCloudFile("public", tempFile.getThumbnailBlobKey());
+					WBCloudFile cloudThumbnailFile = new WBCloudFile(PUBLIC_BUCKET, tempFile.getThumbnailBlobKey());
 					cloudFileStorage.deleteFile(cloudThumbnailFile);
 				}
 				
@@ -325,6 +326,10 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			}
 
 			List<WBFile> result = filterPagination(request, files, additionalInfo);
+			for(WBFile wbFile: result)
+			{
+				setPublicFilePath(wbFile, cloudFileStorage);
+			}
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
@@ -340,12 +345,18 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 	}
 
 
+	private static void setPublicFilePath(WBFile wbFile, WBCloudFileStorage cloudFileStorage)
+	{
+		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WBCloudFile(PUBLIC_BUCKET, wbFile.getBlobKey())));
+		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+	}
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbFile = adminStorage.get(key, WBFile.class);
+			setPublicFilePath(wbFile, cloudFileStorage);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));	
 			
@@ -375,7 +386,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbfile = adminStorage.get(key, WBFile.class);
-			WBCloudFile cloudFile = new WBCloudFile("public", wbfile.getBlobKey());
+			WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());			
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbfile.getFileName() + "\"");
@@ -398,7 +409,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WBFile wbfile = adminStorage.get(key, WBFile.class);
-			WBCloudFile cloudFile = new WBCloudFile("public", wbfile.getBlobKey());
+			WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());
 			response.setContentLength(wbfile.getSize().intValue());

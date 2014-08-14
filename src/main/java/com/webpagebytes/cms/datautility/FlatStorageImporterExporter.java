@@ -50,6 +50,7 @@ public class FlatStorageImporterExporter {
 	public static final String PATH_GLOBALS = "settings/globals/";
 	public static final String PATH_LOCALES = "settings/locales/";
 	
+	public static final String PUBLIC_BUCKET = "public";
 	
 	private WBExporter exporter = new WBExporter();
 	private WBImporter importer = new WBImporter();
@@ -282,21 +283,20 @@ public class FlatStorageImporterExporter {
 				WBFile file = files.get(0);
 				String uniqueId = dataStorage.getUniqueId();
 				String cloudPath = uniqueId + "/" + file.getFileName();
-				WBCloudFile cloudFile = new WBCloudFile("public", cloudPath);
+				WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, cloudPath);
 				cloudFileStorage.storeFile(zis, cloudFile);
 				cloudFileStorage.updateContentType(cloudFile, file.getAdjustedContentType());
 			    WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
-		        file.setPublicUrl(cloudFileStorage.getPublicFileUrl(cloudFile));
 		        if (file.getShortType().compareToIgnoreCase("image") == 0)
 		        {
 		        	// build the thumbnail for this image
 		        	try
 		        	{
 		        		String thumbnailPath = uniqueId + "/thumnail/" + uniqueId + ".jpg";
-		        		WBCloudFile cloudThumbnailFile = new WBCloudFile("public", thumbnailPath);
+		        		WBCloudFile cloudThumbnailFile = new WBCloudFile(PUBLIC_BUCKET, thumbnailPath);
 		        		
 		        		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				        imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
@@ -307,8 +307,7 @@ public class FlatStorageImporterExporter {
 				          
 						bos.close();
 						bis.close();
-						file.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(cloudThumbnailFile));
-		        	} catch (WBException e)
+					} catch (WBException e)
 		        	{
 		        		// do nothing as thumbnail fail might because by an unsupported image type
 		        		
@@ -711,7 +710,7 @@ public class FlatStorageImporterExporter {
 				try
 				{
 					String filePath = contentPath + file.getFileName();
-					WBCloudFile cloudFile = new WBCloudFile("public", file.getBlobKey());
+					WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, file.getBlobKey());
 					InputStream is = cloudFileStorage.getFileContent(cloudFile);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					IOUtils.copy(is, bos);
