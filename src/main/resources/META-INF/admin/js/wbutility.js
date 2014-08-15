@@ -41,6 +41,14 @@ function replaceURLParameter(url, param, newValue) {
 	return _url;
 }
 
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
+
 function removeURLParameter(url, param) {
 	url = url || "";
 	var index = url.indexOf('?');
@@ -1205,6 +1213,7 @@ if (!Array.prototype.indexOf) {
 			searchFields: [],
 			displayHandler: undefined,
 			afterDisplayHandler: undefined,
+			selectHandler: undefined,
 			emptySearchResult: "No results found",
 			delaySearch: 300,
 			loadDataHandler: undefined,
@@ -1220,7 +1229,6 @@ if (!Array.prototype.indexOf) {
 				return this.options;
 		},
 		searchInArray: function(array, toFind, fieldsSet, count) {
-			console.log('wbsearchbox - search in array');
 			var result = new Array()
 			for (var i = 0; i< array.length; i++ ) {
 				for (x in fieldsSet) {
@@ -1235,24 +1243,34 @@ if (!Array.prototype.indexOf) {
 			return result;
 		},
 	
-		timeoutHandler: function(elem, event) {		
-			var val = $(elem.searchBox).val();
-			console.log(event.which);
-			if (val.length == 0) {
-				// no string to search so hide the options list
-				this.optionsWrapper.hide();
-				return;
-			}
+		privKeyDownHandler: function (event, searchBox)
+		{
 			if (event.keyCode == 27) {
 				//ESC so hide the options list
-				this.optionsWrapper.hide();
-				return;
+				searchBox.optionsWrapper.hide();
+				return true;
 			}
 
 			if (event.keyCode == 13) {
-				//ENTER so hide the options list
-				this.optionsWrapper.hide();
-				return;
+				if (searchBox.optionsWrapper.is(":visible")) {
+					var lis = searchBox.optionsList.find('.wbsearchboxsel');
+					if (lis.length == 1) {
+						var record = $(lis[0]).data('rec');
+						if (searchBox.options.selectHandler) {
+							searchBox.options.selectHandler(record, searchBox);
+						}
+						
+					}
+				}
+				return true;
+			}
+			if (event.keyCode == 40) {	
+				if (! searchBox.optionsWrapper.is(":visible")) {					
+					if (searchBox.optionsList.find('li').length > 0) {
+						searchBox.showResults();
+						return true;
+					}
+				}
 			}
 			
 			// handle arrow up and arrow down
@@ -1261,29 +1279,40 @@ if (!Array.prototype.indexOf) {
 				if (event.keyCode == 38) { // up
 					direction = 'prev';
 					siblingsSelector = ':not(:first-child)';
-					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
-						this.optionsList.find('li:last-child').addClass('wbsearchboxsel');
-						return;
+					if (searchBox.optionsList.find('.wbsearchboxsel').length == 0) {
+						searchBox.optionsList.find('li:last-child').addClass('wbsearchboxsel');
+						return true;
 					}
 					
 				} else if (event.keyCode == 40) { // down
 					direction = 'next';
 					siblingsSelector = ':not(:last-child)';
-					if (this.optionsList.find('.wbsearchboxsel').length == 0) {
-						this.optionsList.find('li:first-child').addClass('wbsearchboxsel');
-						return;
+					if (searchBox.optionsList.find('.wbsearchboxsel').length == 0) {
+						searchBox.optionsList.find('li:first-child').addClass('wbsearchboxsel');
+						return true;
 					}					
 				}
-				this.optionsList.find('.wbsearchboxsel')[direction]().addClass('wbsearchboxsel').siblings(siblingsSelector).removeClass('wbsearchboxsel');			
+				searchBox.optionsList.find('.wbsearchboxsel')[direction]().addClass('wbsearchboxsel').siblings(siblingsSelector).removeClass('wbsearchboxsel');			
+				return true;
+			}			
+		},
+		
+		timeoutHandler: function(elem, event) {		
+			var val = $(elem.searchBox).val();
+			if (val.length == 0) {
+				// no string to search so hide the options list
+				this.optionsWrapper.hide();
+				return;
+			}
+			
+			if (this.privKeyDownHandler(event, this)) {
 				return;
 			}
 			
 			if (val.length>0 && event.which >0) {
 				var timestamp = new Date();
 				var timestampPrev = this.lastKeyPressTimestamp;
-				console.log('diff ' + (timestamp-timestampPrev));
 				if (timestamp - timestampPrev < this.getOptions().delaySearch) {
-					console.log(' return ' + (timestamp - timestampPrev));
 					return;
 				}
 				this.optionsList.empty();
@@ -1292,13 +1321,15 @@ if (!Array.prototype.indexOf) {
 					this.options.loadDataHandler(this);
 				}
 				var result = this.searchInArray(this.dataElements, val, this.getOptions().searchFields, this.getOptions().searchListSize);
-				this.optionsWrapper.show();
+				this.showResults();
 				for(var x in result) {
 					var html = "";
 					if (this.getOptions().displayHandler) {
 						html = this.getOptions().displayHandler(result[x]);
 					}
-					this.optionsList.prepend("<li>{0}</li>".format(html));	
+					var id = guid();
+					this.optionsList.prepend("<li id='{0}'>{1}</li>".format(id, html));
+					$('#'+id).data('rec', result[x]);
 				}
 				if (result.length == 0) {
 					this.optionsList.prepend("<li>{0}</li>".format(this.getOptions().emptySearchResult));
@@ -1313,6 +1344,15 @@ if (!Array.prototype.indexOf) {
 			}
 			
 		},
+		showResults: function() {
+			this.optionsWrapper.show();
+			this.optionsWrapper.data('wbSearchBoxFocus', false);
+			this.searchBox.data('wbSearchBoxFocus', false);		
+		},
+		
+		hideResults: function() {
+			this.optionsWrapper.hide();
+		},		
 		privPressHandler: function (event) {
 			var tempThis = $(this).data('wbSearchBox');
 			tempThis.lastKeyPressTimestamp = new Date();	
@@ -1345,6 +1385,22 @@ if (!Array.prototype.indexOf) {
 			}
 			
 		},
+		privTimerLostFocus : function(searchBox) {
+			var inputBoxFocus = searchBox.searchBox.data('wbSearchBoxFocus') || false;
+			var resultsListFocus = searchBox.optionsWrapper.data('wbSearchBoxFocus') || false;
+			if (! (inputBoxFocus || resultsListFocus)) {
+				searchBox.optionsWrapper.hide();
+			}			
+		},
+		privLostFocus: function(event) {
+			$(event.target).data('wbSearchBoxFocus', false);
+			var searchBox = $(event.target).data('wbSearchBox');
+			if (! searchBox) return;
+			setTimeout( function() { searchBox.privTimerLostFocus(searchBox) }, 200);
+		},
+		privOnFocus: function(event) {
+			$(event.target).data('wbSearchBoxFocus', true);
+		},
 		init: function ( jQElem, options) {
 			this.jQElement = jQElem;
 			this.options = $.extend ( {} , this.defaults, options );	
@@ -1362,17 +1418,21 @@ if (!Array.prototype.indexOf) {
 			this.optionsList = $(this.optionsWrapper).find("ul")[0];
 			this.optionsList = $(this.optionsList);
 			this.optionsList.data('wbSearchBox', this);
-			$(this.searchBox).on("keydown", this.privPressHandler);		
+			$(this.searchBox).on("keydown", this.privPressHandler);
+			$(this.searchBox).on("blur", this.privLostFocus);
+			$(this.searchBox).on("focus", this.privOnFocus);
+			
 			this.dataElements = new Array();
-			var tempOptionsWrapper = this.optionsWrapper;
+			
+			var tempSearchBox = this;
 			$(this.optionsWrapper).on("keydown", function (event) { 
 				// hide the options if ESC on optionsWrapper
-				if (event.keyCode == 27) {
-					//ESC so hide the options list
-					tempOptionsWrapper.hide();
-					return;
-				}
-				});	
+				tempSearchBox.privKeyDownHandler(event, tempSearchBox);
+				
+				});
+			this.optionsWrapper.data('wbSearchBox', this);
+			$(this.optionsWrapper).on("blur", this.privLostFocus);
+			$(this.optionsWrapper).on("focus", this.privOnFocus);
 			}
 	};
 	

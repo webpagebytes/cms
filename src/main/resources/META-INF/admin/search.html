@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="http://example.com:81/test/myadmin/2014-07-31-00-22-28/css/adminbase.css" type="text/css">
 <script src="./js/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="./js/wbutility.js" type="text/javascript"></script>
-<script src="./js/wbsearchbox.js" type="text/javascript"></script>
 <script src="http://example.com:81/test/myadmin/2014-07-31-00-22-28/zeroclipboard/ZeroClipboard.min.js" type="text/javascript"></script>
  
 <script>
@@ -36,7 +35,12 @@ $().ready ( function ()
 		var str= '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="wbbtnclipboard btn-clipboard"></span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
 		return str;
 	};
-	$(".search").wbSearchBox({searchFields:['name', 'key'], classSearchList:'wbsearchresultlist' , loadDataHandler: loadDataHandlerFunction, displayHandler: displayHandlerFunction, jQInputBox: $('#search'), jQSearchListContainer: $('#list') });
+	var selectHandlerFunction = function(item, searchBox) {
+		alert(item['key']);
+		searchBox.hideResults();
+	};
+	
+	$(".search").wbSearchBox({searchFields:['name', 'key'], classSearchList:'wbsearchresultlist' , selectHandler: selectHandlerFunction, loadDataHandler: loadDataHandlerFunction, displayHandler: displayHandlerFunction, jQInputBox: $('#search'), jQSearchListContainer: $('#list') });
 	
 	$('.btn-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-clipboard'});
 	$('.btn-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
