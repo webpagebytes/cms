@@ -78,7 +78,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		try
 		{
 			  ServletFileUpload upload = new ServletFileUpload();
-		      
+		      upload.setHeaderEncoding("UTF-8");
 		      FileItemIterator iterator = upload.getItemIterator(request);
 		      while (iterator.hasNext()) {
 		        FileItemStream item = iterator.next(); 

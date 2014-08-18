@@ -153,7 +153,10 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	 */
 	private String sanitizeCloudFilePath(String path)
 	{
-		return DatatypeConverter.printBase64Binary(path.getBytes());
+		String base64 = DatatypeConverter.printBase64Binary(path.getBytes());
+		// base 64 might contain '/' so we need to replace that with a char not from base 64 set (like '-')
+		base64 = base64.replace('/', '-');
+		return base64;
 	}
 	
 	private String getLocalFullDataPath(WBCloudFile file)
