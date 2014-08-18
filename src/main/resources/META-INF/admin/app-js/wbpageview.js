@@ -1,13 +1,12 @@
 var errorsGeneral = {
 	ERROR_PARAM_NAME_LENGTH: 'Parameter name length must be between 1 and 250 characters',
-	ERROR_PARAM_NAME_BAD_FORMAT: 'Invalid name format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
 	ERROR_PARAM_INVALID_OVERWRITE: 'Operation on overwrite not supported',
 	ERROR_PARAM_INVALID_LOCALETYPE: 'Operation on locale not supported'
 };
 
 $().ready( function () {
 	var wbParameterValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PARAM_NAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_PARAM_NAME_BAD_FORMAT"}],
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PARAM_NAME_LENGTH" }],
 			overwriteFromUrl: [{rule: { includedInto: ['0','1'] }, error: "ERROR_PARAM_INVALID_OVERWRITE" }],
 			localeType: [{rule: { includedInto: ['0','1','2'] }, error: "ERROR_PARAM_INVALID_LOCALETYPE" }]
 	};
@@ -100,6 +99,9 @@ $().ready( function () {
 		}
 		if (fieldId == 'htmlSource') {
 			return record[fieldId]; // the htmlSource is displayed in a textarea element
+		}
+		if (fieldId == 'name') {
+			return record[fieldId];
 		}
 		return escapehtml(record[fieldId]);
 	}

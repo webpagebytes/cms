@@ -1,11 +1,10 @@
 var errorsGeneral = {
-	'ERROR_PAGENAME_LENGTH': 'Site page description length must be between 1 and 250 characters ',
-	'ERROR_PAGE_BAD_FORMAT': 'Invalid format for site page description: allowed characters are numbers, letters(a-z) and , + - .'
+	'ERROR_PAGENAME_LENGTH': 'Site page description length must be between 1 and 250 characters '
 };
 
 $().ready( function () {
 	var wbPageValidations = { 
-			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9 a-zA-Z_,+.-]*$", modifiers:"gi"}}, error:"ERROR_PAGE_BAD_FORMAT"}]
+			name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_PAGENAME_LENGTH" }]
 	};
 	$('#wbAddPageForm').wbObjectManager( { fieldsPrefix:'wba',
 									  errorLabelsPrefix: 'erra',

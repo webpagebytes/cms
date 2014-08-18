@@ -20,13 +20,7 @@ public class WBPageValidator {
 		if (webPage.getName().length() > MAX_PAGENAME_LENGHT)
 		{
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
-		} else
-		{
-			if (! webPage.getName().matches("[0-9 a-zA-Z_,+.-]*"))
-			{
-				errors.put("name", WBErrors.ERROR_PAGE_BAD_FORMAT);
-			}
-		}
+		} 
 		if (webPage.getKey() != null)
 		{
 			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
@@ -65,12 +59,6 @@ public class WBPageValidator {
 		if (webPage.getName().length() > MAX_PAGENAME_LENGHT)
 		{
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
-		} else
-		{
-			if (! webPage.getName().matches("[0-9 a-zA-Z_,+.-]*"))
-			{
-				errors.put("name", WBErrors.ERROR_PAGE_BAD_FORMAT);
-			}
 		}
 		if (webPage.getKey() == null)
 		{
