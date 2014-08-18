@@ -38,6 +38,9 @@ $().ready( function () {
 		if (fieldId == 'htmlSource') {
 			return record[fieldId]; // the htmlSource is displayed in a textarea element
 		}
+		if (fieldId == 'name') {
+			return record[fieldId];
+		}
 		return escapehtml(record[fieldId]);
 	}
 	

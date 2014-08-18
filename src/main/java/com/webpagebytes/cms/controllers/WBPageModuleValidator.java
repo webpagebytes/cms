@@ -20,12 +20,6 @@ public class WBPageModuleValidator {
 		if (webPageModule.getName().length() > MAX_PAGEMODULE_NAME_LENGHT)
 		{
 			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
-		} else
-		{
-			if (! webPageModule.getName().matches("[0-9 a-zA-Z_.-]*"))
-			{
-				errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_BAD_FORMAT);
-			}
 		}
 		if (webPageModule.getKey() != null)
 		{
@@ -50,12 +44,6 @@ public class WBPageModuleValidator {
 		if (webPageModule.getName().length() > MAX_PAGEMODULE_NAME_LENGHT)
 		{
 			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
-		} else
-		{
-			if (! webPageModule.getName().matches("[0-9 a-zA-Z_.-]*"))
-			{
-				errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_BAD_FORMAT);
-			}
 		}
 		if (webPageModule.getKey() == null)
 		{
