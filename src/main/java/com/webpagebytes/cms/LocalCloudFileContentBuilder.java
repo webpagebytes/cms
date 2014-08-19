@@ -7,6 +7,9 @@ import java.io.InputStream;
 
 
 
+
+import java.nio.charset.Charset;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
@@ -18,6 +21,7 @@ import com.webpagebytes.cms.datautility.WBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.utility.WBBase64Utility;
 
 public class LocalCloudFileContentBuilder {
 
@@ -38,7 +42,7 @@ public class LocalCloudFileContentBuilder {
 		int pos = fullFilePath.indexOf('/');
 		String bucket = fullFilePath.substring(0, pos);
 		String file = fullFilePath.substring(pos+1);
-		file = new String(DatatypeConverter.parseBase64Binary(file));
+		file = new String(WBBase64Utility.fromSafePathBase64(file), Charset.forName("UTF-8"));
 		WBCloudFile cloudFile = new WBCloudFile(bucket, file);
 		InputStream is = null;
 		try

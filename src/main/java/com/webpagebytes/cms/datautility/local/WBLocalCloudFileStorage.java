@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import com.webpagebytes.cms.datautility.WBCloudFile;
 import com.webpagebytes.cms.datautility.WBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBDefaultCloudFileInfo;
+import com.webpagebytes.cms.utility.WBBase64Utility;
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
 import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
@@ -153,10 +155,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	 */
 	private String sanitizeCloudFilePath(String path)
 	{
-		String base64 = DatatypeConverter.printBase64Binary(path.getBytes());
-		// base 64 might contain '/' so we need to replace that with a char not from base 64 set (like '-')
-		base64 = base64.replace('/', '-');
-		return base64;
+		return WBBase64Utility.toBase64(path.getBytes(Charset.forName("UTF-8")));
 	}
 	
 	private String getLocalFullDataPath(WBCloudFile file)
