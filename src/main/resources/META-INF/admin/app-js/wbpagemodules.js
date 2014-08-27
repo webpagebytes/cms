@@ -41,7 +41,7 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webpagemodule.html?key=' + encodeURIComponent(record['key']) + '&externalKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
+			return '<a href="./webpagemodule.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> '
 				   + '| <a href="#" class="wbDeletePageModuleClass" id="wbDeletePageModule_' + encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'
 				   + '| <a href="#" class="wbDuplicatePageModuleClass" id="wbDuplicatePageModule_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a> ';
 		} else

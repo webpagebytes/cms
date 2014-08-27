@@ -199,6 +199,59 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
+	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WBUri wburi) throws WBException
+	{
+		try
+		{
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));
+			String includeLinks = request.getParameter("include_links");
+			if (includeLinks != null && includeLinks.equals("1"))
+			{
+				if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
+				{
+					List<WBWebPage> pages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					additionalData.put("pages_links", arrayPages);
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
+				{
+					List<WBFile> pages = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					org.json.JSONArray arrayFiles = jsonObjectConverter.JSONArrayFromListObjects(pages);
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					additionalData.put("files_links", arrayFiles);
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
+				{
+					org.json.JSONObject additionalData = new org.json.JSONObject();
+					returnJson.put(ADDTIONAL_DATA, additionalData);
+				}
+			}
+			return returnJson;
+			
+		} catch (Exception e)		
+		{
+			throw new WBException("Cannot fetch additional data for uri "  ,e);
+		}		
+	}
+	public void getWBUriExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			String extKey = (String)request.getAttribute("key");
+			List<WBUri> wburis = adminStorage.query(WBUri.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WBUri wburi = (wburis.size()>0)? wburis.get(0): null;
+			org.json.JSONObject returnJson = getWBUri(request, response, wburi);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+		}		
+	}
+
 	public void deleteWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try

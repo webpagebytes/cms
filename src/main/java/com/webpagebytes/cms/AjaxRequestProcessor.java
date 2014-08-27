@@ -52,7 +52,7 @@ public class AjaxRequestProcessor {
 				countSlash+=1;
 			}
 		}
-		if (countSlash == 2) 
+		if (countSlash >= 2) 
 		{
 			int pos1 = reqUri.lastIndexOf('/');
 			String urlToMatch = reqUri.substring(0, pos1) + this.keyUrlPart;

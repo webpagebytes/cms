@@ -347,12 +347,10 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WBCloudFile(PUBLIC_BUCKET, wbFile.getBlobKey())));
 		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
 	}
-	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBFile wbFile) throws WBException
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbFile = adminStorage.get(key, WBFile.class);
 			setPublicFilePath(wbFile, cloudFileStorage);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));	
@@ -366,9 +364,38 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 				additionalData.put("uri_links", arrayUris);
 				returnJson.put(ADDTIONAL_DATA, additionalData);			
 			}
-
+			return returnJson;
+		} catch (Exception e)
+		{
+			throw new WBException("cannot get file details", e);
+		}
+	}
+	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBFile wbFile = adminStorage.get(key, WBFile.class);			
+			org.json.JSONObject returnJson = get(request, response, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
+		}		
+	}
+
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			String extKey = (String)request.getAttribute("key");
+			List<WBFile> wbFiles = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WBFile wbFile = (wbFiles.size()>0) ? wbFiles.get(0) : null; 
+			org.json.JSONObject returnJson = get(request, response, wbFile);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		

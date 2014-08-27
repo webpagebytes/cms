@@ -35,7 +35,10 @@ $().ready( function () {
 	}
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
+	var pageModuleKey = getURLParameter('key'); 
+	
 	var fSuccessGetPage = function (data) {
+		pageModuleKey = data.data["key"];
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		$('#spinnerTable').WBSpinner().hide();
@@ -46,8 +49,9 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 
-	var pageKey = getURLParameter('key'); 
-	$('#wbPageModuleEditForm').wbCommunicationManager().ajax ( { url:"./wbpagemodule/" + encodeURIComponent(pageKey),
+	var externalKey = getURLParameter('extKey'); 
+	
+	$('#wbPageModuleEditForm').wbCommunicationManager().ajax ( { url:"./wbpagemodule/ext/" + encodeURIComponent(externalKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
@@ -55,7 +59,7 @@ $().ready( function () {
 												} );
 	
 	var fSuccessEdit = function ( data ) {
-		window.location.href = "./webpagemodule.html?key=" + encodeURIComponent(pageKey);
+		window.location.href = "./webpagemodule.html?extKey=" + encodeURIComponent(externalKey);
 	}
 	var fErrorEdit = function (errors, data) {
 		$('#wbEditPageModuleForm').wbObjectManager().setErrors(errors);
@@ -67,7 +71,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var page = $('#wbPageModuleEditForm').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(page);
-			$('#wbPageModuleEditForm').wbCommunicationManager().ajax ( { url: "./wbpagemodule/" + encodeURIComponent(pageKey),
+			$('#wbPageModuleEditForm').wbCommunicationManager().ajax ( { url: "./wbpagemodule/" + encodeURIComponent(pageModuleKey),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbPageModuleEditForm').wbObjectManager(),
@@ -79,7 +83,7 @@ $().ready( function () {
 	
 	$('.wbPageEditCancelBtnClass').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webpagemodule.html?key=" + encodeURIComponent(pageKey);
+		window.location.href = "./webpagemodule.html?extKey=" + encodeURIComponent(externalKey);
 	});
 
 

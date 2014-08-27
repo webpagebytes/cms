@@ -13,11 +13,13 @@ import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBResource;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -70,7 +72,26 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}		
 	}
-	
+
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			String extKey = (String)request.getAttribute("key");
+			List<WBWebPageModule> wbModules = adminStorage.query(WBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
+			WBWebPageModule wbmodule = (wbModules.size()>0) ? wbModules.get(0) : null;
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbmodule));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
+		}		
+	}
+
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try

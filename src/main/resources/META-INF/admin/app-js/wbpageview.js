@@ -61,7 +61,7 @@ $().ready( function () {
 
 	var urisDisplayHandler = function (fieldId, record) {
 		if (fieldId=="uri") {
-			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
+			var link = "./weburiedit.html?extKey={0}".format(encodeURIComponent(record['externalKey']));
 			return '<a href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
 		} 
 	}
@@ -78,7 +78,7 @@ $().ready( function () {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpage.html?extKey=' + encodeURIComponent(record['externalKey']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}
 		return record[fieldId];
@@ -128,12 +128,11 @@ $().ready( function () {
 		alert(errors);
 	}
 
-	var pageKey = getURLParameter('key'); 
-	var pageExternalKey = getURLParameter('externalKey');;
+	var pageExternalKey = getURLParameter('extKey');;
 		
 	$('.wbPageViewEditLink').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webpageedit.html?key={0}&externalKey={1}".format(encodeURIComponent(pageKey),encodeURIComponent(pageExternalKey));
+		window.location.href = "./webpageedit.html?extKey={0}".format(encodeURIComponent(pageExternalKey));
 	} );
 	
 	$('#wbAddParameterBtn').click ( function (e) {
@@ -250,7 +249,7 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 	
-	var arrayAjax = [ { url:"./wbpage/{0}?include_links=1".format(encodeURIComponent(pageKey)),
+	var arrayAjax = [ { url:"./wbpage/ext/{0}?include_links=1".format(encodeURIComponent(pageExternalKey)),
 		 httpOperation:"GET", 
 		 payloadData:"",
 		 functionSuccess: fSuccessGetPage,

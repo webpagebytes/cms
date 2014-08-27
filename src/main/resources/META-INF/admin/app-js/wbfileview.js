@@ -89,7 +89,7 @@ $().ready( function () {
 	
 	var filesDisplayHandler = function (fieldId, record) {
 		if (fieldId=="uri") {
-			var link = "./weburiedit.html?key={0}".format(encodeURIComponent(record['key']));
+			var link = "./weburiedit.html?extKey={0}".format(encodeURIComponent(record['externalKey']));
 			return '<a href="{0}"> {1} </a>'.format(link, escapehtml(record['uri'])); 
 		} 
 	}
@@ -113,15 +113,14 @@ $().ready( function () {
 	$('#wbuFileUploadUpdateForm').ajaxForm({ success: fSuccessUploadFile, error: fErrorUploadFile });
 
 	var fileKey = getURLParameter('key'); 
-	var fileBlobKey = "";
-	var fileExternalKey = "";
-	$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));
+	var fileExternalKey = getURLParameter('extKey');
 	
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
+		fileKey = data["key"];
+		$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));		
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('#collapseFileDetails').wbDisplayObject().display(data);
-		fileExternalKey = data['externalKey'];
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 		$('#spinnerTable').WBSpinner().hide();
@@ -154,7 +153,7 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 	
-	$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/{0}?include_links=1".format(encodeURIComponent(fileKey)),
+	$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/ext/{0}?include_links=1".format(encodeURIComponent(fileExternalKey)),
 											 httpOperation:"GET", 
 											 payloadData:"",
 											 functionSuccess: fSuccessGetFile,
@@ -199,7 +198,7 @@ $().ready( function () {
 	
 	$('.wbUpdateFileDataBtnClass').click ( function (e) {
 		e.preventDefault();
-		$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/" + encodeURIComponent(fileKey),
+		$('#wbFileView').wbCommunicationManager().ajax ( { url:"./wbfile/ext/" + encodeURIComponent(fileExternalKey),
 										 httpOperation:"GET", 
 										 payloadData:"",
 										 functionSuccess: fSuccessGetFileForUpdate,

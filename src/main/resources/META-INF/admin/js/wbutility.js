@@ -1478,21 +1478,41 @@ $().ready( function () {
 			case "6": type ="file"; break;
 			case "7": type ="global parameter"; break;	
 		}
-		var str=""; 
+		var str="";
+		var anchorElem = "";
+		switch (item.type)
+		{
+			case "1": 
+				anchorElem = "<a href='./weburiedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				break;
+			case "2": 
+				anchorElem = "<a href='./webpage.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				break;
+			case "3": 
+				anchorElem = "<a href='./webpagemodule.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				break;
+			case "5":
+				anchorElem = "<a href='./webarticleedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				break;
+			case "6":
+				anchorElem = "<a href='./webfile.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				break;
+		}
 		switch (item.type)
 		{
 			case "1": 
 			case "2": 
 			case "3": 
-			case "5": 
-			case "6": 
-				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), escapehtml(item["name"]));
+			case "5":
+			case "6":
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), anchorElem);
 				break;
 			case "7": 	
 			case "4": 
 				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
 				break;
 		}
+
 		return str;
 	};
     var afterDisplayFunction = function(wbsearchbox) {

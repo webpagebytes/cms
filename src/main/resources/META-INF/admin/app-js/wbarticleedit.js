@@ -26,7 +26,7 @@ $().ready( function () {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'title') {
-			var innerHtml = '<a href="./webarticle.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['title']) + '</a>';
+			var innerHtml = '<a href="./webarticle.html?extKey=' + encodeURIComponent(record['externalKey']) + '">' + escapehtml(record['title']) + '</a>';
 			return innerHtml;
 		}
 
@@ -34,7 +34,9 @@ $().ready( function () {
 	}
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
+	var pageKey = getURLParameter('key');
 	var fSuccessGetArticle = function (data) {
+		pageKey = data.data["key"];
 		$('#wbArticleSummary').wbDisplayObject().display(data.data);
 		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		
@@ -47,8 +49,8 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 
-	var pageKey = getURLParameter('key'); 
-	$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url:"./wbarticle/" + encodeURIComponent(pageKey),
+	var externalKey = getURLParameter('extKey'); 
+	$('#wbArticleEditForm').wbCommunicationManager().ajax ( { url:"./wbarticle/ext/" + encodeURIComponent(externalKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetArticle,

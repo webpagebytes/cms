@@ -15,7 +15,7 @@ $().ready( function () {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpagemodule.html?key=' + escapehtml(record['key']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpagemodule.html?extKey=' + escapehtml(record['externalKey']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}		
 		return record[fieldId];
@@ -47,7 +47,9 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	$('#wbPageModuleView').wbDisplayObject( { fieldsPrefix: 'wbPageModuleView', customHandler: pageModuleSourceHandler} );
 	
+	var pageModuleKey = getURLParameter('key'); 
 	var fSuccessGetModule = function (data) {
+		pageModuleKey = data.data["key"];
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleView').wbDisplayObject().display(data.data);
 		$('#spinnerTable').WBSpinner().hide();
@@ -57,15 +59,14 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 
-	var pageKey = getURLParameter('key'); 
-	var pageModuleExternalKey = getURLParameter('externalKey');;
+	var externalKey = getURLParameter('extKey');;
 	
 	$('.wbPageModuleViewEditLink').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webpagemoduleedit.html?key=" + pageKey;
+		window.location.href = "./webpagemoduleedit.html?extKey=" + encodeURIComponent(externalKey);
 	} );
 	
-	$('#wbPageModuleSummary').wbCommunicationManager().ajax ( { url:"./wbpagemodule/" + pageKey,
+	$('#wbPageModuleSummary').wbCommunicationManager().ajax ( { url:"./wbpagemodule/ext/" + encodeURIComponent(externalKey),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetModule,

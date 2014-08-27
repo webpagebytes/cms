@@ -79,10 +79,10 @@ $().ready( function () {
 		if (result.length == 1) {
 			if ($('input[name="resourceType"]:checked').val() == "1") {
 				var page = result[0];
-				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
 			} else if ($('input[name="resourceType"]:checked').val() == "2") {
 				var file = result[0];
-				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));			
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));			
 			} 			
 		}
 		$('#wbresourcelink').html(html);			

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
@@ -144,15 +145,13 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 		}
 	}
 	
-	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBWebPage webPage) throws WBException
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBWebPage webPage = adminStorage.get(key, WBWebPage.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(webPage));			
-
+	
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
@@ -162,7 +161,23 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				additionalData.put("uri_links", arrayUris);
 				returnJson.put(ADDTIONAL_DATA, additionalData);			
 			}
-
+	
+			return returnJson;
+	
+		} catch (Exception e)		
+		{
+			throw new WBException("cannot get web page details ", e);
+		}		
+		
+	}
+	
+	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			Long key = Long.valueOf((String)request.getAttribute("key"));
+			WBWebPage webPage = adminStorage.get(key, WBWebPage.class);
+			org.json.JSONObject returnJson = get(request, response, webPage);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 
 		} catch (Exception e)		
@@ -172,6 +187,25 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
+
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			String extKey = (String)request.getAttribute("key");
+			List<WBWebPage> webPages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WBWebPage webPage = (webPages.size()>0) ? webPages.get(0) : null; 		
+			org.json.JSONObject returnJson = get(request, response, webPage);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+		}		
+	}
+
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try

@@ -297,6 +297,23 @@ public class TestAjaxRequestProcessor {
 	}
 
 	@Test
+	public void testmatchUrlForController_three_keystring()
+	{
+		String httpOperation = "POST";
+		String httpUri = "/uri/ext/param1";
+		
+		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
+		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
+		EasyMock.expect(readerMock.operationToMethod("/uri/ext/{key}", httpOperation)).andReturn(new Pair("",""));
+		EasyMock.replay(readerMock);
+		ajaxProcessor.setOperationsReader(readerMock);			
+		
+		Pair<String,String> result = ajaxProcessor.matchUrlForController(httpUri, httpOperation);
+		assertTrue(result.getFirst().compareTo("/uri/ext/{key}") == 0);
+		assertTrue(result.getSecond().compareTo("param1") == 0);				
+	}
+
+	@Test
 	public void testmatchUrlForController_threeslashes()
 	{
 		String httpOperation = "POST";
@@ -304,6 +321,8 @@ public class TestAjaxRequestProcessor {
 		
 		AdminServletOperationsReader readerMock = EasyMock.createMock(AdminServletOperationsReader.class);			
 		EasyMock.expect(readerMock.operationToMethod(httpUri, httpOperation)).andReturn(null);
+		EasyMock.expect(readerMock.operationToMethod("/uri/param1/{key}", httpOperation)).andReturn(null);
+		
 		EasyMock.replay(readerMock);
 		ajaxProcessor.setOperationsReader(readerMock);			
 		

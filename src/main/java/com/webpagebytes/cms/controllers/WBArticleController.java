@@ -14,10 +14,12 @@ import com.webpagebytes.cms.cache.WBArticlesCache;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBResource;
+import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -154,6 +156,26 @@ public class WBArticleController extends WBController implements AdminDataStorag
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
+	
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	{
+		try
+		{
+			String extKey = (String)request.getAttribute("key");
+			List<WBArticle> articles = adminStorage.query(WBArticle.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
+			WBArticle article = (articles.size()>0) ? articles.get(0) : null;
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(article));			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			
+		} catch (Exception e)		
+		{
+			Map<String, String> errors = new HashMap<String, String>();		
+			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+		}		
+	}
+
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
 	{
 		try

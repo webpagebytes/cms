@@ -28,7 +28,7 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="./webfile.html?key=' + encodeURIComponent(record['key']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));

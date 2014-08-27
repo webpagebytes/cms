@@ -38,7 +38,7 @@ $().ready( function () {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpage.html?key=' + encodeURIComponent(record['key']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpage.html?extKey=' + encodeURIComponent(record['externalKey']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}
 
@@ -46,7 +46,9 @@ $().ready( function () {
 	}
 	$('#wbPageSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
+	var pageKey = getURLParameter('key'); 
 	var fSuccessGetPage = function (data) {
+		pageKey =  data.data["key"];
 		$('#wbPageSummary').wbDisplayObject().display(data.data);
 		$('#wbPageEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		if (data.data["isTemplateSource"] != '1') {
@@ -66,9 +68,8 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 	}
 
-	var pageKey = getURLParameter('key'); 
-	var externalKey = getURLParameter('externalKey');
-	$('#wbEditPageForm').wbCommunicationManager().ajax ( { url:"./wbpage/" + encodeURIComponent(pageKey),
+	var externalKey = getURLParameter('extKey');
+	$('#wbEditPageForm').wbCommunicationManager().ajax ( { url:"./wbpage/ext/{0}".format(encodeURIComponent(externalKey)),
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
@@ -76,7 +77,7 @@ $().ready( function () {
 												} );
 	
 	var fSuccessEdit = function ( data ) {
-		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "&externalKey=" + encodeURIComponent(externalKey);
+		window.location.href = "./webpage.html?extKey=" + encodeURIComponent(externalKey);
 	}
 	var fErrorEdit = function (errors, data) {
 		$('#wbEditPageForm').wbObjectManager().setErrors(errors);
@@ -100,7 +101,7 @@ $().ready( function () {
 	
 	$('.wbPageEditCancelBtnClass').click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./webpage.html?key=" + encodeURIComponent(pageKey) + "&externalKey=" + encodeURIComponent(externalKey);
+		window.location.href = "./webpage.html?extKey={0}".format(encodeURIComponent(externalKey));
 	});
 
 

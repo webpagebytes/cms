@@ -143,8 +143,9 @@ $().ready( function () {
 	
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	var oResourceExternalKey = "";
-	var uriExternalKey = "";
+	var uriExternalKey = getURLParameter('extKey');
 	var notFoundMessage = "RESOURCE NOT FOUND";
+	var uriKey = getURLParameter('key');
 	
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
@@ -156,13 +157,13 @@ $().ready( function () {
 		if ('pages_links' in data.additional_data) {
 			if (data.additional_data.pages_links.length >= 1) {
 				var page = data.additional_data.pages_links[0];
-				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
 			}
 			$('#wbresourcelink').html(html);
 		} else if ('files_links' in data.additional_data) {
 			if (data.additional_data.files_links.length >= 1) {
 				var file = data.additional_data.files_links[0];
-				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));
 			}
 			$('#wbresourcelink').html(html);
 		} else {
@@ -171,6 +172,7 @@ $().ready( function () {
 		
 		// now get the parameters
 		uriExternalKey = data.data['externalKey'];
+		uriKey = data.data['key']
 		$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(uriExternalKey),
 			 httpOperation:"GET", 
 			 payloadData:"",
@@ -186,10 +188,10 @@ $().ready( function () {
 		if (result.length == 1) {
 			if ($('input[name="resourceType"]:checked').val() == "1") {
 				var page = result[0];
-				html = '<a href="./webpage.html?key={0}&externalKey={1}"> {2} </a>'.format(encodeURIComponent(page['key']), encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
 			} else if ($('input[name="resourceType"]:checked').val() == "2") {
 				var file = result[0];
-				html = '<a href="./webfile.html?key={0}"> {1} </a>'.format(encodeURIComponent(file['key']), escapehtml(file['name']));			
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));			
 			} 			
 		}
 		$('#wbresourcelink').html(html);			
@@ -315,9 +317,12 @@ $().ready( function () {
 
 	// end handle parameters
 	
-	var uriKey = getURLParameter('key'); 
+	var url_get = "./wburi/{0}?include_links=1".format(encodeURIComponent(uriKey));
+	if (uriExternalKey) {
+		url_get = "./wburi/ext/{0}?include_links=1".format(encodeURIComponent(uriExternalKey));
+	}
 	
-	$('#wburiedit').wbCommunicationManager().ajax ( { url:"./wburi/{0}?include_links=1".format(encodeURIComponent(uriKey)),
+	$('#wburiedit').wbCommunicationManager().ajax ( { url: url_get,
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetUri,
