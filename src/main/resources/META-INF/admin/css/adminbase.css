@@ -404,9 +404,34 @@ border: 1px solid #334455;
 padding: 2px 3px;
 background-color: #FFFA88;
 position: absolute;
-left: 10px;
+left: 25px;
+top: -5px;
 z-index: 120;
 }
+.zeroclipboard-is-hover .wbclipboardtooltip:after, .zeroclipboard-is-hover .wbclipboardtooltip:before {
+	right: 100%;
+	top: 5px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.zeroclipboard-is-hover .wbclipboardtooltip:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-right-color: #FFFA88;
+	border-width: 10px;
+	margin-top: -3px;
+}
+.zeroclipboard-is-hover .wbclipboardtooltip:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-right-color: #334455;
+	border-width: 11px;
+	margin-top: -4px;
+}
+
 
 .wbsearchresultlist .wbbtndummy 
 {
