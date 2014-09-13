@@ -1512,9 +1512,34 @@ $().ready( function () {
 				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["name"]));		
 				break;
 		}
-
 		return str;
 	};
+	
+	var selectHandlerFunction = function (item, searchBox) {
+		var newUrl = "";
+		switch (item.type)
+		{
+			case "1": 
+				newUrl = "./weburiedit.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				break;
+			case "2": 
+				newUrl = "./webpage.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				break;
+			case "3": 
+				newUrl = "./webpagemodule.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				break;
+			case "5":
+				newUrl = "./webarticleedit.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				break;
+			case "6":
+				newUrl = "./webfile.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				break;
+		}
+		if (newUrl.length>0) {
+			window.location.href = newUrl;
+		}		
+	};
+	
     var afterDisplayFunction = function(wbsearchbox) {
     	$('.btn-s-clipboard').WBCopyClipboardButoon({buttonHtml:"<i class='fa fa-paste'></i><div class='wbclipboardtooltip'>Copy to clipboard</div>", basePath: getAdminPath(), selector: '.btn-s-clipboard'});
     	$('.btn-s-clipboard').WBCopyClipboardButoon().on("aftercopy", function (e) {
@@ -1525,7 +1550,7 @@ $().ready( function () {
     };
 
 	
-	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, 
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, selectHandler: selectHandlerFunction,
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
 
 });
