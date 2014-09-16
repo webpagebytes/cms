@@ -436,7 +436,7 @@ public class WBLocalDataStoreDao {
 			resultSet.close();
 			return records;
 
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -486,7 +486,7 @@ public class WBLocalDataStoreDao {
 			}
 			return preparedStatement.execute();
 
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -526,7 +526,7 @@ public class WBLocalDataStoreDao {
 			preparedStatement = connection.prepareStatement(queryString);			
 			return preparedStatement.execute();
 
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -594,7 +594,7 @@ public class WBLocalDataStoreDao {
 			buildStatementForInsertUpdate(object, ignoreFields, preparedStatement, connection);
 			preparedStatement.execute();
 			return object;
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -628,7 +628,7 @@ public class WBLocalDataStoreDao {
 				setObjectProperty(object, keyFieldName, key);
 			}			
 			return object;
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -659,7 +659,7 @@ public class WBLocalDataStoreDao {
 			setPrepareStatementParameter(preparedStatement, fieldsCount+1, keyValue);
 			
 			preparedStatement.execute();
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
@@ -685,7 +685,7 @@ public class WBLocalDataStoreDao {
 			setPrepareStatementParameter(preparedStatement, 1, keyValue);
 		
 			preparedStatement.execute();
-		} catch (Exception e)
+		} catch (SQLException e)
 		{
 			throw e;
 		}
