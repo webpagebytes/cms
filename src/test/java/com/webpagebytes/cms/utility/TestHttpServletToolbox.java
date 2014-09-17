@@ -1,4 +1,4 @@
-package com.webpagebytes.cms;
+package com.webpagebytes.cms.utility;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -78,7 +78,7 @@ public class TestHttpServletToolbox {
 	{
 		try
 		{
-			HashMap<String, String> errors = new HashMap<String, String>();
+			HashMap<String, String> errors = null;
 			String data = "data";
 			HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 			ServletOutputStream outputStream = PowerMock.createMock(ServletOutputStream.class);
@@ -105,9 +105,78 @@ public class TestHttpServletToolbox {
 			assertTrue(false);
 		}
 	}
-	
+
+	@Test
+	public void testWriteBodyResponseAsJson_json_ok()
+	{
+		try
+		{
+			HashMap<String, String> errors = null;
+			org.json.JSONObject object = new org.json.JSONObject();
+			object.put("key", "value");
+			HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
+			ServletOutputStream outputStream = PowerMock.createMock(ServletOutputStream.class);
+			EasyMock.expect(responseMock.getOutputStream()).andReturn(outputStream);
+			responseMock.setContentType("application/json");
+			responseMock.setCharacterEncoding("UTF-8");
+			Capture<byte[]> captureContent = new Capture<byte[]>();
+			Capture<Integer> captureInt = new Capture<Integer>();
+			outputStream.write(EasyMock.capture(captureContent));
+			responseMock.setContentLength(EasyMock.captureInt(captureInt));
+			outputStream.flush();
+			
+			EasyMock.replay(responseMock, outputStream);
+			httpServletToolbox.writeBodyResponseAsJson(responseMock, object, errors);
+			
+			org.json.JSONObject json = new org.json.JSONObject(new String (captureContent.getValue()));
+			Integer captureLen = json.toString().length();
+			assertTrue (json.getString("status").compareTo("OK") == 0);
+			assertTrue (json.getString("payload").compareTo("{\"key\":\"value\"}") == 0);
+			assertTrue (json.getString("errors").compareTo("{}") == 0);
+			assertTrue (captureInt.getValue().compareTo(captureLen) == 0);
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+
 	@Test
 	public void testWriteBodyResponseAsJson_fail()
+	{
+		try
+		{
+			HashMap<String, String> errors = new HashMap<String, String>();
+			errors.put("key","value");
+			org.json.JSONObject object = new org.json.JSONObject();
+			HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
+			ServletOutputStream outputStream = PowerMock.createMock(ServletOutputStream.class);
+			EasyMock.expect(responseMock.getOutputStream()).andReturn(outputStream);
+			responseMock.setContentType("application/json");
+			responseMock.setCharacterEncoding("UTF-8");
+			Capture<byte[]> captureContent = new Capture<byte[]>();
+			Capture<Integer> captureInt = new Capture<Integer>();
+			responseMock.setContentLength(EasyMock.captureInt(captureInt));
+			outputStream.write(EasyMock.capture(captureContent));
+			outputStream.flush();
+			
+			EasyMock.replay(responseMock, outputStream);
+			httpServletToolbox.writeBodyResponseAsJson(responseMock, object, errors);
+			
+			EasyMock.verify(responseMock, outputStream);
+			org.json.JSONObject json = new org.json.JSONObject(new String(captureContent.getValue()));
+			Integer captureContentLen = json.toString().length();
+			assertTrue (json.getString("status").compareTo("FAIL") == 0);
+			assertTrue (json.getString("payload").compareTo("{}") == 0);
+			assertTrue (json.getString("errors").compareTo("{\"key\":\"value\"}") == 0);
+			assertTrue (captureInt.getValue().compareTo(captureContentLen) == 0);
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+
+	@Test
+	public void testWriteBodyResponseAsJson_json_fail()
 	{
 		try
 		{
@@ -178,6 +247,43 @@ public class TestHttpServletToolbox {
 	}
 
 	@Test
+	public void testWriteBodyResponseAsJson_json_exception()
+	{
+		try
+		{
+			HashMap<String, String> errors = new HashMap<String, String>();
+			org.json.JSONObject object = new org.json.JSONObject();
+			
+			HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
+			ServletOutputStream outputStream = PowerMock.createMock(ServletOutputStream.class);
+			EasyMock.expect(responseMock.getOutputStream()).andThrow(new IOException());
+			responseMock.setContentType("application/json");
+			responseMock.setContentType("application/json");
+			responseMock.setCharacterEncoding("UTF-8");
+			Capture<byte[]> captureContent = new Capture<byte[]>();
+			Capture<Integer> captureInt = new Capture<Integer>();
+			EasyMock.expect(responseMock.getOutputStream()).andReturn(outputStream);
+			responseMock.setContentLength(EasyMock.captureInt(captureInt));
+			outputStream.write(EasyMock.capture(captureContent));
+			outputStream.flush();
+			
+			EasyMock.replay(responseMock, outputStream);
+
+			httpServletToolbox.writeBodyResponseAsJson(responseMock, object, errors);
+			EasyMock.verify(responseMock, outputStream);
+			org.json.JSONObject json = new org.json.JSONObject(new String (captureContent.getValue()));
+			Integer captureContentLen = json.toString().length();
+			assertTrue (json.getString("status").compareTo("FAIL") == 0);
+			assertTrue (json.getString("payload").compareTo("{}") == 0);
+			assertTrue (json.getString("errors").compareTo("{\"reason\":\"WB_UNKNOWN_ERROR\"}") == 0);
+			assertTrue (captureInt.getValue().compareTo(captureContentLen) == 0);
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+
+	@Test
 	public void testWriteBodyResponseAsJson_exception_exception()
 	{
 		try
@@ -194,6 +300,32 @@ public class TestHttpServletToolbox {
 			
 			EasyMock.replay(responseMock);
 			httpServletToolbox.writeBodyResponseAsJson(responseMock, data, errors);
+			EasyMock.verify(responseMock);
+			
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+
+	@Test
+	public void testWriteBodyResponseAsJson_json_exception_exception()
+	{
+		try
+		{
+			HashMap<String, String> errors = new HashMap<String, String>();
+			org.json.JSONObject object = new org.json.JSONObject();
+			
+			HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
+			responseMock.setContentType("application/json");
+			responseMock.setCharacterEncoding("UTF-8");
+			EasyMock.expect(responseMock.getOutputStream()).andThrow(new IOException());
+			EasyMock.expect(responseMock.getOutputStream()).andThrow(new IOException());
+			
+			responseMock.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			
+			EasyMock.replay(responseMock);
+			httpServletToolbox.writeBodyResponseAsJson(responseMock, object, errors);
 			EasyMock.verify(responseMock);
 			
 		} catch (Exception e)

@@ -4,12 +4,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class ContentTypeDetector {
+	
 	private static Map<String, String> mapTypes = new HashMap<String, String>();
-	private static String DEFAULT_TYPE = "application/octet-stream";
-	private static final String IMAGE_CONTENT_NAME = "image";
-	private static final String VIDEO_CONTENT_NAME = "video";
-	private static final String AUDIO_CONTENT_NAME = "audio";
-	private static final String APP_CONTENT_NAME   = "application";
+	public static final String DEFAULT_TYPE = "application/octet-stream";
+	public static final String IMAGE_CONTENT_NAME = "image";
+	public static final String VIDEO_CONTENT_NAME = "video";
+	public static final String AUDIO_CONTENT_NAME = "audio";
+	public static final String APP_CONTENT_NAME   = "application";
 
 	static {
 		mapTypes.put(".txt", "text/csv");
