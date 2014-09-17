@@ -1,4 +1,4 @@
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.utility;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +20,12 @@ public void test_fromSafePathBase64()
 	String encode = WBBase64Utility.toSafePathBase64(x.getBytes(Charset.forName("UTF-8")));
 	String decode = new String(WBBase64Utility.fromSafePathBase64(encode), Charset.forName("UTF-8")); 
 	assertTrue (decode.equals(x));
+}
+@Test 
+public void test_constructor()
+{
+	WBBase64Utility u = new WBBase64Utility();
+	assertTrue(u != null);
 }
 
 }
