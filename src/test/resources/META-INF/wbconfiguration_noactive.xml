@@ -1,0 +1,23 @@
+<xml>
+<wpbconfiguration>
+	<wpbcache>
+		<factoryclass>com.xyz.cache</factoryclass>
+	</wpbcache>
+	<wpbadmindatastorage>
+		<factoryclass>com.webpagebytes.cms.datautility.local.WBLocalAdminDataStorage</factoryclass>
+		<params>
+			<param name="dbpath" value="~/test" />
+		</params>
+	</wpbadmindatastorage>
+	<wpbcloudfilestorage>
+		<factoryclass>com.webpagebytes.cms.datautility.local.WBLocalCloudFileStorage</factoryclass>
+		<params>
+			<param name="dataDirectory" value="D:\Tree"/>
+			<param name="basePublicUrlPath" value=""/> 
+		</params>
+	</wpbcloudfilestorage>
+	<wpbimageprocessor>
+		<factoryclass>com.webpagebytes.cms.datautility.WBImageProcessor</factoryclass>
+	</wpbimageprocessor>
+</wpbconfiguration>
+</xml>
