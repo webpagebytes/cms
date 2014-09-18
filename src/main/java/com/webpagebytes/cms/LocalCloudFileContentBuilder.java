@@ -1,18 +1,9 @@
 package com.webpagebytes.cms;
 
 import java.io.InputStream;
-
-
-
-
-
-
-
 import java.nio.charset.Charset;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.IOUtils;
 

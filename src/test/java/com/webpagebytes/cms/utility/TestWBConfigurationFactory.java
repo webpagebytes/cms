@@ -3,6 +3,7 @@ package com.webpagebytes.cms.utility;
 import static org.junit.Assert.*;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -11,6 +12,13 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 public class TestWBConfigurationFactory {
 
+@Before
+public void before()
+{
+	Whitebox.setInternalState(WBConfigurationFactory.class, "CONFIG_FILE_XML", "wbconfiguration.xml");
+	Whitebox.setInternalState(WBConfigurationFactory.class, "instance", (Object)null);
+	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
+}
 @After
 public void after()
 {
