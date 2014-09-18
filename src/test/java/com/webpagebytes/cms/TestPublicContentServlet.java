@@ -1,13 +1,18 @@
 package com.webpagebytes.cms;
 
 import static org.junit.Assert.*;
+
 import java.util.HashSet;
+
+import javax.jws.WebParam;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +24,7 @@ import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.PublicContentServlet;
 import com.webpagebytes.cms.WBServletUtility;
+import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBArticlesCache;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cache.WBFilesCache;
@@ -28,6 +34,7 @@ import com.webpagebytes.cms.cache.WBProjectCache;
 import com.webpagebytes.cms.cache.WBUrisCache;
 import com.webpagebytes.cms.cache.WBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBIOException;
 
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
@@ -190,5 +197,36 @@ public void test_init()
 	
 }
 
+@Test
+public void test_handleRequestTypeText()
+{
+	try
+	{
+	WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
+	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
+	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
+	String content = "aContent";
+	EasyMock.expect(pageBuilderMock.buildPageContent(requestMock, pageMock, modelMock)).andReturn(content);
+	responseMock.setCharacterEncoding("UTF-8");
+	EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
+	responseMock.addHeader("cache-control", "no-cache;no-store;");
+	String contentType="plain/text";
+	EasyMock.expect(pageMock.getContentType()).andReturn(contentType);	
+	responseMock.setContentType(contentType);
+	ServletOutputStream sos_ = EasyMock.createMock(ServletOutputStream.class);
+	CacheServletOutputStream cacheOutputStream = new CacheServletOutputStream(sos_);
+	EasyMock.expect(responseMock.getOutputStream()).andReturn(cacheOutputStream);
+	Capture<byte[]> capture = new Capture<byte[]>();
+	sos_.write(EasyMock.capture(capture));
+	EasyMock.replay(requestMock, responseMock, pageMock, modelMock, sos_, pageBuilderMock);
+	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", pageMock, requestMock, responseMock, modelMock);
+	
+	assertTrue((new String(capture.getValue())).equals(content));
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+}
 
 }

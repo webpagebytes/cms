@@ -133,12 +133,13 @@ public class PublicContentServlet extends HttpServlet {
 		}
 		String content = pageContentBuilder.buildPageContent(req, webPage, model);
 		resp.setCharacterEncoding("UTF-8");
-		if (webPage.getIsTemplateSource() == null || webPage.getIsTemplateSource() == 0)
+		Integer isTemplateSource = webPage.getIsTemplateSource();
+		if (isTemplateSource == null || isTemplateSource == 0)
 		{
 			String cqp = req.getParameter(CACHE_QUERY_PARAM);
 			if (cqp != null && cqp.equals(webPage.getHash().toString()))
 			{
-				// this is a request that can be cached, todo customize the cache time
+				// this is a request that can be cached, to do customize the cache time
 				resp.addHeader("cache-control", "max-age=86400");
 			}
 		} else
