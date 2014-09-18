@@ -47,6 +47,10 @@ public class WBDefaultContentProvider implements WBContentProvider {
 		try
 		{
 			WBWebPage wbWebPage = pageContentBuilder.findWebPage(externalKey);
+			if (null == wbWebPage)
+			{
+				return false;
+			}
 			String content = pageContentBuilder.buildPageContent(wbWebPage, model);
 			os.write(content.getBytes("UTF-8"));
 		} catch (WBException e)
