@@ -2,13 +2,14 @@ package com.webpagebytes.cms;
 
 import static org.junit.Assert.*;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
+import java.io.OutputStream;
 
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.*;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +22,18 @@ import com.webpagebytes.cms.FileContentBuilder;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cache.WBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.datautility.WBBlobHandler;
+import com.webpagebytes.cms.datautility.WBCloudFile;
+import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({FileContentBuilder.class})
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({FileContentBuilder.class})
 public class TestFileContentBuilder {
 
 WBCacheInstances cacheInstancesMock;
 WBFilesCache filesCacheMock;
 FileContentBuilder fileContentBuilder;
-/*
 @Before
 public void setUp()
 {
@@ -74,101 +76,106 @@ public void test_find()
 @Test
 public void test_getFileContent()
 {
-	WBFile fileMock = EasyMock.createMock(WBFile.class);
-	String blobKey = "blob1234";
-	WBBlobHandler blobHandlerMock = EasyMock.createMock(WBBlobHandler.class);
-	String buffer = "this is my buffer";
-	ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.getBytes()); 
 	try
 	{
-		EasyMock.expect(fileMock.getBlobKey()).andReturn(blobKey);
-		EasyMock.expect(blobHandlerMock.getBlobData(blobKey)).andReturn(inputStream);
+		String key = "abc";
+		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		EasyMock.expect(fileMock.getBlobKey()).andReturn(key);
 		
-		EasyMock.replay(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock);
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
-		Whitebox.setInternalState(fileContentBuilder, "blobHandler", blobHandlerMock);		
-		InputStream is = fileContentBuilder.getFileContent(fileMock);
-		assertTrue (is == inputStream);
-		EasyMock.verify(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock);
 		
+		WBCloudFileStorage fileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+		Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", fileStorageMock);
+		
+		InputStream isMock = EasyMock.createMock(InputStream.class);
+		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andReturn(isMock);
+		
+		EasyMock.replay(fileMock, fileStorageMock, isMock);
+		InputStream is = fileContentBuilder.getFileContent(fileMock);
+		
+		assertTrue (isMock == is);
 	} catch (Exception e)
 	{
+		assertTrue(false);
+	}	
+}
+
+@Test
+public void test_getFileContent_exception()
+{
+	try
+	{
+		String key = "abc";
+		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		EasyMock.expect(fileMock.getBlobKey()).andReturn(key);
+		
+		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
+		
+		WBCloudFileStorage fileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+		Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", fileStorageMock);
+		
+		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andThrow(new IOException());
+		EasyMock.replay(fileMock, fileStorageMock);
+		fileContentBuilder.getFileContent(fileMock);
 		assertTrue (false);
+	} 
+	catch (WBException e)
+	{
+		assertTrue(true);
+		// this is fine
+	}
+	catch (Exception e)
+	{
+		assertTrue(false);
 	}
 	
 }
 
+
 @Test
 public void test_writeFileContent()
 {
-	WBFile fileMock = EasyMock.createMock(WBFile.class);
-	String blobKey = "blob1234";
-	WBBlobHandler blobHandlerMock = EasyMock.createMock(WBBlobHandler.class);
-	String buffer = "this is my buffer";
-	for(int i = 0; i< 1024; i++)
-	{
-		buffer = buffer.concat(Integer.toString(i));
-	}
-	ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.getBytes());
-	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	
 	try
 	{
-		EasyMock.expect(fileMock.getBlobKey()).andReturn(blobKey);
-		EasyMock.expect(blobHandlerMock.getBlobData(blobKey)).andReturn(inputStream);
-		
-		EasyMock.replay(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock);
+		String content = "value";
+		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
+		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(bais);
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
-		Whitebox.setInternalState(fileContentBuilder, "blobHandler", blobHandlerMock);		
-		fileContentBuilder.writeFileContent(fileMock, outputStream);
-		EasyMock.verify(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock);
-		
-		assertTrue (outputStream.toString().equals(buffer));
+		fileContentBuilder.writeFileContent(fileMock, bos);
+		assertTrue (bos.toString().equals(content));
 		
 	} catch (Exception e)
 	{
-		assertTrue (false);
-	}		
+		assertTrue(false);
+	}
 }
 
 @Test
 public void test_writeFileContent_exception()
 {
-	WBFile fileMock = EasyMock.createMock(WBFile.class);
-	String blobKey = "blob1234";
-	WBBlobHandler blobHandlerMock = EasyMock.createMock(WBBlobHandler.class);
-	byte[] buffer = new byte[1024];
-	InputStream is = EasyMock.createMock(InputStream.class);
-	
 	try
 	{
-		EasyMock.expect(is.read((byte[])EasyMock.anyObject())).andThrow(new IOException ());
-
-	} catch (Exception e)
-	{
-		assertTrue (false);
-	}
-	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	
-	try
-	{
-		EasyMock.expect(fileMock.getBlobKey()).andReturn(blobKey);
-		EasyMock.expect(blobHandlerMock.getBlobData(blobKey)).andReturn(is);
+		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		InputStream isMock = EasyMock.createMock(InputStream.class);
+		OutputStream osMock = EasyMock.createMock(OutputStream.class);
+		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(isMock);
+		EasyMock.expect(isMock.read(EasyMock.anyObject(byte[].class))).andThrow(new IOException());
 		
-		EasyMock.replay(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock, is);
+		EasyMock.replay(isMock);
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
-		Whitebox.setInternalState(fileContentBuilder, "blobHandler", blobHandlerMock);		
-		fileContentBuilder.writeFileContent(fileMock, outputStream);
-		EasyMock.verify(cacheInstancesMock, filesCacheMock, fileMock, blobHandlerMock, is);
-		
-	} catch (WBIOException e)
+		fileContentBuilder.writeFileContent(fileMock, osMock);
+		assertTrue(false); // we should not gete here
+	} 
+	catch (WBIOException e)
 	{
-		// OK
-	}		
+		// all good here
+	}
 	catch (Exception e)
 	{
-		assertTrue (false);
+		assertTrue(false);
 	}
 }
-*/
+
 }
