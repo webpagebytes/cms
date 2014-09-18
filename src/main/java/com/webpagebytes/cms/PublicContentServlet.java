@@ -134,7 +134,7 @@ public class PublicContentServlet extends HttpServlet {
 		String content = pageContentBuilder.buildPageContent(req, webPage, model);
 		resp.setCharacterEncoding("UTF-8");
 		Integer isTemplateSource = webPage.getIsTemplateSource();
-		if (isTemplateSource == null || isTemplateSource == 0)
+		if (isTemplateSource != 1)
 		{
 			String cqp = req.getParameter(CACHE_QUERY_PARAM);
 			if (cqp != null && cqp.equals(webPage.getHash().toString()))

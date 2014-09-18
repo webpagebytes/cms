@@ -229,4 +229,69 @@ public void test_handleRequestTypeText()
 	}
 }
 
+@Test
+public void test_handleRequestTypeText_cache_0()
+{
+	handleRequestTypeText_cache(0);
+}
+
+@Test
+public void test_handleRequestTypeText_cache_null()
+{
+	handleRequestTypeText_cache(null);
+}
+
+private void handleRequestTypeText_cache(Integer templateSource)
+{
+	try
+	{
+	WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
+	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
+	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
+	String content = "aContent";
+	EasyMock.expect(pageBuilderMock.buildPageContent(requestMock, pageMock, modelMock)).andReturn(content);
+	responseMock.setCharacterEncoding("UTF-8");
+	EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
+	
+	Long hash = 123L;
+	EasyMock.expect(requestMock.getParameter(PublicContentServlet.CACHE_QUERY_PARAM)).andReturn(hash.toString());
+	EasyMock.expect(pageMock.getHash()).andReturn(hash);
+	
+	responseMock.addHeader("cache-control", "max-age=86400");
+	String contentType="plain/text";
+	EasyMock.expect(pageMock.getContentType()).andReturn(contentType);	
+	responseMock.setContentType(contentType);
+	ServletOutputStream sos_ = EasyMock.createMock(ServletOutputStream.class);
+	CacheServletOutputStream cacheOutputStream = new CacheServletOutputStream(sos_);
+	EasyMock.expect(responseMock.getOutputStream()).andReturn(cacheOutputStream);
+	Capture<byte[]> capture = new Capture<byte[]>();
+	sos_.write(EasyMock.capture(capture));
+	EasyMock.replay(requestMock, responseMock, pageMock, modelMock, sos_, pageBuilderMock);
+	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", pageMock, requestMock, responseMock, modelMock);
+	
+	assertTrue((new String(capture.getValue())).equals(content));
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+}
+
+
+@Test
+public void test_handleRequestTypeText_no_page()
+{
+	try
+	{
+	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	responseMock.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	EasyMock.replay(requestMock, responseMock, modelMock);
+	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", (WBWebPage)null, requestMock, responseMock, modelMock);
+
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+}
+
 }
