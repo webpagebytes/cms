@@ -1,6 +1,7 @@
 package com.webpagebytes.cms;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
@@ -149,7 +150,6 @@ public class PublicContentServlet extends HttpServlet {
 		resp.setContentType(webPage.getContentType());			
 		ServletOutputStream os = resp.getOutputStream();
 		os.write(content.getBytes("UTF-8"));
-		os.flush();		
 	}
 
 	private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WBException, IOException
@@ -169,7 +169,6 @@ public class PublicContentServlet extends HttpServlet {
 		ServletOutputStream os = resp.getOutputStream();
 		resp.setContentType(wbFile.getAdjustedContentType());													
 		fileContentBuilder.writeFileContent(wbFile, os);
-		os.flush();
 	}
 
 	
@@ -259,7 +258,6 @@ public class PublicContentServlet extends HttpServlet {
 				os.write(e.getMessage().getBytes("UTF-8")); os.write("\n".getBytes());				
 				os.write(stack.getBytes("UTF-8"));
 				os.write("-------------".getBytes());
-				os.flush();
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
 			}
 			catch (WBLocaleException e)
@@ -273,6 +271,12 @@ public class PublicContentServlet extends HttpServlet {
 				log.log(Level.SEVERE, "ERROR: ", e);
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
+			}
+			finally
+			{
+				// close the output stream
+				OutputStream os = resp.getOutputStream();
+				os.close();
 			}
 		}
     }

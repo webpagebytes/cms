@@ -94,7 +94,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			wbUri.setExternalKey(adminStorage.getUniqueId());
 			WBUri newUri = adminStorage.add(wbUri);
 			
-			WBResource resource = new WBResource(newUri.getUri(), newUri.getUri(), WBResource.URI_TYPE);
+			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
