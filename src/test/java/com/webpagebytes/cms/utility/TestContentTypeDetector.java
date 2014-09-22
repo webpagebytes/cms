@@ -46,4 +46,5 @@ public void test_constructor()
 	ContentTypeDetector d = new ContentTypeDetector();
 	assertTrue( d!=null );
 }
+
 }
