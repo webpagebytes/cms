@@ -9,6 +9,7 @@ public class WBConfigurationFactory {
 	private static String CONFIG_FILE_XML = "wbconfiguration.xml";
 	private static final Object lock = new Object();
 	
+	private WBConfigurationFactory() {};
 	public static WBConfiguration getConfiguration()
 	{
 		if (configuration == null && instance == null)
