@@ -1,6 +1,9 @@
 package com.webpagebytes.cms.utility;
 
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class WBConfigurationFactory {
 
@@ -8,6 +11,7 @@ public class WBConfigurationFactory {
 	private static WBConfiguration configuration;
 	private static String CONFIG_FILE_XML = "wbconfiguration.xml";
 	private static final Object lock = new Object();
+	private static final Logger log = Logger.getLogger(WBConfigurationFactory.class.getName());
 	
 	private WBConfigurationFactory() {};
 	public static WBConfiguration getConfiguration()
@@ -24,6 +28,7 @@ public class WBConfigurationFactory {
 					instance.configuration = reader.readConfiguration(is);
 				} catch (Exception e)
 				{
+					log.log(Level.SEVERE, e.getMessage(), e);
 					return null;
 				}
 			}

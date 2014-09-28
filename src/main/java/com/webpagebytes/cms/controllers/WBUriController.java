@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
@@ -29,10 +30,13 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class WBUriController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
 	private WBUriValidator uriValidator;
 	private WBUrisCache wbUriCache;
+	private static final Logger log = Logger.getLogger(WBUriController.class.getName());
 	
 	public WBUriController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
@@ -108,6 +112,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
@@ -153,6 +158,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			
 		} catch (Exception e)		
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
@@ -194,6 +200,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			
 		} catch (Exception e)		
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
@@ -246,6 +253,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)		
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
@@ -280,6 +288,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			
 		} catch (Exception e)		
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
@@ -319,6 +328,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 	
 		} catch (Exception e)		
 		{
+			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			

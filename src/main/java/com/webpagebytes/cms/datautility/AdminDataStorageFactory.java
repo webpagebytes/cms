@@ -32,6 +32,7 @@ public class AdminDataStorageFactory {
 				
 				catch (Exception e)
 				{
+					log.log(Level.SEVERE, e.getMessage(), e);
 					return null;
 				}
 			}
