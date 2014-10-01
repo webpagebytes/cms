@@ -70,7 +70,7 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	}
 
 	TemplateModel appModel = dataModel.get(WBModel.APPLICATION_CONTROLLER_MODEL_KEY);
-	if (request != null) 
+	if (appModel != null) 
 	{
 		params.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, appModel);
 	}
