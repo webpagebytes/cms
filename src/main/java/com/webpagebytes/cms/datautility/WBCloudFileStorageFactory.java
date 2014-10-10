@@ -1,7 +1,9 @@
 package com.webpagebytes.cms.datautility;
 
 
-import com.webpagebytes.cms.datautility.local.WBLocalCloudFileStorage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
 import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
@@ -11,7 +13,8 @@ public class WBCloudFileStorageFactory {
 	static WBCloudFileStorage instance = null;
 	private WBCloudFileStorageFactory() {}
 	private static final Object lock = new Object();
-	
+	private static final Logger log = Logger.getLogger(WBCloudFileStorageFactory.class.getName());
+
 	public static WBCloudFileStorage getInstance()
 	{
 		if (instance == null) {
@@ -30,6 +33,7 @@ public class WBCloudFileStorageFactory {
 					
 					catch (Exception e)
 					{
+						log.log(Level.SEVERE, "Cannot instantiate WBCloudFileStorage ", e);
 						return null;
 					}
 				}

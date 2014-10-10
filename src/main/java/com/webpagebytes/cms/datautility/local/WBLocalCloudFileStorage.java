@@ -1,13 +1,11 @@
 package com.webpagebytes.cms.datautility.local;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,10 +13,10 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.CRC32;
-
 import javax.xml.bind.DatatypeConverter;
-
 import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.datautility.WBCloudFile;
@@ -38,6 +36,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	private String dataDirectory;
 	private String basePublicUrlPath;
 	private boolean isInitialized;
+	private static final Logger log = Logger.getLogger(WBLocalCloudFileStorage.class.getName());
 	
 	public WBLocalCloudFileStorage()
 	{
@@ -46,7 +45,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			initialize(true);
 		} catch (Exception e)
 		{
-			// log the exception here
+			log.log(Level.SEVERE, "Cannot initialize WBLocalCloudFileStorage for " + dataDirectory, e);
 		}
 	}
 	
@@ -66,7 +65,9 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		} catch (Exception e)
 		{
 			// log the exception here
-		}	}
+			log.log(Level.SEVERE, "Cannot initialize WBLocalCloudFileStorage for " + dataDirectory, e);
+		}	
+	}
 
 	public String getDataDir()
 	{
@@ -108,7 +109,9 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 				basePublicUrlPath = basePublicUrlPath + "/";
 			}
 		}
-	
+		
+		log.log(Level.INFO, "Initialize for WBLocalCloudFileStorage with dir: " + dataDirectory);
+		
 		//check to see that the dataDirectory exists
 		File fileBaseData = new File(dataDirectory);
 		if (!fileBaseData.exists() || !fileBaseData.isDirectory())
@@ -123,6 +126,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 				throw new IOException("Cannot create dir: " + publicDataDir.getPath());
 			}
 		}
+		log.log(Level.INFO, "Create public dir for WBLocalCloudFileStorage " + publicDataDir.getAbsolutePath());
 		File privateDataDir = new File (getPathPrivateDataDir());
 		if (!privateDataDir.exists())
 		{
@@ -131,6 +135,8 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 				throw new IOException("Cannot create dir: " + privateDataDir.getPath());
 			}
 		}
+		log.log(Level.INFO, "Create private dir for WBLocalCloudFileStorage " + privateDataDir.getAbsolutePath());
+		
 		File publicMetaDir = new File (getPathPublicMetaDir());
 		if (!publicMetaDir.exists())
 		{
@@ -139,6 +145,8 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 				throw new IOException("Cannot create dir: " + publicMetaDir.getPath());
 			}
 		}
+		log.log(Level.INFO, "Create public meta dir for WBLocalCloudFileStorage " + publicMetaDir.getAbsolutePath());
+		
 		File privateMetaDir = new File (getPathPrivateMetaDir());
 		if (!privateMetaDir.exists())
 		{
@@ -147,6 +155,8 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 				throw new IOException("Cannot create dir: " + privateMetaDir.getPath());
 			}
 		}
+		log.log(Level.INFO, "Create private meta dir for WBLocalCloudFileStorage " + privateMetaDir.getAbsolutePath());
+		
 		isInitialized = true;
 	}
 	/*
@@ -199,6 +209,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			md = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e)
 		{
+			IOUtils.closeQuietly(fos);
 			throw new IOException("Cannot calculate md5 to store the file", e);
 		}
 
