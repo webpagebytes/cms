@@ -8,4 +8,9 @@ public class WBServletUtility {
 	{
 		return servlet.getInitParameter(name);
 	}
+	public String getContextParameter(String name, HttpServlet servlet)
+	{
+		return servlet.getServletContext().getInitParameter(name);
+	}
+
 }

@@ -1,38 +1,59 @@
 package com.webpagebytes.cms.utility;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+
 
 public class WBConfigurationFactory {
 
-	private static WBConfigurationFactory instance;
+	private static String configPath; 
 	private static WBConfiguration configuration;
-	private static String CONFIG_FILE_XML = "wbconfiguration.xml";
 	private static final Object lock = new Object();
-	private static final Logger log = Logger.getLogger(WBConfigurationFactory.class.getName());
+	private static Logger log = Logger.getLogger(WBConfigurationFactory.class.getName());
 	
 	private WBConfigurationFactory() {};
+	public static String getConfigPath()
+	{
+		return configPath;
+	}
+	public static void setConfigPath(String path)
+	{
+		configPath = path;
+	}
+	
 	public static WBConfiguration getConfiguration()
 	{
-		if (configuration == null && instance == null)
+		if (configuration == null)
 		{
+			InputStream is = null;
 			synchronized (lock) {
-				instance = new WBConfigurationFactory();
-				instance.instance = instance;
 				try
 				{
-					InputStream is = WBConfigurationFactory.class.getClassLoader().getResourceAsStream(CONFIG_FILE_XML);
+					try
+					{
+						is = new FileInputStream(configPath);
+					} catch (FileNotFoundException e)
+					{
+						is = WBConfigurationFactory.class.getClassLoader().getResourceAsStream(configPath);
+					}
 					XMLConfigReader reader = new XMLConfigReader();
-					instance.configuration = reader.readConfiguration(is);
+					configuration = reader.readConfiguration(is);
 				} catch (Exception e)
 				{
 					log.log(Level.SEVERE, e.getMessage(), e);
 					return null;
 				}
+				finally 
+				{
+					IOUtils.closeQuietly(is);
+				}
 			}
 		}
-		return instance.configuration;
+		return configuration;
 	}
 }

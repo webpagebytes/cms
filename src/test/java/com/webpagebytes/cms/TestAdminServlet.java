@@ -3,20 +3,27 @@ package com.webpagebytes.cms;
 import java.lang.reflect.Method;
 
 
+
+
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Test;
 import org.junit.Before;
 import org.easymock.EasyMock;
 import org.easymock.Capture;
+
 import static org.junit.Assert.*;
+
 import com.webpagebytes.cms.AdminRequestProcessorFactory;
 import com.webpagebytes.cms.AdminServlet;
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.ResourceRequestProcessor;
 import com.webpagebytes.cms.WBServletUtility;
 import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 public class TestAdminServlet {
 
@@ -36,6 +43,7 @@ public class TestAdminServlet {
 		ajaxProcessor = EasyMock.createMock(AjaxRequestProcessor.class);
 		servletUtility = EasyMock.createMock(WBServletUtility.class);
 		adminServlet = new AdminServlet();		
+		WBConfigurationFactory.setConfigPath("wbConfiguration.xml");
 	}
 	
 	@Test
@@ -101,12 +109,14 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			adminServlet.setServletUtility(servletUtility);
 			
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
 			ajaxProcessor.setAdminUriPart(EasyMock.capture(adminUriPart));
 			adminServlet.setProcessorFactory(testProcessor);
-			EasyMock.replay(testProcessor, resourceProcessor, ajaxProcessor);
+			EasyMock.replay(testProcessor, servletUtility, resourceProcessor, ajaxProcessor);
 			
 			adminServlet.init();
 			EasyMock.verify(testProcessor, resourceProcessor, ajaxProcessor);
@@ -139,6 +149,7 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin/");
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
@@ -181,6 +192,8 @@ public class TestAdminServlet {
 			ajaxProcessor.setAdminUriPart(EasyMock.capture(adminUriPart));
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
+			
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -224,6 +237,7 @@ public class TestAdminServlet {
 			EasyMock.expectLastCall().andThrow(new WBException(""));
 			
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -248,6 +262,7 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -271,8 +286,8 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("");
-			
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay( servletUtility);
 			
@@ -295,25 +310,11 @@ public class TestAdminServlet {
 		{
 			AdminServlet adminServlet = new AdminServlet();
 			adminServlet.setAdminURIPart(null);
-			adminServlet.init();
-			assertTrue(false);
-		}
-		catch (Exception e)
-		{
-			if (!(e instanceof ServletException))
-			{
-				assertTrue(false);
-			}			
-		}
-	}
-
-	@Test
-	public void testInit_nullAdminUri()
-	{
-		try
-		{
-			AdminServlet adminServlet = new AdminServlet();
-			adminServlet.setAdminURIPart(null);
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
+			adminServlet.setServletUtility(servletUtility);
+			EasyMock.replay(servletUtility);
+			
 			adminServlet.init();
 			assertTrue(false);
 		}
@@ -334,6 +335,11 @@ public class TestAdminServlet {
 		{
 			AdminServlet adminServlet = new AdminServlet();
 			adminServlet.setAdminURIPart("");
+			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
+			
+			adminServlet.setServletUtility(servletUtility);
+			EasyMock.replay( servletUtility);
 			adminServlet.init();
 			assertTrue(false);
 		}

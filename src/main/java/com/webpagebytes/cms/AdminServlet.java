@@ -4,9 +4,11 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 public class AdminServlet extends HttpServlet {
 
+	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
 	public static final String ADMIN_URI_PREFIX = "admin-uri-prefix";
 	public static final String ADMIN_RESOURCE_FOLDER = "admin";
 	public static final String ADMIN_CONFIG_FOLDER = "config";
@@ -75,6 +77,17 @@ public class AdminServlet extends HttpServlet {
 	
 	public void init() throws ServletException
     {
+		// initialize the configFactory
+		String configPath = servletUtility.getContextParameter(CMS_CONFIG_KEY, this);
+		if (null == configPath)
+		{
+			throw new ServletException("There is no wpbConfigurationPath parameter defined for admin context"); 
+		}
+		if (WBConfigurationFactory.getConfigPath() == null)
+		{
+			WBConfigurationFactory.setConfigPath(configPath);
+		}
+		
 		if ((adminURIPart == null) || (adminURIPart.length() == 0))
 		{
 			try
