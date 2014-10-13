@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,7 @@ import com.webpagebytes.cms.cache.WBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
@@ -76,6 +78,17 @@ modulesCacheMock = EasyMock.createMock(WBWebPageModulesCache.class);
 projectCacheMock = EasyMock.createMock(WBProjectCache.class);
 
 cacheInstances = new WBCacheInstances(urisCacheMock, pagesCacheMock, modulesCacheMock, parametersCacheMock, filesCacheMock, articlesCacheMock, messagesCacheMock, projectCacheMock); 
+
+Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
+Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (Object) null);	
+
+}
+
+@After
+public void tearDown()
+{
+	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
+	Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (Object) null);	
 }
 
 @Test
@@ -143,6 +156,7 @@ public void test_init_exception()
 	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getInitParameter("uri-prefix", publicServlet)).andReturn("/");	
+	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
 	
@@ -160,7 +174,7 @@ public void test_init_exception()
 	{
 		assertTrue (false);
 	}
-	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock, urisCacheMock);
+	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock);
 		
 }
 
@@ -173,6 +187,8 @@ public void test_init()
 	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getInitParameter("uri-prefix", publicServlet)).andReturn("/test");	
+	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
+	
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
 	
@@ -192,7 +208,7 @@ public void test_init()
 	{
 		assertTrue (false);
 	}
-	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock, urisCacheMock);
+	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock);
 	
 	
 }

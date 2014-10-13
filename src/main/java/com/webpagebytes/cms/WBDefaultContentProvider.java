@@ -2,6 +2,8 @@ package com.webpagebytes.cms;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.webpagebytes.cms.appinterfaces.WBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WBModel;
@@ -13,7 +15,8 @@ public class WBDefaultContentProvider implements WBContentProvider {
 
 	private FileContentBuilder fileContentBuilder;
 	private PageContentBuilder pageContentBuilder;
-
+	private static final Logger log = Logger.getLogger(WBDefaultContentProvider.class.getName());
+	
 	public WBDefaultContentProvider(FileContentBuilder fileContentBuilder, PageContentBuilder pageContentBuilder)
 	{
 		this.fileContentBuilder = fileContentBuilder;
@@ -34,7 +37,7 @@ public class WBDefaultContentProvider implements WBContentProvider {
 		}
 		catch (WBException e)
 		{
-			// log error
+			log.log(Level.SEVERE, "writeFileContent for " + externalKey, e);
 			return false;
 		}
 		return true;
@@ -53,12 +56,9 @@ public class WBDefaultContentProvider implements WBContentProvider {
 			}
 			String content = pageContentBuilder.buildPageContent(wbWebPage, model);
 			os.write(content.getBytes("UTF-8"));
-		} catch (WBException e)
+		} catch (Exception e)
 		{
-			return false;
-		}
-		catch (IOException e)
-		{
+			log.log(Level.SEVERE, "writeFileContent for " + externalKey, e);
 			return false;
 		}
 		return true;

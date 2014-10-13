@@ -27,11 +27,14 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBLocaleException;
 import com.webpagebytes.cms.exception.WBTemplateException;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
 	public static final String CACHE_QUERY_PARAM = "cqp";
 	public static final String URI_PREFIX = "wb-uri-prefix";
+	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
+
 	private WBServletUtility servletUtility = null;
 	
 	// this is the common uri part that will be common to all requests served by this CMS
@@ -49,7 +52,23 @@ public class PublicContentServlet extends HttpServlet {
 	
 	public PublicContentServlet()
 	{
-		setServletUtility(new WBServletUtility());
+		setServletUtility(new WBServletUtility());		
+	}
+	
+	public void init(ServletConfig config) throws ServletException
+    {
+		super.init(config);
+		
+		String configPath = servletUtility.getContextParameter(CMS_CONFIG_KEY, this);
+		if (null == configPath)
+		{
+			throw new ServletException("There is no wpbConfigurationPath parameter defined for admin context"); 
+		}
+		if (WBConfigurationFactory.getConfigPath() == null)
+		{
+			WBConfigurationFactory.setConfigPath(configPath);
+		}
+
 		localFileContentBuilder = new LocalCloudFileContentBuilder();
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
 		this.cacheInstances = new WBCacheInstances(wbCacheFactory.createWBUrisCacheInstance(), 
@@ -60,12 +79,8 @@ public class PublicContentServlet extends HttpServlet {
 				wbCacheFactory.createWBArticlesCacheInstance(),
 				wbCacheFactory.createWBMessagesCacheInstance(),
 				wbCacheFactory.createWBProjectCacheInstance());
+
 		
-	}
-	
-	public void init(ServletConfig config) throws ServletException
-    {
-		super.init(config);
 		String initUriPrefix = servletUtility.getInitParameter("uri-prefix", this);
 		if (initUriPrefix.length() > 0)
 		{
