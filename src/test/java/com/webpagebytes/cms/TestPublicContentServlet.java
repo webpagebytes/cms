@@ -27,6 +27,7 @@ import com.webpagebytes.cms.PublicContentServlet;
 import com.webpagebytes.cms.WBServletUtility;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.WBArticlesCache;
+import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cache.WBFilesCache;
 import com.webpagebytes.cms.cache.WBMessagesCache;
@@ -58,7 +59,7 @@ WBArticlesCache articlesCacheMock;
 WBWebPagesCache pagesCacheMock;
 WBWebPageModulesCache modulesCacheMock;
 WBProjectCache projectCacheMock;
-
+WBCacheFactory cacheFactoryMock;
 
 @Before
 public void setUp()
@@ -148,23 +149,33 @@ public void test_doDelete()
 }
 
 @Test
-@SuppressStaticInitializationFor("java.util.logging.Logger")
 public void test_init_exception()
 {
-	suppress(method(HttpServlet.class, "init"));
+	suppress(method(PublicContentServlet.class, "initBuilders"));
+	suppress(method(PublicContentServlet.class, "initLocalFileContentBuilder"));
+
+	cacheFactoryMock = EasyMock.createMock(WBCacheFactory.class);
+	EasyMock.expect(cacheFactoryMock.createWBUrisCacheInstance()).andReturn(urisCacheMock);
+	EasyMock.expect(cacheFactoryMock.createWBWebPagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBArticlesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBMessagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBImagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBParametersCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
 	
-	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
-	EasyMock.expect(servletUtilityMock.getInitParameter("uri-prefix", publicServlet)).andReturn("/");	
+	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/");		
 	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
+	Whitebox.setInternalState(publicServlet, "cacheFactory", cacheFactoryMock);
 	
 	try
 	{
 		EasyMock.expect(urisCacheMock.getAllUris(0)).andThrow(new WBIOException(""));
-		EasyMock.replay(requestMock, responseMock, servletUtilityMock, configMock, urisCacheMock);
-		publicServlet.init(configMock);
+		EasyMock.replay(requestMock, responseMock, servletUtilityMock, urisCacheMock, cacheFactoryMock);
+		publicServlet.init();
 		
 	} catch (ServletException e)
 	{
@@ -174,33 +185,38 @@ public void test_init_exception()
 	{
 		assertTrue (false);
 	}
-	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock);
+	EasyMock.verify(requestMock, responseMock, servletUtilityMock);
 		
 }
 
 @Test
-@SuppressStaticInitializationFor("java.util.logging.Logger")
 public void test_init()
 {
-	suppress(method(HttpServlet.class, "init"));
-	
+	suppress(method(PublicContentServlet.class, "initUrls"));
+	suppress(method(PublicContentServlet.class, "initBuilders"));
+	suppress(method(PublicContentServlet.class, "initLocalFileContentBuilder"));
+	cacheFactoryMock = EasyMock.createMock(WBCacheFactory.class);
+	EasyMock.expect(cacheFactoryMock.createWBUrisCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBWebPagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBArticlesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBMessagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBImagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBParametersCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
+
 	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
-	EasyMock.expect(servletUtilityMock.getInitParameter("uri-prefix", publicServlet)).andReturn("/test");	
+	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/test");		
 	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
+	Whitebox.setInternalState(publicServlet, "cacheFactory", cacheFactoryMock);
 	
 	try
-	{
-		for(int i = 0; i<4; i++)
-		{
-			EasyMock.expect(urisCacheMock.getAllUris(i)).andReturn(new HashSet());
-			EasyMock.expect(urisCacheMock.getCacheFingerPrint()).andReturn(1L);
-		}
-		
-		EasyMock.replay(requestMock, responseMock, servletUtilityMock, configMock, urisCacheMock);
+	{		
+		EasyMock.replay(requestMock, responseMock, servletUtilityMock, configMock, urisCacheMock, cacheFactoryMock);
 		publicServlet.init(configMock);
 		
 	} 
@@ -208,7 +224,7 @@ public void test_init()
 	{
 		assertTrue (false);
 	}
-	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock);
+	EasyMock.verify(requestMock, responseMock, servletUtilityMock, configMock, cacheFactoryMock);
 	
 	
 }

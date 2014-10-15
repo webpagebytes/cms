@@ -12,5 +12,8 @@ public class WBServletUtility {
 	{
 		return servlet.getServletContext().getInitParameter(name);
 	}
-
+	public String getContextPath(HttpServlet servlet)
+	{
+		return servlet.getServletContext().getContextPath();
+	}
 }

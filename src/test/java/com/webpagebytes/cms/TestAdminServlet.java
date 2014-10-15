@@ -110,6 +110,8 @@ public class TestAdminServlet {
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
 			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
+			
 			adminServlet.setServletUtility(servletUtility);
 			
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);

@@ -83,35 +83,34 @@ public class AdminServlet extends HttpServlet {
 		{
 			throw new ServletException("There is no wpbConfigurationPath parameter defined for admin context"); 
 		}
+		// WBConfigurationFactory.setConfigPath needs to be one of the first things to do for the servlet initialization
+		// before at other code execution that relies on configurations
 		if (WBConfigurationFactory.getConfigPath() == null)
 		{
 			WBConfigurationFactory.setConfigPath(configPath);
 		}
 		
-		if ((adminURIPart == null) || (adminURIPart.length() == 0))
+		try
 		{
-			try
-			{
-				
-			String strTemp =  servletUtility.getInitParameter(ADMIN_URI_PREFIX, this);
 			
-			if (null != strTemp && strTemp.length()>0)
+		String strTemp =  servletUtility.getInitParameter(ADMIN_URI_PREFIX, this);
+		
+		if (null != strTemp && strTemp.length()>0)
+		{
+			if (strTemp.endsWith("/"))
 			{
-				if (strTemp.endsWith("/"))
-				{
-					adminURIPart = strTemp.substring(0, strTemp.length()-1);
-				} else
-				{
-					adminURIPart = strTemp;
-				}
+				adminURIPart = strTemp.substring(0, strTemp.length()-1);
 			} else
 			{
-				throw new ServletException("There is no admin-prefix-uri parameter for the admin servlet configuration.");
+				adminURIPart = strTemp;
 			}
-			} catch (Exception e)
-			{
-				throw new ServletException(e);
-			}
+		} else
+		{
+			throw new ServletException("There is no admin-prefix-uri parameter for the admin servlet configuration.");
+		}
+		} catch (Exception e)
+		{
+			throw new ServletException(e);
 		}
 		try
 		{
