@@ -1097,7 +1097,7 @@ if (!Array.prototype.indexOf) {
 	WBSpinner = function ( thisElement, options ) {
 		
 		var myCurrentTime = function (){
-			if (window.performance.now) {
+			if (window.performance && window.performance.now) {
 				return window.performance.now();
 			} else
 			{
