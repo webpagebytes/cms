@@ -83,7 +83,7 @@ public class PageContentBuilder {
 		if (hasController)
 		{
 			WBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
-			controllerInst.populatePageModel(request, model);
+			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
 		rootModel.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
