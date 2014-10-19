@@ -25,7 +25,7 @@ public class WBModel {
 	
 	public static final String GLOBAL_PROTOCOL = "WPB_GLOBAL_PROTOCOL";
 	public static final String GLOBAL_DOMAIN = "WPB_GLOBAL_DOMAIN";
-	public static final String GLOBAL_URI_PREFIX = "WPB_GLOBAL_URI_PREFIX";
+	public static final String GLOBAL_CONTEXT_PATH = "WPB_GLOBAL_CONTEXT_PATH";
 	public static final String GLOBAL_BASE_URL = "WPB_GLOBAL_BASE_URL";
 	
 

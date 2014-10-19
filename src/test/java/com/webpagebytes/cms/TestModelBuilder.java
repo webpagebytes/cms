@@ -619,12 +619,12 @@ public void test_populateStaticParameters_http()
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
-	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test");
 	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://www.example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.URI_PREFIX)).andReturn("/test");
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
 	
 	EasyMock.replay(requestMock);
 
@@ -647,12 +647,12 @@ public void test_populateStaticParameters_https()
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "https");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
-	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test");
 	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.URI_PREFIX)).andReturn("/test");
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
 	
 	EasyMock.replay(requestMock);
 
@@ -674,12 +674,12 @@ public void test_populateStaticParameters_uppercase()
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
-	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/test");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test");
 	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/test");
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.URI_PREFIX)).andReturn("/test");
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
 	
 	EasyMock.replay(requestMock);
 
@@ -701,13 +701,13 @@ public void test_populateStaticParameters_justdomain()
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
-	mapStaticParams.put(WBModel.GLOBAL_URI_PREFIX, "/");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/");
 	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/");
 	
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.URI_PREFIX)).andReturn("/");
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/");
 	
 	EasyMock.replay(requestMock);
 
@@ -734,7 +734,7 @@ public void test_populateStaticParameters_nouriprefix()
 	WBModel model = new WBModel();
 	
 	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.URI_PREFIX)).andReturn(null);
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn(null);
 	
 	EasyMock.replay(requestMock);
 

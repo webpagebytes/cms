@@ -31,7 +31,7 @@ public class PublicContentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
 	public static final String CACHE_QUERY_PARAM = "cqp";
-	public static final String URI_PREFIX = "wb-uri-prefix";
+	public static final String CONTEXT_PATH = "wb-context-path";
 	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
 
 	private WBServletUtility servletUtility = null;
@@ -210,7 +210,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 	
 	// urlMatcher will get the corresponding wbUri that macthes the current request 
 	URLMatcher urlMatcher = null;
-	req.setAttribute(URI_PREFIX, uriCommonPrefix);
+	req.setAttribute(CONTEXT_PATH, uriCommonPrefix);
 	try
 	{
 		urlMatcher = getUrlMatcher(req);

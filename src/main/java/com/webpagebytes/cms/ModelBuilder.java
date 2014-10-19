@@ -159,7 +159,7 @@ public class ModelBuilder {
 		result.put(WBModel.GLOBAL_PROTOCOL, protocol);
 		result.put(WBModel.GLOBAL_DOMAIN, domain);
 		String baseUrl = protocol + "://" + domain;
-		Object objUriPrefix = request.getAttribute(PublicContentServlet.URI_PREFIX);
+		Object objUriPrefix = request.getAttribute(PublicContentServlet.CONTEXT_PATH);
 		if (objUriPrefix != null)
 		{
 			String uriPrefix = objUriPrefix.toString();
@@ -173,7 +173,7 @@ public class ModelBuilder {
 					baseUrl = baseUrl + "/" + uriPrefix;
 				}
 			}
-			result.put(WBModel.GLOBAL_URI_PREFIX, objUriPrefix.toString());
+			result.put(WBModel.GLOBAL_CONTEXT_PATH, objUriPrefix.toString());
 		}	
 		result.put(WBModel.GLOBAL_BASE_URL, baseUrl);
 		model.getCmsModel().put(WBModel.REQUEST_KEY, result);
