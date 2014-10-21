@@ -27,7 +27,17 @@ public class WBCacheInstances {
 		wbMessageCache = messageCache;
 		wbProjectCache = projectCache;
 	}
-	
+	public WBCacheInstances(WBCacheFactory cacheFactory)
+	{
+		wbUriCache = cacheFactory.createWBUrisCacheInstance();
+		wbWebPageCache = cacheFactory.createWBWebPagesCacheInstance();
+		wbWebPageModuleCache = cacheFactory.createWBWebPageModulesCacheInstance();
+		wbParameterCache = cacheFactory.createWBParametersCacheInstance();
+		wbFilesCache = cacheFactory.createWBFilesCacheInstance();
+		wbArticleCache = cacheFactory.createWBArticlesCacheInstance();
+		wbMessageCache = cacheFactory.createWBMessagesCacheInstance();
+		wbProjectCache = cacheFactory.createWBProjectCacheInstance();
+	}
 	public WBMessagesCache getWBMessageCache()
 	{
 		return wbMessageCache;

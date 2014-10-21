@@ -109,7 +109,7 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -151,7 +151,7 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin/");
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
@@ -195,7 +195,7 @@ public class TestAdminServlet {
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
 			
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -239,7 +239,7 @@ public class TestAdminServlet {
 			EasyMock.expectLastCall().andThrow(new WBException(""));
 			
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -264,7 +264,7 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			
 			adminServlet.setServletUtility(servletUtility);
@@ -288,7 +288,7 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("");
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay( servletUtility);
@@ -312,7 +312,7 @@ public class TestAdminServlet {
 		{
 			AdminServlet adminServlet = new AdminServlet();
 			adminServlet.setAdminURIPart(null);
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay(servletUtility);
@@ -337,7 +337,7 @@ public class TestAdminServlet {
 		{
 			AdminServlet adminServlet = new AdminServlet();
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(AdminServlet.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
 			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			
 			adminServlet.setServletUtility(servletUtility);

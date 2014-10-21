@@ -5,7 +5,7 @@ public interface WBCacheFactory {
 	public WBWebPagesCache createWBWebPagesCacheInstance();
 	public WBWebPageModulesCache createWBWebPageModulesCacheInstance();
 	public WBParametersCache createWBParametersCacheInstance();
-	public WBFilesCache createWBImagesCacheInstance();
+	public WBFilesCache createWBFilesCacheInstance();
 	public WBArticlesCache createWBArticlesCacheInstance();
 	public WBMessagesCache createWBMessagesCacheInstance();
 	public WBProjectCache createWBProjectCacheInstance();

@@ -9,6 +9,6 @@ import com.webpagebytes.cms.exception.WBIOException;
 public interface WBProjectCache extends WBRefreshableCache {
 	public String getDefaultLanguage() throws WBIOException;
 	public Pair<String, String> getDefaultLocale() throws WBIOException;
-	public Set<String> getSupportedLanguages() throws WBIOException;	
+	public Set<String> getSupportedLocales() throws WBIOException;	
 	public WBProject getProject() throws WBIOException;
 }

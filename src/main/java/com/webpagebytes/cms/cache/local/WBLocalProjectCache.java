@@ -44,7 +44,7 @@ public class WBLocalProjectCache implements WBProjectCache {
 	{
 		return defaultLocale;
 	}
-	public Set<String> getSupportedLanguages() throws WBIOException
+	public Set<String> getSupportedLocales() throws WBIOException
 	{
 		return supportedLanguages;
 	}

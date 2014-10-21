@@ -162,7 +162,7 @@ public void test_populateUriParameters_OK_language_and_country()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		Map<String, String> patternParams = new HashMap<String, String>();
@@ -226,7 +226,7 @@ public void test_populateUriParameters_OK_only_language()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		Map<String, String> patternParams = new HashMap<String, String>();
@@ -288,7 +288,7 @@ public void test_populateUriParameters_empty_urlmatcher()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		
@@ -360,7 +360,7 @@ public void test_populateUriParameters_language_not_supported()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		Map<String, String> patternParams = new HashMap<String, String>();
@@ -439,7 +439,7 @@ public void test_populateUriParameters_no_language_param()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		Map<String, String> patternParams = new HashMap<String, String>();
@@ -518,7 +518,7 @@ public void test_populateUriParameters_no_country_param()
 		Set<String> supportedLanguages = new HashSet<String>();
 		supportedLanguages.add("en_GB");
 		supportedLanguages.add("en");
-		EasyMock.expect(projectCacheMock.getSupportedLanguages()).andReturn(supportedLanguages);
+		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLanguages);
 		
 		URLMatcherResult urlMatcherResult = new URLMatcherResult();
 		Map<String, String> patternParams = new HashMap<String, String>();

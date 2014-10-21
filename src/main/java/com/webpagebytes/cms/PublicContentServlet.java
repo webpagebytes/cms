@@ -32,7 +32,6 @@ public class PublicContentServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(PublicContentServlet.class.getName());
 	public static final String CACHE_QUERY_PARAM = "cqp";
 	public static final String CONTEXT_PATH = "wb-context-path";
-	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
 
 	private WBServletUtility servletUtility = null;
 	
@@ -86,7 +85,7 @@ public void initLocalFileContentBuilder()
 
 public void init() throws ServletException
 {
-	String configPath = servletUtility.getContextParameter(CMS_CONFIG_KEY, this);
+	String configPath = servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, this);
 	if (null == configPath)
 	{
 		throw new ServletException("There is no wpbConfigurationPath parameter defined for admin context"); 
@@ -102,7 +101,7 @@ public void init() throws ServletException
 			cacheFactory.createWBWebPagesCacheInstance(), 
 			cacheFactory.createWBWebPageModulesCacheInstance(), 
 			cacheFactory.createWBParametersCacheInstance(),
-			cacheFactory.createWBImagesCacheInstance(),
+			cacheFactory.createWBFilesCacheInstance(),
 			cacheFactory.createWBArticlesCacheInstance(),
 			cacheFactory.createWBMessagesCacheInstance(),
 			cacheFactory.createWBProjectCacheInstance());

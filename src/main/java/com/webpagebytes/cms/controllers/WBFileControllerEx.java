@@ -54,7 +54,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		validator = new WBFileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
-		filesCache = wbCacheFactory.createWBImagesCacheInstance();	
+		filesCache = wbCacheFactory.createWBFilesCacheInstance();	
 		adminStorage.addStorageListener(this);
 		imageProcessor = WBImageProcessorFactory.getInstance();
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import com.webpagebytes.cms.cache.WBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
@@ -17,6 +18,7 @@ import com.webpagebytes.cms.exception.WBIOException;
 public class WBLocalMessagesCache implements WBMessagesCache {
 	long cacheFingerPrint = 0;
 	Map<String, Map<String, String>> cacheMessages;
+	
 	private AdminDataStorage dataStorage;
 	private static final Object lock = new Object();
 
@@ -81,5 +83,10 @@ public class WBLocalMessagesCache implements WBMessagesCache {
 			cacheFingerPrint = r.nextLong();
 		}
 		
+	}
+	
+	public Set<String> getSupportedLocales()
+	{
+		return cacheMessages.keySet();
 	}
 }

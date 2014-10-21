@@ -68,7 +68,7 @@ public class ModelBuilder {
 		String languageParam = defaultLocale.getFirst();
 		String countryParam = defaultLocale.getSecond();
 		boolean hasLocaleParams = false;
-		Set<String> supportedLanguages = projectCache.getSupportedLanguages();
+		Set<String> supportedLanguages = projectCache.getSupportedLocales();
 		
 		Map<String, String> urlPatternParams = urlMatcherResult.getPatternParams();
 		Map<String, String> uriParams = new HashMap<String, String>();
@@ -123,7 +123,7 @@ public class ModelBuilder {
 		populateLocale(languageParam, countryParam, model);
 	}
 	
-	private void populateLocale(String language, String country, WBModel model)
+	public void populateLocale(String language, String country, WBModel model)
 	{
 		// populate the LOCALE_KEY
 		Map<String, String> localeMap = new HashMap<String, String>();
@@ -132,7 +132,7 @@ public class ModelBuilder {
 		model.getCmsModel().put(WBModel.LOCALE_KEY, localeMap);				
 	}
 	
-	private void populateGlobalParameters (WBModel model) throws WBException
+	public void populateGlobalParameters(WBModel model) throws WBException
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();

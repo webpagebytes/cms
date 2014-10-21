@@ -160,13 +160,13 @@ public void test_init_exception()
 	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBArticlesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBMessagesCacheInstance()).andReturn(null);
-	EasyMock.expect(cacheFactoryMock.createWBImagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBFilesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBParametersCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
 	
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/");		
-	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
+	EasyMock.expect(servletUtilityMock.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
 	Whitebox.setInternalState(publicServlet, "cacheFactory", cacheFactoryMock);
@@ -201,14 +201,14 @@ public void test_init()
 	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBArticlesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBMessagesCacheInstance()).andReturn(null);
-	EasyMock.expect(cacheFactoryMock.createWBImagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.createWBFilesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBParametersCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
 
 	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
 	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/test");		
-	EasyMock.expect(servletUtilityMock.getContextParameter(PublicContentServlet.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
+	EasyMock.expect(servletUtilityMock.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);

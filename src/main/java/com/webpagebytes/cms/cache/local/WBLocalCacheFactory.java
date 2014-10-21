@@ -55,7 +55,7 @@ public class WBLocalCacheFactory implements WBCacheFactory {
 		}
 		return pageModulesCacheInstance;
 	}
-	public WBFilesCache createWBImagesCacheInstance()
+	public WBFilesCache createWBFilesCacheInstance()
 	{
 		if (filesCacheInstance == null)
 		{
