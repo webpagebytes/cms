@@ -2,13 +2,12 @@ package com.webpagebytes.cms;
 
 import static org.junit.Assert.*;
 
-import java.util.HashSet;
 
-import javax.jws.WebParam;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
@@ -60,11 +58,15 @@ WBWebPagesCache pagesCacheMock;
 WBWebPageModulesCache modulesCacheMock;
 WBProjectCache projectCacheMock;
 WBCacheFactory cacheFactoryMock;
+Logger loggerMock;
 
 @Before
 public void setUp()
 {
 publicServlet = new PublicContentServlet();
+
+loggerMock = EasyMock.createMock(Logger.class);
+Whitebox.setInternalState(PublicContentServlet.class, "log", loggerMock);
 
 requestMock = EasyMock.createMock(HttpServletRequest.class);
 responseMock = EasyMock.createMock(HttpServletResponse.class);

@@ -7,6 +7,8 @@ import java.io.OutputStream;
 
 
 
+import java.util.logging.Logger;
+
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import static org.junit.Assert.*;
 
@@ -24,12 +27,13 @@ import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest ({OutputStream.class})
+@PrepareForTest ({OutputStream.class, WBDefaultContentProvider.class})
 public class TestWBDefaultContentProvider {
 
 private FileContentBuilder fileContentBuilderMock;
 private PageContentBuilder pageContentBuilderMock;
 private WBDefaultContentProvider contentProvider;
+private Logger loggerMock;
 
 @Before
 public void before()
@@ -37,7 +41,10 @@ public void before()
 	fileContentBuilderMock = EasyMock.createMock(FileContentBuilder.class);
 	pageContentBuilderMock = EasyMock.createMock(PageContentBuilder.class);
 	contentProvider = new WBDefaultContentProvider(fileContentBuilderMock, pageContentBuilderMock);
+	loggerMock = EasyMock.createMock(Logger.class);
+	Whitebox.setInternalState(WBDefaultContentProvider.class, "log", loggerMock);
 }
+
 
 @Test
 public void test_writeFileContent()

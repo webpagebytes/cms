@@ -10,7 +10,9 @@ import java.io.OutputStream;
 
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.*;
+
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ import com.webpagebytes.cms.cache.WBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.datautility.WBCloudFile;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 
@@ -31,24 +34,34 @@ import com.webpagebytes.cms.exception.WBIOException;
 @PrepareForTest({FileContentBuilder.class})
 public class TestFileContentBuilder {
 
-WBCacheInstances cacheInstancesMock;
-WBFilesCache filesCacheMock;
-FileContentBuilder fileContentBuilder;
+private WBCacheInstances cacheInstancesMock;
+private WBFilesCache filesCacheMock;
+private FileContentBuilder fileContentBuilder;
+private WBCloudFileStorage cloudFileStorageMock;
+
 @Before
 public void setUp()
 {
+	cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 	cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
 	filesCacheMock = EasyMock.createMock(WBFilesCache.class);
 	EasyMock.expect(cacheInstancesMock.getWBFilesCache()).andReturn(filesCacheMock);
 }
 
+@After
+public void tearDown()
+{
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WBCloudFileStorage)null);
+}
+
 @Test
 public void test_initialize()
 {
-	EasyMock.replay(cacheInstancesMock, filesCacheMock);
+	EasyMock.replay(cloudFileStorageMock, cacheInstancesMock, filesCacheMock);
 	fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 	fileContentBuilder.initialize();
-	EasyMock.verify(cacheInstancesMock, filesCacheMock);
+	EasyMock.verify(cloudFileStorageMock, cacheInstancesMock, filesCacheMock);
 }
 
 @Test
@@ -60,11 +73,11 @@ public void test_find()
 	try
 	{		
 		EasyMock.expect(filesCacheMock.getByExternalKey(externalKey)).andReturn(fileMock);		
-		EasyMock.replay(cacheInstancesMock, filesCacheMock, fileMock);
+		EasyMock.replay(cloudFileStorageMock, cacheInstancesMock, filesCacheMock, fileMock);
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 		WBFile result = fileContentBuilder.find(externalKey);
-		EasyMock.verify(cacheInstancesMock, filesCacheMock, fileMock);
+		EasyMock.verify(cloudFileStorageMock, cacheInstancesMock, filesCacheMock, fileMock);
 		
 		assertTrue (result == fileMock);
 	} catch (Exception e)
@@ -90,7 +103,7 @@ public void test_getFileContent()
 		InputStream isMock = EasyMock.createMock(InputStream.class);
 		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andReturn(isMock);
 		
-		EasyMock.replay(fileMock, fileStorageMock, isMock);
+		EasyMock.replay(cloudFileStorageMock, fileMock, fileStorageMock, isMock);
 		InputStream is = fileContentBuilder.getFileContent(fileMock);
 		
 		assertTrue (isMock == is);
@@ -115,7 +128,7 @@ public void test_getFileContent_exception()
 		Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", fileStorageMock);
 		
 		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andThrow(new IOException());
-		EasyMock.replay(fileMock, fileStorageMock);
+		EasyMock.replay(cloudFileStorageMock, fileMock, fileStorageMock);
 		fileContentBuilder.getFileContent(fileMock);
 		assertTrue (false);
 	} 
@@ -163,7 +176,7 @@ public void test_writeFileContent_exception()
 		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(isMock);
 		EasyMock.expect(isMock.read(EasyMock.anyObject(byte[].class))).andThrow(new IOException());
 		
-		EasyMock.replay(isMock);
+		EasyMock.replay(cloudFileStorageMock, isMock);
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 		fileContentBuilder.writeFileContent(fileMock, osMock);
 		assertTrue(false); // we should not gete here

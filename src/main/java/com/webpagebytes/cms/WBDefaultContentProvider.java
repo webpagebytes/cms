@@ -1,6 +1,5 @@
 package com.webpagebytes.cms;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;

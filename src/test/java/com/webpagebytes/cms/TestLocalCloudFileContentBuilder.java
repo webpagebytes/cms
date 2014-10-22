@@ -3,13 +3,14 @@ package com.webpagebytes.cms;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,10 +19,26 @@ import org.powermock.reflect.Whitebox;
 import com.webpagebytes.cms.datautility.WBCloudFile;
 import com.webpagebytes.cms.datautility.WBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
 @RunWith(PowerMockRunner.class)
 public class TestLocalCloudFileContentBuilder {
+
+private WBCloudFileStorage cloudFileStorageMock;
+
+@Before
+public void before()
+{
+	cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+}
+
+@After
+public void after()
+{
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WBCloudFileStorage)null);
+}
 
 @Test
 public void test_serveFile_wrong_file_path()
@@ -42,12 +59,13 @@ public void test_serveFile()
 {
 	try
 	{
+	
 	LocalCloudFileContentBuilder fileContentBuilder = new LocalCloudFileContentBuilder();
+	Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", cloudFileStorageMock);
+
 	String uri = "/__wblocalfile/public/xTEzNzA2ODctMDdjNy00YjZkLWI4ODMtOTcxNzhmNzQxMWUxL3RodW1ibmFpbC85MTM3MDY4Ny0wN2M3LTRiNmQtYjg4My05NzE3OGY3NDExZTEuanBn";
 	String content = "content";
 	
-	WBCloudFileStorage cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
-	Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", cloudFileStorageMock);
 	
 	ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
 	EasyMock.expect(cloudFileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andReturn(bais);
@@ -82,9 +100,7 @@ public void test_serveFile_exception()
 	{
 	LocalCloudFileContentBuilder fileContentBuilder = new LocalCloudFileContentBuilder();
 	String uri = "/__wblocalfile/public/xTEzNzA2ODctMDdjNy00YjZkLWI4ODMtOTcxNzhmNzQxMWUxL3RodW1ibmFpbC85MTM3MDY4Ny0wN2M3LTRiNmQtYjg4My05NzE3OGY3NDExZTEuanBn";
-	String content = "content";
-	
-	WBCloudFileStorage cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	String content = "content";	
 	Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", cloudFileStorageMock);
 	
 	ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());

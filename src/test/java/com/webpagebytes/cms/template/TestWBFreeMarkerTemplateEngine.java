@@ -1,7 +1,6 @@
 package com.webpagebytes.cms.template;
 
 import java.io.IOException;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -11,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
@@ -28,6 +28,7 @@ import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheInstances;
 import com.webpagebytes.cms.cache.WBMessagesCache;
 import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.template.WBFreeMarkerArticleDirective;
 import com.webpagebytes.cms.template.WBFreeMarkerFactory;
@@ -54,10 +55,14 @@ private WBFreeMarkerArticleDirective articleDirectiveMock;
 private WBMessagesCache messageCacheMock;
 private WBCacheInstances cacheInstancesMock;
 private WBCloudFileStorage cloudStorageMock;
+private WBCloudFileStorage cloudFileStorageMock;
 
 @Before
 public void setUp()
 {
+	cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+
 	cacheFactoryMock = PowerMock.createMock(WBCacheFactory.class);
 	freeMarkerFactoryMock = PowerMock.createMock(WBFreeMarkerFactory.class);
 	configurationMock = PowerMock.createMock(Configuration.class);
@@ -71,8 +76,14 @@ public void setUp()
 	
 	Logger loggerMock = PowerMock.createMock(Logger.class);
 	Whitebox.setInternalState(WBFreeMarkerTemplateEngine.class, loggerMock);
-	
 }
+
+@After
+public void tearDown()
+{
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WBCloudFileStorage)null);
+}
+
 
 @Test
 @SuppressStaticInitializationFor("WBFreeMarkerTemplateEngine.class")
@@ -102,12 +113,12 @@ public void test_initialize()
 	
 	Whitebox.setInternalState(templateEngine, "wbFreeMarkerFactory", freeMarkerFactoryMock);
 		
-	PowerMock.replay(cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);	
+	PowerMock.replay(cloudFileStorageMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);	
 	try
 	{
 		templateEngine.initialize();
 		
-		PowerMock.verify(cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.verify(cloudFileStorageMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
 		assertTrue (captureDefaultEncoding.getValue().equals("UTF-8"));
 		assertTrue (captureOutputEncoding.getValue().equals("UTF-8"));
@@ -146,11 +157,11 @@ public void process_ok_no_messages()
 		envMock.process();
 		Whitebox.setInternalState(templateEngine, "wbFreeMarkerFactory", freeMarkerFactoryMock);
 		
-		PowerMock.replay(envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.replay(cloudFileStorageMock, envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 	
 		templateEngine.process(nameTemplate, rootMap, out);
 		
-		PowerMock.verify(envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
 		assertTrue (rootMap.containsKey(WBModel.LOCALE_MESSAGES));
 	} catch (Exception e)
@@ -186,11 +197,11 @@ public void process_ok_with_messages()
 		envMock.process();
 		Whitebox.setInternalState(templateEngine, "wbFreeMarkerFactory", freeMarkerFactoryMock);
 		
-		PowerMock.replay(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.replay(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 	
 		templateEngine.process(nameTemplate, rootMap, out);
 		
-		PowerMock.verify(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
 		assertTrue (rootMap.containsKey(WBModel.LOCALE_MESSAGES));
 	} catch (Exception e)
@@ -226,7 +237,7 @@ public void process_exception()
 		envMock.process();
 		EasyMock.expectLastCall().andThrow(new IOException());
 		
-		PowerMock.replay(envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.replay(cloudFileStorageMock, envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 	
 		templateEngine.process(nameTemplate, rootMap, out);
 		
@@ -234,7 +245,7 @@ public void process_exception()
 	} 
 	catch (WBIOException e)
 	{
-		PowerMock.verify(envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
+		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 		assertTrue (rootMap.containsKey(WBModel.LOCALE_LANGUAGE_KEY));
 
 	}
