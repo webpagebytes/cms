@@ -12,6 +12,8 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
+import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.datautility.FlatStorageImporterExporter;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WBException;
@@ -37,6 +39,17 @@ public class WBExportImportController extends WBController {
 		        if (!item.isFormField() && item.getFieldName().equals("file")) {
 		          InputStream is = item.openStream();
 		          storageExporter.importFromZip(is);		  		
+		          
+		          WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		  		  wbCacheFactory.createWBUrisCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBWebPagesCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBWebPageModulesCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBArticlesCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBMessagesCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBFilesCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBParametersCacheInstance().Refresh();
+		  		  wbCacheFactory.createWBProjectCacheInstance().Refresh();
+		  		  
 		          org.json.JSONObject returnJson = new org.json.JSONObject();
 		          returnJson.put(DATA, "");			
 		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

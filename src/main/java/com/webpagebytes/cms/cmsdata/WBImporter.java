@@ -129,6 +129,14 @@ public class WBImporter {
 			page.setName("");
 		}
 
+		if (properties.get("pageModelProvider") != null)
+		{
+			page.setPageModelProvider(properties.get("pageModelProvider").toString().trim());
+		} else
+		{
+			page.setPageModelProvider("");
+		}
+
 		if (properties.get("htmlSource") != null)
 		{
 			page.setHtmlSource(properties.get("htmlSource").toString().trim());

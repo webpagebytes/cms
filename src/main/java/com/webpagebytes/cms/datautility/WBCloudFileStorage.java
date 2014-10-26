@@ -14,4 +14,5 @@ public interface WBCloudFileStorage {
 	public void updateFileCustomProperties(WBCloudFile file, Map<String, String> customProps) throws IOException;
 	public void updateContentType(WBCloudFile file, String contentType) throws IOException;	
 	public String getPublicFileUrl(WBCloudFile file);	
+	public void clearContent(String bucket) throws IOException;
 }

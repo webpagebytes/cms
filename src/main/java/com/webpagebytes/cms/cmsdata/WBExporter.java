@@ -128,9 +128,9 @@ public class WBExporter {
 			properties.put("name", "");
 		
 		if (page.getPageModelProvider() != null)
-			properties.put("pageModelprovider", page.getPageModelProvider());
+			properties.put("pageModelProvider", page.getPageModelProvider());
 		else
-			properties.put("pageModelprovider", "");
+			properties.put("pageModelProvider", "");
 		
 		if (page.getLastModified() != null)
 			properties.put("lastModified", new Long(page.getLastModified().getTime()).toString());

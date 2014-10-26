@@ -40,7 +40,7 @@ import com.webpagebytes.cms.utility.ContentTypeDetector;
 
 
 public class WBFileControllerEx extends WBController implements AdminDataStorageListener<Object>{
-	private static final String PUBLIC_BUCKET = "public";
+	public static final String PUBLIC_BUCKET = "public";
 	
 	private AdminDataStorage adminStorage;
 	private WBCloudFileStorage cloudFileStorage;

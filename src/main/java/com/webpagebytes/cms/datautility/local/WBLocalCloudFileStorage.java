@@ -363,5 +363,10 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		String partialPath = file.getBucket() + "/" + sanitizeCloudFilePath(file.getPath());
 		return basePublicUrlPath + partialPath;
 	}
+	
+	public void clearContent(String bucket) throws IOException
+	{
+		
+	}
 
 }
