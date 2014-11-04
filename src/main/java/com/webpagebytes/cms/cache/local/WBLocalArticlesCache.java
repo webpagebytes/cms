@@ -42,7 +42,6 @@ public class WBLocalArticlesCache implements WBArticlesCache {
 		return null;
 	}
 
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{

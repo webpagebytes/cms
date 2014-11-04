@@ -22,7 +22,6 @@ public class WBDefaultContentProvider implements WBContentProvider {
 		this.pageContentBuilder = pageContentBuilder;
 	}
 	
-	@Override
 	public boolean writeFileContent(String externalKey, OutputStream os) 
 	{
 		try
@@ -42,7 +41,6 @@ public class WBDefaultContentProvider implements WBContentProvider {
 		return true;
 	}
 
-	@Override
 	public boolean writePageContent(String externalKey, WBModel model,
 			OutputStream os) 
 	{

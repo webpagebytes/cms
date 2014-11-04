@@ -63,7 +63,7 @@ public class WBLocalProjectCache implements WBProjectCache {
 		dataStorage.addWithKey(project);		
 		return project;
 	}
-	@Override
+	
 	public void Refresh() throws WBIOException {
 		synchronized (lock) {
 			project = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);

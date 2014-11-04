@@ -62,7 +62,6 @@ public class WBLocalMessagesCache implements WBMessagesCache {
 		return cacheFingerPrint;
 	}
 	
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock) {
 			Map<String, Map<String, String>> tempCache = new HashMap<String, Map<String, String>>();

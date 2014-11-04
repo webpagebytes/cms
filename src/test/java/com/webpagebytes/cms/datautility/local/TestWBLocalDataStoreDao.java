@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.datautility.local;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -20,16 +22,27 @@ import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao;
 import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
 
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import static org.mockito.Matchers.*;
+
 @RunWith(PowerMockRunner.class)
+@PrepareForTest({WBLocalDataStoreDao.class})
 public class TestWBLocalDataStoreDao {
 private String dbPath = "~/testUnits";
 
 @Test
 public void test_getRecord()
 {
-	WBLocalDataStoreDao dao = new WBLocalDataStoreDao(dbPath);
 	try
 	{
+		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbPath));
 		WBUri uri = new WBUri();
 		uri.setExternalKey("123");
 		uri.setUri("/test");
@@ -37,12 +50,32 @@ public void test_getRecord()
 		uri.setLastModified(Calendar.getInstance().getTime());
 		uri.setResourceType(1);
 		uri.setHttpOperation("GET");
-		WBUri newUri = dao.addRecord(uri, "key");
-
-		WBUri uriGet = (WBUri) dao.getRecord(WBUri.class, "key", newUri.getKey());
-		assertTrue(uriGet.getLastModified().getTime() == uri.getLastModified().getTime());
-		assertTrue(uri.getUri().equals(uriGet.getUri()));
-		assertTrue(uri.getEnabled().equals(uriGet.getEnabled()));
+		
+		Connection connectionMock = PowerMock.createMock(Connection.class);
+		connectionMock.setAutoCommit(true);
+		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
+		
+		String sqlStatement = "sql statement";
+		PowerMockito.doReturn(sqlStatement).when(dao, "getSQLStringForInsert", any(Object.class), any(Set.class));
+		
+		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
+		EasyMock.expect(connectionMock.prepareStatement(sqlStatement)).andReturn(statementMock);
+		PowerMockito.doReturn(1).when(dao, "buildStatementForInsertUpdate", any(), any(), any(), any());
+		
+		EasyMock.expect(statementMock.execute()).andReturn(true);
+		
+		ResultSet resultSetMock = PowerMock.createMock(ResultSet.class);
+		EasyMock.expect(statementMock.getGeneratedKeys()).andReturn(resultSetMock);
+		EasyMock.expect(resultSetMock.next()).andReturn(true);
+		EasyMock.expect(resultSetMock.getLong(1)).andReturn(1L);
+		PowerMockito.doNothing().when(dao, "setObjectProperty", any(), any(), any());
+		statementMock.close();
+		connectionMock.close();
+		PowerMock.replay(connectionMock, statementMock, resultSetMock);
+		WBUri newUri = dao.addRecord(uri, "key");		
+		PowerMock.verify(connectionMock, statementMock, resultSetMock);
+		
+		
 	} catch (Exception e)
 	{
 		assertTrue(false);

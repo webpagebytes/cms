@@ -57,7 +57,6 @@ public class WBLocalParametersCache implements WBParametersCache {
 		return result;
 	}
 
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock) {
 			List<WBParameter> records = dataStorage.getAllRecords(WBParameter.class);

@@ -40,7 +40,6 @@ public class WBLocalWebPageModulesCache implements WBWebPageModulesCache {
 		return null;
 	}
 
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{

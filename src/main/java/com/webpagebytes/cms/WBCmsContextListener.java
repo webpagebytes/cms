@@ -16,13 +16,11 @@ public class WBCmsContextListener implements ServletContextListener {
 
 	private static final Logger log = Logger.getLogger(WBCmsContextListener.class.getName());
 	
-	@Override
 	public void contextDestroyed(ServletContextEvent servletContext) {
 		
 		
 	}
 
-	@Override
 	public void contextInitialized(ServletContextEvent servletContext) {
 		
     	log.log(Level.INFO, "WBCmsContextListener context initialized");

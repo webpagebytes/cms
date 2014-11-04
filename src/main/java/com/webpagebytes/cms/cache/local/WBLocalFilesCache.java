@@ -42,7 +42,6 @@ public class WBLocalFilesCache implements WBFilesCache {
 		return null;
 	}
 
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{

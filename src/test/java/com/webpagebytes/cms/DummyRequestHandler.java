@@ -17,7 +17,6 @@ public class DummyRequestHandler implements WBRequestHandler {
 		
 	}
 
-	@Override
 	public void initialize(WBContentProvider contentProvider) {
 		// TODO Auto-generated method stub
 		

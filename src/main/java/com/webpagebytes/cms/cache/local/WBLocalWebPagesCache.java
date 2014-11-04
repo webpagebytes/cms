@@ -38,7 +38,6 @@ public class WBLocalWebPagesCache implements WBWebPagesCache {
 		return null;
 	}
 
-	@Override
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{
