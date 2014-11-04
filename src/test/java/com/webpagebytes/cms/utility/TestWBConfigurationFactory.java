@@ -39,7 +39,7 @@ public void test_getConfiguration()
 	WBConfiguration config2 = WBConfigurationFactory.getConfiguration();	
 	assertTrue (config1 == config2);
 	
-	assertTrue(config1.getSectionClassFactory(WBConfiguration.SECTION.SECTION_CACHE).equals("com.xyz.cache"));
+	assertTrue(config1.getSectionClassFactory(WBConfiguration.WPBSECTION.SECTION_CACHE).equals("com.xyz.cache"));
 }
 
 @Test
@@ -48,7 +48,7 @@ public void test_no_active_Configuration()
 	Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", "META-INF/wbconfiguration_noactive.xml");
 	WBConfiguration config1 = WBConfigurationFactory.getConfiguration();
 	assertTrue(config1 != null);
-	assertTrue(config1.getSectionClassFactory(WBConfiguration.SECTION.SECTION_CACHE) == null);
+	assertTrue(config1.getSectionClassFactory(WBConfiguration.WPBSECTION.SECTION_CACHE) == null);
 
 }
 

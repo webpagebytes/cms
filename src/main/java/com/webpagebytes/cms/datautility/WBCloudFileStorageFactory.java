@@ -3,10 +3,9 @@ package com.webpagebytes.cms.datautility;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 
 public class WBCloudFileStorageFactory {
@@ -23,7 +22,7 @@ public class WBCloudFileStorageFactory {
 					String factoryClass = "";
 					if (config!=null)
 					{
-						factoryClass = config.getSectionClassFactory(SECTION.SECTION_FILESTORAGE);
+						factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_FILESTORAGE);
 					}
 					try
 					{

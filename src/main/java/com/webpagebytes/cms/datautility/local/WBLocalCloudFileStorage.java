@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.datautility.local;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,7 +27,7 @@ import com.webpagebytes.cms.datautility.WBDefaultCloudFileInfo;
 import com.webpagebytes.cms.utility.WBBase64Utility;
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	private static final String publicDataFolder = "public";
@@ -99,7 +100,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		if (paramsFromConfig)
 		{
 			WBConfiguration config = WBConfigurationFactory.getConfiguration();
-			Map<String, String> params = config.getSectionParams(SECTION.SECTION_FILESTORAGE);
+			Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_FILESTORAGE);
 		
 			dataDirectory = params.get("dataDirectory");
 			basePublicUrlPath = params.get("basePublicUrlPath");

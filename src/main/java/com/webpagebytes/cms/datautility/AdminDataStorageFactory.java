@@ -1,12 +1,13 @@
 package com.webpagebytes.cms.datautility;
 
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.datautility.local.WBLocalAdminDataStorage;
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 public class AdminDataStorageFactory {
 	private static AdminDataStorage instance;
@@ -22,7 +23,7 @@ public class AdminDataStorageFactory {
 				String factoryClass = "";
 				if (config != null) 
 				{
-					factoryClass = config.getSectionClassFactory(SECTION.SECTION_DATASTORAGE);
+					factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_DATASTORAGE);
 				}
 				try
 				{

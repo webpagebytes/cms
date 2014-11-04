@@ -1,8 +1,9 @@
 package com.webpagebytes.cms.datautility;
 
 import com.webpagebytes.cms.utility.WBConfiguration;
+
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 public class WBImageProcessorFactory {
 
@@ -18,7 +19,7 @@ public class WBImageProcessorFactory {
 				String factoryClass = "";
 				if (config!=null)
 				{
-					factoryClass = config.getSectionClassFactory(SECTION.SECTION_IMAGEPROCESSOR);
+					factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_IMAGEPROCESSOR);
 				}
 				try
 				{

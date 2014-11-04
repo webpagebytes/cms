@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.datautility.local;
 
 import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalSortDir
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.SECTION;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 public class WBLocalAdminDataStorage implements AdminDataStorage {
 	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
@@ -29,7 +30,7 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	public WBLocalAdminDataStorage()
 	{
 		WBConfiguration config = WBConfigurationFactory.getConfiguration();
-		Map<String, String> params = config.getSectionParams(SECTION.SECTION_DATASTORAGE);
+		Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE);
 		String dbpath = params.get("dbpath");
 		localDataStorageDao = new WBLocalDataStoreDao(dbpath);
 	}

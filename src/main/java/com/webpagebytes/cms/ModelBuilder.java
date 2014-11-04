@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,16 +19,28 @@ import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.utility.WBConfiguration;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 public class ModelBuilder {
 
+	private static final Logger log = Logger.getLogger(ModelBuilder.class.getName());
 	private WBCacheInstances cacheInstances;
-	
+	private WBConfiguration configuration;
+	private String baseModelUrlPath;
+	public static final String BASE_MODEL_URL_PATH_HEADER = "X-BaseModelUrlPath";
 	public ModelBuilder(WBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
+		configuration = WBConfigurationFactory.getConfiguration();
+		Map<String, String> sectionParams = configuration.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR);
+		if (sectionParams != null)
+		{
+			baseModelUrlPath = sectionParams.get("baseModelUrlPath");
+		}
 	}
-	
+
 	/*
 	 * populate the WBModel based on uri data. This will populate:
 	 * REQUEST_KEY
@@ -144,38 +158,126 @@ public class ModelBuilder {
 		model.getCmsModel().put(WBModel.GLOBALS_KEY, globalParams);
 		
 	}
+	private String getProtocol(String url)
+	{
+		int indexDomain = url.indexOf("://");
+		if (indexDomain > 0)
+		{
+			return url.substring(0, indexDomain).toLowerCase();
+		}
+		return null;
+	}
+	private String getDomain(String url)
+	{
+		int indexDomain = url.indexOf("://");
+		if (indexDomain > 0)
+		{
+			String domain = url.substring(indexDomain+3);
+			int indexUri = domain.indexOf('/');
+			if (indexUri>0)
+			{
+				domain = domain.substring(0, indexUri);
+			}
+			int indexPort = domain.indexOf(':');
+			if (indexPort>0)
+			{
+				domain = domain.substring(0, indexPort);
+			}
+			return domain.toLowerCase();
+		}
+		return null;
+	}
+	private String getContextPathFromUrl(String url)
+	{
+		// for http://www.example.com/test return '/test'
+		// for http://www.example.com return ''
+		// for http://www.example.com/test1/test2 return '/test1/test2'
+		int indexDomain = url.indexOf("://");
+		if (indexDomain > 0)
+		{
+			String urlNoProtocol = url.substring(indexDomain+3);
+			int index1 = urlNoProtocol.indexOf('/');
+			int index2 = urlNoProtocol.lastIndexOf('/');
+			if (index1<0 && index2 <0)
+			{
+				return "";
+			}
+			if (index1 == index2)
+			{
+				return urlNoProtocol.substring(index1);
+			}
+			
+			// we are here in either /test/ or /test1/test2/ case
+			if (index1>0 && index2>0 && (index2 == urlNoProtocol.length()-1))
+			{
+				return urlNoProtocol.substring(index1, index2-1);
+			}
+			
+			return urlNoProtocol.substring(index1);
+
+		}
+		return "";		
+	}
+	
 	private void populateStaticParameters(HttpServletRequest request, WBModel model)
 	{
-		String url = request.getRequestURL().toString().toLowerCase();
-		int indexDomain = url.indexOf("://");
-		String protocol = url.substring(0, indexDomain);
-		String domain = url.substring(indexDomain+3);
-		int indexUri = domain.indexOf('/');
-		if (indexUri>0)
+		//the static path params are taken in the following order
+		// the header value (X-BaseModelUrlPath), the value of baseModelUrlPath from configuration and finally the requestUrl
+		String url = request.getHeader(BASE_MODEL_URL_PATH_HEADER);
+		boolean useUrlfromRequest = false;
+		if (null == url)
 		{
-			domain = domain.substring(0, indexUri);
+			url = baseModelUrlPath; 
+			if (null == url)
+			{
+				useUrlfromRequest = true;
+				url = request.getRequestURL().toString().toLowerCase();
+				int indexQ = url.indexOf('?');
+				if (indexQ > 0)
+				{
+					url = url.substring(0, indexQ-1);
+				}
+			}
 		}
+		log.log(Level.INFO, "Build WBModel.REQUEST_KEY for url:" + url);
+	
+		String protocol = getProtocol(url);
+		String domain = getDomain(url);
+
 		Map<String, String> result = new HashMap<String, String>();
 		result.put(WBModel.GLOBAL_PROTOCOL, protocol);
 		result.put(WBModel.GLOBAL_DOMAIN, domain);
-		String baseUrl = protocol + "://" + domain;
-		Object objUriPrefix = request.getAttribute(PublicContentServlet.CONTEXT_PATH);
-		if (objUriPrefix != null)
+		
+		if (useUrlfromRequest)
 		{
-			String uriPrefix = objUriPrefix.toString();
-			if (uriPrefix.length()>0)
+			String baseUrl = protocol + "://" + domain;
+			Object objUriPrefix = request.getAttribute(PublicContentServlet.CONTEXT_PATH);
+			if (objUriPrefix != null)
 			{
-				if (uriPrefix.startsWith("/"))
+				String uriPrefix = objUriPrefix.toString();
+				if (uriPrefix.length()>0)
 				{
-					baseUrl = baseUrl + uriPrefix;
-				} else
-				{
-					baseUrl = baseUrl + "/" + uriPrefix;
+					if (uriPrefix.startsWith("/"))
+					{
+						baseUrl = baseUrl + uriPrefix;
+					} else
+					{
+						baseUrl = baseUrl + "/" + uriPrefix;
+					}
 				}
+				result.put(WBModel.GLOBAL_CONTEXT_PATH, objUriPrefix.toString());
+			}	
+			result.put(WBModel.GLOBAL_BASE_URL, baseUrl);
+		} else
+		{
+			if (url.lastIndexOf('/') == url.length()-1)
+			{
+				url = url.substring(0,  url.length()-1);
 			}
-			result.put(WBModel.GLOBAL_CONTEXT_PATH, objUriPrefix.toString());
-		}	
-		result.put(WBModel.GLOBAL_BASE_URL, baseUrl);
+			result.put(WBModel.GLOBAL_BASE_URL, url);
+			result.put(WBModel.GLOBAL_CONTEXT_PATH, getContextPathFromUrl(url));
+		}
+		
 		model.getCmsModel().put(WBModel.REQUEST_KEY, result);
 	}
 

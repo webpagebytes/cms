@@ -3,14 +3,15 @@ package com.webpagebytes.cms.utility;
 import java.util.Map;
 
 public interface WBConfiguration {
-	enum SECTION
+	enum WPBSECTION
 	{
 		SECTION_CACHE,
 		SECTION_DATASTORAGE,
 		SECTION_FILESTORAGE,
-		SECTION_IMAGEPROCESSOR
+		SECTION_IMAGEPROCESSOR,
+		SECTION_MODEL_CONFIGURATOR
 	};
 
-	public String getSectionClassFactory(SECTION section);
-	public Map<String,String> getSectionParams(SECTION section);
+	public String getSectionClassFactory(WPBSECTION section);
+	public Map<String,String> getSectionParams(WPBSECTION section);
 }

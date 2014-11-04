@@ -4,24 +4,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WBDefaultConfiguration implements WBConfiguration {
-	Map<SECTION, String> mapSectionClassFactories = new HashMap<SECTION, String>();
-	Map<SECTION, Map<String, String>> mapSectionParams = new HashMap<SECTION, Map<String, String>>();
+	Map<WPBSECTION, String> mapSectionClassFactories = new HashMap<WPBSECTION, String>();
+	Map<WPBSECTION, Map<String, String>> mapSectionParams = new HashMap<WPBSECTION, Map<String, String>>();
 	
-	public String setSectionClassFactory(SECTION section, String classfactory)
+	public String setSectionClassFactory(WPBSECTION section, String classfactory)
 	{
 		return mapSectionClassFactories.put(section, classfactory);
 	}
 
-	public String getSectionClassFactory(SECTION section)
+	public String getSectionClassFactory(WPBSECTION section)
 	{
 		return mapSectionClassFactories.get(section);
 	}
 	
-	public Map<String,String> getSectionParams(SECTION section)
+	public Map<String,String> getSectionParams(WPBSECTION section)
 	{
 		return mapSectionParams.get(section);
 	}
-	public void addParamToSection(SECTION section, String paramName, String paramValue)
+	public void addParamToSection(WPBSECTION section, String paramName, String paramValue)
 	{
 		Map<String, String> params = mapSectionParams.get(section);
 		if (params == null)

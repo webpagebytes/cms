@@ -2,7 +2,6 @@ package com.webpagebytes.cms;
 
 import static org.junit.Assert.*;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +12,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +37,9 @@ import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.utility.WBConfiguration;
+import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WBModel.class, ModelBuilder.class})
@@ -50,18 +53,29 @@ URLMatcherResult urlMatcherResultMock;
 WBModel modelMock;
 WBProjectCache projectCacheMock;
 WBWebPage webPageMock;
+WBConfiguration configurationMock;
+Map<String, String> modelConfigs = new HashMap<String, String>();
 
 @Before
 public void setUp()
 {
+	configurationMock = EasyMock.createMock(WBConfiguration.class);
+	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", configurationMock);
+	EasyMock.expect(configurationMock.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR)).andReturn(modelConfigs);
+	
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
 	cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
-	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	uriMock = EasyMock.createMock(WBUri.class);
 	urlMatcherResultMock = EasyMock.createMock(URLMatcherResult.class);
 	modelMock = EasyMock.createMock(WBModel.class);
 	webPageMock = EasyMock.createMock(WBWebPage.class);
 	projectCacheMock  = EasyMock.createMock(WBProjectCache.class);
+}
+
+@After
+public void tearDown()
+{
+	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (WBConfiguration) null);
 }
 
 @Test
@@ -73,9 +87,11 @@ public void test_populateModelForUriData()
 	try
 	{
 		EasyMock.expect(uriMock.getExternalKey()).andReturn("123");
-		EasyMock.replay(requestMock, uriMock, urlMatcherResultMock, modelMock);
+		EasyMock.replay(requestMock, uriMock, urlMatcherResultMock, modelMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		modelBuilder.populateModelForUriData(requestMock, uriMock, urlMatcherResultMock, modelMock);		
-		EasyMock.verify(requestMock, uriMock, urlMatcherResultMock, modelMock);
+		EasyMock.verify(requestMock, uriMock, urlMatcherResultMock, modelMock, configurationMock);
 	} catch (WBException e)
 	{
 		assertTrue (false);
@@ -106,10 +122,12 @@ public void test_populateModelForWebPage()
 		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(paramsCacheMock.getAllForOwner("abc")).andReturn(pageParams);
 		
-		EasyMock.replay(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock);
+		EasyMock.replay(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		
 		modelBuilder.populateModelForWebPage(webPageMock, model);		
-		EasyMock.verify(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock);
+		EasyMock.verify(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock, configurationMock);
 		
 		assertTrue (model.getCmsModel().get(WBModel.PAGE_PARAMETERS_KEY).equals(mapParams));
 		
@@ -124,7 +142,6 @@ public void test_populateUriParameters_OK_language_and_country()
 {
 	try
 	{
-		
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
@@ -173,7 +190,9 @@ public void test_populateUriParameters_OK_language_and_country()
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -182,7 +201,7 @@ public void test_populateUriParameters_OK_language_and_country()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 		
 		assertTrue (model.getCmsModel().get(WBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
@@ -197,7 +216,6 @@ public void test_populateUriParameters_OK_only_language()
 {
 	try
 	{
-		
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
@@ -236,7 +254,10 @@ public void test_populateUriParameters_OK_only_language()
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -245,7 +266,7 @@ public void test_populateUriParameters_OK_only_language()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 		
 		assertTrue (model.getCmsModel().get(WBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
@@ -260,7 +281,6 @@ public void test_populateUriParameters_empty_urlmatcher()
 {
 	try
 	{
-		
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
@@ -294,8 +314,9 @@ public void test_populateUriParameters_empty_urlmatcher()
 		
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -304,7 +325,7 @@ public void test_populateUriParameters_empty_urlmatcher()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 		
 		assertTrue (model.getCmsModel().get(WBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
@@ -322,7 +343,6 @@ public void test_populateUriParameters_language_not_supported()
 {
 	try
 	{
-		
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
@@ -371,7 +391,10 @@ public void test_populateUriParameters_language_not_supported()
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
+		
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -385,7 +408,7 @@ public void test_populateUriParameters_language_not_supported()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 				
 	} catch (WBException e)
 	{
@@ -450,7 +473,9 @@ public void test_populateUriParameters_no_language_param()
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -464,7 +489,7 @@ public void test_populateUriParameters_no_language_param()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 			
 	} catch (WBException e)
 	{
@@ -480,7 +505,6 @@ public void test_populateUriParameters_no_country_param()
 {
 	try
 	{
-		
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
@@ -529,7 +553,10 @@ public void test_populateUriParameters_no_country_param()
 		EasyMock.expect(paramsCacheMock.getAllForOwner(uriExternalKey)).andReturn(pageParams);
 		
 		
-		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.replay(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
+		
 		try
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
@@ -543,7 +570,7 @@ public void test_populateUriParameters_no_country_param()
 			assertTrue(false);
 		}
 		
-		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock);
+		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 			
 	} catch (WBException e)
 	{
@@ -555,6 +582,8 @@ public void test_populateUriParameters_no_country_param()
 @Test
 public void test_populateLocale()
 {
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
+	
 	Map<String, String> mapLocale = new HashMap<String, String>();
 	mapLocale.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
 	mapLocale.put(WBModel.LOCALE_COUNTRY_KEY, "GB");
@@ -576,6 +605,8 @@ public void test_populateGlobalParameters()
 {
 	try
 	{
+		modelBuilder = new ModelBuilder(cacheInstancesMock);
+		
 		List<WBParameter> globalParams = new ArrayList<WBParameter>();
 		WBModel model = new WBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
@@ -613,9 +644,12 @@ public void test_populateGlobalParameters()
 }
 
 @Test
-public void test_populateStaticParameters_http()
+public void test_populateStaticParametersFromHeader_http()
 {
-	String url = "http://www.example.com/test/xyz.html?a=1&b=2";
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
+	
+	String url = "http://www.example.com/test/";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(url);
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
@@ -623,9 +657,6 @@ public void test_populateStaticParameters_http()
 	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://www.example.com/test");
 	WBModel model = new WBModel();
 	
-	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
-	
 	EasyMock.replay(requestMock);
 
 	try
@@ -637,25 +668,23 @@ public void test_populateStaticParameters_http()
 	}
 	EasyMock.verify(requestMock);
 	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
-
 }
 
 @Test
-public void test_populateStaticParameters_https()
+public void test_populateStaticParametersFromHeader_https()
 {
-	String url = "https://www.example.com/test/xyz.html?a=1&b=2";
+	String url = "https://www.example.com/test1/test2";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(url);
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "https");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
-	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test");
-	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
 	WBModel model = new WBModel();
 	
-	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
+	EasyMock.replay(requestMock, configurationMock);
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	
-	EasyMock.replay(requestMock);
-
 	try
 	{		
 		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
@@ -663,26 +692,82 @@ public void test_populateStaticParameters_https()
 	{
 		assertTrue(false);
 	}
-	EasyMock.verify(requestMock);
+	EasyMock.verify(requestMock, configurationMock);
+	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
+}
+
+@Test
+public void test_populateStaticParametersFromConfig_http()
+{
+	
+	String url = "https://www.example.com/test1/test2";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(null);
+	modelConfigs.put("baseModelUrlPath", "https://www.example.com/test1/test2/");
+	Map<String, String> mapStaticParams = new HashMap<String, String>();
+	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "https");
+	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
+	WBModel model = new WBModel();
+	
+	EasyMock.replay(requestMock, configurationMock);
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
+	
+	try
+	{		
+		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+	EasyMock.verify(requestMock, configurationMock);
+	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
+}
+
+@Test
+public void test_populateStaticParametersFromRequest_http()
+{
+	
+	String url = "https://www.example.com/test1/test2/aaa.html?abc=1";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(null);
+	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
+	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test1/test2");
+	Map<String, String> mapStaticParams = new HashMap<String, String>();
+	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "https");
+	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
+	WBModel model = new WBModel();
+	
+	EasyMock.replay(requestMock, configurationMock);
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
+	
+	try
+	{		
+		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
+	} catch (Exception e)
+	{
+		assertTrue(false);
+	}
+	EasyMock.verify(requestMock, configurationMock);
 	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
 }
 
 @Test
 public void test_populateStaticParameters_uppercase()
 {
-	String url = "HTTP://EXAMPLE.COM/TEST/xyz.html";
+	String url = "http://www.EXAMPLE.com/test1/TEST2";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(url);
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
-	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
-	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test");
-	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/test");
+	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "www.example.com");
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/test1/TEST2");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://www.EXAMPLE.com/test1/TEST2");
 	WBModel model = new WBModel();
 	
-	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/test");
+	EasyMock.replay(requestMock, configurationMock);
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	
-	EasyMock.replay(requestMock);
-
 	try
 	{		
 		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
@@ -690,27 +775,25 @@ public void test_populateStaticParameters_uppercase()
 	{
 		assertTrue(false);
 	}
-	EasyMock.verify(requestMock);
+	EasyMock.verify(requestMock, configurationMock);
 	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
 }
 
 @Test
 public void test_populateStaticParameters_justdomain()
 {
-	String url = "HTTP://EXAMPLE.COM";
+	String url = "http://EXAMPLE.com";
+	EasyMock.expect(requestMock.getHeader(ModelBuilder.BASE_MODEL_URL_PATH_HEADER)).andReturn(url);
 	Map<String, String> mapStaticParams = new HashMap<String, String>();
 	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
 	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
-	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "/");
-	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com/");
-	
+	mapStaticParams.put(WBModel.GLOBAL_CONTEXT_PATH, "");
+	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://EXAMPLE.com");
 	WBModel model = new WBModel();
 	
-	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn("/");
+	EasyMock.replay(requestMock, configurationMock);
+	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	
-	EasyMock.replay(requestMock);
-
 	try
 	{		
 		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
@@ -718,34 +801,7 @@ public void test_populateStaticParameters_justdomain()
 	{
 		assertTrue(false);
 	}
-	EasyMock.verify(requestMock);
-	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
-}
-
-@Test
-public void test_populateStaticParameters_nouriprefix()
-{
-	String url = "HTTP://EXAMPLE.COM";
-	Map<String, String> mapStaticParams = new HashMap<String, String>();
-	mapStaticParams.put(WBModel.GLOBAL_PROTOCOL, "http");
-	mapStaticParams.put(WBModel.GLOBAL_DOMAIN, "example.com");
-	mapStaticParams.put(WBModel.GLOBAL_BASE_URL, "http://example.com");
-	
-	WBModel model = new WBModel();
-	
-	EasyMock.expect(requestMock.getRequestURL()).andReturn(new StringBuffer(url));
-	EasyMock.expect(requestMock.getAttribute(PublicContentServlet.CONTEXT_PATH)).andReturn(null);
-	
-	EasyMock.replay(requestMock);
-
-	try
-	{		
-		Whitebox.invokeMethod(modelBuilder, "populateStaticParameters", requestMock, model);
-	} catch (Exception e)
-	{
-		assertTrue(false);
-	}
-	EasyMock.verify(requestMock);
+	EasyMock.verify(requestMock, configurationMock);
 	assertTrue(model.getCmsModel().get(WBModel.REQUEST_KEY).equals(mapStaticParams));
 }
 

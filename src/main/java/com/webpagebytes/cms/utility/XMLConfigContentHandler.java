@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XMLConfigContentHandler extends DefaultHandler {
 	StringBuilder strBuilder = new StringBuilder();
 	WBDefaultConfiguration configuration = new WBDefaultConfiguration();
-	WBConfiguration.SECTION currentSection;
+	WBConfiguration.WPBSECTION currentSection;
 	String activeConfiguration = "";
 	boolean recordData = false; 
 	
@@ -21,14 +21,17 @@ public class XMLConfigContentHandler extends DefaultHandler {
      {
 		strBuilder.setLength(0);
 		if (qName.equals("wpbcache")) {
-			currentSection = WBConfiguration.SECTION.SECTION_CACHE;
+			currentSection = WBConfiguration.WPBSECTION.SECTION_CACHE;
 		} else if (qName.equals("wpbadmindatastorage")) {
-			currentSection = WBConfiguration.SECTION.SECTION_DATASTORAGE;
+			currentSection = WBConfiguration.WPBSECTION.SECTION_DATASTORAGE;
 		} else if (qName.equals("wpbcloudfilestorage")) {
-			currentSection = WBConfiguration.SECTION.SECTION_FILESTORAGE;
+			currentSection = WBConfiguration.WPBSECTION.SECTION_FILESTORAGE;
 		} else if (qName.equals("wpbimageprocessor")) {
-			currentSection = WBConfiguration.SECTION.SECTION_IMAGEPROCESSOR;
-		} else if (qName.equals("wpbconfiguration"))
+			currentSection = WBConfiguration.WPBSECTION.SECTION_IMAGEPROCESSOR;
+		} else if (qName.equals("wpbmodel")) {
+			currentSection = WBConfiguration.WPBSECTION.SECTION_MODEL_CONFIGURATOR;
+		} 
+		else if (qName.equals("wpbconfiguration"))
 		{
 			if (activeConfiguration.length()>0 && attributes.getValue("name")!=null && attributes.getValue("name").equals(activeConfiguration))
 			{
