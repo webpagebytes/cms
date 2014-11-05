@@ -301,10 +301,11 @@ public class WBLocalDataStoreDao {
 	{
 		Connection con = getConnection();
 		ResultSet resultSet = null;
+		PreparedStatement statement = null;
 		try
 		{
 			String table = kind.getSimpleName().toUpperCase();
-			PreparedStatement statement = con.prepareStatement(String.format(QUERY_RECORD, table, keyFieldName));
+			statement = con.prepareStatement(String.format(QUERY_RECORD, table, keyFieldName));
 			setPrepareStatementParameter(statement, 1, keyValue);
 			
 			resultSet = statement.executeQuery();
@@ -322,6 +323,10 @@ public class WBLocalDataStoreDao {
 		}
 		finally
 		{
+			if (statement != null)
+			{
+				statement.close();
+			}
 			if (resultSet != null)
 			{
 				resultSet.close();
