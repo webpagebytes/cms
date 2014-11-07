@@ -2,7 +2,6 @@ package com.webpagebytes.cms.datautility.local;
 
 import static org.junit.Assert.*;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +12,7 @@ import java.util.Set;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cmsdata.WBProject;
@@ -49,7 +49,7 @@ public void test_addRecord()
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
 		
 		String sqlStatement = "sql statement";
-		PowerMockito.doReturn(sqlStatement).when(dao, "getSQLStringForInsert", any(Object.class), any(Set.class));
+		PowerMockito.doReturn(sqlStatement).when(dao, "getSQLStringForInsert", Matchers.any(Object.class), Matchers.any(Set.class));
 		
 		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
 		EasyMock.expect(connectionMock.prepareStatement(sqlStatement)).andReturn(statementMock);

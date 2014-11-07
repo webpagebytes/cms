@@ -30,6 +30,7 @@ public void testSax()
 	assertTrue(conf.getSectionClassFactory(WBConfiguration.WPBSECTION.SECTION_FILESTORAGE).equals("com.xyz.abc"));
 	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_CACHE) == null);
 	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_FILESTORAGE) == null);
+	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR).size() == 1);
 	Map<String, String> expectedParams = new HashMap<String, String>();
 	expectedParams.put("x", "1");
 	expectedParams.put("y", "2");	

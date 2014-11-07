@@ -1,12 +1,12 @@
 package com.webpagebytes.cms.datautility.local;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,7 +17,9 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.CRC32;
+
 import javax.xml.bind.DatatypeConverter;
+
 import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.datautility.WBCloudFile;
@@ -95,6 +97,58 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		return dataDirectory +  File.separator + privateMetaFolder;
 	}
 	
+	private void initializeFileStorage(String dataDirectory) throws IOException, FileNotFoundException
+	{
+		File fileBaseData = new File(dataDirectory);
+		if (!fileBaseData.exists() || !fileBaseData.isDirectory())
+		{
+			throw new FileNotFoundException();
+		}
+		
+		File publicDataDir = new File (getPathPublicDataDir());
+		if (!publicDataDir.exists())
+		{
+			log.log(Level.INFO, "Create public dir for WBLocalCloudFileStorage " + publicDataDir.getAbsolutePath());
+			if (false == publicDataDir.mkdir())
+			{
+				throw new IOException("Cannot create dir: " + publicDataDir.getPath());
+			}
+		}
+		
+		File privateDataDir = new File (getPathPrivateDataDir());
+		if (!privateDataDir.exists())
+		{
+			log.log(Level.INFO, "Create private dir for WBLocalCloudFileStorage " + privateDataDir.getAbsolutePath());
+			if (false == privateDataDir.mkdir())
+			{
+				throw new IOException("Cannot create dir: " + privateDataDir.getPath());
+			}
+		}
+		
+		File publicMetaDir = new File (getPathPublicMetaDir());
+		if (!publicMetaDir.exists())
+		{
+			log.log(Level.INFO, "Create public meta dir for WBLocalCloudFileStorage " + publicMetaDir.getAbsolutePath());
+			if (false == publicMetaDir.mkdir())
+			{
+				throw new IOException("Cannot create dir: " + publicMetaDir.getPath());
+			}
+		}
+		
+		File privateMetaDir = new File (getPathPrivateMetaDir());
+		if (!privateMetaDir.exists())
+		{
+			log.log(Level.INFO, "Create private meta dir for WBLocalCloudFileStorage " + privateMetaDir.getAbsolutePath());
+			if (false == privateMetaDir.mkdir())
+			{
+				throw new IOException("Cannot create dir: " + privateMetaDir.getPath());
+			}
+		}
+		
+		isInitialized = true;
+
+	}
+	
 	private void initialize(boolean paramsFromConfig) throws IOException, FileNotFoundException
 	{
 		if (paramsFromConfig)
@@ -113,52 +167,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		
 		log.log(Level.INFO, "Initialize for WBLocalCloudFileStorage with dir: " + dataDirectory);
 		
-		//check to see that the dataDirectory exists
-		File fileBaseData = new File(dataDirectory);
-		if (!fileBaseData.exists() || !fileBaseData.isDirectory())
-		{
-			throw new FileNotFoundException();
-		}
-		File publicDataDir = new File (getPathPublicDataDir());
-		if (!publicDataDir.exists())
-		{
-			if (false == publicDataDir.mkdir())
-			{
-				throw new IOException("Cannot create dir: " + publicDataDir.getPath());
-			}
-		}
-		log.log(Level.INFO, "Create public dir for WBLocalCloudFileStorage " + publicDataDir.getAbsolutePath());
-		File privateDataDir = new File (getPathPrivateDataDir());
-		if (!privateDataDir.exists())
-		{
-			if (false == privateDataDir.mkdir())
-			{
-				throw new IOException("Cannot create dir: " + privateDataDir.getPath());
-			}
-		}
-		log.log(Level.INFO, "Create private dir for WBLocalCloudFileStorage " + privateDataDir.getAbsolutePath());
-		
-		File publicMetaDir = new File (getPathPublicMetaDir());
-		if (!publicMetaDir.exists())
-		{
-			if (false == publicMetaDir.mkdir())
-			{
-				throw new IOException("Cannot create dir: " + publicMetaDir.getPath());
-			}
-		}
-		log.log(Level.INFO, "Create public meta dir for WBLocalCloudFileStorage " + publicMetaDir.getAbsolutePath());
-		
-		File privateMetaDir = new File (getPathPrivateMetaDir());
-		if (!privateMetaDir.exists())
-		{
-			if (false == privateMetaDir.mkdir())
-			{
-				throw new IOException("Cannot create dir: " + privateMetaDir.getPath());
-			}
-		}
-		log.log(Level.INFO, "Create private meta dir for WBLocalCloudFileStorage " + privateMetaDir.getAbsolutePath());
-		
-		isInitialized = true;
+		initializeFileStorage(dataDirectory);
 	}
 	/*
 	 * sanitizeCloudFilePath will return a safe path that can be part of a file name
@@ -193,15 +202,48 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		}
 		return null;
 	}
-
-	public void storeFile(InputStream is, WBCloudFile file) throws IOException
+	
+	private OutputStream createStorageOutputStream(String path) throws IOException
 	{
-		String fullFilePath = getLocalFullDataPath(file);
-		if (new File(fullFilePath).exists())
+		if (new File(path).exists())
 		{
 			throw new IOException("file already exists");
 		}
-		FileOutputStream fos = new FileOutputStream(fullFilePath);
+		return new FileOutputStream(path);
+	}
+
+	private InputStream createStorageInputStream(String path) throws IOException
+	{
+	
+		return new FileInputStream(path);
+	}
+
+	
+	private void storeFileProperties(Properties props, String filePath) throws IOException 
+	{
+		FileOutputStream os = new FileOutputStream(filePath);
+		props.storeToXML(os, "", "UTF-8");
+		IOUtils.closeQuietly(os);
+	}
+	
+	private Properties getFileProperties(String filePath) throws IOException
+	{
+		Properties props = new Properties();
+		FileInputStream fis = null;
+		fis = new FileInputStream(filePath);
+		props.loadFromXML(fis);
+		return props;
+	}
+	
+	private boolean checkIfFileExists(String filePath) throws IOException 
+	{
+		return new File(filePath).exists();
+	}
+	
+	public void storeFile(InputStream is, WBCloudFile file) throws IOException
+	{
+		String fullFilePath = getLocalFullDataPath(file);
+		OutputStream fos = createStorageOutputStream(fullFilePath);
 		byte[] buffer = new byte[4096];
 		CRC32 crc = new CRC32();
 		MessageDigest md = null;
@@ -226,7 +268,6 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		
 		IOUtils.closeQuietly(fos);
 		
-		String metaPath = getLocalFullMetaPath(file);
 		Properties props = new Properties();
 		props.put("path", file.getPath());
 		props.put("contentType", "application/octet-stream");
@@ -235,22 +276,20 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		props.put("creationTime", String.valueOf(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime().getTime()));
 		props.put("size", String.valueOf(size));
 		
-		FileOutputStream os = new FileOutputStream(metaPath);
-		props.storeToXML(os, "", "UTF-8");
-		IOUtils.closeQuietly(os);
+		String metaPath = getLocalFullMetaPath(file);
+		storeFileProperties(props, metaPath);
 		
 	}
+	
 	public WBCloudFileInfo getFileInfo(WBCloudFile file) 
 	{
 		String metaPath = getLocalFullMetaPath(file);
 		String dataPath = getLocalFullDataPath(file);
-		File metaFile = new File(metaPath);
 		Properties props = new Properties();
-		FileInputStream fis = null;
 		try
 		{
-			fis = new FileInputStream(metaFile);
-			props.loadFromXML(fis);
+			props = getFileProperties(metaPath);
+			
 			String contentType = props.getProperty("contentType");
 			int size = Integer.valueOf(props.getProperty("size"));
 			String md5 = props.getProperty("md5");
@@ -258,7 +297,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			long creationTime = Long.valueOf(props.getProperty("creationTime"));
 			
 			
-			boolean fileExists = new File(dataPath).exists();
+			boolean fileExists = checkIfFileExists(dataPath);
 			WBCloudFileInfo fileInfo = new WBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
 			props.remove("path");
 			props.remove("contentType");
@@ -266,7 +305,8 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 			props.remove("md5");
 			props.remove("crc32");
 			props.remove("creationTime");
-			
+			props.remove("filePath");
+			// add the custom properties of the file
 			for(Object key : props.keySet())
 			{
 				String strKey = (String) key;
@@ -302,48 +342,40 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 	public InputStream getFileContent(WBCloudFile file) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
-		if (! new File(fullFilePath).exists())
+		if (! checkIfFileExists(fullFilePath))
 		{
 			throw new IOException("file does not exists");
 		}
-		return new FileInputStream(fullFilePath);
+		return createStorageInputStream(fullFilePath);
 	}
 	
-	public byte[] getFileContent(WBCloudFile file, int startIndex, int endIndex) throws IOException
-	{
-		return null;
-	}
 	
 	public void updateContentType(WBCloudFile file, String contentType) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
-		if (! new File(fullFilePath).exists())
+		if (! checkIfFileExists(fullFilePath))
 		{
 			throw new IOException("file does not exists");
 		}
 		
 		String metaPath = getLocalFullMetaPath(file);
-		Properties props = new Properties();
-		props.loadFromXML(new FileInputStream(metaPath));
+		Properties props = getFileProperties(metaPath);
 
 		props.put("contentType", contentType);
 		
-		FileOutputStream os = new FileOutputStream(metaPath);
-		props.storeToXML(os, "", "UTF-8");
-		IOUtils.closeQuietly(os);				
+		storeFileProperties(props, fullFilePath);
 	}
 	
 	public void updateFileCustomProperties(WBCloudFile file, Map<String, String> customProps) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
-		if (! new File(fullFilePath).exists())
+		if (! checkIfFileExists(fullFilePath))
 		{
 			throw new IOException("file does not already exists");
 		}
 		
 		String metaPath = getLocalFullMetaPath(file);
-		Properties props = new Properties();
-		props.loadFromXML(new FileInputStream(metaPath));
+		Properties props = getFileProperties(metaPath);
 
 		customProps.remove("path");
 		customProps.remove("contentType");
@@ -351,12 +383,11 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		customProps.remove("md5");
 		customProps.remove("crc32");
 		customProps.remove("creationTime");
+		customProps.remove("filePath");
 		
 		props.putAll(customProps);
 		
-		FileOutputStream os = new FileOutputStream(metaPath);
-		props.storeToXML(os, "", "UTF-8");
-		IOUtils.closeQuietly(os);		
+	    storeFileProperties(props, fullFilePath);
 	}
 	
 	public String getPublicFileUrl(WBCloudFile file)	
@@ -365,9 +396,5 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		return basePublicUrlPath + partialPath;
 	}
 	
-	public void clearContent(String bucket) throws IOException
-	{
-		
-	}
 
 }

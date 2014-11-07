@@ -1,14 +1,10 @@
 package com.webpagebytes.cms;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
-
-import com.webpagebytes.cms.appinterfaces.WPBCmsContentServiceFactory;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
 public class WBCmsContextListener implements ServletContextListener {
