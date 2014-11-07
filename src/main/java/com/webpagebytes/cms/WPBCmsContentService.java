@@ -1,19 +1,11 @@
 package com.webpagebytes.cms;
 
-import java.util.HashMap;
-import java.util.Locale;
-
 import com.webpagebytes.cms.appinterfaces.WPBContentService;
 import com.webpagebytes.cms.appinterfaces.WBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WBModel;
 import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheFactory;
 import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBFilesCache;
-import com.webpagebytes.cms.cache.WBMessagesCache;
-import com.webpagebytes.cms.cache.WBParametersCache;
-import com.webpagebytes.cms.cache.WBProjectCache;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBLocaleException;
@@ -24,11 +16,31 @@ public class WPBCmsContentService implements WPBContentService {
 	private ModelBuilder modelBuilder;
 	private WBContentProvider contentProvider;
 	
+	private WBCacheInstances createCacheInstances(WBCacheFactory cacheFactory)
+	{
+		return new WBCacheInstances(cacheFactory);
+	}
+	private ModelBuilder createModelBuilder(WBCacheInstances cacheInstances)
+	{
+		return new ModelBuilder(cacheInstances);
+	}
+	private WBCacheFactory createCacheFactory()
+	{
+		return  DefaultWBCacheFactory.getInstance();
+	}
+	private PageContentBuilder createPageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
+	{
+		return new PageContentBuilder(cacheInstances, modelBuilder);
+	}
+	private FileContentBuilder createFileContentBuilder(WBCacheInstances cacheInstances)
+	{
+		return new FileContentBuilder(cacheInstances);
+	}
 	public WPBCmsContentService()
 	{
-		WBCacheFactory cacheFactory = DefaultWBCacheFactory.getInstance();
-		cacheInstances = new WBCacheInstances(cacheFactory);
-		modelBuilder = new ModelBuilder(cacheInstances);
+		WBCacheFactory cacheFactory = createCacheFactory();
+		cacheInstances = createCacheInstances(cacheFactory);
+		modelBuilder = createModelBuilder(cacheInstances);
 		
 	}
 	public WBModel createModel(String language, String country) throws WBException
@@ -66,9 +78,9 @@ public class WPBCmsContentService implements WPBContentService {
 	
 	private void initializeContentProvider() throws WBException
 	{
-		PageContentBuilder pageContentBuilder = new PageContentBuilder(cacheInstances, modelBuilder);
+		PageContentBuilder pageContentBuilder = createPageContentBuilder(cacheInstances, modelBuilder);
 		pageContentBuilder.initialize();
-		FileContentBuilder fileContentBuilder = new FileContentBuilder(cacheInstances);
+		FileContentBuilder fileContentBuilder = createFileContentBuilder(cacheInstances);
 		fileContentBuilder.initialize();	
 		
 		contentProvider = new WBDefaultContentProvider(fileContentBuilder, pageContentBuilder);
