@@ -64,15 +64,9 @@ public class WPBCmsContentService implements WPBContentService {
 	public WBModel createModel() throws WBException
 	{
 		WBModel model =  new WBModel();
-		try
-		{
-			Pair<String, String> defaultLocale = cacheInstances.getProjectCache().getDefaultLocale();
-			modelBuilder.populateLocale(defaultLocale.getFirst(), defaultLocale.getSecond(), model);	
-			modelBuilder.populateGlobalParameters(model);
-		} catch (WBIOException e)
-		{
-			throw e;
-		}
+		Pair<String, String> defaultLocale = cacheInstances.getProjectCache().getDefaultLocale();
+		modelBuilder.populateLocale(defaultLocale.getFirst(), defaultLocale.getSecond(), model);	
+		modelBuilder.populateGlobalParameters(model);
 		return model;
 	}
 	
