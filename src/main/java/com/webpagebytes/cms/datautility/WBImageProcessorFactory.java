@@ -10,27 +10,32 @@ public class WBImageProcessorFactory {
 	private static WBImageProcessor instance;
 	private static final Object lock = new Object();
 
+	private WBImageProcessorFactory() {};
+	
 	public static WBImageProcessor getInstance()
 	{
 		if (instance == null) 
 		{
 			synchronized (lock) {
-				WBConfiguration config = WBConfigurationFactory.getConfiguration();
-				String factoryClass = "";
-				if (config!=null)
+				if (instance == null)
 				{
-					factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_IMAGEPROCESSOR);
+					WBConfiguration config = WBConfigurationFactory.getConfiguration();
+					String factoryClass = "";
+					if (config!=null)
+					{
+						factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_IMAGEPROCESSOR);
+					}
+					try
+					{
+						instance = (WBImageProcessor) Class.forName(factoryClass).newInstance();
+						return instance;
+					} 
+					
+					catch (Exception e)
+					{
+						return null;
+					}
 				}
-				try
-				{
-					instance = (WBImageProcessor) Class.forName(factoryClass).newInstance();
-					return instance;
-				} 
-				
-				catch (Exception e)
-				{
-					return null;
-				}				
 			}
 		}
 		return instance;

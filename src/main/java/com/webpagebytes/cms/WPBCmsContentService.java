@@ -46,7 +46,8 @@ public class WPBCmsContentService implements WPBContentService {
 	public WBModel createModel(String language, String country) throws WBException
 	{
 		WBModel model =  new WBModel();
-		String lcid = language;
+		String lcid = language.toLowerCase();
+		language = language.toLowerCase();
 		if (country != null && country.length()>0)
 		{
 			country = country.toUpperCase();

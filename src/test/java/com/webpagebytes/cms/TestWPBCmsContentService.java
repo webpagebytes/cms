@@ -178,6 +178,7 @@ public void createModel_param(String language, String country)
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		Set<String> supportedLocales = new HashSet<String>();
 		supportedLocales.add("en_GB");
+		supportedLocales.add("en");
 		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLocales);
 		Capture<String> captureLanguage = new Capture<String>();
 		Capture<String> captureCountry = new Capture<String>();
@@ -188,10 +189,13 @@ public void createModel_param(String language, String country)
 		modelBuilderMock.populateGlobalParameters(EasyMock.capture(captureModel2));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);
-		WBModel model = contentService.createModel("en", "GB");
+		WBModel model = contentService.createModel(language, country);
 		assertTrue(model != null);
-		assertTrue(captureLanguage.getValue().equals("en"));
-		assertTrue(captureCountry.getValue().equals("GB"));
+		assertTrue(captureLanguage.getValue().equals(language.toLowerCase()));
+		if (country != null)
+		{
+			assertTrue(captureCountry.getValue().equals(country.toUpperCase()));
+		}
 		assertTrue(captureModel1.getValue() != null);
 		assertTrue(captureModel2.getValue() != null);
 		
