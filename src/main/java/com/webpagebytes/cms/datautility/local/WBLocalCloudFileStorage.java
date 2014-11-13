@@ -363,7 +363,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 
 		props.put("contentType", contentType);
 		
-		storeFileProperties(props, fullFilePath);
+		storeFileProperties(props, metaPath);
 	}
 	
 	public void updateFileCustomProperties(WBCloudFile file, Map<String, String> customProps) throws IOException
@@ -387,7 +387,7 @@ public class WBLocalCloudFileStorage implements WBCloudFileStorage {
 		
 		props.putAll(customProps);
 		
-	    storeFileProperties(props, fullFilePath);
+	    storeFileProperties(props, metaPath);
 	}
 	
 	public String getPublicFileUrl(WBCloudFile file)	
