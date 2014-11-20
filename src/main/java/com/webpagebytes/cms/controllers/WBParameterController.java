@@ -151,7 +151,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBParameter wbParameter = (WBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WBParameter.class);
-			wbParameter.setKey(key);
+			wbParameter.setPrivkey(key);
 			Map<String, String> errors = parameterValidator.validateUpdate(wbParameter);
 			
 			if (errors.size()>0)
@@ -282,7 +282,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 			for(WBParameter parameter: ownerParams)
 			{
 				parameter.setOwnerExternalKey(ownerExternalKey);
-				parameter.setKey(null);
+				parameter.setPrivkey(null);
 				parameter.setExternalKey(adminStorage.getUniqueId());
 				parameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 				

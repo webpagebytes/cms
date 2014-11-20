@@ -49,13 +49,13 @@ $().ready( function () {
 
 	var displayHandler = function (fieldId, record) {
 		if ((fieldId == '_operations') && (record['diff'] != 'default')) {
-			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> ".format( encodeURIComponent(record['key'])) +
-						  "| <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{0}'> <i class='icon-trash'></i> Delete </a>".format(encodeURIComponent(record['key'])) +
-						  "| <a href='#' class='wbDuplicateMessageLinkClass' id='m_dup_id_{0}'><i class='aicon-duplicate'></i> Duplicate </a>".format(encodeURIComponent(record['key']));
+			var innerHtml = "<a href='#' class='wbEditMessageLinkClass' id='m_edit_id_{0}'> <i class='icon-pencil'></i> Edit </a> ".format( encodeURIComponent(record['privkey'])) +
+						  "| <a href='#' class='wbDeleteMessageLinkClass' id='m_del_id_{0}'> <i class='icon-trash'></i> Delete </a>".format(encodeURIComponent(record['privkey'])) +
+						  "| <a href='#' class='wbDuplicateMessageLinkClass' id='m_dup_id_{0}'><i class='aicon-duplicate'></i> Duplicate </a>".format(encodeURIComponent(record['privkey']));
 			return innerHtml;
 		}
 		if ((fieldId == '_operations') && (record['diff'] == 'default')) {
-			var innerHtml = "<a href='#' class='wbAddMessageLinkClass' id='m_add_id_{0}'> <i class='icon-plus-sign'></i> Add </a>".format(encodeURIComponent(record['key']));			
+			var innerHtml = "<a href='#' class='wbAddMessageLinkClass' id='m_add_id_{0}'> <i class='icon-plus-sign'></i> Add </a>".format(encodeURIComponent(record['privkey']));			
 			return innerHtml;
 		}
 		
@@ -94,7 +94,7 @@ $().ready( function () {
 	$('#wbmessagestable').wbSimpleTable( { columns: [ {display: "KEY", fieldId:"name", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                                  {display: "Value", fieldId: "value", customHandler: displayHandler}, 
 	                                                  {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
-					 keyName: "key",
+					 keyName: "privkey",
 					 tableBaseClass: "table table-condensed",
 					 paginationBaseClass: "pagination",
                      headerColumnBaseClass: "header-uri-table",
@@ -254,7 +254,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var obj = $('#wbUpdateMessageForm').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(obj);
-			$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['key']),
+			$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['privkey']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),
@@ -276,7 +276,7 @@ $().ready( function () {
 	$(".wbSaveDeleteMessageBtnClass").click(function (e) {
 		e.preventDefault();
 		var obj = $('#wbDeleteMessageForm').wbObjectManager().getObjectFromFields();
-		$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['key']),
+		$('#wbmessagesid').wbCommunicationManager().ajax ( { url: "./wbmessage/" + encodeURIComponent(obj['privkey']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),
@@ -291,7 +291,7 @@ $().ready( function () {
 		var key = $(this).attr('id').substring("m_add_id_".length);
 		var object = $('#wbmessagestable').wbSimpleTable().getRowDataWithKey(key);
 		var newObject = $.extend(true, {}, object);
-		newObject['key']="";
+		newObject['privkey']="";
 		newObject['externalKey']="";
 		newObject['isTranslated']="0";
 		$('#wbAddMessageForm').wbObjectManager().populateFieldsFromObject(newObject);

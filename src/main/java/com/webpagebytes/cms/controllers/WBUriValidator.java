@@ -54,7 +54,7 @@ public class WBUriValidator {
 			errors.put("controllerClass", WBErrors.ERROR_CONTROLLER_BAD_FORMAT);
 		}
 		
-		if ((wbUri.getKey() == null) || (wbUri.getKey() == 0))
+		if ((wbUri.getPrivkey() == null) || (wbUri.getPrivkey() == 0))
 		{
 			errors.put("key", WBErrors.ERROR_NO_KEY);
 		}
@@ -103,7 +103,7 @@ public class WBUriValidator {
 		{
 			errors.put("controllerClass", WBErrors.ERROR_CONTROLLER_BAD_FORMAT);
 		}
-		if (wbUri.getKey() != null)
+		if (wbUri.getPrivkey() != null)
 		{
 			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
 		}

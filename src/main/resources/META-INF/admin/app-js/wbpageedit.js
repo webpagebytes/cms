@@ -46,9 +46,9 @@ $().ready( function () {
 	}
 	$('#wbPageSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
-	var pageKey = getURLParameter('key'); 
+	var pageKey = getURLParameter('privkey'); 
 	var fSuccessGetPage = function (data) {
-		pageKey =  data.data["key"];
+		pageKey =  data.data["privkey"];
 		$('#wbPageSummary').wbDisplayObject().display(data.data);
 		$('#wbPageEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		if (data.data["isTemplateSource"] != '1') {

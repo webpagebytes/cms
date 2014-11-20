@@ -163,7 +163,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 		json.put("name", message.getName());
 		json.put("value", message.getValue());
 		json.put("isTranslated", message.getIsTranslated());
-		json.put("key", message.getKey());
+		json.put("privkey", message.getPrivkey());
 		json.put("externalKey", message.getExternalKey());
 		json.put("lcid", message.getLcid());
 		json.put("lastModified", message.getLastModified().getTime());
@@ -323,7 +323,7 @@ public class WBMessageController extends WBController implements AdminDataStorag
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBMessage record = (WBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBMessage.class);
-			record.setKey(key);
+			record.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(record);
 			
 			if (errors.size()>0)

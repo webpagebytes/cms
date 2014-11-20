@@ -21,7 +21,7 @@ public class WBPageModuleValidator {
 		{
 			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
-		if (webPageModule.getKey() != null)
+		if (webPageModule.getPrivkey() != null)
 		{
 			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
 		}
@@ -45,7 +45,7 @@ public class WBPageModuleValidator {
 		{
 			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
-		if (webPageModule.getKey() == null)
+		if (webPageModule.getPrivkey() == null)
 		{
 			errors.put("key", WBErrors.ERROR_NO_KEY);
 		}

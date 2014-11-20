@@ -224,7 +224,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 				// do not propagate further
 			}
 			WBWebPage page = new WBWebPage();
-			page.setKey(key);
+			page.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(page));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -244,7 +244,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBWebPage webPage = (WBWebPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPage.class);
-			webPage.setKey(key);
+			webPage.setPrivkey(key);
 			Map<String, String> errors = pageValidator.validateUpdate(webPage);
 			
 			if (errors.size()>0)

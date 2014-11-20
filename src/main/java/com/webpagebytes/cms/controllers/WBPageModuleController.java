@@ -146,7 +146,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBWebPageModule wbmodule = (WBWebPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPageModule.class);
-			wbmodule.setKey(key);
+			wbmodule.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(wbmodule);
 			
 			if (errors.size()>0)
@@ -198,7 +198,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 			}
 			
 			WBWebPageModule param = new WBWebPageModule();
-			param.setKey(key);
+			param.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(returnJson));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);

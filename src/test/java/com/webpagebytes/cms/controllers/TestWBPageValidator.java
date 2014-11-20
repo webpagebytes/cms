@@ -46,7 +46,7 @@ public void test_validateCreate_ok()
 @Test
 public void test_validateUpdate_ok()
 {
-	wbPage.setKey(1L);
+	wbPage.setPrivkey(1L);
 	wbPage.setName("test");
 	Map<String,String> errors = pageValidator.validateUpdate(wbPage);
 	assertTrue (errors.equals(noErrors));

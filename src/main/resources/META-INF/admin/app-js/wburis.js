@@ -64,8 +64,8 @@ $().ready( function () {
 	
 	var displayHandler = function (fieldId, record) {
 		if (fieldId == "_operations") {
-			return '<a href="./weburiedit.html?extKey=' + encodeURIComponent(record['externalKey'])+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>' 
-					+ '| <a href="#" class="wbduplicateuri" id="wburidup_' + encodeURIComponent(record['key'])+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
+			return '<a href="./weburiedit.html?extKey=' + encodeURIComponent(record['externalKey'])+ '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbdeleteuri" id="wburidel_' + encodeURIComponent(record['privkey'])+ '"><i class="icon-trash"></i> Delete </a>' 
+					+ '| <a href="#" class="wbduplicateuri" id="wburidup_' + encodeURIComponent(record['privkey'])+ '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId == "lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -88,7 +88,7 @@ $().ready( function () {
 	                                          {display: "Method", fieldId:"httpOperation", isHtmlDisplay:true}, 
 	                                          {display: "Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                          {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
-							 keyName: "key",
+							 keyName: "privkey",
 							 tableBaseClass: "table table-condensed table-color-header",
 							 paginationBaseClass: "pagination",
 							 headerColumnBaseClass: "header-uri-table",
@@ -179,7 +179,7 @@ $().ready( function () {
 	$('.uriDeleteSave').click( function (e) {
 		e.preventDefault();
 		var object = $('#wburidelete').wbObjectManager().getObjectFromFields();			
-		$('#wburidelete').wbCommunicationManager().ajax ( { url: "./wburi/" + escapehtml(object['key']),
+		$('#wburidelete').wbCommunicationManager().ajax ( { url: "./wburi/" + escapehtml(object['privkey']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,

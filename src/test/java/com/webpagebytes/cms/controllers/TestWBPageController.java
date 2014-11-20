@@ -93,7 +93,7 @@ public void test_create_ok()
 		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
 		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WBWebPage newPage = new WBWebPage();
-		newPage.setKey(10L);
+		newPage.setPrivkey(10L);
 		
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andReturn(newPage);
 		
@@ -351,11 +351,11 @@ public void test_update_ok()
 		Capture<Long> captureHash = new Capture<Long>();
 		
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
-		objectForControllerMock.setKey(EasyMock.captureLong(captureKey));
+		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
 		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WBWebPage newPage = new WBWebPage();
-		newPage.setKey(123L);
+		newPage.setPrivkey(123L);
 		EasyMock.expect(adminStorageMock.update(objectForControllerMock)).andReturn(newPage);
 		
 		String returnJson = "{}"; //really doesn't matter
@@ -393,7 +393,7 @@ public void test_update_errors()
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
 		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPage.class)).andReturn(objectForControllerMock);
 		Capture<Long> captureKey = new Capture<Long>();
-		objectForControllerMock.setKey(EasyMock.captureLong(captureKey));
+		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 		errors.put("uri", WBErrors.ERROR_URI_LENGTH);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 				

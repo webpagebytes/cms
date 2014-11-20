@@ -47,9 +47,9 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	$('#wbPageModuleView').wbDisplayObject( { fieldsPrefix: 'wbPageModuleView', customHandler: pageModuleSourceHandler} );
 	
-	var pageModuleKey = getURLParameter('key'); 
+	var pageModuleKey = getURLParameter('privkey'); 
 	var fSuccessGetModule = function (data) {
-		pageModuleKey = data.data["key"];
+		pageModuleKey = data.data["privkey"];
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleView').wbDisplayObject().display(data.data);
 		$('#spinnerTable').WBSpinner().hide();

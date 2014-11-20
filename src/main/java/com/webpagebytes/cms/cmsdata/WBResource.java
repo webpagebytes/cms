@@ -17,7 +17,7 @@ public class WBResource implements Serializable {
 	
 
 	@AdminFieldKey
-	private String key;
+	private String rkey;
 				
 	@AdminFieldStore
 	private String name;
@@ -31,16 +31,16 @@ public class WBResource implements Serializable {
 	}
 	public WBResource(String key, String name, int type)
 	{
-		this.key = key;
+		this.rkey = key;
 		this.name = name;
 		this.type = type;
 	}
-	public String getKey() {
-		return key;
+	public String getRkey() {
+		return rkey;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setRkey(String key) {
+		this.rkey = key;
 	}
 
 	public String getName() {

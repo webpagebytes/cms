@@ -34,8 +34,8 @@ $().ready( function () {
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webpage.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a>' + 
-				 '| <a href="#" class="wbDeletePageClass" id="wbDeletePage_' + encodeURIComponent(record['key']) + '"><i class="icon-trash"></i> Delete </a>' +
-				 '| <a href="#" class="wbDuplicatePageClass" id="wbDuplicatePage_' + encodeURIComponent(record['key']) + '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
+				 '| <a href="#" class="wbDeletePageClass" id="wbDeletePage_' + encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>' +
+				 '| <a href="#" class="wbDuplicatePageClass" id="wbDuplicatePage_' + encodeURIComponent(record['privkey']) + '"><i class="aicon-duplicate"></i> Duplicate </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -53,7 +53,7 @@ $().ready( function () {
 	                                         {display: "Description", fieldId: "name", isHtmlDisplay:true}, 
 	                                         {display:"Last modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                         {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
-						 keyName: "key",
+						 keyName: "privkey",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination",
 						 headerColumnBaseClass: "header-uri-table",
@@ -126,7 +126,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDuplicatePageForm').wbObjectManager().getObjectFromFields();
 			delete object['externalKey'];
-			delete object['key'];
+			delete object['privkey'];
 			var jsonText = JSON.stringify(object);
 			$('#wbDuplicatePageForm').wbCommunicationManager().ajax ( { url: "./wbpage",
 															 httpOperation:"POST", 
@@ -167,7 +167,7 @@ $().ready( function () {
 	$('.webSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeletePageForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeletePageForm').wbCommunicationManager().ajax ( { url: "./wbpage/" + encodeURIComponent(object['key']),
+		$('#wbDeletePageForm').wbCommunicationManager().ajax ( { url: "./wbpage/" + encodeURIComponent(object['privkey']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,

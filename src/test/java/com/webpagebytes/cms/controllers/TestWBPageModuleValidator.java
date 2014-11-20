@@ -48,7 +48,7 @@ public void test_validateCreate()
 public void test_validateUpdate()
 {
 	wbPageModule.setName("test");
-	wbPageModule.setKey(1L);
+	wbPageModule.setPrivkey(1L);
 	Map errors = pageModuleValidator.validateUpdate(wbPageModule);
 	assertTrue(errors.equals(noErrors));
 }

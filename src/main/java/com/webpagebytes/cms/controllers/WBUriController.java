@@ -281,7 +281,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			}
 
 			WBUri wburi = new WBUri();
-			wburi.setKey(key);
+			wburi.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));						
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -302,7 +302,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBUri wbUri = (WBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WBUri.class);
-			wbUri.setKey(key);
+			wbUri.setPrivkey(key);
 			Map<String, String> errors = uriValidator.validateUpdate(wbUri);
 			
 			if (errors.size()>0)

@@ -43,7 +43,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		if (null == project)
 		{
 			project = new WBProject();
-			project.setKey("wbprojectid");
+			project.setPrivkey("wbprojectid");
 			project.setDefaultLanguage("en");
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			project.setSupportedLanguages("en");

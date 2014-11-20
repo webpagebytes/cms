@@ -22,7 +22,7 @@ import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 public class WBLocalAdminDataStorage implements AdminDataStorage {
 	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
-	private static final String KEY_FILED_NAME = "key";
+	private static final String KEY_FILED_NAME = "privkey";
 	private Vector<AdminDataStorageListener> storageListeners = new Vector<AdminDataStorageListener>();
 	
 	WBLocalDataStoreDao localDataStorageDao;

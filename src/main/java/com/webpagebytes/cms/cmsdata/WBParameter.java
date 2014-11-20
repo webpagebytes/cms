@@ -12,7 +12,7 @@ public class WBParameter implements Serializable {
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;
 	
 	@AdminFieldKey
-	private Long key;
+	private Long privkey;
 
 	@AdminFieldStore
 	private String name;
@@ -35,12 +35,12 @@ public class WBParameter implements Serializable {
 	@AdminFieldStore
 	private String externalKey;
 	
-	public Long getKey() {
-		return key;
+	public Long getPrivkey() {
+		return privkey;
 	}
 
-	public void setKey(Long key) {
-		this.key = key;
+	public void setPrivkey(Long key) {
+		this.privkey = key;
 	}
 
 	public String getName() {

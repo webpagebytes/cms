@@ -56,7 +56,7 @@ public class WBLocalProjectCache implements WBProjectCache {
 	private WBProject createDefaultProject() throws WBIOException
 	{
 		WBProject project = new WBProject();
-		project.setKey(WBProject.PROJECT_KEY);
+		project.setPrivkey(WBProject.PROJECT_KEY);
 		project.setDefaultLanguage("en");
 		project.setSupportedLanguages("en");
 		project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());	

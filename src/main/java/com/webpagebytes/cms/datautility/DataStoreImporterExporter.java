@@ -57,7 +57,7 @@ public class DataStoreImporterExporter {
 			List<WBUri> records = objectConverter.listObjectsFromJSONString(buffer, WBUri.class);
 			for(WBUri record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -74,7 +74,7 @@ public class DataStoreImporterExporter {
 			List<WBWebPage> records = objectConverter.listObjectsFromJSONString(buffer, WBWebPage.class);
 			for(WBWebPage record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -91,7 +91,7 @@ public class DataStoreImporterExporter {
 			List<WBArticle> records = objectConverter.listObjectsFromJSONString(buffer, WBArticle.class);
 			for(WBArticle record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -109,7 +109,7 @@ public class DataStoreImporterExporter {
 			List<WBWebPageModule> records = objectConverter.listObjectsFromJSONString(buffer, WBWebPageModule.class);
 			for(WBWebPageModule record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -126,7 +126,7 @@ public class DataStoreImporterExporter {
 			List<WBParameter> records = objectConverter.listObjectsFromJSONString(buffer, WBParameter.class);
 			for(WBParameter record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -157,7 +157,7 @@ public class DataStoreImporterExporter {
 			List<WBMessage> records = objectConverter.listObjectsFromJSONString(buffer, WBMessage.class);
 			for(WBMessage record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -174,7 +174,7 @@ public class DataStoreImporterExporter {
 			List<WBFile> records = objectConverter.listObjectsFromJSONString(buffer, WBFile.class);
 			for(WBFile record: records)
 			{
-				record.setKey(null);
+				record.setPrivkey(null);
 				adminStorage.add(record);
 			}
 		} catch (IOException e)

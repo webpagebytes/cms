@@ -12,7 +12,7 @@ public class WBProject implements Serializable{
 	public static final String PROJECT_KEY = "wbprojectid";
 	
 	@AdminFieldKey
-	private String key;
+	private String privkey;
 
 	@AdminFieldStore
 	private Date lastModified;
@@ -23,12 +23,12 @@ public class WBProject implements Serializable{
 	@AdminFieldStore
 	private String defaultLanguage;
 	
-	public String getKey() {
-		return key;
+	public String getPrivkey() {
+		return privkey;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setPrivkey(String key) {
+		this.privkey = key;
 	}
 
 	public Date getLastModified() {

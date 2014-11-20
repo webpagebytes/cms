@@ -136,7 +136,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 		          
 		  		WBResource resource = new WBResource(wbFile.getExternalKey(), wbFile.getName(), WBResource.FILE_TYPE);
 
-		          if (wbFile.getKey() != null)
+		          if (wbFile.getPrivkey() != null)
 		          {
 		        	  wbFile = adminStorage.update(wbFile);		        	  
 						try
@@ -180,7 +180,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBFile wbimage = (WBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WBFile.class);
-			wbimage.setKey(key);
+			wbimage.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(wbimage);
 			
 			if (errors.size()>0)
@@ -246,7 +246,7 @@ public class WBFileControllerEx extends WBController implements AdminDataStorage
 			adminStorage.delete(key, WBFile.class);
 			
 			WBFile param = new WBFile();
-			param.setKey(key);
+			param.setPrivkey(key);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			

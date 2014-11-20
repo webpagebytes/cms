@@ -38,7 +38,7 @@ $().ready( function () {
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['privkey']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['privkey'])+ '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -57,7 +57,7 @@ $().ready( function () {
 	                                                {display: "Value", fieldId: "value"},
 	                                                {display:"Last Modified", fieldId:"lastModified", customHandler: tableDisplayHandler, isHtmlDisplay:true}, 
 	                                                {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
-						 keyName: "key",
+						 keyName: "privkey",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination",
 	                     headerColumnBaseClass: "header-uri-table",
@@ -114,7 +114,7 @@ $().ready( function () {
 			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
 			object['ownerExternalKey'] = "";
 			var jsonText = JSON.stringify(object);
-			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
@@ -137,7 +137,7 @@ $().ready( function () {
 		var errors = $('#wbDeleteParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDeleteParameterForm').wbObjectManager().getObjectFromFields();
-			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
 															 httpOperation:"DELETE", 
 															 payloadData:"",
 															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),

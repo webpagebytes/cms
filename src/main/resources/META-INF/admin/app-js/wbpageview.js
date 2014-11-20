@@ -42,7 +42,7 @@ $().ready( function () {
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['key']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['key'])+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['privkey']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['privkey'])+ '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -52,7 +52,7 @@ $().ready( function () {
 				
 	$('#wbPageParametersTable').wbSimpleTable( { columns: [ {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
 								         {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
-						 keyName: "key",
+						 keyName: "privkey",
 						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 						 paginationBaseClass: "pagination",
 						 noLinesContent: "<tr> <td colspan='3'>There are no parameters defined. </td></tr>",
@@ -67,7 +67,7 @@ $().ready( function () {
 	}
 	
 	$('#wburistable').wbSimpleTable( { columns: [{display: "Site urls linked to this page", fieldId:"uri", customHandler: urisDisplayHandler}],
-	         						 keyName: "key",
+	         						 keyName: "privkey",
 	         						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	         						 paginationBaseClass: "pagination",
 	         						 noLinesContent: "<tr> <td colspan='1'>There are no site links serving this page. </td></tr>"	               						
@@ -143,7 +143,7 @@ $().ready( function () {
 	
 	$("#wbAddUrlBtn").click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./weburiadd.html?qtype=page&qkey={0}".format(encodeURIComponent(pageExternalKey));
+		window.location.href = "./weburiadd.html?qtype=page&qprivkey={0}".format(encodeURIComponent(pageExternalKey));
 	});
 	
 	var fSuccessAdd = function ( data ) {
@@ -173,7 +173,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["key"]);
+		$('#wbPageParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["privkey"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -186,7 +186,7 @@ $().ready( function () {
 			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
 			object['ownerExternalKey'] = pageExternalKey;
 			var jsonText = JSON.stringify(object);
-			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
@@ -198,7 +198,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbPageParametersTable').wbSimpleTable().deleteRowWithKey(data.data["key"]);
+		$('#wbPageParametersTable').wbSimpleTable().deleteRowWithKey(data.data["privkey"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -209,7 +209,7 @@ $().ready( function () {
 		var errors = $('#wbDeleteParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDeleteParameterForm').wbObjectManager().getObjectFromFields();
-			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['key']),
+			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
 															 httpOperation:"DELETE", 
 															 payloadData:"",
 															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),

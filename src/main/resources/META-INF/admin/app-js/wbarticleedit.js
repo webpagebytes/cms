@@ -34,9 +34,9 @@ $().ready( function () {
 	}
 	$('#wbArticleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
-	var pageKey = getURLParameter('key');
+	var pageKey = getURLParameter('privkey');
 	var fSuccessGetArticle = function (data) {
-		pageKey = data.data["key"];
+		pageKey = data.data["privkey"];
 		$('#wbArticleSummary').wbDisplayObject().display(data.data);
 		$('#wbArticleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		

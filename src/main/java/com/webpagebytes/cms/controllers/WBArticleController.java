@@ -214,7 +214,7 @@ public class WBArticleController extends WBController implements AdminDataStorag
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WBArticle article = (WBArticle)jsonObjectConverter.objectFromJSONString(jsonRequest, WBArticle.class);
-			article.setKey(key);
+			article.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(article);
 			
 			if (errors.size()>0)

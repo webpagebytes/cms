@@ -95,7 +95,7 @@ $().ready( function () {
 	}
 
 	$('#wbUrlsTable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
-		 keyName: "key",
+		 keyName: "privkey",
 		 tableBaseClass: "table table-stripped table-bordered table-color-header",
 		 paginationBaseClass: "pagination",
 		 noLinesContent: "<tr> <td colspan='1'>There are no site urls serving this file. </td></tr>"
@@ -112,16 +112,16 @@ $().ready( function () {
 	
 	$('#wbuFileUploadUpdateForm').ajaxForm({ success: fSuccessUploadFile, error: fErrorUploadFile });
 
-	var fileKey = getURLParameter('key'); 
+	var fileKey = getURLParameter('privkey'); 
 	var fileExternalKey = getURLParameter('extKey');
 	
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
-		fileKey = data["key"];
+		fileKey = data["privkey"];
 		$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));		
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('#collapseFileDetails').wbDisplayObject().display(data);
-		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['key'])));
+		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['privkey'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 		$('#spinnerTable').WBSpinner().hide();
 		switch (data['shortType']) {
@@ -130,13 +130,13 @@ $().ready( function () {
 				$('.wbimagecontent').html(imgHtml);
 				break;
 			case 'video':
-				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['key']));
+				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
 				$(".wbvideocontent").html(videoHtml);
 				var player = new MediaElementPlayer('#idvideocontent');
 				player.load();
 				break;
 			case 'audio':
-				var audioHtml = "<audio id='idaudiocontent' controls> <source type='{0}' src='./wbresource/{1}'> Your browser does not support the audio element. </audio> ".format(escapehtml(data['contentType']), encodeURI(data['key']));
+				var audioHtml = "<audio id='idaudiocontent' controls> <source type='{0}' src='./wbresource/{1}'> Your browser does not support the audio element. </audio> ".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
 				$('.wbaudiocontent').html(audioHtml);
 				var player = new MediaElementPlayer('#idaudiocontent');
 				player.load();
@@ -222,7 +222,7 @@ $().ready( function () {
 
 	$("#wbAddUrlBtn").click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./weburiadd.html?qtype=file&qkey={0}".format(encodeURIComponent(fileExternalKey));
+		window.location.href = "./weburiadd.html?qtype=file&qprivkey={0}".format(encodeURIComponent(fileExternalKey));
 	});
 	
 	

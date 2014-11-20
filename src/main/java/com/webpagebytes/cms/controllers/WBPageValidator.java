@@ -21,7 +21,7 @@ public class WBPageValidator {
 		{
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
 		} 
-		if (webPage.getKey() != null)
+		if (webPage.getPrivkey() != null)
 		{
 			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
 		}
@@ -60,7 +60,7 @@ public class WBPageValidator {
 		{
 			errors.put("name", WBErrors.ERROR_PAGENAME_LENGTH);
 		}
-		if (webPage.getKey() == null)
+		if (webPage.getPrivkey() == null)
 		{
 			errors.put("key", WBErrors.ERROR_NO_KEY);
 		}

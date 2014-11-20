@@ -280,7 +280,7 @@ public class WBImporter {
 		}
 		project.setLastModified(new Date(lastModified));
 
-		project.setKey(WBProject.PROJECT_KEY);
+		project.setPrivkey(WBProject.PROJECT_KEY);
 		return project;
 	}
 

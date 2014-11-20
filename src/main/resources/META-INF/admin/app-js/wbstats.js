@@ -174,7 +174,7 @@ $().ready( function () {
 			return "";
 		} 
 		if (fieldId == "_operations") {
-			return '<a class="dashboardop" href="./weburiedit.html?key=' + encodeURIComponent(record['key'])+ '"><i class="icon-pencil"></i> Edit </a>'; 
+			return '<a class="dashboardop" href="./weburiedit.html?privkey=' + encodeURIComponent(record['privkey'])+ '"><i class="icon-pencil"></i> Edit </a>'; 
 		} else {
 			return textToLength(escapehtml(record[fieldId]));
 		}
@@ -188,7 +188,7 @@ $().ready( function () {
 		} 
 
 		if (fieldId == "_operations") {
-			return '<a class="dashboardop" href="./webpageedit.html?key={0}&externalKey={1}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['key']), encodeURIComponent(record['externalKey'])); 
+			return '<a class="dashboardop" href="./webpageedit.html?privkey={0}&externalKey={1}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['privkey']), encodeURIComponent(record['externalKey'])); 
 		} else {
 			return textToLength(escapehtml(record[fieldId]));
 		}
@@ -201,7 +201,7 @@ $().ready( function () {
 			return "";
 		} 
 		if (fieldId == "_operations") {
-			return '<a class="dashboardop" href="./webpagemodule.html?key={0}&externalKey={1}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['key']), encodeURIComponent(record['externalKey'])); 
+			return '<a class="dashboardop" href="./webpagemodule.html?privkey={0}&externalKey={1}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['privkey']), encodeURIComponent(record['externalKey'])); 
 		} else {
 			return textToLength(escapehtml(record[fieldId]));
 		}
@@ -215,7 +215,7 @@ $().ready( function () {
 		} 
 
 		if (fieldId == "_operations") {
-			return '<a class="dashboardop" href="webarticleedit.html?key={0}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['key'])); 
+			return '<a class="dashboardop" href="webarticleedit.html?privkey={0}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['privkey'])); 
 		}else {
 			return textToLength(escapehtml(record[fieldId]));
 		}
@@ -241,7 +241,7 @@ $().ready( function () {
 		} 
 
 		if (fieldId == "_operations") {
-			return '<a class="dashboardop" href="./webfile.html?key={0}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['key'])); 
+			return '<a class="dashboardop" href="./webfile.html?privkey={0}"><i class="icon-pencil"></i> Edit </a>'.format(encodeURIComponent(record['privkey'])); 
 		} else {
 			return textToLength(escapehtml(record[fieldId]));
 		}
@@ -250,28 +250,28 @@ $().ready( function () {
 	
 	$('#wbtableuris').wbSimpleTable( { columns: [  {display: "", fieldId: "uri", customHandler: displayHandlerUris},
 	                                               {display: "", fieldId:"_operations", customHandler: displayHandlerUris}],
-							 keyName: "key",
+							 keyName: "privkey",
 							 includeHeader: false,
 							 tableBaseClass: "table table-condensed",
 							 noLinesContent: "<tr> <td colspan='2'>There are no site urls defined. </td></tr>"
 							});
 	$('#wbtablepages').wbSimpleTable( { columns: [  {display: "", fieldId: "name", customHandler: displayHandlerPages},
 	                                               {display: "", fieldId:"_operations", customHandler: displayHandlerPages}],
-							 keyName: "key",
+							 keyName: "privkey",
 							 includeHeader: false,
 							 tableBaseClass: "table table-condensed",
 							 noLinesContent: "<tr> <td colspan='2'>There are no site pages defined. </td></tr>"
 							});
 	$('#wbtablemodules').wbSimpleTable( { columns: [  {display: "", fieldId: "name", customHandler: displayHandlerModules},
 		                                               {display: "", fieldId:"_operations", customHandler: displayHandlerModules}],
-								 keyName: "key",
+								 keyName: "privkey",
 								 includeHeader: false,
 								 tableBaseClass: "table table-condensed",
 								 noLinesContent: "<tr> <td colspan='2'>There are no page modules defined. </td></tr>"
 								});
 	$('#wbtablearticles').wbSimpleTable( { columns: [  {display: "", fieldId: "title", customHandler: displayHandlerArticles},
 		                                               {display: "", fieldId:"_operations", customHandler: displayHandlerArticles}],
-								 keyName: "key",
+								 keyName: "privkey",
 								 includeHeader: false,
 								 tableBaseClass: "table table-condensed",
 								 noLinesContent: "<tr> <td colspan='2'>There are no articles defined. </td></tr>"
@@ -283,7 +283,7 @@ $().ready( function () {
 								});
 	$('#wbtablefiles').wbSimpleTable( { columns: [  {display: "", fieldId: "name", customHandler: displayHandlerFiles},
 		                                               {display: "", fieldId:"_operations", customHandler: displayHandlerFiles}],
-								 keyName: "key",
+								 keyName: "privkey",
 								 includeHeader: false,
 								 tableBaseClass: "table table-condensed",
 								 noLinesContent: "<tr> <td colspan='2'>There are no files uploaded. </td></tr>"

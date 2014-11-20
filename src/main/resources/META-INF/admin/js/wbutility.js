@@ -1483,19 +1483,19 @@ $().ready( function () {
 		switch (item.type)
 		{
 			case "1": 
-				anchorElem = "<a href='./weburiedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				anchorElem = "<a href='./weburiedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["rkey"]), escapehtml(item["name"]));
 				break;
 			case "2": 
-				anchorElem = "<a href='./webpage.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				anchorElem = "<a href='./webpage.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["rkey"]), escapehtml(item["name"]));
 				break;
 			case "3": 
-				anchorElem = "<a href='./webpagemodule.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				anchorElem = "<a href='./webpagemodule.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["rkey"]), escapehtml(item["name"]));
 				break;
 			case "5":
-				anchorElem = "<a href='./webarticleedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				anchorElem = "<a href='./webarticleedit.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["rkey"]), escapehtml(item["name"]));
 				break;
 			case "6":
-				anchorElem = "<a href='./webfile.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["key"]), escapehtml(item["name"]));
+				anchorElem = "<a href='./webfile.html?extKey={0}'>{1}</a>".format(encodeURIComponent(item["rkey"]), escapehtml(item["name"]));
 				break;
 		}
 		switch (item.type)
@@ -1505,7 +1505,7 @@ $().ready( function () {
 			case "3": 
 			case "5":
 			case "6":
-				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["key"]), anchorElem);
+				str = '<span class="itemelem itemtype">{0}</span><span class="itemelem">{1}</span><span data-clipboard-text="{1}" class="itemelem wbbtnclipboard btn-s-clipboard"></span><span class="itemelem wbbtndummy">&nbsp</span><span class="itemelem">{2}</span><div class="clear"/>'.format(escapehtml(type), escapehtml(item["rkey"]), anchorElem);
 				break;
 			case "7": 	
 			case "4": 
@@ -1520,19 +1520,19 @@ $().ready( function () {
 		switch (item.type)
 		{
 			case "1": 
-				newUrl = "./weburiedit.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				newUrl = "./weburiedit.html?extKey={0}".format(encodeURIComponent(item["rkey"]));
 				break;
 			case "2": 
-				newUrl = "./webpage.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				newUrl = "./webpage.html?extKey={0}".format(encodeURIComponent(item["rkey"]));
 				break;
 			case "3": 
-				newUrl = "./webpagemodule.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				newUrl = "./webpagemodule.html?extKey={0}".format(encodeURIComponent(item["rkey"]));
 				break;
 			case "5":
-				newUrl = "./webarticleedit.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				newUrl = "./webarticleedit.html?extKey={0}".format(encodeURIComponent(item["rkey"]));
 				break;
 			case "6":
-				newUrl = "./webfile.html?extKey={0}".format(encodeURIComponent(item["key"]));
+				newUrl = "./webfile.html?extKey={0}".format(encodeURIComponent(item["rkey"]));
 				break;
 		}
 		if (newUrl.length>0) {
@@ -1550,7 +1550,7 @@ $().ready( function () {
     };
 
 	
-	$('#cmssearchbox').wbSearchBox({searchFields:['name','key'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, selectHandler: selectHandlerFunction,
+	$('#cmssearchbox').wbSearchBox({searchFields:['name','rkey'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, selectHandler: selectHandlerFunction,
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
 
 });
