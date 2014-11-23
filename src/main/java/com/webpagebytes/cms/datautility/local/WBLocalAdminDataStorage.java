@@ -2,6 +2,7 @@ package com.webpagebytes.cms.datautility.local;
 
 import java.util.HashMap;
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,19 +26,15 @@ public class WBLocalAdminDataStorage implements AdminDataStorage {
 	private static final String KEY_FILED_NAME = "privkey";
 	private Vector<AdminDataStorageListener> storageListeners = new Vector<AdminDataStorageListener>();
 	
-	WBLocalDataStoreDao localDataStorageDao;
+	private WBLocalDataStoreDao localDataStorageDao;
 	
 	public WBLocalAdminDataStorage()
 	{
 		WBConfiguration config = WBConfigurationFactory.getConfiguration();
 		Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE);
-		String dbpath = params.get("dbpath");
-		localDataStorageDao = new WBLocalDataStoreDao(dbpath);
+		localDataStorageDao = new WBLocalDataStoreDao(params);
 	}
-	public WBLocalAdminDataStorage(String dbPath)
-	{
-		localDataStorageDao = new WBLocalDataStoreDao(dbPath);
-	}
+
 	private WBLocalDataStoreDao.WBLocalQueryOperator adminOperatorToLocalOperator(AdminQueryOperator adminOperator)
 	{
 		switch (adminOperator)

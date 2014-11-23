@@ -2,19 +2,23 @@ package com.webpagebytes.cms.datautility.local;
 
 import java.beans.PropertyDescriptor;
 
+
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.h2.jdbcx.JdbcConnectionPool;
@@ -48,23 +52,30 @@ public class WBLocalDataStoreDao {
 		DESCENDING
 	};
 
-	private String dbPath = null;
-	private JdbcConnectionPool connectionPool = null;
-	
+	private Map<String, String> dbProps = new HashMap<String, String>();
 	private static final String QUERY_RECORD = "SELECT * FROM %s WHERE %s=?";
 	private static final String QUERY_ALL_RECORDS = "SELECT * FROM %s";
 	
-	public WBLocalDataStoreDao(String dbPath)
+	public WBLocalDataStoreDao(Map<String, String> dbProps)
 	{
-		this.dbPath = dbPath;
+		this.dbProps.putAll(dbProps);
 	}
 	private synchronized Connection getConnection() throws SQLException
 	{
-		if (connectionPool == null)
+		String driverClass = dbProps.get("driverClass");
+		String connectionUrl = dbProps.get("connectionUrl");
+		String userName = dbProps.get("userName");
+		String password = dbProps.get("password");
+		
+		try {
+            //Loading Driver class
+            Class.forName(driverClass);
+		} catch (ClassNotFoundException e) 
 		{
-			connectionPool = JdbcConnectionPool.create("jdbc:h2:" + dbPath, "", "");
+            log.log(Level.SEVERE, "Cannot load database driver", e);
+            throw new SQLException("Cannot load database driver " + driverClass);
 		}
-    	return connectionPool.getConnection(); 	
+		return DriverManager.getConnection(connectionUrl, userName, password);
 	}
 	
 	/*
