@@ -85,6 +85,17 @@ public class WBUriValidator {
 		return errors;
 		
 	}
+	
+	public Map<String, String> validateCreateWithExternalKey(WBUri wbUri)
+	{
+		Map<String, String> errors = validateCreate(wbUri);
+		if (null == wbUri.getExternalKey() || 0 == wbUri.getExternalKey().length() || (wbUri.getExternalKey().length() > MAX_EXTERNAL_KEY))
+		{
+			errors.put("externalKey", WBErrors.ERROR_INVALID_VALUE);
+		}
+		return errors;		
+	}
+	
 	public Map<String, String> validateCreate(WBUri wbUri)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
@@ -129,10 +140,6 @@ public class WBUriValidator {
 		{
 			errors.put("resourceType", WBErrors.ERROR_INVALID_VALUE);
 		}
-		if (null == wbUri.getExternalKey())
-		{
-			errors.put("externalKey", WBErrors.ERROR_INVALID_VALUE);
-		}
 		if (null != wbUri.getResourceExternalKey() && (wbUri.getResourceExternalKey().length() > MAX_EXTERNAL_KEY))
 		{
 			errors.put("resourceExternalKey", WBErrors.ERROR_INVALID_VALUE);
@@ -140,8 +147,7 @@ public class WBUriValidator {
 		if ((null == wbUri.getEnabled()) || (0 != wbUri.getEnabled() && 1 != wbUri.getEnabled()))
 		{
 			errors.put("enabled", WBErrors.ERROR_INVALID_VALUE);
-		}
-	
+		}	
 		return errors;
 	}
 	

@@ -16,9 +16,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
 import org.apache.commons.io.IOUtils;
-
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBExporter;
 import com.webpagebytes.cms.cmsdata.WBFile;
@@ -33,7 +31,6 @@ import com.webpagebytes.cms.controllers.WBUriValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.utility.ContentTypeDetector;
 
 public class FlatStorageImporterExporter {
 	private static final Logger log = Logger.getLogger(FlatStorageImporterExporter.class.getName());
@@ -196,7 +193,7 @@ public class FlatStorageImporterExporter {
 			WBUri uri = importer.buildUri(props);
 			if (uri != null)
 			{
-				if (uriValidator.validateCreate(uri).size()>0)
+				if (uriValidator.validateCreateWithExternalKey(uri).size()>0)
 				{
 					log.log(Level.SEVERE, String.format("uri validator failed for record ext key: '%s' and path: '%s'  ", uri.getExternalKey(), uri.getUri()));
 					throw new WBIOException("Uri validator failed");

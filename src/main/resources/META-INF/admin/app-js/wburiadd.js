@@ -1,29 +1,19 @@
 
 var errorsGeneral = {
 	'ERROR_URI_START_CHAR': "Site url must to start with /",
-	'ERROR_URI_LENGTH': 'Site url length must be between 1 and 250 characters',
-	'ERROR_CONTROLLER_LENGTH': 'Controller class length must be maximum 250 characters',
-	'ERROR_INVALID_HTTP_OPERATION': 'Operation not valid, allowed values: GET, PUT, DELETE, POST',
-	'ERROR_URI_BAD_FORMAT':'Invalid url format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',
-	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller class: allowed characters are 0-9, a-z, A-Z, -, _, (, is not an allowed character)',
-	'ERROR_BAD_RESOURCE_TYPE': 'Invaid resource type',
-	'ERROR_NO_RESOURCE_EXTERNAL_KEY': 'No resource External Key',
-	'ERROR_BAD_RESOURCE_EXTERNAL_KEY': 'Invalid resource External Key',
-	'ERROR_BAD_RESOURCE_CONTENT_TYPE': 'Resource content type not supported',
-	'ERROR_RESOURCE_CONTENT_TYPE_LENGTH': 'Resource content type length must be between 1 and 50 characters',
-	'ERROR_CONTROLLER_LENGTH': 'Controller length must be between 1 and 250 characters',
-	'ERROR_CONTROLLER_BAD_FORMAT': 'Invalid format for controller'
+	'ERROR_URI_LENGTH': 'Site url length must be between 1 and 255 characters',
+	'ERROR_INVALID_VALUE':'Invalid value'
 	
 };
 
 $().ready( function () {
 	var wbUriValidationRules = {
-								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_URI_BAD_FORMAT"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
-								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_CONTROLLER_LENGTH"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}],
-								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_HTTP_OPERATION" }],
-								'resourceType': [ { rule: { includedInto: [ '1', '2', '3' ] }, error:"ERROR_BAD_RESOURCE_TYPE" } ],
-								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_BAD_RESOURCE_EXTERNAL_KEY"}],
-								'controllerClass': [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_CONTROLLER_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.]*$", modifiers:"gi"}}, error:"ERROR_CONTROLLER_BAD_FORMAT"}]
+								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
+								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_INVALID_VALUE"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}],
+								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_VALUE" }],
+								'resourceType': [ { rule: { includedInto: [ '1', '2', '3' ] }, error:"ERROR_INVALID_VALUE" } ],
+								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}],
+								'controllerClass': [{rule: { rangeLength: { 'min': 0, 'max': 255 } }, error: "ERROR_INVALID_VALUE" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}]
 							  };
 
 

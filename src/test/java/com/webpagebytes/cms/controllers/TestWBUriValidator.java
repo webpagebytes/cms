@@ -36,7 +36,6 @@ public void test_validateCreateWBUri_empty()
 	errorsContainer.put("httpOperation", WBErrors.ERROR_INVALID_VALUE);
 	errorsContainer.put("resourceType", WBErrors.ERROR_INVALID_VALUE);
 	errorsContainer.put("enabled", WBErrors.ERROR_INVALID_VALUE);
-	errorsContainer.put("externalKey", WBErrors.ERROR_INVALID_VALUE);
 	
 	Map<String, String> errors1 = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors1));
