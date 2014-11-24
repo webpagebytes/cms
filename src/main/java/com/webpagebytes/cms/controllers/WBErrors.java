@@ -3,6 +3,7 @@ package com.webpagebytes.cms.controllers;
 public class WBErrors {
 	public static final String WB_UNKNOWN_ERROR = "WB_UNKNOWN_ERROR";
 	public static final String ERROR_URI_LENGTH = "ERROR_URI_LENGTH";
+	public static final String ERROR_EXTERNAL_KEY_LENGTH = "ERROR_EXTERNAL_KEY_LENGTH";	
 	public static final String ERROR_URI_START_CHAR = "ERROR_URI_START_CHAR";
 	public static final String ERROR_PAGENAME_LENGTH = "ERROR_PAGENAME_LENGTH";
 	public static final String ERROR_PAGE_MODULENAME_LENGTH = "ERROR_PAGE_MODULENAME_LENGTH";
@@ -20,6 +21,9 @@ public class WBErrors {
 	public static final String ERROR_PAGE_MODULENAME_BAD_FORMAT = "ERROR_PAGE_MODULENAME_BAD_FORMAT";
 	public static final String ERROR_CONTROLLER_BAD_FORMAT = "ERROR_CONTROLLER_BAD_FORMAT";
 	public static final String ERROR_CONTROLLER_LENGTH = "ERROR_CONTROLLER_LENGTH";
+	public static final String ERROR_INVALID_VALUE = "ERROR_INVALID_VALUE";
+	public static final String ERROR_CANT_SPECIFY_VALUE = "ERROR_CANT_SPECIFY_VALUE";
+	
 	
 	public static final String WBURI_CANT_SPECIFY_VERSION = "WBURI_CANT_SPECIFY_VERSION";
 	public static final String WBURI_CANT_SPECIFY_LAST_MODIFIED = "WBURI_CANT_SPECIFY_LAST_MODIFIED";

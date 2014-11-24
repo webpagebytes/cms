@@ -17,6 +17,7 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.controllers.WBUriValidator;
 import com.webpagebytes.cms.exception.WBIOException;
 
 public class DataStoreImporterExporter {
@@ -36,7 +37,7 @@ public class DataStoreImporterExporter {
 	{
 		objectConverter = new WBJSONToFromObjectConverter();		
 	}
-	
+	/*
 	protected String readFromStream(InputStream is) throws IOException
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -53,11 +54,16 @@ public class DataStoreImporterExporter {
 	{
 		try
 		{
+			WBUriValidator uriValidator = new WBUriValidator();
 			String buffer = readFromStream(zis);
 			List<WBUri> records = objectConverter.listObjectsFromJSONString(buffer, WBUri.class);
 			for(WBUri record: records)
 			{
 				record.setPrivkey(null);
+				if (uriValidator.validateCreate(record).size()>0)
+				{
+					// stop the import
+				}
 				adminStorage.add(record);
 			}
 		} catch (IOException e)
@@ -417,5 +423,5 @@ public class DataStoreImporterExporter {
 			throw new WBIOException("cannot import project " + e.getMessage());
 		}
 	}
-
+*/
 }

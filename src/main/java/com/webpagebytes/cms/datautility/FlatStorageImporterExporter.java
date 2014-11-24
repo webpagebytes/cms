@@ -29,6 +29,7 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.controllers.WBUriValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -58,6 +59,8 @@ public class FlatStorageImporterExporter {
 	private AdminDataStorage dataStorage = AdminDataStorageFactory.getInstance();
 	private WBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 	private WBImageProcessor imageProcessor = WBImageProcessorFactory.getInstance();
+	
+	private WBUriValidator uriValidator = new WBUriValidator();
 	
 	private void exportToXMLFormat(Map<String, Object> props, OutputStream os) throws IOException
 	{
@@ -193,6 +196,11 @@ public class FlatStorageImporterExporter {
 			WBUri uri = importer.buildUri(props);
 			if (uri != null)
 			{
+				if (uriValidator.validateCreate(uri).size()>0)
+				{
+					log.log(Level.SEVERE, String.format("uri validator failed for record ext key: '%s' and path: '%s'  ", uri.getExternalKey(), uri.getUri()));
+					throw new WBIOException("Uri validator failed");
+				}
 				dataStorage.add(uri);
 			}
 		} catch (IOException e)
