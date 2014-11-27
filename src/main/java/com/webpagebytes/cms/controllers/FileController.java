@@ -39,19 +39,19 @@ import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
 
 
-public class WBFileControllerEx extends WBController implements AdminDataStorageListener<Object>{
+public class FileController extends WBController implements AdminDataStorageListener<Object>{
 	public static final String PUBLIC_BUCKET = "public";
 	
 	private AdminDataStorage adminStorage;
 	private WPBCloudFileStorage cloudFileStorage;
-	private WBFileValidator validator;
+	private FileValidator validator;
 	private WPBFilesCache filesCache;
 	private WBImageProcessor imageProcessor;
 	
-	public WBFileControllerEx()
+	public FileController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
-		validator = new WBFileValidator();
+		validator = new FileValidator();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.createWBFilesCacheInstance();	

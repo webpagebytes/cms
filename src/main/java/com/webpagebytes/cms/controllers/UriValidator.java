@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBUri;
 
-public class WBUriValidator {
+class UriValidator {
 	public final static int MAX_URI_LENGHT = 255;
 	public final static int MAX_CONTROLLER_LENGHT = 255;
 	
@@ -14,7 +14,7 @@ public class WBUriValidator {
 	private HashSet<String> httpOperations;
 	
 	
-	public WBUriValidator()
+	public UriValidator()
 	{
 		httpOperations = new HashSet<String>();
 		httpOperations.add("PUT");

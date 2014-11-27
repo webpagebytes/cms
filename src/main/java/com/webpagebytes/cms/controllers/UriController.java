@@ -32,15 +32,16 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class WBUriController extends WBController implements AdminDataStorageListener<Object> {
+
+public class UriController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
-	private WBUriValidator uriValidator;
+	private UriValidator uriValidator;
 	private WPBUrisCache wbUriCache;
-	private static final Logger log = Logger.getLogger(WBUriController.class.getName());
+	private static final Logger log = Logger.getLogger(UriController.class.getName());
 	
-	public WBUriController() {
+	public UriController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
-		uriValidator = new WBUriValidator();
+		uriValidator = new UriValidator();
 		WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
 		adminStorage.addStorageListener(this);
@@ -60,7 +61,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		}
 	}
 
-	public void setUriValidator(WBUriValidator uriValidator) {
+	public void setUriValidator(UriValidator uriValidator) {
 		this.uriValidator = uriValidator;
 	}
 

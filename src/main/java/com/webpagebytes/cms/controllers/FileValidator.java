@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBFile;
 
-public class WBFileValidator {
+public class FileValidator {
 	public Map<String, String> validateCreate(WBFile webPage)
 	{
 		return new HashMap<String, String>();

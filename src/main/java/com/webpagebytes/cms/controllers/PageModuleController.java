@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,6 @@ import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
@@ -25,14 +25,14 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class WBPageModuleController extends WBController implements AdminDataStorageListener<Object>{
+public class PageModuleController extends WBController implements AdminDataStorageListener<Object>{
 	private AdminDataStorage adminStorage;
-	private WBPageModuleValidator validator;
+	private PageModuleValidator validator;
 	private WPBWebPageModulesCache wbPageModuleCache;
-	public WBPageModuleController()
+	public PageModuleController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
-		validator = new WBPageModuleValidator();
+		validator = new PageModuleValidator();
 		
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbPageModuleCache = wbCacheFactory.createWBWebPageModulesCacheInstance(); 
@@ -262,7 +262,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		this.adminStorage = adminStorage;
 	}
 
-	public void setValidator(WBPageModuleValidator validator) {
+	public void setValidator(PageModuleValidator validator) {
 		this.validator = validator;
 	}
 	

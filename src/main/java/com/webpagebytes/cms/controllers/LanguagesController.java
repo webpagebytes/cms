@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,12 +25,10 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class WBLanguagesController extends WBController implements AdminDataStorageListener<Object> {
+public class LanguagesController extends WBController implements AdminDataStorageListener<Object> {
 
 	private LanguageLocaleManager localeManager;
 	private AdminDataStorage adminStorage;
@@ -66,7 +65,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		}
 	}
 
-	public WBLanguagesController()
+	public LanguagesController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 		localeManager = LanguageLocaleManager.getInstance();

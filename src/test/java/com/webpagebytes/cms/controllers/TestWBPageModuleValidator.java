@@ -18,20 +18,20 @@ import java.util.HashMap;
 
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.controllers.WBPageModuleValidator;
+import com.webpagebytes.cms.controllers.PageModuleValidator;
 
 
 @RunWith(PowerMockRunner.class)
 public class TestWBPageModuleValidator {
 
-private WBPageModuleValidator pageModuleValidator;
+private PageModuleValidator pageModuleValidator;
 private WBWebPageModule wbPageModule;
 private Map<String,String> noErrors;
 
 @Before
 public void before()
 {
-	pageModuleValidator = new WBPageModuleValidator();
+	pageModuleValidator = new PageModuleValidator();
 	wbPageModule = new WBWebPageModule();
 	noErrors = new HashMap();
 }

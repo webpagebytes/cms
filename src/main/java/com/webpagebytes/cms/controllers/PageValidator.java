@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 
-public class WBPageValidator {
+class PageValidator {
 	public final static int MAX_PAGENAME_LENGHT = 250;
 	public final static int MAX_CONTROLLER_LENGTH = 250;
 	

@@ -23,8 +23,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBUriController;
-import com.webpagebytes.cms.controllers.WBUriValidator;
+import com.webpagebytes.cms.controllers.UriController;
+import com.webpagebytes.cms.controllers.UriValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
@@ -37,26 +37,26 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class TestWBUriController {
 
 private WBUri objectForControllerMock;
-private WBUriController controllerForTest;
+private UriController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
-private WBUriValidator validatorMock;
+private UriValidator validatorMock;
 private Map<String, String> errors;
 private WPBUrisCache cacheMock;
 @Before
 public void setUp()
 {
 	objectForControllerMock = PowerMock.createMock(WBUri.class);
-	controllerForTest = new WBUriController();
+	controllerForTest = new UriController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(WBJSONToFromObjectConverter.class);
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
-	validatorMock = PowerMock.createMock(WBUriValidator.class);
+	validatorMock = PowerMock.createMock(UriValidator.class);
 	errors = new HashMap<String, String>();
 	cacheMock = PowerMock.createMock(WPBUrisCache.class);
 	

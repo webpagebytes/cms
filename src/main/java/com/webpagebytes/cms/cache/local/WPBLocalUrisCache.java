@@ -14,14 +14,14 @@ import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalUrisCache implements WPBUrisCache {
+public class WPBLocalUrisCache implements WPBUrisCache {
 
 	private static final Object lock = new Object();
 	private AdminDataStorage dataStorage;
 	Map<Integer, Map<String, WBUri>> localCache;
 	long cacheFingerPrint;
 	
-	public WBLocalUrisCache()
+	public WPBLocalUrisCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try

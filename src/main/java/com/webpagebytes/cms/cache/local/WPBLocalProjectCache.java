@@ -14,14 +14,14 @@ import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.Pair;
 
-public class WBLocalProjectCache implements WPBProjectCache {
+public class WPBLocalProjectCache implements WPBProjectCache {
 	private WBProject project;
 	Pair<String, String> defaultLocale;
 	Set<String> supportedLanguages;
 	private AdminDataStorage dataStorage;
 	private static final Object lock = new Object();
 
-	public WBLocalProjectCache()
+	public WPBLocalProjectCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try

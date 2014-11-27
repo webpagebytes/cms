@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBPageModuleController;
-import com.webpagebytes.cms.controllers.WBPageModuleValidator;
+import com.webpagebytes.cms.controllers.PageModuleController;
+import com.webpagebytes.cms.controllers.PageModuleValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
@@ -39,13 +39,13 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class TestWBPageModuleController {
 
 private WBWebPageModule objectForControllerMock;
-private WBPageModuleController controllerForTest;
+private PageModuleController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
-private WBPageModuleValidator validatorMock;
+private PageModuleValidator validatorMock;
 private Map<String, String> errors;
 private WPBWebPageModulesCache pageModuleCacheMock;
 
@@ -53,13 +53,13 @@ private WPBWebPageModulesCache pageModuleCacheMock;
 public void setUp()
 {
 	objectForControllerMock = PowerMock.createMock(WBWebPageModule.class);
-	controllerForTest = new WBPageModuleController();
+	controllerForTest = new PageModuleController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(WBJSONToFromObjectConverter.class);
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
-	validatorMock = PowerMock.createMock(WBPageModuleValidator.class);
+	validatorMock = PowerMock.createMock(PageModuleValidator.class);
 	errors = new HashMap<String, String>();
 	pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 	

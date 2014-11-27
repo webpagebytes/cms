@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBParameter;
 
-public class WBParameterValidator {
+class ParameterValidator {
 	public Map<String, String> validateCreate(WBParameter wbParameter)
 	{
 		Map<String, String> errors = new HashMap<String, String>();

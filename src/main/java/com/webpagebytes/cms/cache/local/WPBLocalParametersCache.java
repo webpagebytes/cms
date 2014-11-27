@@ -12,7 +12,7 @@ import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalParametersCache implements WPBParametersCache {
+public class WPBLocalParametersCache implements WPBParametersCache {
 	
 	private AdminDataStorage dataStorage;
 	private Map<String, WBParameter> cacheParameters;
@@ -20,7 +20,7 @@ public class WBLocalParametersCache implements WPBParametersCache {
 	
 	private static final Object lock = new Object();
 
-	public WBLocalParametersCache()
+	public WPBLocalParametersCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try

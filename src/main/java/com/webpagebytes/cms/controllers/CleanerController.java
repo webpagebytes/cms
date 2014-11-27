@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,6 @@ import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
@@ -37,12 +37,12 @@ import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class WBCleanerController extends WBController implements AdminDataStorageListener<Object>{
+public class CleanerController extends WBController implements AdminDataStorageListener<Object>{
 	private AdminDataStorage adminStorage;
 	private WPBCacheFactory cacheFactory;
 	private WPBCloudFileStorage cloudFileStorage;
 	
-	public WBCleanerController()
+	public CleanerController()
 	{
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 
@@ -109,12 +109,12 @@ public class WBCleanerController extends WBController implements AdminDataStorag
 	{
 		if (file.getBlobKey() != null)
 		{
-			WPBCloudFile cloudFile = new WPBCloudFile(WBFileControllerEx.PUBLIC_BUCKET, file.getBlobKey());
+			WPBCloudFile cloudFile = new WPBCloudFile(FileController.PUBLIC_BUCKET, file.getBlobKey());
 			cloudFileStorage.deleteFile(cloudFile);
 		}
 		if (file.getThumbnailBlobKey() != null)
 		{
-			WPBCloudFile cloudThumbnailFile = new WPBCloudFile(WBFileControllerEx.PUBLIC_BUCKET, file.getThumbnailBlobKey());
+			WPBCloudFile cloudThumbnailFile = new WPBCloudFile(FileController.PUBLIC_BUCKET, file.getThumbnailBlobKey());
 			cloudFileStorage.deleteFile(cloudThumbnailFile);
 		}						
 	}

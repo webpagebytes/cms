@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBArticle;
 
-public class WBArticleValidator {
+class ArticleValidator {
 
 	public Map<String, String> validateCreate(WBArticle article)
 	{

@@ -10,12 +10,12 @@ import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalWebPagesCache implements WPBWebPagesCache {
+public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 	private AdminDataStorage dataStorage;
 	private Map<String, WBWebPage> localCacheByExternalId;
 	private Map<String, WBWebPage> localCacheByName;	
 	private static final Object lock = new Object();
-	public WBLocalWebPagesCache()
+	public WPBLocalWebPagesCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try

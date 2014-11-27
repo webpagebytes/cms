@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +16,10 @@ import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class WBReadOnlyDataController  extends WBController {
+public class ReadOnlyDataController  extends WBController {
 
 	public static final String DATA_FILES = "data_files";
 	public static final String DATA_PAGES = "data_pages";
@@ -28,7 +27,7 @@ public class WBReadOnlyDataController  extends WBController {
 	private AdminDataStorage adminStorage;
 
 
-	public WBReadOnlyDataController() 
+	public ReadOnlyDataController() 
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 	}

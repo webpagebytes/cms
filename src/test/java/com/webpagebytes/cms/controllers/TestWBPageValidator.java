@@ -17,21 +17,21 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.controllers.WBPageValidator;
+import com.webpagebytes.cms.controllers.PageValidator;
 
 
 @RunWith(PowerMockRunner.class)
 
 public class TestWBPageValidator {
 
-private WBPageValidator pageValidator;
+private PageValidator pageValidator;
 private WBWebPage wbPage;
 private Map<String,String> noErrors;
 
 @Before
 public void setup()
 {
-	pageValidator = new WBPageValidator();
+	pageValidator = new PageValidator();
 	wbPage = new WBWebPage();
 	noErrors = new HashMap<String,String>();
 }

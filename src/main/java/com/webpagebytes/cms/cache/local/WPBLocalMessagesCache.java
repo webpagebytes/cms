@@ -15,14 +15,14 @@ import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalMessagesCache implements WPBMessagesCache {
+public class WPBLocalMessagesCache implements WPBMessagesCache {
 	long cacheFingerPrint = 0;
 	Map<String, Map<String, String>> cacheMessages;
 	
 	private AdminDataStorage dataStorage;
 	private static final Object lock = new Object();
 
-	public WBLocalMessagesCache()
+	public WPBLocalMessagesCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try

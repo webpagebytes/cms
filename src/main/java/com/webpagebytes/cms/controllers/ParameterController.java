@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
@@ -26,13 +26,13 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class WBParameterController extends WBController implements AdminDataStorageListener<Object> {
+public class ParameterController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
-	private WBParameterValidator parameterValidator;
+	private ParameterValidator parameterValidator;
 	private WPBParametersCache wbParameterCache;
-	public WBParameterController() {
+	public ParameterController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
-		parameterValidator = new WBParameterValidator();
+		parameterValidator = new ParameterValidator();
 		
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbParameterCache = wbCacheFactory.createWBParametersCacheInstance(); 
@@ -329,7 +329,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 		this.adminStorage = adminStorage;
 	}
 
-	public void setParameterValidator(WBParameterValidator parameterValidator) {
+	public void setParameterValidator(ParameterValidator parameterValidator) {
 		this.parameterValidator = parameterValidator;
 	}
 	public void setParameterCache(WPBParametersCache parameterCache)

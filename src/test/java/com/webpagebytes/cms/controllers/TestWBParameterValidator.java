@@ -19,21 +19,21 @@ import java.util.HashMap;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBParameterValidator;
+import com.webpagebytes.cms.controllers.ParameterValidator;
 
 
 @RunWith(PowerMockRunner.class)
 
 public class TestWBParameterValidator {
 
-private WBParameterValidator parameterValidator;
+private ParameterValidator parameterValidator;
 private WBParameter wbParameter;
 private Map<String,String> noErrors;
 
 @Before
 public void setup()
 {
-	parameterValidator = new WBParameterValidator();
+	parameterValidator = new ParameterValidator();
 	wbParameter = EasyMock.createMock(WBParameter.class);
 	noErrors = new HashMap<String,String>();
 }

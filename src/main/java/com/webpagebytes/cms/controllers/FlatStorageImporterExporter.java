@@ -1,4 +1,4 @@
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.controllers;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBExporter;
@@ -27,7 +28,14 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.controllers.WBUriValidator;
+import com.webpagebytes.cms.datautility.AdminDataStorage;
+import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
+import com.webpagebytes.cms.datautility.WBImageProcessor;
+import com.webpagebytes.cms.datautility.WBImageProcessorFactory;
+import com.webpagebytes.cms.datautility.WPBCloudFile;
+import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -57,7 +65,7 @@ public class FlatStorageImporterExporter {
 	private WPBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 	private WBImageProcessor imageProcessor = WBImageProcessorFactory.getInstance();
 	
-	private WBUriValidator uriValidator = new WBUriValidator();
+	private UriValidator uriValidator = new UriValidator();
 	
 	private void exportToXMLFormat(Map<String, Object> props, OutputStream os) throws IOException
 	{

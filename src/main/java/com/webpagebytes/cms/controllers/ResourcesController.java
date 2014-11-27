@@ -22,10 +22,10 @@ import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBException;
 
-public class WBResourcesController extends WBController {
+public class ResourcesController extends WBController {
 	private AdminDataStorage adminStorage;
 	
-	public WBResourcesController() {
+	public ResourcesController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
 	}
 	

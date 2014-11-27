@@ -26,7 +26,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (null == uriCacheInstance)
 		{
-			uriCacheInstance = new WBLocalUrisCache();
+			uriCacheInstance = new WPBLocalUrisCache();
 		}
 		return uriCacheInstance;
 	}
@@ -34,7 +34,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (null == pageCacheInstance)
 		{
-			pageCacheInstance = new WBLocalWebPagesCache();
+			pageCacheInstance = new WPBLocalWebPagesCache();
 		}
 		return pageCacheInstance;
 	}
@@ -42,7 +42,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (parametersCacheInstance == null)
 		{
-			parametersCacheInstance = new WBLocalParametersCache();
+			parametersCacheInstance = new WPBLocalParametersCache();
 		}
 		return parametersCacheInstance;
 	}
@@ -51,7 +51,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (pageModulesCacheInstance == null)
 		{
-			pageModulesCacheInstance = new WBLocalWebPageModulesCache();
+			pageModulesCacheInstance = new WPBLocalWebPageModulesCache();
 		}
 		return pageModulesCacheInstance;
 	}
@@ -59,7 +59,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (filesCacheInstance == null)
 		{
-			filesCacheInstance = new WBLocalFilesCache();
+			filesCacheInstance = new WPBLocalFilesCache();
 		}
 		return filesCacheInstance;
 	}
@@ -67,7 +67,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (articlesCacheInstance == null)
 		{
-			articlesCacheInstance = new WBLocalArticlesCache();
+			articlesCacheInstance = new WPBLocalArticlesCache();
 		}
 		return articlesCacheInstance;
 	}
@@ -75,7 +75,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (messagesCacheInstance == null)
 		{
-			messagesCacheInstance = new WBLocalMessagesCache(); 
+			messagesCacheInstance = new WPBLocalMessagesCache(); 
 		}
 		return messagesCacheInstance;
 	}
@@ -83,7 +83,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	{
 		if (projectCacheInstance == null)
 		{
-			projectCacheInstance = new WBLocalProjectCache();
+			projectCacheInstance = new WPBLocalProjectCache();
 		}
 		return projectCacheInstance;
 	}

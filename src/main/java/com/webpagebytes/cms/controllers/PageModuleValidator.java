@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 
-public class WBPageModuleValidator {
+public class PageModuleValidator {
 
 	public final static int MAX_PAGEMODULE_NAME_LENGHT = 250;
 

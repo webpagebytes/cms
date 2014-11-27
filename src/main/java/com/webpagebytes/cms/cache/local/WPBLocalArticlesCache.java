@@ -4,18 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cache.WPBArticlesCache;
+import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalFilesCache implements WPBFilesCache {
+public class WPBLocalArticlesCache implements WPBArticlesCache {
 	
 	private AdminDataStorage dataStorage;
-	private Map<String, WBFile> localCache;
+	private Map<String, WBArticle> localCache;
 	private static final Object lock = new Object();
-	public WBLocalFilesCache()
+	public WPBLocalArticlesCache()
 	{
 		dataStorage = AdminDataStorageFactory.getInstance();
 		try
@@ -29,7 +29,7 @@ public class WBLocalFilesCache implements WPBFilesCache {
 			
 		}
 	}
-	public WBFile getByExternalKey(String externalKey) throws WBIOException
+	public WBArticle getByExternalKey(String externalKey) throws WBIOException
 	{
 		if (localCache == null)
 		{
@@ -45,9 +45,9 @@ public class WBLocalFilesCache implements WPBFilesCache {
 	public void Refresh() throws WBIOException {
 		synchronized (lock)
 		{
-			Map<String, WBFile> tempMap = new HashMap<String, WBFile>();
-			List<WBFile> recList = dataStorage.getAllRecords(WBFile.class);
-			for(WBFile item: recList)
+			Map<String, WBArticle> tempMap = new HashMap<String, WBArticle>();
+			List<WBArticle> recList = dataStorage.getAllRecords(WBArticle.class);
+			for(WBArticle item: recList)
 			{
 				tempMap.put(item.getExternalKey(), item);
 			}
@@ -55,5 +55,4 @@ public class WBLocalFilesCache implements WPBFilesCache {
 		}
 		
 	}
-	
 }

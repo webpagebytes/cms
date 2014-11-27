@@ -13,12 +13,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBUriValidator;
+import com.webpagebytes.cms.controllers.UriValidator;
 
 @RunWith(PowerMockRunner.class)
 public class TestWBUriValidator {
 
-private WBUriValidator uriValidator;
+private UriValidator uriValidator;
 private WBUri wburi;
 private Map<String, String> errorsContainer;
 @Before
@@ -26,7 +26,7 @@ public void setUp()
 {
 	wburi = new WBUri();
 	errorsContainer = new HashMap<String, String>();
-	uriValidator = new WBUriValidator();
+	uriValidator = new UriValidator();
 }
 
 @Test
@@ -150,7 +150,7 @@ public void test_validateCreateWBUri_invalidController()
 	assertTrue( errorsContainer.equals(errors1));
 	
 	String controller = "A";
-	for (int i = 0; i< WBUriValidator.MAX_CONTROLLER_LENGHT; i++)
+	for (int i = 0; i< UriValidator.MAX_CONTROLLER_LENGHT; i++)
 	{
 		controller += 'x';
 	}
@@ -281,7 +281,7 @@ public void test_validateCreateWBUri_uriTooLong()
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
 	String uri = "/a";
-	for(int i =0; i< WBUriValidator.MAX_URI_LENGHT;i++)
+	for(int i =0; i< UriValidator.MAX_URI_LENGHT;i++)
 	{
 		uri = uri + "a";
 	}
@@ -401,7 +401,7 @@ public void test_validateUpdateWBUri_uriTooLong()
 	wburi.setHttpOperation("GET");
 	
 	String uri = "/a";
-	for(int i =0; i< WBUriValidator.MAX_URI_LENGHT;i++)
+	for(int i =0; i< UriValidator.MAX_URI_LENGHT;i++)
 	{
 		uri = uri + "a";
 	}

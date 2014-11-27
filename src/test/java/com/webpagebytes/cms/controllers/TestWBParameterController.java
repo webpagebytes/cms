@@ -22,8 +22,8 @@ import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBParameterController;
-import com.webpagebytes.cms.controllers.WBParameterValidator;
+import com.webpagebytes.cms.controllers.ParameterController;
+import com.webpagebytes.cms.controllers.ParameterValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
@@ -36,13 +36,13 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class TestWBParameterController {
 
 private WBParameter objectForControllerMock;
-private WBParameterController controllerForTest;
+private ParameterController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
-private WBParameterValidator validatorMock;
+private ParameterValidator validatorMock;
 private Map<String, String> errors;
 private WPBParametersCache parameterCacheMock;
 
@@ -50,13 +50,13 @@ private WPBParametersCache parameterCacheMock;
 public void setUp()
 {
 	objectForControllerMock = PowerMock.createMock(WBParameter.class);
-	controllerForTest = new WBParameterController();
+	controllerForTest = new ParameterController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(WBJSONToFromObjectConverter.class);
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
-	validatorMock = PowerMock.createMock(WBParameterValidator.class);
+	validatorMock = PowerMock.createMock(ParameterValidator.class);
 	errors = new HashMap<String, String>();
 	parameterCacheMock = PowerMock.createMock(WPBParametersCache.class);
 	

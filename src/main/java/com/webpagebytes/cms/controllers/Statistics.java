@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,10 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
@@ -24,7 +23,7 @@ import com.webpagebytes.cms.exception.WBException;
 
 
 
-public class WBStatistics extends WBController {
+public class Statistics extends WBController {
 
 	private enum WBEntities
 	{
@@ -46,7 +45,7 @@ public class WBStatistics extends WBController {
 	private AdminDataStorage adminStorage;
 	private WBJSONToFromObjectConverter jsonObjectConverter;
 	
-	public WBStatistics()
+	public Statistics()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();

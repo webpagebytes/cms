@@ -11,11 +11,11 @@ import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBMessageValidator {
+public class MessageValidator {
 	
 	AdminDataStorage adminStorage;
 	
-	public WBMessageValidator()
+	public MessageValidator()
 	{
 		
 	}

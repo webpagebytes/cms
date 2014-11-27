@@ -27,10 +27,10 @@ import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.controllers.WBErrors;
-import com.webpagebytes.cms.controllers.WBPageController;
-import com.webpagebytes.cms.controllers.WBPageValidator;
-import com.webpagebytes.cms.controllers.WBUriController;
-import com.webpagebytes.cms.controllers.WBUriValidator;
+import com.webpagebytes.cms.controllers.PageController;
+import com.webpagebytes.cms.controllers.PageValidator;
+import com.webpagebytes.cms.controllers.UriController;
+import com.webpagebytes.cms.controllers.UriValidator;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
@@ -43,13 +43,13 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class TestWBPageController {
 
 private WBWebPage objectForControllerMock;
-private WBPageController controllerForTest;
+private PageController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
-private WBPageValidator validatorMock;
+private PageValidator validatorMock;
 private Map<String, String> errors;
 private WPBWebPagesCache pageCacheMock;
 
@@ -57,13 +57,13 @@ private WPBWebPagesCache pageCacheMock;
 public void setUp()
 {
 	objectForControllerMock = PowerMock.createMock(WBWebPage.class);
-	controllerForTest = new WBPageController();
+	controllerForTest = new PageController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(WBJSONToFromObjectConverter.class);
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
-	validatorMock = PowerMock.createMock(WBPageValidator.class);
+	validatorMock = PowerMock.createMock(PageValidator.class);
 	errors = new HashMap<String, String>();
 	pageCacheMock = PowerMock.createMock(WPBWebPagesCache.class);
 	
