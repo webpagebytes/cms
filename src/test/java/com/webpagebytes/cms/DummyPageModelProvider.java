@@ -2,16 +2,16 @@ package com.webpagebytes.cms;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.webpagebytes.cms.appinterfaces.WBPageModelProvider;
-import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
 
-public class DummyPageModelProvider implements WBPageModelProvider  {
+public class DummyPageModelProvider implements WPBPageModelProvider  {
 
-	public void populatePageModel(HttpServletRequest request, WBModel model)
+	public void populatePageModel(HttpServletRequest request, WPBModel model)
 	{
 		
 	}
-	public void populatePageModel(WBModel model)
+	public void populatePageModel(WPBModel model)
 	{
 		
 	}

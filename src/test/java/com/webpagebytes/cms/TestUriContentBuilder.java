@@ -16,10 +16,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.appinterfaces.WBRequestHandler;
-import com.webpagebytes.cms.appinterfaces.WBForward;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.appinterfaces.WPBRequestHandler;
+import com.webpagebytes.cms.appinterfaces.WPBForward;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.UriContentBuilder;
 import com.webpagebytes.cms.cmsdata.WBUri;
@@ -29,7 +29,7 @@ import com.webpagebytes.cms.exception.WBException;
 @PrepareForTest({UriContentBuilder.class})
 public class TestUriContentBuilder {
 
-WBCacheInstances cacheInstancesMock;
+WPBCacheInstances cacheInstancesMock;
 ModelBuilder modelBuilderMock;
 UriContentBuilder uriContentBuilder;
 PageContentBuilder pageContentBuilder;
@@ -38,7 +38,7 @@ FileContentBuilder fileContentBuilder;
 @Before
 public void setUp()
 {
-cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
+cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 pageContentBuilder = EasyMock.createMock(PageContentBuilder.class);
 fileContentBuilder = EasyMock.createMock(FileContentBuilder.class);
@@ -64,8 +64,8 @@ public void test_buildUriContent()
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
 	
-	WBModel model = new WBModel();
-	WBForward forward = new WBForward();
+	WPBModel model = new WPBModel();
+	WPBForward forward = new WPBForward();
 	try
 	{
 	
@@ -74,7 +74,7 @@ public void test_buildUriContent()
 		EasyMock.verify(responseMock, requestMock, uriMock, cacheInstancesMock, modelBuilderMock);
 		
 		//verify that the controller is in customControllers map
-		Map<String, WBRequestHandler> controllers =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
+		Map<String, WPBRequestHandler> controllers =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
 		assertTrue (controllers.get(controllerClass) != null);
 		
 	}catch (Exception e)
@@ -92,8 +92,8 @@ public void test_buildUriContent_wrongController()
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn("com.webpagebytes.cms.DoesNotExist");
 	
-	WBModel model = new WBModel();
-	WBForward forward = new WBForward();
+	WPBModel model = new WPBModel();
+	WPBForward forward = new WPBForward();
 	try
 	{
 	
@@ -120,21 +120,21 @@ public void test_buildUriContent_controller_already_exists()
 	
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	
-	WBRequestHandler controllerInst = null;
+	WPBRequestHandler controllerInst = null;
 	try
 	{
-		controllerInst = (WBRequestHandler) Class.forName(controllerClass).newInstance();
+		controllerInst = (WPBRequestHandler) Class.forName(controllerClass).newInstance();
 	} catch (Exception e)
 	{
 		assertTrue(false);
 	}
-	Map<String, WBRequestHandler> controllers = Whitebox.getInternalState(uriContentBuilder, "customControllers");
+	Map<String, WPBRequestHandler> controllers = Whitebox.getInternalState(uriContentBuilder, "customControllers");
 	controllers.put(controllerClass, controllerInst);
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
 	
-	WBModel model = new WBModel();
-	WBForward forward = new WBForward();
+	WPBModel model = new WPBModel();
+	WPBForward forward = new WPBForward();
 	try
 	{
 	
@@ -143,7 +143,7 @@ public void test_buildUriContent_controller_already_exists()
 		EasyMock.verify(responseMock, requestMock, uriMock, cacheInstancesMock, modelBuilderMock);
 		
 		//verify that the controller is in customControllers map
-		Map<String, WBRequestHandler> controllers_ =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
+		Map<String, WPBRequestHandler> controllers_ =  Whitebox.getInternalState(uriContentBuilder, "customControllers");
 		assertTrue (controllers_.get(controllerClass) == controllerInst);
 		assertTrue (controllers_.size() == 1);
 		
@@ -163,8 +163,8 @@ public void test_buildUriContent_empty_controller()
 	String controllerClass = "";
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);	
-	WBModel model = new WBModel();
-	WBForward forward = new WBForward();
+	WPBModel model = new WPBModel();
+	WPBForward forward = new WPBForward();
 	try
 	{
 	
@@ -188,8 +188,8 @@ public void test_buildUriContent_null_controller()
 	String controllerClass = null;
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);	
-	WBModel model = new WBModel();
-	WBForward forward = new WBForward();
+	WPBModel model = new WPBModel();
+	WPBForward forward = new WPBForward();
 	try
 	{
 	

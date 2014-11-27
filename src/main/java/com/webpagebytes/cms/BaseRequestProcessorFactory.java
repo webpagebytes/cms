@@ -1,6 +1,6 @@
 package com.webpagebytes.cms;
 
-public class BaseRequestProcessorFactory extends AdminRequestProcessorFactory {
+class BaseRequestProcessorFactory extends AdminRequestProcessorFactory {
 
 	public ResourceRequestProcessor createResourceRequestProcessor()
 	{

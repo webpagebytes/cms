@@ -54,7 +54,7 @@ public class FlatStorageImporterExporter {
 	private WBImporter importer = new WBImporter();
 	
 	private AdminDataStorage dataStorage = AdminDataStorageFactory.getInstance();
-	private WBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+	private WPBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
 	private WBImageProcessor imageProcessor = WBImageProcessorFactory.getInstance();
 	
 	private WBUriValidator uriValidator = new WBUriValidator();
@@ -288,10 +288,10 @@ public class FlatStorageImporterExporter {
 				WBFile file = files.get(0);
 				String uniqueId = dataStorage.getUniqueId();
 				String cloudPath = uniqueId + "/" + file.getFileName();
-				WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, cloudPath);
+				WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, cloudPath);
 				cloudFileStorage.storeFile(zis, cloudFile);
 				cloudFileStorage.updateContentType(cloudFile, file.getAdjustedContentType());
-			    WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+			    WPBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
@@ -301,7 +301,7 @@ public class FlatStorageImporterExporter {
 		        	try
 		        	{
 		        		String thumbnailPath = uniqueId + "/thumnail/" + uniqueId + ".jpg";
-		        		WBCloudFile cloudThumbnailFile = new WBCloudFile(PUBLIC_BUCKET, thumbnailPath);
+		        		WPBCloudFile cloudThumbnailFile = new WPBCloudFile(PUBLIC_BUCKET, thumbnailPath);
 		        		
 		        		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				        imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
@@ -715,7 +715,7 @@ public class FlatStorageImporterExporter {
 				try
 				{
 					String filePath = contentPath + file.getFileName();
-					WBCloudFile cloudFile = new WBCloudFile(PUBLIC_BUCKET, file.getBlobKey());
+					WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, file.getBlobKey());
 					InputStream is = cloudFileStorage.getFileContent(cloudFile);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					IOUtils.copy(is, bos);

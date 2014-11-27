@@ -15,9 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
@@ -33,14 +33,14 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBMessageController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
 	private WBMessageValidator validator;
-	private WBMessagesCache wbMessageCache;
+	private WPBMessagesCache wbMessageCache;
 
 	public WBMessageController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBMessageValidator();
 		validator.setAdminStorage(adminStorage);
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbMessageCache = wbCacheFactory.createWBMessagesCacheInstance();
 		adminStorage.addStorageListener(this);
 	}

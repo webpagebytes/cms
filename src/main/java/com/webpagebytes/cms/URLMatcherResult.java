@@ -2,7 +2,7 @@ package com.webpagebytes.cms;
 
 import java.util.Map;
 
-public class URLMatcherResult {
+class URLMatcherResult {
 private String urlRequest;
 
 private String urlPattern;

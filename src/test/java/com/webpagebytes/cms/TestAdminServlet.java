@@ -18,10 +18,10 @@ import org.easymock.Capture;
 import static org.junit.Assert.*;
 
 import com.webpagebytes.cms.AdminRequestProcessorFactory;
-import com.webpagebytes.cms.AdminServlet;
+import com.webpagebytes.cms.WPBAdminServlet;
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.ResourceRequestProcessor;
-import com.webpagebytes.cms.WBServletUtility;
+import com.webpagebytes.cms.WPBServletUtility;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
 
@@ -31,8 +31,8 @@ public class TestAdminServlet {
 	private HttpServletResponse response;	
 	private ResourceRequestProcessor resourceProcessor;
 	private AjaxRequestProcessor ajaxProcessor;
-	private WBServletUtility servletUtility;
-	private AdminServlet adminServlet;
+	private WPBServletUtility servletUtility;
+	private WPBAdminServlet adminServlet;
 	
 	@Before
 	public void setUp()
@@ -41,8 +41,8 @@ public class TestAdminServlet {
 		response = EasyMock.createMock(HttpServletResponse.class);		
 		resourceProcessor = EasyMock.createMock(ResourceRequestProcessor.class);
 		ajaxProcessor = EasyMock.createMock(AjaxRequestProcessor.class);
-		servletUtility = EasyMock.createMock(WBServletUtility.class);
-		adminServlet = new AdminServlet();		
+		servletUtility = EasyMock.createMock(WPBServletUtility.class);
+		adminServlet = new WPBAdminServlet();		
 		WBConfigurationFactory.setConfigPath("wbConfiguration.xml");
 	}
 	
@@ -51,7 +51,7 @@ public class TestAdminServlet {
 	{
 		try
 		{
-			AdminServlet adminServlet = new AdminServlet();
+			WPBAdminServlet adminServlet = new WPBAdminServlet();
 			adminServlet.setAdminURIPart("/admin");
 			EasyMock.expect(request.getRequestURI()).andReturn("/admin/js/base.js");
 			EasyMock.replay(request);
@@ -70,7 +70,7 @@ public class TestAdminServlet {
 	{
 		try
 		{
-			AdminServlet adminServlet = new AdminServlet();
+			WPBAdminServlet adminServlet = new WPBAdminServlet();
 			adminServlet.setAdminURIPart("/admin");
 			EasyMock.expect(request.getRequestURI()).andReturn("/test/script.js");
 			EasyMock.replay(request);
@@ -109,8 +109,8 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
 			
@@ -123,10 +123,10 @@ public class TestAdminServlet {
 			adminServlet.init();
 			EasyMock.verify(testProcessor, resourceProcessor, ajaxProcessor);
 			assertTrue(adminUriPart.getValue().compareTo("/admin") == 0);
-			assertTrue(adminFolderR.getValue().compareTo(AdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
-			assertTrue(adminFolderA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_FOLDER) == 0);
-			assertTrue(adminConfigA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_AJAX) == 0);
-			assertTrue(adminConfigR.getValue().compareTo(AdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
+			assertTrue(adminFolderR.getValue().compareTo(WPBAdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
+			assertTrue(adminFolderA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_FOLDER) == 0);
+			assertTrue(adminConfigA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_AJAX) == 0);
+			assertTrue(adminConfigR.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
 			
 		}
 		catch (Exception e)
@@ -151,8 +151,8 @@ public class TestAdminServlet {
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
 			ajaxProcessor.initialize(EasyMock.capture(adminFolderA), EasyMock.capture(adminConfigA));
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin/");
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin/");
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
@@ -163,10 +163,10 @@ public class TestAdminServlet {
 			adminServlet.init();
 			EasyMock.verify(testProcessor, resourceProcessor, ajaxProcessor, servletUtility);
 			assertTrue(adminServlet.getAdminURIPart().compareTo("/admin") == 0);
-			assertTrue(adminFolderR.getValue().compareTo(AdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
-			assertTrue(adminFolderA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_FOLDER) == 0);
-			assertTrue(adminConfigA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_AJAX) == 0);
-			assertTrue(adminConfigR.getValue().compareTo(AdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
+			assertTrue(adminFolderR.getValue().compareTo(WPBAdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
+			assertTrue(adminFolderA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_FOLDER) == 0);
+			assertTrue(adminConfigA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_AJAX) == 0);
+			assertTrue(adminConfigR.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
 			
 		}
 		catch (Exception e)
@@ -195,8 +195,8 @@ public class TestAdminServlet {
 			EasyMock.expect(testProcessor.createAjaxRequestProcessor()).andReturn(ajaxProcessor);
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
 			
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
 			adminServlet.setProcessorFactory(testProcessor);
@@ -205,10 +205,10 @@ public class TestAdminServlet {
 			adminServlet.init();
 			EasyMock.verify(testProcessor, resourceProcessor, ajaxProcessor, servletUtility);
 			assertTrue(adminUriPart.getValue().compareTo("/admin") == 0);
-			assertTrue(adminFolderR.getValue().compareTo(AdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
-			assertTrue(adminFolderA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_FOLDER) == 0);
-			assertTrue(adminConfigA.getValue().compareTo(AdminServlet.ADMIN_CONFIG_AJAX) == 0);
-			assertTrue(adminConfigR.getValue().compareTo(AdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
+			assertTrue(adminFolderR.getValue().compareTo(WPBAdminServlet.ADMIN_RESOURCE_FOLDER) == 0);
+			assertTrue(adminFolderA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_FOLDER) == 0);
+			assertTrue(adminConfigA.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_AJAX) == 0);
+			assertTrue(adminConfigR.getValue().compareTo(WPBAdminServlet.ADMIN_CONFIG_RESOURCES) == 0);
 			
 			assertTrue(adminServlet.getProcessorFactory() != null);
 			assertTrue(adminServlet.getResourceRequestProcessor() != null);
@@ -239,8 +239,8 @@ public class TestAdminServlet {
 			EasyMock.expectLastCall().andThrow(new WBException(""));
 			
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("/admin");
 			
 			adminServlet.setServletUtility(servletUtility);
 			adminServlet.setProcessorFactory(testProcessor);
@@ -264,8 +264,8 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay( servletUtility);
@@ -288,8 +288,8 @@ public class TestAdminServlet {
 		try
 		{
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("");
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn("");
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay( servletUtility);
 			
@@ -310,10 +310,10 @@ public class TestAdminServlet {
 	{
 		try
 		{
-			AdminServlet adminServlet = new AdminServlet();
+			WPBAdminServlet adminServlet = new WPBAdminServlet();
 			adminServlet.setAdminURIPart(null);
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay(servletUtility);
 			
@@ -335,10 +335,10 @@ public class TestAdminServlet {
 	{
 		try
 		{
-			AdminServlet adminServlet = new AdminServlet();
+			WPBAdminServlet adminServlet = new WPBAdminServlet();
 			adminServlet.setAdminURIPart("");
-			EasyMock.expect(servletUtility.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
-			EasyMock.expect(servletUtility.getInitParameter(AdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
+			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
+			EasyMock.expect(servletUtility.getInitParameter(WPBAdminServlet.ADMIN_URI_PREFIX, adminServlet)).andReturn(null);
 			
 			adminServlet.setServletUtility(servletUtility);
 			EasyMock.replay( servletUtility);
@@ -360,7 +360,7 @@ public class TestAdminServlet {
 	{
 		try
 		{
-			AdminServlet adminServlet = new AdminServlet();
+			WPBAdminServlet adminServlet = new WPBAdminServlet();
 			adminServlet.setAdminURIPart("/admin");
 			
 			String uri = adminServlet.decorateAdminRelativeUri("");

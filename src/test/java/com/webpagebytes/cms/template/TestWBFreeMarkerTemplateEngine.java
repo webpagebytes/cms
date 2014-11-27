@@ -23,11 +23,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBMessagesCache;
-import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.template.WBFreeMarkerArticleDirective;
@@ -45,34 +45,34 @@ import freemarker.template.Template;
 @RunWith(PowerMockRunner.class)
 public class TestWBFreeMarkerTemplateEngine {
 
-private WBCacheFactory cacheFactoryMock;
+private WPBCacheFactory cacheFactoryMock;
 private WBFreeMarkerFactory freeMarkerFactoryMock;
 private Configuration configurationMock;
 private WBFreeMarkerTemplateLoader templateLoaderMock;
 private WBFreeMarkerModuleDirective moduleDirectiveMock;
 private WBFreeMarkerImageDirective imageDirectiveMock;
 private WBFreeMarkerArticleDirective articleDirectiveMock;
-private WBMessagesCache messageCacheMock;
-private WBCacheInstances cacheInstancesMock;
-private WBCloudFileStorage cloudStorageMock;
-private WBCloudFileStorage cloudFileStorageMock;
+private WPBMessagesCache messageCacheMock;
+private WPBCacheInstances cacheInstancesMock;
+private WPBCloudFileStorage cloudStorageMock;
+private WPBCloudFileStorage cloudFileStorageMock;
 
 @Before
 public void setUp()
 {
-	cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
 	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 
-	cacheFactoryMock = PowerMock.createMock(WBCacheFactory.class);
+	cacheFactoryMock = PowerMock.createMock(WPBCacheFactory.class);
 	freeMarkerFactoryMock = PowerMock.createMock(WBFreeMarkerFactory.class);
 	configurationMock = PowerMock.createMock(Configuration.class);
 	templateLoaderMock = PowerMock.createMock(WBFreeMarkerTemplateLoader.class);
 	moduleDirectiveMock = PowerMock.createMock(WBFreeMarkerModuleDirective.class);
 	imageDirectiveMock = PowerMock.createMock(WBFreeMarkerImageDirective.class);
 	articleDirectiveMock = PowerMock.createMock(WBFreeMarkerArticleDirective.class);
-	cloudStorageMock = PowerMock.createMock(WBCloudFileStorage.class);
-	messageCacheMock = PowerMock.createMock(WBMessagesCache.class);
-	cacheInstancesMock = PowerMock.createMock(WBCacheInstances.class);
+	cloudStorageMock = PowerMock.createMock(WPBCloudFileStorage.class);
+	messageCacheMock = PowerMock.createMock(WPBMessagesCache.class);
+	cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
 	
 	Logger loggerMock = PowerMock.createMock(Logger.class);
 	Whitebox.setInternalState(WBFreeMarkerTemplateEngine.class, loggerMock);
@@ -81,7 +81,7 @@ public void setUp()
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WBCloudFileStorage)null);
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
 }
 
 
@@ -102,9 +102,9 @@ public void test_initialize()
 	configurationMock.setTemplateLoader(templateLoaderMock);
 	moduleDirectiveMock.initialize(templateEngine, cacheInstancesMock);
 	imageDirectiveMock.initialize(cloudStorageMock, cacheInstancesMock);
-	configurationMock.setSharedVariable(WBModel.MODULE_DIRECTIVE, moduleDirectiveMock);
-	configurationMock.setSharedVariable(WBModel.IMAGE_DIRECTIVE, imageDirectiveMock);
-	configurationMock.setSharedVariable(WBModel.ARTICLE_DIRECTIVE, articleDirectiveMock);
+	configurationMock.setSharedVariable(WPBModel.MODULE_DIRECTIVE, moduleDirectiveMock);
+	configurationMock.setSharedVariable(WPBModel.IMAGE_DIRECTIVE, imageDirectiveMock);
+	configurationMock.setSharedVariable(WPBModel.ARTICLE_DIRECTIVE, articleDirectiveMock);
 	
 	Capture<String> captureDefaultEncoding = new Capture<String>();
 	Capture<String> captureOutputEncoding = new Capture<String>();	
@@ -141,7 +141,7 @@ public void process_ok_no_messages()
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
-		rootMap.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
 		Writer out = new StringWriter();
 		
 		Template templateMock = PowerMock.createMock(Template.class);
@@ -149,7 +149,7 @@ public void process_ok_no_messages()
 		
 		Locale locale = new Locale("en");
 		WBResourceBundle resourceBundleMock = PowerMock.createMock(WBResourceBundle.class);
-		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);
+		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WPBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);
 		
 		Environment envMock = PowerMock.createMock(Environment.class);
 		EasyMock.expect(templateMock.createProcessingEnvironment(rootMap, out)).andReturn(envMock);
@@ -163,7 +163,7 @@ public void process_ok_no_messages()
 		
 		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, resourceBundleMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
-		assertTrue (rootMap.containsKey(WBModel.LOCALE_MESSAGES));
+		assertTrue (rootMap.containsKey(WPBModel.LOCALE_MESSAGES));
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -182,8 +182,8 @@ public void process_ok_with_messages()
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
-		rootMap.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
-		rootMap.put(WBModel.LOCALE_MESSAGES, new Object());
+		rootMap.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(WPBModel.LOCALE_MESSAGES, new Object());
 		
 		Writer out = new StringWriter();
 		
@@ -203,7 +203,7 @@ public void process_ok_with_messages()
 		
 		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 
-		assertTrue (rootMap.containsKey(WBModel.LOCALE_MESSAGES));
+		assertTrue (rootMap.containsKey(WPBModel.LOCALE_MESSAGES));
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -226,11 +226,11 @@ public void process_exception()
 	{
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
-		rootMap.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
+		rootMap.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
 		Writer out = new StringWriter();		
 		EasyMock.expect(configurationMock.getTemplate(nameTemplate)).andReturn(templateMock);		
 		Locale locale = new Locale("en");
-		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);		
+		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WPBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);		
 		EasyMock.expect(templateMock.createProcessingEnvironment(rootMap, out)).andReturn(envMock);			
 		Whitebox.setInternalState(templateEngine, "wbFreeMarkerFactory", freeMarkerFactoryMock);
 
@@ -246,7 +246,7 @@ public void process_exception()
 	catch (WBIOException e)
 	{
 		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
-		assertTrue (rootMap.containsKey(WBModel.LOCALE_LANGUAGE_KEY));
+		assertTrue (rootMap.containsKey(WPBModel.LOCALE_LANGUAGE_KEY));
 
 	}
 	catch (Exception e)

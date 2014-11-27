@@ -19,13 +19,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.appinterfaces.WBContentProvider;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBProjectCache;
+import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.utility.Pair;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest ({WPBCmsContentService.class})
@@ -50,11 +51,11 @@ public void test_getContentProvider()
 		PowerMockito.doAnswer(new Answer<Void>() {
 	        public Void answer(InvocationOnMock invocation) {
 	        	WPBCmsContentService contentService = (WPBCmsContentService)invocation.getMock();
-	        	WBContentProvider mockProvider = EasyMock.createMock(WBContentProvider.class);
+	        	WPBContentProvider mockProvider = EasyMock.createMock(WPBContentProvider.class);
 	    		Whitebox.setInternalState(contentService, "contentProvider", mockProvider);
 	        	return null;
 	        } }).when(contentService, "initializeContentProvider");
-		WBContentProvider result = contentService.getContentProvider();
+		WPBContentProvider result = contentService.getContentProvider();
 		assertTrue (result != null);
 		
 	} catch (Exception e)
@@ -68,9 +69,9 @@ public void test_getContentProvider_already_set()
 {
 	try
 	{
-      	WBContentProvider mockProvider = EasyMock.createMock(WBContentProvider.class);
+      	WPBContentProvider mockProvider = EasyMock.createMock(WPBContentProvider.class);
 	    Whitebox.setInternalState(contentService, "contentProvider", mockProvider);
-	    WBContentProvider result = contentService.getContentProvider();
+	    WPBContentProvider result = contentService.getContentProvider();
 		assertTrue (result == mockProvider);
 		
 	} catch (Exception e)
@@ -85,10 +86,10 @@ public void test_initializeContentProvider()
 	try
 	{
 		PageContentBuilder pageContentBuilderMock = EasyMock.createMock(PageContentBuilder.class);
-		PowerMockito.doReturn(pageContentBuilderMock).when(contentService, "createPageContentBuilder", Matchers.any(WBCacheInstances.class), Matchers.any(ModelBuilder.class) );
+		PowerMockito.doReturn(pageContentBuilderMock).when(contentService, "createPageContentBuilder", Matchers.any(WPBCacheInstances.class), Matchers.any(ModelBuilder.class) );
 	
 		FileContentBuilder fileContentBuilderMock = EasyMock.createMock(FileContentBuilder.class);
-		PowerMockito.doReturn(fileContentBuilderMock).when(contentService, "createFileContentBuilder", Matchers.any(WBCacheInstances.class));
+		PowerMockito.doReturn(fileContentBuilderMock).when(contentService, "createFileContentBuilder", Matchers.any(WPBCacheInstances.class));
 	
 		Whitebox.invokeMethod(contentService, "initializeContentProvider");
 		
@@ -107,21 +108,21 @@ public void test_createModel()
 	{
 		ModelBuilder modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 		Whitebox.setInternalState(contentService, "modelBuilder", modelBuilderMock);
-		WBCacheInstances cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
+		WPBCacheInstances cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
-		WBProjectCache projectCacheMock = EasyMock.createMock(WBProjectCache.class);
+		WPBProjectCache projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		EasyMock.expect(projectCacheMock.getDefaultLocale()).andReturn(new Pair<String, String>("en", "GB"));
 		Capture<String> captureLanguage = new Capture<String>();
 		Capture<String> captureCountry = new Capture<String>();
-		Capture<WBModel> captureModel1 = new Capture<WBModel>();		
+		Capture<WPBModel> captureModel1 = new Capture<WPBModel>();		
 		modelBuilderMock.populateLocale(EasyMock.capture(captureLanguage), EasyMock.capture(captureCountry), EasyMock.capture(captureModel1));
 		
-		Capture<WBModel> captureModel2 = new Capture<WBModel>();		
+		Capture<WPBModel> captureModel2 = new Capture<WPBModel>();		
 		modelBuilderMock.populateGlobalParameters(EasyMock.capture(captureModel2));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);
-		WBModel model = contentService.createModel();
+		WPBModel model = contentService.createModel();
 		assertTrue(model != null);
 		assertTrue(captureLanguage.getValue().equals("en"));
 		assertTrue(captureCountry.getValue().equals("GB"));
@@ -141,9 +142,9 @@ public void test_createModel_exception()
 	{
 		ModelBuilder modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 		Whitebox.setInternalState(contentService, "modelBuilder", modelBuilderMock);
-		WBCacheInstances cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
+		WPBCacheInstances cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
-		WBProjectCache projectCacheMock = EasyMock.createMock(WBProjectCache.class);
+		WPBProjectCache projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 	
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
@@ -172,9 +173,9 @@ public void createModel_param(String language, String country)
 	{
 		ModelBuilder modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 		Whitebox.setInternalState(contentService, "modelBuilder", modelBuilderMock);
-		WBCacheInstances cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
+		WPBCacheInstances cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
-		WBProjectCache projectCacheMock = EasyMock.createMock(WBProjectCache.class);
+		WPBProjectCache projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		Set<String> supportedLocales = new HashSet<String>();
 		supportedLocales.add("en_GB");
@@ -182,14 +183,14 @@ public void createModel_param(String language, String country)
 		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLocales);
 		Capture<String> captureLanguage = new Capture<String>();
 		Capture<String> captureCountry = new Capture<String>();
-		Capture<WBModel> captureModel1 = new Capture<WBModel>();		
+		Capture<WPBModel> captureModel1 = new Capture<WPBModel>();		
 		modelBuilderMock.populateLocale(EasyMock.capture(captureLanguage), EasyMock.capture(captureCountry), EasyMock.capture(captureModel1));
 		
-		Capture<WBModel> captureModel2 = new Capture<WBModel>();		
+		Capture<WPBModel> captureModel2 = new Capture<WPBModel>();		
 		modelBuilderMock.populateGlobalParameters(EasyMock.capture(captureModel2));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);
-		WBModel model = contentService.createModel(language, country);
+		WPBModel model = contentService.createModel(language, country);
 		assertTrue(model != null);
 		assertTrue(captureLanguage.getValue().equals(language.toLowerCase()));
 		if (country != null)
@@ -235,9 +236,9 @@ public void test_createModel_param_exception()
 	{
 		ModelBuilder modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 		Whitebox.setInternalState(contentService, "modelBuilder", modelBuilderMock);
-		WBCacheInstances cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
+		WPBCacheInstances cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
-		WBProjectCache projectCacheMock = EasyMock.createMock(WBProjectCache.class);
+		WPBProjectCache projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		Set<String> supportedLocales = new HashSet<String>();
 		supportedLocales.add("en_GB");

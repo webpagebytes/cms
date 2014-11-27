@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.template.WBFreeMarkerFactory;
 import com.webpagebytes.cms.template.WBFreeMarkerModuleDirective;
 import com.webpagebytes.cms.template.WBFreeMarkerTemplateLoader;
@@ -43,7 +43,7 @@ public void createWBFreeMarkerModuleDirective()
 public void createWBFreeMarkerTemplateLoader()
 {
 	WBFreeMarkerFactory factory = new WBFreeMarkerFactory();
-	WBCacheInstances cacheInstancesMock = PowerMock.createMock(WBCacheInstances.class);
+	WPBCacheInstances cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
 	
 	PowerMock.replay(cacheInstancesMock);
 	WBFreeMarkerTemplateLoader loader = factory.createWBFreeMarkerTemplateLoader(cacheInstancesMock);	

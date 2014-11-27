@@ -7,18 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.datautility.WBCloudFile;
-import com.webpagebytes.cms.datautility.WBCloudFileInfo;
-import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WPBCloudFile;
+import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.WBBase64Utility;
 
-public class LocalCloudFileContentBuilder {
+class LocalCloudFileContentBuilder {
 
 	public static final String LOCAL_FILE_SERVE_URL = "/__wblocalfile/";
 	
-	private WBCloudFileStorage cloudFileStorage;
+	private WPBCloudFileStorage cloudFileStorage;
 	public LocalCloudFileContentBuilder()
 	{
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
@@ -34,13 +34,13 @@ public class LocalCloudFileContentBuilder {
 		String bucket = fullFilePath.substring(0, pos);
 		String file = fullFilePath.substring(pos+1);
 		file = new String(WBBase64Utility.fromSafePathBase64(file), Charset.forName("UTF-8"));
-		WBCloudFile cloudFile = new WBCloudFile(bucket, file);
+		WPBCloudFile cloudFile = new WPBCloudFile(bucket, file);
 		InputStream is = null;
 		try
 		{
 			is = cloudFileStorage.getFileContent(cloudFile);
 			IOUtils.copy(is, response.getOutputStream());
-			WBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+			WPBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 			response.setContentType(fileInfo.getContentType());
 			
 			// do not close the response outputstream here

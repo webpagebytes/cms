@@ -2,14 +2,14 @@ package com.webpagebytes.cms.template;
 
 import java.util.Locale;
 
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
 
 import freemarker.template.Configuration;
 
 public class WBFreeMarkerFactory {
 
-	public WBResourceBundle createResourceBundle(WBMessagesCache messageCache, Locale locale)
+	public WBResourceBundle createResourceBundle(WPBMessagesCache messageCache, Locale locale)
 	{
 		return new WBResourceBundle(messageCache, locale);
 	}
@@ -18,7 +18,7 @@ public class WBFreeMarkerFactory {
 		return new Configuration();
 	}
 	
-	public WBFreeMarkerTemplateLoader createWBFreeMarkerTemplateLoader(WBCacheInstances cacheInstances)
+	public WBFreeMarkerTemplateLoader createWBFreeMarkerTemplateLoader(WPBCacheInstances cacheInstances)
 	{
 		return new WBFreeMarkerTemplateLoader(cacheInstances);
 	}

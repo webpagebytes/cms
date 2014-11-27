@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -29,50 +29,50 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 {
 	TemplateHashModel dataModel = env.getDataModel();
 
-	TemplateModel localeCountry = dataModel.get(WBModel.LOCALE_COUNTRY_KEY);
-	TemplateModel localeLanguage = dataModel.get(WBModel.LOCALE_LANGUAGE_KEY);
-	params.put(WBModel.LOCALE_LANGUAGE_KEY, localeLanguage);
-	params.put(WBModel.LOCALE_COUNTRY_KEY, localeCountry);
+	TemplateModel localeCountry = dataModel.get(WPBModel.LOCALE_COUNTRY_KEY);
+	TemplateModel localeLanguage = dataModel.get(WPBModel.LOCALE_LANGUAGE_KEY);
+	params.put(WPBModel.LOCALE_LANGUAGE_KEY, localeLanguage);
+	params.put(WPBModel.LOCALE_COUNTRY_KEY, localeCountry);
 	
-	TemplateModel resourceBundle = dataModel.get(WBModel.LOCALE_MESSAGES);
+	TemplateModel resourceBundle = dataModel.get(WPBModel.LOCALE_MESSAGES);
 	if (resourceBundle != null)
 	{
-		params.put(WBModel.LOCALE_MESSAGES, resourceBundle);
+		params.put(WPBModel.LOCALE_MESSAGES, resourceBundle);
 	}
-	TemplateModel pageParams = dataModel.get(WBModel.PAGE_PARAMETERS_KEY);
+	TemplateModel pageParams = dataModel.get(WPBModel.PAGE_PARAMETERS_KEY);
 	if (pageParams != null)
 	{
-		params.put(WBModel.PAGE_PARAMETERS_KEY, pageParams);
+		params.put(WPBModel.PAGE_PARAMETERS_KEY, pageParams);
 	}
-	TemplateModel uriParams = dataModel.get(WBModel.URI_PARAMETERS_KEY);
+	TemplateModel uriParams = dataModel.get(WPBModel.URI_PARAMETERS_KEY);
 	if (uriParams != null)
 	{
-		params.put(WBModel.URI_PARAMETERS_KEY, uriParams);
+		params.put(WPBModel.URI_PARAMETERS_KEY, uriParams);
 	}
 	
-	params.put(WBModel.FORMAT_TEXT_METHOD, dataModel.get(WBModel.FORMAT_TEXT_METHOD));
+	params.put(WPBModel.FORMAT_TEXT_METHOD, dataModel.get(WPBModel.FORMAT_TEXT_METHOD));
 	
-	TemplateModel globals = dataModel.get(WBModel.GLOBALS_KEY);
+	TemplateModel globals = dataModel.get(WPBModel.GLOBALS_KEY);
 	if (globals != null) 
 	{
-		params.put(WBModel.GLOBALS_KEY, globals);
+		params.put(WPBModel.GLOBALS_KEY, globals);
 	}
-	TemplateModel locale = dataModel.get(WBModel.LOCALE_KEY);
+	TemplateModel locale = dataModel.get(WPBModel.LOCALE_KEY);
 	if (locale != null) 
 	{
-		params.put(WBModel.LOCALE_KEY, locale);
+		params.put(WPBModel.LOCALE_KEY, locale);
 	}
 
-	TemplateModel request = dataModel.get(WBModel.REQUEST_KEY);
+	TemplateModel request = dataModel.get(WPBModel.REQUEST_KEY);
 	if (request != null) 
 	{
-		params.put(WBModel.REQUEST_KEY, request);
+		params.put(WPBModel.REQUEST_KEY, request);
 	}
 
-	TemplateModel appModel = dataModel.get(WBModel.APPLICATION_CONTROLLER_MODEL_KEY);
+	TemplateModel appModel = dataModel.get(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY);
 	if (appModel != null) 
 	{
-		params.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, appModel);
+		params.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, appModel);
 	}
 
 }

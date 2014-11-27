@@ -14,7 +14,7 @@ import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBFileNotFoundException;
 import com.webpagebytes.cms.exception.WBReadConfigException;
 
-public class ResourceReader {
+class ResourceReader {
 
 	public Set<String> parseWhiteListFile(String resourcesWhileList) throws WBException
 	{

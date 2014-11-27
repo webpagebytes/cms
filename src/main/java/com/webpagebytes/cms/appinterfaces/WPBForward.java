@@ -1,0 +1,25 @@
+package com.webpagebytes.cms.appinterfaces;
+
+public class WPBForward {
+	String redirectToExternalKey = null;
+	boolean forwardRequest = false;
+	
+	public void setForwardTo(String externalKey)
+	{
+		redirectToExternalKey = externalKey;
+		forwardRequest = false;
+		if (externalKey != null && externalKey.length()>0)
+		{
+			forwardRequest = true;
+		}
+	}
+	public String getForwardTo()
+	{
+		return redirectToExternalKey;
+	}
+	public boolean isRequestForwarded()
+	{
+		return forwardRequest;
+	}
+	
+}

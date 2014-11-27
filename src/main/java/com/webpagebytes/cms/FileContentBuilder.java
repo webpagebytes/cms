@@ -3,23 +3,22 @@ package com.webpagebytes.cms;
 import java.io.IOException;
 
 
+
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Logger;
-
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.datautility.WBCloudFile;
-import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WPBCloudFile;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class FileContentBuilder {
-	private WBCloudFileStorage cloudFileStorage;
-	private WBFilesCache filesCache;
-	public FileContentBuilder(WBCacheInstances cacheInstances)
+class FileContentBuilder {
+	private WPBCloudFileStorage cloudFileStorage;
+	private WPBFilesCache filesCache;
+	public FileContentBuilder(WPBCacheInstances cacheInstances)
 	{
 		filesCache = cacheInstances.getWBFilesCache();
 		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
@@ -34,7 +33,7 @@ public class FileContentBuilder {
 	}
 	public InputStream getFileContent(WBFile file) throws WBException
 	{
-		WBCloudFile cloudFile = new WBCloudFile("public", file.getBlobKey());
+		WPBCloudFile cloudFile = new WPBCloudFile("public", file.getBlobKey());
 		try
 		{
 			return cloudFileStorage.getFileContent(cloudFile);

@@ -9,12 +9,12 @@ import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
 
 
 public class WBCloudFileStorageFactory {
-	static WBCloudFileStorage instance = null;
+	static WPBCloudFileStorage instance = null;
 	private WBCloudFileStorageFactory() {}
 	private static final Object lock = new Object();
 	private static final Logger log = Logger.getLogger(WBCloudFileStorageFactory.class.getName());
 
-	public static WBCloudFileStorage getInstance()
+	public static WPBCloudFileStorage getInstance()
 	{
 		if (instance == null) {
 				synchronized (lock) {
@@ -26,7 +26,7 @@ public class WBCloudFileStorageFactory {
 					}
 					try
 					{
-						instance = (WBCloudFileStorage) Class.forName(factoryClass).newInstance();
+						instance = (WPBCloudFileStorage) Class.forName(factoryClass).newInstance();
 						return instance;
 					} 
 					

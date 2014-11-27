@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -20,13 +20,13 @@ public class WBFreeMarkerTemplateLoader implements TemplateLoader {
 	private String webPagesPathPrefix;
 	private String webModulesPathPrefix;
 
-	private WBCacheInstances cacheInstances;
+	private WPBCacheInstances cacheInstances;
 	
 	public WBFreeMarkerTemplateLoader()
 	{
 		
 	}
-	WBFreeMarkerTemplateLoader(WBCacheInstances wbCacheInstances)
+	WBFreeMarkerTemplateLoader(WPBCacheInstances wbCacheInstances)
 	{
 		setWebModulesPathPrefix(WBTemplateEngine.WEBMODULES_PATH_PREFIX);
 		setWebPagesPathPrefix(WBTemplateEngine.WEBPAGES_PATH_PREFIX);

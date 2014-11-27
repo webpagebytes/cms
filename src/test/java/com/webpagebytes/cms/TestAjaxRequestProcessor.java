@@ -1,10 +1,10 @@
 package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.AdminServletOperationsReader;
-
 import com.webpagebytes.cms.AjaxRequestProcessor;
-import com.webpagebytes.cms.Pair;
 import com.webpagebytes.cms.exception.*;
+import com.webpagebytes.cms.utility.Pair;
+
 import javax.servlet.http.*;
 
 import org.junit.Test;

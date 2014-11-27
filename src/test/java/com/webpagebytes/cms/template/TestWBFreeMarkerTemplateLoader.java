@@ -17,16 +17,16 @@ import org.junit.Before;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 
-import com.webpagebytes.cms.cache.WBArticlesCache;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBFilesCache;
-import com.webpagebytes.cms.cache.WBMessagesCache;
-import com.webpagebytes.cms.cache.WBParametersCache;
-import com.webpagebytes.cms.cache.WBProjectCache;
-import com.webpagebytes.cms.cache.WBUrisCache;
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cache.WPBArticlesCache;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBFilesCache;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
+import com.webpagebytes.cms.cache.WPBParametersCache;
+import com.webpagebytes.cms.cache.WPBProjectCache;
+import com.webpagebytes.cms.cache.WPBUrisCache;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
@@ -40,29 +40,29 @@ import com.webpagebytes.cms.template.WBFreeMarkerTemplateObject.TemplateType;
 @RunWith(PowerMockRunner.class)
 public class TestWBFreeMarkerTemplateLoader {
 
-private WBUrisCache wbUriCacheMock;
-private WBWebPagesCache wbWebPageCacheMock;
-private WBWebPageModulesCache wbWebPageModuleCacheMock;
-private WBParametersCache wbParameterCacheMock;
-private WBFilesCache wbImageCacheMock;
-private WBArticlesCache wbArticleCacheMock;
-private WBMessagesCache wbMessageCacheMock;
-private WBProjectCache wbProjectCacheMock;
+private WPBUrisCache wbUriCacheMock;
+private WPBWebPagesCache wbWebPageCacheMock;
+private WPBWebPageModulesCache wbWebPageModuleCacheMock;
+private WPBParametersCache wbParameterCacheMock;
+private WPBFilesCache wbImageCacheMock;
+private WPBArticlesCache wbArticleCacheMock;
+private WPBMessagesCache wbMessageCacheMock;
+private WPBProjectCache wbProjectCacheMock;
 
-WBCacheInstances cacheInstances;
+WPBCacheInstances cacheInstances;
 
 @Before
 public void setUp()
 {
-	wbUriCacheMock = PowerMock.createMock(WBUrisCache.class);
-	wbWebPageCacheMock = PowerMock.createMock(WBWebPagesCache.class);
-	wbWebPageModuleCacheMock = PowerMock.createMock(WBWebPageModulesCache.class);
-	wbParameterCacheMock = PowerMock.createMock(WBParametersCache.class);
-	wbImageCacheMock = PowerMock.createMock(WBFilesCache.class);
-	wbArticleCacheMock = PowerMock.createMock(WBArticlesCache.class);
-	wbMessageCacheMock = PowerMock.createMock(WBMessagesCache.class);
-	wbProjectCacheMock = PowerMock.createMock(WBProjectCache.class);
-	cacheInstances = new WBCacheInstances(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
+	wbUriCacheMock = PowerMock.createMock(WPBUrisCache.class);
+	wbWebPageCacheMock = PowerMock.createMock(WPBWebPagesCache.class);
+	wbWebPageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
+	wbParameterCacheMock = PowerMock.createMock(WPBParametersCache.class);
+	wbImageCacheMock = PowerMock.createMock(WPBFilesCache.class);
+	wbArticleCacheMock = PowerMock.createMock(WPBArticlesCache.class);
+	wbMessageCacheMock = PowerMock.createMock(WPBMessagesCache.class);
+	wbProjectCacheMock = PowerMock.createMock(WPBProjectCache.class);
+	cacheInstances = new WPBCacheInstances(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
 	
 }
 

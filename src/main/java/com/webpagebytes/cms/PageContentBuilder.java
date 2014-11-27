@@ -2,33 +2,29 @@ package com.webpagebytes.cms;
 
 
 import java.io.StringWriter;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
-import com.webpagebytes.cms.appinterfaces.WBPageModelProvider;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBProject;
+import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.template.WBFreeMarkerTemplateEngine;
 import com.webpagebytes.cms.template.WBTemplateEngine;
 
-public class PageContentBuilder {
+class PageContentBuilder {
 		
 	private WBTemplateEngine templateEngine;
-	private WBCacheInstances cacheInstances;
-	private Map<String, WBPageModelProvider> customControllers;
+	private WPBCacheInstances cacheInstances;
+	private Map<String, WPBPageModelProvider> customControllers;
 	private ModelBuilder modelBuilder;
 
-	public PageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
+	public PageContentBuilder(WPBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 							
 	{
-		this.customControllers = new HashMap<String, WBPageModelProvider>();
+		this.customControllers = new HashMap<String, WPBPageModelProvider>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
 		this.templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
@@ -45,16 +41,16 @@ public class PageContentBuilder {
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
-	private WBPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
+	private WPBPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
 	{
-		WBPageModelProvider controllerInst = null;
+		WPBPageModelProvider controllerInst = null;
 		if (customControllers.containsKey(controllerClassName))
 		{
-			controllerInst = (WBPageModelProvider) customControllers.get(controllerClassName);
+			controllerInst = (WPBPageModelProvider) customControllers.get(controllerClassName);
 		} else
 		{
 			try {
-			controllerInst = (WBPageModelProvider) Class.forName(controllerClassName).newInstance();
+			controllerInst = (WPBPageModelProvider) Class.forName(controllerClassName).newInstance();
 			customControllers.put(controllerClassName, controllerInst);
 			} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
 		}
@@ -63,7 +59,7 @@ public class PageContentBuilder {
 	
 	public String buildPageContent(HttpServletRequest request,
 			WBWebPage wbWebPage, 
-			WBModel model) throws WBException
+			WPBModel model) throws WBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();
@@ -82,16 +78,16 @@ public class PageContentBuilder {
 		
 		if (hasController)
 		{
-			WBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
+			WPBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
-		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
+		if (model.getCmsModel().containsKey(WPBModel.LOCALE_KEY))
 		{
-			rootModel.put(WBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_COUNTRY_KEY));
-			rootModel.put(WBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_LANGUAGE_KEY));
+			rootModel.put(WPBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WPBModel.LOCALE_KEY).get(WPBModel.LOCALE_COUNTRY_KEY));
+			rootModel.put(WPBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WPBModel.LOCALE_KEY).get(WPBModel.LOCALE_LANGUAGE_KEY));
 		}
 		
 		String result = "";
@@ -109,7 +105,7 @@ public class PageContentBuilder {
 
 	public String buildPageContent(
 			WBWebPage wbWebPage, 
-			WBModel model) throws WBException
+			WPBModel model) throws WBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();
@@ -128,16 +124,16 @@ public class PageContentBuilder {
 		
 		if (hasController)
 		{
-			WBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
+			WPBPageModelProvider controllerInst = getPageModelProvider(controllerClassName);
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
 		
-		if (model.getCmsModel().containsKey(WBModel.LOCALE_KEY))
+		if (model.getCmsModel().containsKey(WPBModel.LOCALE_KEY))
 		{
-			rootModel.put(WBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_COUNTRY_KEY));
-			rootModel.put(WBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WBModel.LOCALE_KEY).get(WBModel.LOCALE_LANGUAGE_KEY));
+			rootModel.put(WPBModel.LOCALE_COUNTRY_KEY, model.getCmsModel().get(WPBModel.LOCALE_KEY).get(WPBModel.LOCALE_COUNTRY_KEY));
+			rootModel.put(WPBModel.LOCALE_LANGUAGE_KEY, model.getCmsModel().get(WPBModel.LOCALE_KEY).get(WPBModel.LOCALE_LANGUAGE_KEY));
 		}
 		
 		String result = "";

@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
 
 public class WBFreeMarkerResourceBundleControl extends ResourceBundle.Control {
 
-	protected WBMessagesCache messageCache;
+	protected WPBMessagesCache messageCache;
 	
-	WBFreeMarkerResourceBundleControl(WBMessagesCache messageCache)
+	WBFreeMarkerResourceBundleControl(WPBMessagesCache messageCache)
 	{
 		this.messageCache = messageCache;
 	}

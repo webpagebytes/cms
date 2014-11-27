@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalFilesCache implements WBFilesCache {
+public class WBLocalFilesCache implements WPBFilesCache {
 	
 	private AdminDataStorage dataStorage;
 	private Map<String, WBFile> localCache;

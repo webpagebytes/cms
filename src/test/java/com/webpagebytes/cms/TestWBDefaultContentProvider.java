@@ -21,18 +21,18 @@ import org.powermock.reflect.Whitebox;
 
 import static org.junit.Assert.*;
 
-import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest ({OutputStream.class, WBDefaultContentProvider.class})
+@PrepareForTest ({OutputStream.class, WPBDefaultContentProvider.class})
 public class TestWBDefaultContentProvider {
 
 private FileContentBuilder fileContentBuilderMock;
 private PageContentBuilder pageContentBuilderMock;
-private WBDefaultContentProvider contentProvider;
+private WPBDefaultContentProvider contentProvider;
 private Logger loggerMock;
 
 @Before
@@ -40,9 +40,9 @@ public void before()
 {
 	fileContentBuilderMock = EasyMock.createMock(FileContentBuilder.class);
 	pageContentBuilderMock = EasyMock.createMock(PageContentBuilder.class);
-	contentProvider = new WBDefaultContentProvider(fileContentBuilderMock, pageContentBuilderMock);
+	contentProvider = new WPBDefaultContentProvider(fileContentBuilderMock, pageContentBuilderMock);
 	loggerMock = EasyMock.createMock(Logger.class);
-	Whitebox.setInternalState(WBDefaultContentProvider.class, "log", loggerMock);
+	Whitebox.setInternalState(WPBDefaultContentProvider.class, "log", loggerMock);
 }
 
 
@@ -109,7 +109,7 @@ public void test_writePageContent()
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		OutputStream osMock  = EasyMock.createMock(OutputStream.class);
 		WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-		WBModel modelMock = EasyMock.createMock(WBModel.class);
+		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andReturn(content);
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, pageMock, modelMock, osMock);
@@ -131,7 +131,7 @@ public void test_writePageContent_page_not_found()
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		OutputStream osMock  = EasyMock.createMock(OutputStream.class);
 		WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-		WBModel modelMock = EasyMock.createMock(WBModel.class);
+		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(null);
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, pageMock, modelMock, osMock);
 		boolean result = contentProvider.writePageContent(externalKey, modelMock, bos);
@@ -151,7 +151,7 @@ public void test_writePageContent_ioexception()
 		String content = "content";
 		OutputStream osMock  = PowerMock.createMock(OutputStream.class);
 		WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-		WBModel modelMock = EasyMock.createMock(WBModel.class);
+		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andReturn(content);
 		Capture<byte[]> capture = new Capture<byte[]>();
@@ -176,7 +176,7 @@ public void test_writePageContent_wbexception()
 		String content = "content";
 		OutputStream osMock  = PowerMock.createMock(OutputStream.class);
 		WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-		WBModel modelMock = EasyMock.createMock(WBModel.class);
+		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andThrow(new WBException(""));
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, pageMock, modelMock, osMock);

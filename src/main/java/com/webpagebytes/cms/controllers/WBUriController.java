@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBUrisCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
@@ -35,13 +35,13 @@ import java.util.logging.Logger;
 public class WBUriController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
 	private WBUriValidator uriValidator;
-	private WBUrisCache wbUriCache;
+	private WPBUrisCache wbUriCache;
 	private static final Logger log = Logger.getLogger(WBUriController.class.getName());
 	
 	public WBUriController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
 		uriValidator = new WBUriValidator();
-		WBCacheFactory cacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
@@ -77,7 +77,7 @@ public class WBUriController extends WBController implements AdminDataStorageLis
 		this.adminStorage = adminStorage;
 	}
 	
-	public void setWbUriCache(WBUrisCache wbUriCache) {
+	public void setWbUriCache(WPBUrisCache wbUriCache) {
 		this.wbUriCache = wbUriCache;
 	}
 

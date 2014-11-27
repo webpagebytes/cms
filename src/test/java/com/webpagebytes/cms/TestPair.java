@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.Pair;
+import com.webpagebytes.cms.utility.Pair;
 
 @RunWith(PowerMockRunner.class)
 public class TestPair {

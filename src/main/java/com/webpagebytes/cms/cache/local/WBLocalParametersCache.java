@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalParametersCache implements WBParametersCache {
+public class WBLocalParametersCache implements WPBParametersCache {
 	
 	private AdminDataStorage dataStorage;
 	private Map<String, WBParameter> cacheParameters;

@@ -18,10 +18,10 @@ import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.PageContentBuilder;
-import com.webpagebytes.cms.appinterfaces.WBPageModelProvider;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBException;
@@ -32,8 +32,8 @@ import com.webpagebytes.cms.template.WBTemplateEngine;
 @PrepareForTest({PageContentBuilder.class})
 public class TestPageContentBuilder {
 
-WBCacheInstances cacheInstancesMock;
-WBWebPagesCache pagesCacheMock;
+WPBCacheInstances cacheInstancesMock;
+WPBWebPagesCache pagesCacheMock;
 PageContentBuilder pageContentBuilder;
 ModelBuilder modelBuilderMock;
 WBTemplateEngine templateEngineMock;
@@ -44,8 +44,8 @@ WBProject projectMock;
 @Before
 public void setUp()
 {
-	cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
-	pagesCacheMock = EasyMock.createMock(WBWebPagesCache.class);
+	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
+	pagesCacheMock = EasyMock.createMock(WPBWebPagesCache.class);
 	modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 	pageContentBuilder = new PageContentBuilder(cacheInstancesMock, modelBuilderMock);
 	templateEngineMock = EasyMock.createMock(WBTemplateEngine.class);
@@ -100,7 +100,7 @@ public void test_buildPageContent_null_isTemplateSource()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		String htmlSource = "<html>text</html>";
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(null);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
@@ -121,7 +121,7 @@ public void test_buildPageContent_zero_isTemplateSource()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		String htmlSource = "<html>text</html>";
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
@@ -142,7 +142,7 @@ public void test_buildPageContent_zero_ok_nullController()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		String htmlSource = "<html>text</html>";
 		String pageName = "index";
 		
@@ -172,11 +172,11 @@ public void test_buildPageContent_validController()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		Map<String, String> locale = new HashMap<String, String>();
-		locale.put(WBModel.LOCALE_COUNTRY_KEY, "");
-		locale.put(WBModel.LOCALE_LANGUAGE_KEY, "en");
-		model.getCmsModel().put(WBModel.LOCALE_KEY, locale);
+		locale.put(WPBModel.LOCALE_COUNTRY_KEY, "");
+		locale.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
+		model.getCmsModel().put(WPBModel.LOCALE_KEY, locale);
 		
 		String pageName = "index";
 		String controllerClass = "com.webpagebytes.cms.DummyPageModelProvider";
@@ -208,7 +208,7 @@ public void test_buildPageContent_zero_ok_emptyController()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		String htmlSource = "<html>text</html>";
 		String pageName = "index";
 		
@@ -238,7 +238,7 @@ public void test_buildPageContent_templateException()
 	
 	try
 	{
-		WBModel model = new WBModel();
+		WPBModel model = new WPBModel();
 		String htmlSource = "<html>text</html>";
 		String pageName = "index";
 		
@@ -270,14 +270,14 @@ public void test_buildPageContent_templateException()
 public void test_getPageModelProvider_exists_in_map()
 {
 	String controllerClass = "com.webpagebytes.cms.DefaultPageModelProvider";
-	Map<String, WBPageModelProvider> customControllers = new HashMap<String, WBPageModelProvider>();
-	WBPageModelProvider instController = new DummyPageModelProvider();
+	Map<String, WPBPageModelProvider> customControllers = new HashMap<String, WPBPageModelProvider>();
+	WPBPageModelProvider instController = new DummyPageModelProvider();
 	customControllers.put(controllerClass, instController);	
 	Whitebox.setInternalState(pageContentBuilder, "customControllers", customControllers);
 	
 	try
 	{
-		WBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);
+		WPBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);
 		
 		assertTrue (result == instController);
 	} catch (Exception e)
@@ -292,10 +292,10 @@ public void test_getPageModelProvider_not_exists_in_map()
 	String controllerClass = "com.webpagebytes.cms.DummyPageModelProvider";
 	try
 	{
-		WBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
+		WPBPageModelProvider result = Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
 		assertTrue (result != null);
 		
-		Map<String, WBPageModelProvider> controllers = Whitebox.getInternalState(pageContentBuilder, "customControllers");
+		Map<String, WPBPageModelProvider> controllers = Whitebox.getInternalState(pageContentBuilder, "customControllers");
 		assertTrue (controllers.get(controllerClass) != null);
 	} catch (Exception e)
 	{

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBFileNotFoundException;
 import com.webpagebytes.cms.exception.WBReadConfigException;
+import com.webpagebytes.cms.utility.Pair;
 
 public class AdminServletOperationsReader {
 

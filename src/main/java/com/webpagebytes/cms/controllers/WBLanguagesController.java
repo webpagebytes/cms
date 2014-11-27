@@ -17,9 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.webpagebytes.cms.LanguageLocaleManager;
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBProjectCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
@@ -35,7 +35,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 	private AdminDataStorage adminStorage;
 	private ArrayList<String> sortedLanguages;
 	private Map<String, Locale> allLocales;
-	private WBProjectCache projectCache;
+	private WPBProjectCache projectCache;
 	
 	private WBProject getProject() throws WBIOException
 	{
@@ -77,7 +77,7 @@ public class WBLanguagesController extends WBController implements AdminDataStor
 		sortedLanguages.addAll(keyset);
 		Collections.sort(sortedLanguages);
 	
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		projectCache = wbCacheFactory.createWBProjectCacheInstance();
 		
 		adminStorage.addStorageListener(this);

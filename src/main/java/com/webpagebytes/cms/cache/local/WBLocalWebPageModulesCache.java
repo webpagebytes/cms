@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalWebPageModulesCache implements WBWebPageModulesCache {
+public class WBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	
 	private AdminDataStorage dataStorage;
 	private Map<String, WBWebPageModule> localCacheByID;

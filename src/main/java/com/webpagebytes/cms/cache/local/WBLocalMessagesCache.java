@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalMessagesCache implements WBMessagesCache {
+public class WBLocalMessagesCache implements WPBMessagesCache {
 	long cacheFingerPrint = 0;
 	Map<String, Map<String, String>> cacheMessages;
 	

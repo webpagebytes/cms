@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import com.webpagebytes.cms.Pair;
-import com.webpagebytes.cms.cache.WBProjectCache;
+import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.utility.Pair;
 
-public class WBLocalProjectCache implements WBProjectCache {
+public class WBLocalProjectCache implements WPBProjectCache {
 	private WBProject project;
 	Pair<String, String> defaultLocale;
 	Set<String> supportedLanguages;

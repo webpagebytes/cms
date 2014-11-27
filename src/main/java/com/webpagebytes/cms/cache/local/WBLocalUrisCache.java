@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.webpagebytes.cms.cache.WBUrisCache;
+import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.datautility.AdminDataStorage;
 import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WBIOException;
 
-public class WBLocalUrisCache implements WBUrisCache {
+public class WBLocalUrisCache implements WPBUrisCache {
 
 	private static final Object lock = new Object();
 	private AdminDataStorage dataStorage;
@@ -90,16 +90,16 @@ public class WBLocalUrisCache implements WBUrisCache {
 	}
 	public String indexOperationToHttpVerb(int httpIndex)
 	{
-		if (httpIndex == WBUrisCache.HTTP_GET_INDEX)
+		if (httpIndex == WPBUrisCache.HTTP_GET_INDEX)
 		{
 			return "GET";
-		} else if (httpIndex == WBUrisCache.HTTP_POST_INDEX)
+		} else if (httpIndex == WPBUrisCache.HTTP_POST_INDEX)
 		{
 			return "POST";
-		} else if (httpIndex == WBUrisCache.HTTP_PUT_INDEX)
+		} else if (httpIndex == WPBUrisCache.HTTP_PUT_INDEX)
 		{
 			return "PUT";
-		} else if (httpIndex == WBUrisCache.HTTP_DELETE_INDEX)
+		} else if (httpIndex == WPBUrisCache.HTTP_DELETE_INDEX)
 		{
 			return "DELETE";
 		}

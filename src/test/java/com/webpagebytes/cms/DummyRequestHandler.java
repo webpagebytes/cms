@@ -3,21 +3,21 @@ package com.webpagebytes.cms;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.appinterfaces.WBContentProvider;
-import com.webpagebytes.cms.appinterfaces.WBRequestHandler;
-import com.webpagebytes.cms.appinterfaces.WBForward;
-import com.webpagebytes.cms.appinterfaces.WBModel;
+import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
+import com.webpagebytes.cms.appinterfaces.WPBRequestHandler;
+import com.webpagebytes.cms.appinterfaces.WPBForward;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
 
-public class DummyRequestHandler implements WBRequestHandler {
+public class DummyRequestHandler implements WPBRequestHandler {
 	public void handleRequest(HttpServletRequest request, 
 			  HttpServletResponse response, 
-			  WBModel model,
-			  WBForward forward)
+			  WPBModel model,
+			  WPBForward forward)
 	{
 		
 	}
 
-	public void initialize(WBContentProvider contentProvider) {
+	public void initialize(WPBContentProvider contentProvider) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,51 +1,52 @@
 package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.appinterfaces.WPBContentService;
-import com.webpagebytes.cms.appinterfaces.WBContentProvider;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.utility.Pair;
 
 public class WPBCmsContentService implements WPBContentService {
 	
-	private WBCacheInstances cacheInstances;
+	private WPBCacheInstances cacheInstances;
 	private ModelBuilder modelBuilder;
-	private WBContentProvider contentProvider;
+	private WPBContentProvider contentProvider;
 	
-	private WBCacheInstances createCacheInstances(WBCacheFactory cacheFactory)
+	private WPBCacheInstances createCacheInstances(WPBCacheFactory cacheFactory)
 	{
-		return new WBCacheInstances(cacheFactory);
+		return new WPBCacheInstances(cacheFactory);
 	}
-	private ModelBuilder createModelBuilder(WBCacheInstances cacheInstances)
+	private ModelBuilder createModelBuilder(WPBCacheInstances cacheInstances)
 	{
 		return new ModelBuilder(cacheInstances);
 	}
-	private WBCacheFactory createCacheFactory()
+	private WPBCacheFactory createCacheFactory()
 	{
-		return  DefaultWBCacheFactory.getInstance();
+		return  DefaultWPBCacheFactory.getInstance();
 	}
-	private PageContentBuilder createPageContentBuilder(WBCacheInstances cacheInstances, ModelBuilder modelBuilder)
+	private PageContentBuilder createPageContentBuilder(WPBCacheInstances cacheInstances, ModelBuilder modelBuilder)
 	{
 		return new PageContentBuilder(cacheInstances, modelBuilder);
 	}
-	private FileContentBuilder createFileContentBuilder(WBCacheInstances cacheInstances)
+	private FileContentBuilder createFileContentBuilder(WPBCacheInstances cacheInstances)
 	{
 		return new FileContentBuilder(cacheInstances);
 	}
 	public WPBCmsContentService()
 	{
-		WBCacheFactory cacheFactory = createCacheFactory();
+		WPBCacheFactory cacheFactory = createCacheFactory();
 		cacheInstances = createCacheInstances(cacheFactory);
 		modelBuilder = createModelBuilder(cacheInstances);
 		
 	}
-	public WBModel createModel(String language, String country) throws WBException
+	public WPBModel createModel(String language, String country) throws WBException
 	{
-		WBModel model =  new WBModel();
+		WPBModel model =  new WPBModel();
 		String lcid = language.toLowerCase();
 		language = language.toLowerCase();
 		if (country != null && country.length()>0)
@@ -62,9 +63,9 @@ public class WPBCmsContentService implements WPBContentService {
 		
 		return model;
 	}
-	public WBModel createModel() throws WBException
+	public WPBModel createModel() throws WBException
 	{
-		WBModel model =  new WBModel();
+		WPBModel model =  new WPBModel();
 		Pair<String, String> defaultLocale = cacheInstances.getProjectCache().getDefaultLocale();
 		modelBuilder.populateLocale(defaultLocale.getFirst(), defaultLocale.getSecond(), model);	
 		modelBuilder.populateGlobalParameters(model);
@@ -78,10 +79,10 @@ public class WPBCmsContentService implements WPBContentService {
 		FileContentBuilder fileContentBuilder = createFileContentBuilder(cacheInstances);
 		fileContentBuilder.initialize();	
 		
-		contentProvider = new WBDefaultContentProvider(fileContentBuilder, pageContentBuilder);
+		contentProvider = new WPBDefaultContentProvider(fileContentBuilder, pageContentBuilder);
 	}
 	
-	public WBContentProvider getContentProvider() throws WBException
+	public WPBContentProvider getContentProvider() throws WBException
 	{
 		if (null == contentProvider)
 		{

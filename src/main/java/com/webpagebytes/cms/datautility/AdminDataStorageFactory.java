@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.datautility.local.WBLocalAdminDataStorage;
+import com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage;
 import com.webpagebytes.cms.utility.WBConfiguration;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
 import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;

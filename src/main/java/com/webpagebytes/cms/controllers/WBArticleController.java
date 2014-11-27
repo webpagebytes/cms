@@ -9,9 +9,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBArticlesCache;
-import com.webpagebytes.cms.cache.WBCacheFactory;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBArticlesCache;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
@@ -28,14 +28,14 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBArticleController extends WBController implements AdminDataStorageListener<Object>{
 	private AdminDataStorage adminStorage;
 	private WBArticleValidator validator;
-	private WBArticlesCache wbArticleCache;
+	private WPBArticlesCache wbArticleCache;
 	public WBArticleController()
 	{
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new WBJSONToFromObjectConverter();
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBArticleValidator();
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();
 		adminStorage.addStorageListener(this);
 	}

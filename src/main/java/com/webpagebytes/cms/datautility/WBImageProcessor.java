@@ -18,13 +18,13 @@ public class WBImageProcessor {
 
 	public WBImageProcessor() {
 	}
-	public boolean resizeImage(WBCloudFileStorage cloudStorage, WBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WBException
+	public boolean resizeImage(WPBCloudFileStorage cloudStorage, WPBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WBException
 	{
 		InputStream is = null;
 		try
 		{
 			//get the file content
-			WBCloudFileInfo fileInfo = cloudStorage.getFileInfo(cloudFile);
+			WPBCloudFileInfo fileInfo = cloudStorage.getFileInfo(cloudFile);
 			String type = fileInfo.getContentType().toLowerCase();
 			if (!type.startsWith("image"))
 			{

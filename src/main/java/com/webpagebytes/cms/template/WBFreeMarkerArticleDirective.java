@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.exception.WBIOException;
 
@@ -20,9 +20,9 @@ import freemarker.template.utility.DeepUnwrap;
 public class WBFreeMarkerArticleDirective implements TemplateDirectiveModel {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerArticleDirective.class.getName());
 	WBTemplateEngine templateEngine;
-	WBCacheInstances cacheInstances;
+	WPBCacheInstances cacheInstances;
 
-	public void initialize(WBTemplateEngine engine, WBCacheInstances cacheInstances)
+	public void initialize(WBTemplateEngine engine, WPBCacheInstances cacheInstances)
 	{
 		templateEngine = engine;
 		this.cacheInstances = cacheInstances;

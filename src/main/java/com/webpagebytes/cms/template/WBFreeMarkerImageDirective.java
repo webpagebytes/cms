@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.template;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +11,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.datautility.WBBlobHandler;
-import com.webpagebytes.cms.datautility.WBCloudFile;
-import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WPBCloudFile;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.WBBase64Utility;
 
@@ -28,14 +28,14 @@ import freemarker.template.utility.DeepUnwrap;
 
 public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerModuleDirective.class.getName());
-	WBCacheInstances cacheInstances;
-	WBCloudFileStorage cloudFileStorage;
+	WPBCacheInstances cacheInstances;
+	WPBCloudFileStorage cloudFileStorage;
 	
 	public WBFreeMarkerImageDirective()
 	{
 		
 	}
-	public void initialize(WBCloudFileStorage cloudFileStorage, WBCacheInstances cacheInstances)
+	public void initialize(WPBCloudFileStorage cloudFileStorage, WPBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
 		this.cloudFileStorage = cloudFileStorage;
@@ -73,7 +73,7 @@ public class WBFreeMarkerImageDirective implements TemplateDirectiveModel {
         		log.log(Level.WARNING, "cannot find iamge with key" + externalKey);
         		return;
         	}
-        	WBCloudFile cloudFile = new WBCloudFile("public", image.getBlobKey());
+        	WPBCloudFile cloudFile = new WPBCloudFile("public", image.getBlobKey());
         	if (! embedded)
         	{
         		serveUrl = cloudFileStorage.getPublicFileUrl(cloudFile);        	

@@ -12,9 +12,9 @@ import java.util.zip.CRC32;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
@@ -26,23 +26,23 @@ import com.webpagebytes.cms.datautility.AdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.datautility.local.WBLocalAdminDataStorage;
+import com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class WBPageController extends WBController implements AdminDataStorageListener<Object>{
 
-	private static final Logger log = Logger.getLogger(WBLocalAdminDataStorage.class.getName());
+	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
 	private AdminDataStorage adminStorage;
 	private WBPageValidator pageValidator;
-	private WBWebPagesCache wbWebPageCache;
+	private WPBWebPagesCache wbWebPageCache;
 	
 	public WBPageController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 		pageValidator = new WBPageValidator();
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
@@ -296,7 +296,7 @@ public class WBPageController extends WBController implements AdminDataStorageLi
 	public void setAdminStorage(AdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
-	public void setPageCache(WBWebPagesCache pageCache)
+	public void setPageCache(WPBWebPagesCache pageCache)
 	{
 		this.wbWebPageCache = pageCache;
 	}

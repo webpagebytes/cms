@@ -21,19 +21,19 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.PublicContentServlet;
-import com.webpagebytes.cms.WBServletUtility;
-import com.webpagebytes.cms.appinterfaces.WBModel;
-import com.webpagebytes.cms.cache.WBArticlesCache;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBFilesCache;
-import com.webpagebytes.cms.cache.WBMessagesCache;
-import com.webpagebytes.cms.cache.WBParametersCache;
-import com.webpagebytes.cms.cache.WBProjectCache;
-import com.webpagebytes.cms.cache.WBUrisCache;
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WBWebPagesCache;
+import com.webpagebytes.cms.WPBPublicContentServlet;
+import com.webpagebytes.cms.WPBServletUtility;
+import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.cache.WPBArticlesCache;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBFilesCache;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
+import com.webpagebytes.cms.cache.WPBParametersCache;
+import com.webpagebytes.cms.cache.WPBProjectCache;
+import com.webpagebytes.cms.cache.WPBUrisCache;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.exception.WBIOException;
 import com.webpagebytes.cms.utility.WBConfigurationFactory;
@@ -42,45 +42,45 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({PublicContentServlet.class})
+@PrepareForTest({WPBPublicContentServlet.class})
 public class TestPublicContentServlet {
 
-PublicContentServlet publicServlet;
+WPBPublicContentServlet publicServlet;
 HttpServletRequest requestMock;
 HttpServletResponse responseMock;
-WBCacheInstances cacheInstances;
-WBUrisCache urisCacheMock;
-WBParametersCache parametersCacheMock;
-WBFilesCache filesCacheMock;
-WBMessagesCache messagesCacheMock;
-WBArticlesCache articlesCacheMock;
-WBWebPagesCache pagesCacheMock;
-WBWebPageModulesCache modulesCacheMock;
-WBProjectCache projectCacheMock;
-WBCacheFactory cacheFactoryMock;
+WPBCacheInstances cacheInstances;
+WPBUrisCache urisCacheMock;
+WPBParametersCache parametersCacheMock;
+WPBFilesCache filesCacheMock;
+WPBMessagesCache messagesCacheMock;
+WPBArticlesCache articlesCacheMock;
+WPBWebPagesCache pagesCacheMock;
+WPBWebPageModulesCache modulesCacheMock;
+WPBProjectCache projectCacheMock;
+WPBCacheFactory cacheFactoryMock;
 Logger loggerMock;
 
 @Before
 public void setUp()
 {
-publicServlet = new PublicContentServlet();
+publicServlet = new WPBPublicContentServlet();
 
 loggerMock = EasyMock.createMock(Logger.class);
-Whitebox.setInternalState(PublicContentServlet.class, "log", loggerMock);
+Whitebox.setInternalState(WPBPublicContentServlet.class, "log", loggerMock);
 
 requestMock = EasyMock.createMock(HttpServletRequest.class);
 responseMock = EasyMock.createMock(HttpServletResponse.class);
 
-urisCacheMock = EasyMock.createMock(WBUrisCache.class);
-parametersCacheMock = EasyMock.createMock(WBParametersCache.class);
-filesCacheMock = EasyMock.createMock(WBFilesCache.class);
-messagesCacheMock = EasyMock.createMock(WBMessagesCache.class);
-articlesCacheMock = EasyMock.createMock(WBArticlesCache.class);
-pagesCacheMock = EasyMock.createMock(WBWebPagesCache.class);
-modulesCacheMock = EasyMock.createMock(WBWebPageModulesCache.class);
-projectCacheMock = EasyMock.createMock(WBProjectCache.class);
+urisCacheMock = EasyMock.createMock(WPBUrisCache.class);
+parametersCacheMock = EasyMock.createMock(WPBParametersCache.class);
+filesCacheMock = EasyMock.createMock(WPBFilesCache.class);
+messagesCacheMock = EasyMock.createMock(WPBMessagesCache.class);
+articlesCacheMock = EasyMock.createMock(WPBArticlesCache.class);
+pagesCacheMock = EasyMock.createMock(WPBWebPagesCache.class);
+modulesCacheMock = EasyMock.createMock(WPBWebPageModulesCache.class);
+projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 
-cacheInstances = new WBCacheInstances(urisCacheMock, pagesCacheMock, modulesCacheMock, parametersCacheMock, filesCacheMock, articlesCacheMock, messagesCacheMock, projectCacheMock); 
+cacheInstances = new WPBCacheInstances(urisCacheMock, pagesCacheMock, modulesCacheMock, parametersCacheMock, filesCacheMock, articlesCacheMock, messagesCacheMock, projectCacheMock); 
 
 Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
 Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (Object) null);	
@@ -97,7 +97,7 @@ public void tearDown()
 @Test
 public void test_doGet()
 {
-	suppress(method(PublicContentServlet.class, "handleRequest"));
+	suppress(method(WPBPublicContentServlet.class, "handleRequest"));
 	try
 	{
 		publicServlet.doGet(requestMock, responseMock);
@@ -111,7 +111,7 @@ public void test_doGet()
 @Test
 public void test_doPut()
 {
-	suppress(method(PublicContentServlet.class, "handleRequest"));
+	suppress(method(WPBPublicContentServlet.class, "handleRequest"));
 	try
 	{
 		publicServlet.doPut(requestMock, responseMock);
@@ -125,7 +125,7 @@ public void test_doPut()
 @Test
 public void test_doPost()
 {
-	suppress(method(PublicContentServlet.class, "handleRequest"));
+	suppress(method(WPBPublicContentServlet.class, "handleRequest"));
 	try
 	{
 		publicServlet.doPost(requestMock, responseMock);
@@ -139,7 +139,7 @@ public void test_doPost()
 @Test
 public void test_doDelete()
 {
-	suppress(method(PublicContentServlet.class, "handleRequest"));
+	suppress(method(WPBPublicContentServlet.class, "handleRequest"));
 	try
 	{
 		publicServlet.doDelete(requestMock, responseMock);
@@ -153,10 +153,10 @@ public void test_doDelete()
 @Test
 public void test_init_exception()
 {
-	suppress(method(PublicContentServlet.class, "initBuilders"));
-	suppress(method(PublicContentServlet.class, "initLocalFileContentBuilder"));
+	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
+	suppress(method(WPBPublicContentServlet.class, "initLocalFileContentBuilder"));
 
-	cacheFactoryMock = EasyMock.createMock(WBCacheFactory.class);
+	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.createWBUrisCacheInstance()).andReturn(urisCacheMock);
 	EasyMock.expect(cacheFactoryMock.createWBWebPagesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
@@ -166,9 +166,9 @@ public void test_init_exception()
 	EasyMock.expect(cacheFactoryMock.createWBParametersCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
 	
-	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
+	WPBServletUtility servletUtilityMock = EasyMock.createMock(WPBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/");		
-	EasyMock.expect(servletUtilityMock.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
+	EasyMock.expect(servletUtilityMock.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
 	Whitebox.setInternalState(publicServlet, "cacheFactory", cacheFactoryMock);
@@ -194,10 +194,10 @@ public void test_init_exception()
 @Test
 public void test_init()
 {
-	suppress(method(PublicContentServlet.class, "initUrls"));
-	suppress(method(PublicContentServlet.class, "initBuilders"));
-	suppress(method(PublicContentServlet.class, "initLocalFileContentBuilder"));
-	cacheFactoryMock = EasyMock.createMock(WBCacheFactory.class);
+	suppress(method(WPBPublicContentServlet.class, "initUrls"));
+	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
+	suppress(method(WPBPublicContentServlet.class, "initLocalFileContentBuilder"));
+	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.createWBUrisCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBWebPagesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.createWBWebPageModulesCacheInstance()).andReturn(null);
@@ -208,9 +208,9 @@ public void test_init()
 	EasyMock.expect(cacheFactoryMock.createWBProjectCacheInstance()).andReturn(null);
 
 	ServletConfig configMock = EasyMock.createMock(ServletConfig.class);
-	WBServletUtility servletUtilityMock = EasyMock.createMock(WBServletUtility.class);	
+	WPBServletUtility servletUtilityMock = EasyMock.createMock(WPBServletUtility.class);	
 	EasyMock.expect(servletUtilityMock.getContextPath(publicServlet)).andReturn("/test");		
-	EasyMock.expect(servletUtilityMock.getContextParameter(WBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
+	EasyMock.expect(servletUtilityMock.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, publicServlet)).andReturn("META-INF/wbconfiguration.xml");
 	
 	Whitebox.setInternalState(publicServlet, "servletUtility", servletUtilityMock);
 	Whitebox.setInternalState(publicServlet, "cacheInstances", cacheInstances);
@@ -237,7 +237,7 @@ public void test_handleRequestTypeText()
 	try
 	{
 	WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
 	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
 	String content = "aContent";
@@ -280,7 +280,7 @@ private void handleRequestTypeText_cache(Integer templateSource)
 	try
 	{
 	WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
-	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
 	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
 	String content = "aContent";
@@ -289,7 +289,7 @@ private void handleRequestTypeText_cache(Integer templateSource)
 	EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
 	
 	Long hash = 123L;
-	EasyMock.expect(requestMock.getParameter(PublicContentServlet.CACHE_QUERY_PARAM)).andReturn(hash.toString());
+	EasyMock.expect(requestMock.getParameter(WPBPublicContentServlet.CACHE_QUERY_PARAM)).andReturn(hash.toString());
 	EasyMock.expect(pageMock.getHash()).andReturn(hash);
 	
 	responseMock.addHeader("cache-control", "max-age=86400");
@@ -317,7 +317,7 @@ public void test_handleRequestTypeText_no_page()
 {
 	try
 	{
-	WBModel modelMock = EasyMock.createMock(WBModel.class);
+	WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 	responseMock.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	EasyMock.replay(requestMock, responseMock, modelMock);
 	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", (WBWebPage)null, requestMock, responseMock, modelMock);

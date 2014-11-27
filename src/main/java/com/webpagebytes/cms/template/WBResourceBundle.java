@@ -7,16 +7,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.webpagebytes.cms.cache.WBMessagesCache;
+import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.exception.WBIOException;
 
 public class WBResourceBundle extends ResourceBundle {
 
-	private WBMessagesCache messageCache;
+	private WPBMessagesCache messageCache;
 	private Long fingerPrint;
 	private Map<String, String> messages;
 	
-	WBResourceBundle(WBMessagesCache messageCache, Locale locale)
+	WBResourceBundle(WPBMessagesCache messageCache, Locale locale)
 	{
 		this.messageCache = messageCache;
 		fingerPrint = 0L;

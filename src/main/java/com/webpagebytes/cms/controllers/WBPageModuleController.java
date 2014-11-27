@@ -9,9 +9,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
@@ -28,13 +28,13 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBPageModuleController extends WBController implements AdminDataStorageListener<Object>{
 	private AdminDataStorage adminStorage;
 	private WBPageModuleValidator validator;
-	private WBWebPageModulesCache wbPageModuleCache;
+	private WPBWebPageModulesCache wbPageModuleCache;
 	public WBPageModuleController()
 	{
 		adminStorage = AdminDataStorageFactory.getInstance();
 		validator = new WBPageModuleValidator();
 		
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbPageModuleCache = wbCacheFactory.createWBWebPageModulesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
@@ -266,7 +266,7 @@ public class WBPageModuleController extends WBController implements AdminDataSto
 		this.validator = validator;
 	}
 	
-	public void setPageModuleCache(WBWebPageModulesCache cache)
+	public void setPageModuleCache(WPBWebPageModulesCache cache)
 	{
 		this.wbPageModuleCache = cache;
 	}

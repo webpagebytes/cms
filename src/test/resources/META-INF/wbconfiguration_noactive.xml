@@ -4,13 +4,13 @@
 		<factoryclass>com.xyz.cache</factoryclass>
 	</wpbcache>
 	<wpbadmindatastorage>
-		<factoryclass>com.webpagebytes.cms.datautility.local.WBLocalAdminDataStorage</factoryclass>
+		<factoryclass>com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage</factoryclass>
 		<params>
 			<param name="dbpath" value="~/test" />
 		</params>
 	</wpbadmindatastorage>
 	<wpbcloudfilestorage>
-		<factoryclass>com.webpagebytes.cms.datautility.local.WBLocalCloudFileStorage</factoryclass>
+		<factoryclass>com.webpagebytes.cms.datautility.local.WPBLocalCloudFileStorage</factoryclass>
 		<params>
 			<param name="dataDirectory" value="D:\Tree"/>
 			<param name="basePublicUrlPath" value=""/> 

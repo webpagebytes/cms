@@ -3,8 +3,8 @@ package com.webpagebytes.cms.datautility;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
-	private WBCloudFile cloudFile;
+public class WBDefaultCloudFileInfo implements WPBCloudFileInfo {
+	private WPBCloudFile cloudFile;
 	private String contentType;
 	private Map<String, String> customProperties;
 	private long size;
@@ -12,7 +12,7 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 	private long crc32;
 	private long creationDate;
 	
-	public WBDefaultCloudFileInfo(WBCloudFile cloudFile, 
+	public WBDefaultCloudFileInfo(WPBCloudFile cloudFile, 
 							String contentType, 
 							boolean fileExists, 
 							long size,
@@ -28,7 +28,7 @@ public class WBDefaultCloudFileInfo implements WBCloudFileInfo {
 		customProperties = new HashMap<String, String>();
 	}
 	
-	public WBCloudFile getCloudFile() {
+	public WPBCloudFile getCloudFile() {
 		return cloudFile;
 	}
 

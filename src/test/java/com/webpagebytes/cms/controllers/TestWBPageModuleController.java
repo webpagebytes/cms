@@ -22,7 +22,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.WBWebPageModulesCache;
+import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.controllers.WBErrors;
 import com.webpagebytes.cms.controllers.WBPageModuleController;
@@ -47,7 +47,7 @@ private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
 private WBPageModuleValidator validatorMock;
 private Map<String, String> errors;
-private WBWebPageModulesCache pageModuleCacheMock;
+private WPBWebPageModulesCache pageModuleCacheMock;
 
 @Before
 public void setUp()
@@ -61,7 +61,7 @@ public void setUp()
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
 	validatorMock = PowerMock.createMock(WBPageModuleValidator.class);
 	errors = new HashMap<String, String>();
-	pageModuleCacheMock = PowerMock.createMock(WBWebPageModulesCache.class);
+	pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 	
 	controllerForTest.setAdminStorage(adminStorageMock);
 	controllerForTest.setHttpServletToolbox(httpServletToolboxMock);

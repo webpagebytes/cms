@@ -12,8 +12,8 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.datautility.FlatStorageImporterExporter;
 import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WBException;
@@ -40,7 +40,7 @@ public class WBExportImportController extends WBController {
 		          InputStream is = item.openStream();
 		          storageExporter.importFromZip(is);		  		
 		          
-		          WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		          WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		  		  wbCacheFactory.createWBUrisCacheInstance().Refresh();
 		  		  wbCacheFactory.createWBWebPagesCacheInstance().Refresh();
 		  		  wbCacheFactory.createWBWebPageModulesCacheInstance().Refresh();

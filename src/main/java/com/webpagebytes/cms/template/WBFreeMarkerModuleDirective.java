@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.cache.WBCacheInstances;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBTemplateException;
@@ -19,13 +19,13 @@ import freemarker.template.utility.DeepUnwrap;
 public class WBFreeMarkerModuleDirective extends WBFreeMarkerDirectiveBase {
 	private static final Logger log = Logger.getLogger(WBFreeMarkerModuleDirective.class.getName());
 	WBTemplateEngine templateEngine;
-	WBCacheInstances cacheInstances;
+	WPBCacheInstances cacheInstances;
 	
 	public WBFreeMarkerModuleDirective()
 	{
 		
 	}
-	public void initialize(WBTemplateEngine engine, WBCacheInstances cacheInstances)
+	public void initialize(WBTemplateEngine engine, WPBCacheInstances cacheInstances)
 	{
 		this.templateEngine = engine;
 		this.cacheInstances = cacheInstances;

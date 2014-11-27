@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import com.webpagebytes.cms.controllers.WBController;
 import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.utility.Pair;
 
 public class AjaxRequestProcessor {
 	public static final String PRAGMA_HEADER = "Pragma";

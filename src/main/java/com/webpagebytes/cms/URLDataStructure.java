@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class URLDataStructure {
+class URLDataStructure {
+
 private int deep;
 private ArrayList<String> subUrls;
 private boolean hasParams;

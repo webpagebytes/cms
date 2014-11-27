@@ -21,11 +21,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.FileContentBuilder;
-import com.webpagebytes.cms.cache.WBCacheInstances;
-import com.webpagebytes.cms.cache.WBFilesCache;
+import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.datautility.WBCloudFile;
-import com.webpagebytes.cms.datautility.WBCloudFileStorage;
+import com.webpagebytes.cms.datautility.WPBCloudFile;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WBException;
 import com.webpagebytes.cms.exception.WBIOException;
@@ -34,25 +34,25 @@ import com.webpagebytes.cms.exception.WBIOException;
 @PrepareForTest({FileContentBuilder.class})
 public class TestFileContentBuilder {
 
-private WBCacheInstances cacheInstancesMock;
-private WBFilesCache filesCacheMock;
+private WPBCacheInstances cacheInstancesMock;
+private WPBFilesCache filesCacheMock;
 private FileContentBuilder fileContentBuilder;
-private WBCloudFileStorage cloudFileStorageMock;
+private WPBCloudFileStorage cloudFileStorageMock;
 
 @Before
 public void setUp()
 {
-	cloudFileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
 	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
-	cacheInstancesMock = EasyMock.createMock(WBCacheInstances.class);
-	filesCacheMock = EasyMock.createMock(WBFilesCache.class);
+	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
+	filesCacheMock = EasyMock.createMock(WPBFilesCache.class);
 	EasyMock.expect(cacheInstancesMock.getWBFilesCache()).andReturn(filesCacheMock);
 }
 
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WBCloudFileStorage)null);
+	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
 }
 
 @Test
@@ -97,11 +97,11 @@ public void test_getFileContent()
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 		
-		WBCloudFileStorage fileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+		WPBCloudFileStorage fileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
 		Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", fileStorageMock);
 		
 		InputStream isMock = EasyMock.createMock(InputStream.class);
-		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andReturn(isMock);
+		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WPBCloudFile.class))).andReturn(isMock);
 		
 		EasyMock.replay(cloudFileStorageMock, fileMock, fileStorageMock, isMock);
 		InputStream is = fileContentBuilder.getFileContent(fileMock);
@@ -124,10 +124,10 @@ public void test_getFileContent_exception()
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 		
-		WBCloudFileStorage fileStorageMock = EasyMock.createMock(WBCloudFileStorage.class);
+		WPBCloudFileStorage fileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
 		Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", fileStorageMock);
 		
-		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WBCloudFile.class))).andThrow(new IOException());
+		EasyMock.expect(fileStorageMock.getFileContent(EasyMock.anyObject(WPBCloudFile.class))).andThrow(new IOException());
 		EasyMock.replay(cloudFileStorageMock, fileMock, fileStorageMock);
 		fileContentBuilder.getFileContent(fileMock);
 		assertTrue (false);

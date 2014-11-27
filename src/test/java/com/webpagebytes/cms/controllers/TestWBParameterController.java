@@ -18,7 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.controllers.WBErrors;
@@ -44,7 +44,7 @@ private WBJSONToFromObjectConverter jsonObjectConverterMock;
 private AdminDataStorage adminStorageMock;
 private WBParameterValidator validatorMock;
 private Map<String, String> errors;
-private WBParametersCache parameterCacheMock;
+private WPBParametersCache parameterCacheMock;
 
 @Before
 public void setUp()
@@ -58,7 +58,7 @@ public void setUp()
 	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
 	validatorMock = PowerMock.createMock(WBParameterValidator.class);
 	errors = new HashMap<String, String>();
-	parameterCacheMock = PowerMock.createMock(WBParametersCache.class);
+	parameterCacheMock = PowerMock.createMock(WPBParametersCache.class);
 	
 	controllerForTest.setAdminStorage(adminStorageMock);
 	controllerForTest.setHttpServletToolbox(httpServletToolboxMock);

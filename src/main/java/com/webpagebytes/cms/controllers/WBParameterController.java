@@ -10,9 +10,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cache.DefaultWBCacheFactory;
-import com.webpagebytes.cms.cache.WBCacheFactory;
-import com.webpagebytes.cms.cache.WBParametersCache;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WBMessage;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
@@ -29,12 +29,12 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class WBParameterController extends WBController implements AdminDataStorageListener<Object> {
 	private AdminDataStorage adminStorage;
 	private WBParameterValidator parameterValidator;
-	private WBParametersCache wbParameterCache;
+	private WPBParametersCache wbParameterCache;
 	public WBParameterController() {
 		adminStorage = AdminDataStorageFactory.getInstance();
 		parameterValidator = new WBParameterValidator();
 		
-		WBCacheFactory wbCacheFactory = DefaultWBCacheFactory.getInstance();
+		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbParameterCache = wbCacheFactory.createWBParametersCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
@@ -332,7 +332,7 @@ public class WBParameterController extends WBController implements AdminDataStor
 	public void setParameterValidator(WBParameterValidator parameterValidator) {
 		this.parameterValidator = parameterValidator;
 	}
-	public void setParameterCache(WBParametersCache parameterCache)
+	public void setParameterCache(WPBParametersCache parameterCache)
 	{
 		this.wbParameterCache = parameterCache;
 	}
