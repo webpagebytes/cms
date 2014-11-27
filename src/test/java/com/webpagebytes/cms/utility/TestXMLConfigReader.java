@@ -9,9 +9,9 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
-import com.webpagebytes.cms.utility.WBConfiguration;
+import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.XMLConfigReader;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 @RunWith(PowerMockRunner.class)
 public class TestXMLConfigReader {
@@ -24,10 +24,10 @@ public void testSax()
 	{
 	XMLConfigReader reader = new XMLConfigReader();
 	InputStream is = this.getClass().getClassLoader().getResourceAsStream("META-INF/wbconfiguration_sax.xml");
-	WBConfiguration conf = reader.readConfiguration(is);
+	CmsConfiguration conf = reader.readConfiguration(is);
 	assertTrue(conf != null);
-	assertTrue(conf.getSectionClassFactory(WBConfiguration.WPBSECTION.SECTION_CACHE).equals("com.xyz.cache"));
-	assertTrue(conf.getSectionClassFactory(WBConfiguration.WPBSECTION.SECTION_FILESTORAGE).equals("com.xyz.abc"));
+	assertTrue(conf.getSectionClassFactory(CmsConfiguration.WPBSECTION.SECTION_CACHE).equals("com.xyz.cache"));
+	assertTrue(conf.getSectionClassFactory(CmsConfiguration.WPBSECTION.SECTION_FILESTORAGE).equals("com.xyz.abc"));
 	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_CACHE) == null);
 	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_FILESTORAGE) == null);
 	assertTrue(conf.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR).size() == 1);

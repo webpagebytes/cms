@@ -3,8 +3,8 @@ package com.webpagebytes.cms;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 public class WPBAdminServlet extends HttpServlet {
 
@@ -42,7 +42,7 @@ public class WPBAdminServlet extends HttpServlet {
 			{
 				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			throw new ServletException("WBGae - cound not complete request", e); 
 		}
@@ -84,9 +84,9 @@ public class WPBAdminServlet extends HttpServlet {
 		}
 		// WBConfigurationFactory.setConfigPath needs to be one of the first things to do for the servlet initialization
 		// before at other code execution that relies on configurations
-		if (WBConfigurationFactory.getConfigPath() == null)
+		if (CmsConfigurationFactory.getConfigPath() == null)
 		{
-			WBConfigurationFactory.setConfigPath(configPath);
+			CmsConfigurationFactory.setConfigPath(configPath);
 		}
 		
 		try
@@ -119,7 +119,7 @@ public class WPBAdminServlet extends HttpServlet {
 			ajaxRequestProcssor = processorFactory.createAjaxRequestProcessor();
 			ajaxRequestProcssor.initialize(ADMIN_CONFIG_FOLDER, ADMIN_CONFIG_AJAX);
 			ajaxRequestProcssor.setAdminUriPart(adminURIPart);
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			throw new ServletException("WB Servlet initialization", e);
 		}
@@ -146,7 +146,7 @@ public class WPBAdminServlet extends HttpServlet {
 					{
 						resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					}
-				} catch (WBException e)
+				} catch (WPBException e)
 				{
 					// to do - go to error handling
 				}

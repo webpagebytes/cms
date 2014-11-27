@@ -22,9 +22,9 @@ import org.junit.Test;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.template.WBFreeMarkerModuleDirective;
-import com.webpagebytes.cms.template.WBTemplateEngine;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
+import com.webpagebytes.cms.template.WPBTemplateEngine;
 
 import freemarker.core.Environment;
 import freemarker.ext.beans.StringModel;
@@ -35,11 +35,11 @@ import freemarker.template.TemplateModelException;
 
 @RunWith(PowerMockRunner.class)
 @SuppressStaticInitializationFor("WBFreeMarkerModuleDirective.class")
-@PrepareForTest({Environment.class, WBFreeMarkerModuleDirective.class})
+@PrepareForTest({Environment.class, FreeMarkerModuleDirective.class})
 public class TestWBFreeMarkerModuleDirective {
 
 private WPBCacheInstances cacheInstancesMock;
-private WBTemplateEngine templateEngineMock;
+private WPBTemplateEngine templateEngineMock;
 
 public static void copyParams(Environment env, Map params) throws TemplateModelException
 {
@@ -50,9 +50,9 @@ public static void copyParams(Environment env, Map params) throws TemplateModelE
 public void setUp()
 {
 	cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
-	templateEngineMock = PowerMock.createMock(WBTemplateEngine.class);
+	templateEngineMock = PowerMock.createMock(WPBTemplateEngine.class);
 	Logger loggerMock = PowerMock.createMock(Logger.class);
-	Whitebox.setInternalState(WBFreeMarkerModuleDirective.class, loggerMock);	
+	Whitebox.setInternalState(FreeMarkerModuleDirective.class, loggerMock);	
 }
 
 @Test
@@ -60,7 +60,7 @@ public void test_initialize()
 {
 	EasyMock.replay(cacheInstancesMock, templateEngineMock);
 	
-	WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+	FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 	templateDirective.initialize(templateEngineMock, cacheInstancesMock);
 	
 	assertTrue (Whitebox.getInternalState(templateDirective,"templateEngine") == templateEngineMock);
@@ -79,7 +79,7 @@ public void test_execute_directiveBodyException()
 	
 	EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, directiveBodyMock);
 	
-	WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+	FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 	try
 	{
 		templateDirective.execute(envMock, params, loopVars, directiveBodyMock);
@@ -177,9 +177,9 @@ public void test_execute_plainhtml()
 		
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		
-		WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+		FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 		
-		PowerMock.suppressMethod(WBFreeMarkerModuleDirective.class, "copyParams");
+		PowerMock.suppressMethod(FreeMarkerModuleDirective.class, "copyParams");
 		
 		Whitebox.setInternalState(templateDirective, "cacheInstances", cacheInstancesMock);
 		
@@ -229,16 +229,16 @@ public void test_execute_templathtml()
 		templateEngineMock.process(EasyMock.capture(captureTemplateName), EasyMock.capture(captureRoot), EasyMock.capture(captureWriter));	
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		
-		WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+		FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 		Whitebox.setInternalState(templateDirective, "templateEngine",templateEngineMock);
 		Whitebox.setInternalState(templateDirective, "cacheInstances",cacheInstancesMock);
-		PowerMock.suppressMethod(WBFreeMarkerModuleDirective.class, "copyParams");
+		PowerMock.suppressMethod(FreeMarkerModuleDirective.class, "copyParams");
 		
 		templateDirective.execute(envMock, params, loopVars, directiveBodyMock);
 		
 		EasyMock.verify(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		assertTrue(captureRoot.getValue() == params);
-		assertTrue(captureTemplateName.getValue().equals(WBTemplateEngine.WEBMODULES_PATH_PREFIX + name));
+		assertTrue(captureTemplateName.getValue().equals(WPBTemplateEngine.WEBMODULES_PATH_PREFIX + name));
 		assertTrue(captureWriter.getValue() == outWriter);
 
 	} catch (Exception e)
@@ -264,16 +264,16 @@ public void test_execute_catch_exception()
 		
 		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);		
 		WPBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
-		EasyMock.expect(pageModuleCacheMock.get(name)).andThrow(new WBIOException(""));
+		EasyMock.expect(pageModuleCacheMock.get(name)).andThrow(new WPBIOException(""));
 		
 		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
 
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		
-		WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+		FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 		Whitebox.setInternalState(templateDirective, "templateEngine",templateEngineMock);
 		Whitebox.setInternalState(templateDirective, "cacheInstances",cacheInstancesMock);
-		PowerMock.suppressMethod(WBFreeMarkerModuleDirective.class, "copyParams");
+		PowerMock.suppressMethod(FreeMarkerModuleDirective.class, "copyParams");
 		templateDirective.execute(envMock, params, loopVars, directiveBodyMock);
 		
 		assertTrue(false);		
@@ -306,10 +306,10 @@ public void test_execute_noPageModule()
 
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		
-		WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+		FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 		Whitebox.setInternalState(templateDirective, "templateEngine",templateEngineMock);
 		Whitebox.setInternalState(templateDirective, "cacheInstances",cacheInstancesMock);
-		PowerMock.suppressMethod(WBFreeMarkerModuleDirective.class, "copyParams");
+		PowerMock.suppressMethod(FreeMarkerModuleDirective.class, "copyParams");
 		templateDirective.execute(envMock, params, loopVars, directiveBodyMock);
 	
 		assertTrue(false);
@@ -328,13 +328,13 @@ public void test_execute_noDirectiveName()
 	TemplateDirectiveBody directiveBodyMock = null;
 	Map params = new HashMap();
 		
-	WBFreeMarkerModuleDirective templateDirective = new WBFreeMarkerModuleDirective();
+	FreeMarkerModuleDirective templateDirective = new FreeMarkerModuleDirective();
 	try
 	{
 
 		Whitebox.setInternalState(templateDirective, "templateEngine",templateEngineMock);
 		Whitebox.setInternalState(templateDirective, "cacheInstances",cacheInstancesMock);
-		PowerMock.suppressMethod(WBFreeMarkerModuleDirective.class, "copyParams");
+		PowerMock.suppressMethod(FreeMarkerModuleDirective.class, "copyParams");
 
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock);
 

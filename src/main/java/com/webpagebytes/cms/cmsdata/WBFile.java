@@ -3,52 +3,52 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.AdminField;
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminField;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class WBFile implements Serializable {
 
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private Long privkey;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String externalKey;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String blobKey;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String contentType;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String adjustedContentType;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String shortType;	
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Long size;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String fileName;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Long hash;
 
-	@AdminField
+	@WPBAdminField
 	private String publicUrl;
 
-	@AdminField
+	@WPBAdminField
 	private String thumbnailPublicUrl;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String thumbnailBlobKey;
 
 	

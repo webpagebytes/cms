@@ -20,27 +20,27 @@ import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class PageController extends WBController implements AdminDataStorageListener<Object>{
+public class PageController extends Controller implements WPBAdminDataStorageListener<Object>{
 
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
-	private AdminDataStorage adminStorage;
+	private WPBAdminDataStorage adminStorage;
 	private PageValidator pageValidator;
 	private WPBWebPagesCache wbWebPageCache;
 	
 	public PageController()
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		pageValidator = new PageValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 
@@ -57,13 +57,13 @@ public class PageController extends WBController implements AdminDataStorageList
 				log.log(Level.INFO, "WbWebPage datastore notification, going to refresh the cache");
 				wbWebPageCache.Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			// TBD
 		}
 	}
 	
-	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -96,11 +96,11 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_CREATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
-	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -140,12 +140,12 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	
-	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBWebPage webPage) throws WBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBWebPage webPage) throws WPBException
 	{
 		try
 		{
@@ -166,12 +166,12 @@ public class PageController extends WBController implements AdminDataStorageList
 	
 		} catch (Exception e)		
 		{
-			throw new WBException("cannot get web page details ", e);
+			throw new WPBException("cannot get web page details ", e);
 		}		
 		
 	}
 	
-	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -183,12 +183,12 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -201,12 +201,12 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -232,12 +232,12 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_DELETE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -274,7 +274,7 @@ public class PageController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
@@ -289,11 +289,11 @@ public class PageController extends WBController implements AdminDataStorageList
 	}
 
 	public void setJsonObjectConverter(
-			WBJSONToFromObjectConverter jsonObjectConverter) {
+			JSONToFromObjectConverter jsonObjectConverter) {
 		this.jsonObjectConverter = jsonObjectConverter;
 	}
 
-	public void setAdminStorage(AdminDataStorage adminStorage) {
+	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
 	public void setPageCache(WPBWebPagesCache pageCache)

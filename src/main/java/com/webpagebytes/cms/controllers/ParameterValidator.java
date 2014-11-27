@@ -12,7 +12,7 @@ class ParameterValidator {
 		String name = wbParameter.getName();
 		if (name==null || name.length()==0)
 		{
-			errors.put("name", WBErrors.WBPARAMETER_EMPTY_NAME);
+			errors.put("name", WPBErrors.WBPARAMETER_EMPTY_NAME);
 		}
 		
 		return errors;
@@ -24,7 +24,7 @@ class ParameterValidator {
 		String name = wbParameter.getName();
 		if (name==null || name.length()==0)
 		{
-			errors.put("name", WBErrors.WBPARAMETER_EMPTY_NAME);
+			errors.put("name", WPBErrors.WBPARAMETER_EMPTY_NAME);
 		}
 
 		return errors;

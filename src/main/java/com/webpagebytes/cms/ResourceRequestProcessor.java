@@ -8,9 +8,9 @@ import java.io.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBResourceNotFoundException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBResourceNotFoundException;
 
 public class ResourceRequestProcessor {
 
@@ -42,7 +42,7 @@ public class ResourceRequestProcessor {
 		
 	}
 		
-	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WBException
+	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WPBException
 	{
 		resourcesMap.initialize(adminResourceFolder, resourcesWhiteList);			
 	}
@@ -94,7 +94,7 @@ public class ResourceRequestProcessor {
 	
 	public void process(HttpServletRequest req, 
 							   HttpServletResponse resp, 
-							   String resource) throws WBIOException 
+							   String resource) throws WPBIOException 
 	{
 		try
 		{
@@ -117,15 +117,15 @@ public class ResourceRequestProcessor {
 				resp.getOutputStream().write(res);				
 			} else
 			{
-				throw new WBResourceNotFoundException("Not supported content Type for " + resource);
+				throw new WPBResourceNotFoundException("Not supported content Type for " + resource);
 			}
 			
 		} 
 		catch (IOException e)
 		{
-			throw new WBIOException("Error processing resource " + resource ,e);
+			throw new WPBIOException("Error processing resource " + resource ,e);
 		}
-		catch (WBResourceNotFoundException e)
+		catch (WPBResourceNotFoundException e)
 		{
 			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}

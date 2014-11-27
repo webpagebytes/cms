@@ -13,9 +13,9 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WPBException;
 
-public class ExportImportController extends WBController {
+public class ExportImportController extends Controller {
 	private FlatStorageImporterExporter storageExporter;
 	
 	public ExportImportController()
@@ -23,7 +23,7 @@ public class ExportImportController extends WBController {
 		storageExporter = new FlatStorageImporterExporter();
 	}
 
-	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -54,12 +54,12 @@ public class ExportImportController extends WBController {
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANNOT_IMPORT_PROJECT);
+			errors.put("", WPBErrors.WB_CANNOT_IMPORT_PROJECT);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
-	public void exportContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void exportContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		
 		try
@@ -71,7 +71,7 @@ public class ExportImportController extends WBController {
 		} catch (IOException e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANNOT_EXPORT_PROJECT);
+			errors.put("", WPBErrors.WB_CANNOT_EXPORT_PROJECT);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}

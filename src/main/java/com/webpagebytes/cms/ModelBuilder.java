@@ -16,24 +16,24 @@ import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
-import com.webpagebytes.cms.utility.WBConfiguration;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 class ModelBuilder {
 
 	private static final Logger log = Logger.getLogger(ModelBuilder.class.getName());
 	private WPBCacheInstances cacheInstances;
-	private WBConfiguration configuration;
+	private CmsConfiguration configuration;
 	private String baseModelUrlPath;
 	public static final String BASE_MODEL_URL_PATH_HEADER = "X-BaseModelUrlPath";
 	public ModelBuilder(WPBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
-		configuration = WBConfigurationFactory.getConfiguration();
+		configuration = CmsConfigurationFactory.getConfiguration();
 		Map<String, String> sectionParams = configuration.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR);
 		if (sectionParams != null)
 		{
@@ -48,14 +48,14 @@ class ModelBuilder {
 	 * URL_REQUEST_PARAMETERS_KEY
 	 * 
 	 */
-	public void populateModelForUriData(HttpServletRequest request, WBUri uri, URLMatcherResult urlMatcherResult, WPBModel model) throws WBException
+	public void populateModelForUriData(HttpServletRequest request, WBUri uri, URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
 	{
 		populateUriParameters(request, uri.getExternalKey(), urlMatcherResult, model);
 		populateGlobalParameters(model);
 		populateStaticParameters(request, model);
 	}
 
-	public void populateModelForWebPage(WBWebPage page, WPBModel model) throws WBException
+	public void populateModelForWebPage(WBWebPage page, WPBModel model) throws WPBException
 	{
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
 		
@@ -71,7 +71,7 @@ class ModelBuilder {
 	}
 
 	private void populateUriParameters(HttpServletRequest request, String uriExternalKey,
-										URLMatcherResult urlMatcherResult, WPBModel model) throws WBException
+										URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
 	{
 		WPBProjectCache projectCache = cacheInstances.getProjectCache();
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
@@ -117,7 +117,7 @@ class ModelBuilder {
 		
 		if (languageParam == null || countryParam == null)
 		{
-			throw new WBLocaleException("Locale params expected in request url but were not found");
+			throw new WPBLocaleException("Locale params expected in request url but were not found");
 		} 
 		if (hasLocaleParams)
 		{
@@ -128,7 +128,7 @@ class ModelBuilder {
 			}
 			if (!supportedLanguages.contains(localeStr))
 			{
-				throw new WBLocaleException("Project does not support locale  " + localeStr); 
+				throw new WPBLocaleException("Project does not support locale  " + localeStr); 
 			}
 		}
 			
@@ -146,7 +146,7 @@ class ModelBuilder {
 		model.getCmsModel().put(WPBModel.LOCALE_KEY, localeMap);				
 	}
 	
-	public void populateGlobalParameters(WPBModel model) throws WBException
+	public void populateGlobalParameters(WPBModel model) throws WPBException
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();

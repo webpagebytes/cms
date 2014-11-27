@@ -20,7 +20,7 @@ public class StaticResourceMap {
 		resReader = new ResourceReader();
 	}
 		
-	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WBException
+	public void initialize(String adminResourceFolder, String resourcesWhiteList) throws WPBException
 	{
 		Set<String> resources = resReader.parseWhiteListFile(resourcesWhiteList);
 		CRC32 crc32 = new CRC32();
@@ -35,22 +35,22 @@ public class StaticResourceMap {
 		}
 	}
 	
-	public byte[] getResource(String path) throws WBResourceNotFoundException
+	public byte[] getResource(String path) throws WPBResourceNotFoundException
 	{
 		if (resourcesMap.containsKey(path))
 		{
 			return resourcesMap.get(path);
 		}
-		throw new WBResourceNotFoundException("Could not find resource " + path);
+		throw new WPBResourceNotFoundException("Could not find resource " + path);
 	}
 	
-	public String getResourceHash(String path) throws WBResourceNotFoundException
+	public String getResourceHash(String path) throws WPBResourceNotFoundException
 	{
 		if (resourcesMapHash.containsKey(path))
 		{
 			return resourcesMapHash.get(path);
 		}
-		throw new WBResourceNotFoundException("Could not find resource " + path);
+		throw new WPBResourceNotFoundException("Could not find resource " + path);
 	
 	}
 

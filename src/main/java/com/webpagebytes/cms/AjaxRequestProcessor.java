@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.cms.controllers.WBController;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.controllers.Controller;
+import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.Pair;
 
 public class AjaxRequestProcessor {
@@ -21,14 +21,14 @@ public class AjaxRequestProcessor {
 	private AdminServletOperationsReader operationsReader;
 	private String adminUriPart;
 	
-	private Map<String, WBController> controllersMap;
+	private Map<String, Controller> controllersMap;
 	
 	public AjaxRequestProcessor()
 	{
 		operationsReader = new AdminServletOperationsReader();
-		controllersMap = new HashMap<String, WBController>();
+		controllersMap = new HashMap<String, Controller>();
 	}
-	public void initialize(String configResourceFolder, String resourcesWhiteList) throws WBException
+	public void initialize(String configResourceFolder, String resourcesWhiteList) throws WPBException
 	{
 		String resPath = "META-INF/".concat(configResourceFolder).concat("/").concat(resourcesWhiteList);
 		operationsReader = getOperationsReader();
@@ -84,7 +84,7 @@ public class AjaxRequestProcessor {
 		return false;
 	}
 	
-	protected synchronized WBController getController(String controllerClassName) throws WBException
+	protected synchronized Controller getController(String controllerClassName) throws WPBException
 	{
 		if (controllersMap.containsKey(controllerClassName))
 		{
@@ -94,7 +94,7 @@ public class AjaxRequestProcessor {
 		// not found so we create it
 		try
 		{
-			WBController controller = (WBController) Class.forName(controllerClassName).newInstance();
+			Controller controller = (Controller) Class.forName(controllerClassName).newInstance();
 			controller.setAdminUriPart(getAdminUriPart());
 			
 			controllersMap.put(controllerClassName, controller);
@@ -102,13 +102,13 @@ public class AjaxRequestProcessor {
 
 		} catch (Exception e)
 		{
-			throw new WBException(e.getMessage(), e);
+			throw new WPBException(e.getMessage(), e);
 		}
 	}
 	
 	public void process(HttpServletRequest req, 
 			   HttpServletResponse resp, 
-			   String reqUri) throws WBException
+			   String reqUri) throws WPBException
 	{
 		// no matter the response add the pragma no cache
 		resp.addHeader(CACHE_CONTROL_HEADER, NO_CACHE_HEADER);
@@ -151,7 +151,7 @@ public class AjaxRequestProcessor {
 		} 
 		catch (Exception e)
 		{
-			throw new WBException (e.getMessage(), e);
+			throw new WPBException (e.getMessage(), e);
 		}
 	}
 
@@ -163,11 +163,11 @@ public class AjaxRequestProcessor {
 		this.operationsReader = operationsReader;
 	}
 
-	public Map<String, WBController> getControllersMap() {
+	public Map<String, Controller> getControllersMap() {
 		return controllersMap;
 	}
 
-	public void setControllersMap(Map<String, WBController> controllersMap) {
+	public void setControllersMap(Map<String, Controller> controllersMap) {
 		this.controllersMap = controllersMap;
 	}
 	public String getAdminUriPart() {

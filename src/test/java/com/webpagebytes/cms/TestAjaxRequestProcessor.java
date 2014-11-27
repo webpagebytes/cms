@@ -122,7 +122,7 @@ public class TestAjaxRequestProcessor {
 		
 		}catch (Exception e)
 		{
-			if (!(e instanceof WBException))
+			if (!(e instanceof WPBException))
 			{
 				assertTrue (false);
 			}
@@ -152,7 +152,7 @@ public class TestAjaxRequestProcessor {
 		
 		}catch (Exception e)
 		{
-			if (!(e instanceof WBException))
+			if (!(e instanceof WPBException))
 			{
 				assertTrue (false);
 			}

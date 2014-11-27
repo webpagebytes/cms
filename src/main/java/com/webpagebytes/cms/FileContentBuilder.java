@@ -11,9 +11,9 @@ import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 class FileContentBuilder {
 	private WPBCloudFileStorage cloudFileStorage;
@@ -21,17 +21,17 @@ class FileContentBuilder {
 	public FileContentBuilder(WPBCacheInstances cacheInstances)
 	{
 		filesCache = cacheInstances.getWBFilesCache();
-		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 	}
 	public void initialize()
 	{
 	}
 	
-	public WBFile find(String externalKey) throws WBException
+	public WBFile find(String externalKey) throws WPBException
 	{
 		return filesCache.getByExternalKey(externalKey);
 	}
-	public InputStream getFileContent(WBFile file) throws WBException
+	public InputStream getFileContent(WBFile file) throws WPBException
 	{
 		WPBCloudFile cloudFile = new WPBCloudFile("public", file.getBlobKey());
 		try
@@ -39,10 +39,10 @@ class FileContentBuilder {
 			return cloudFileStorage.getFileContent(cloudFile);
 		} catch (IOException e)
 		{
-			throw new WBException ("cannot get file content ", e);
+			throw new WPBException ("cannot get file content ", e);
 		}
 	}
-	public void writeFileContent(WBFile wbFile, OutputStream os) throws WBException 
+	public void writeFileContent(WBFile wbFile, OutputStream os) throws WPBException 
 	{
 		InputStream is = getFileContent(wbFile);
 		byte[] buffer = new byte[4096];
@@ -54,7 +54,7 @@ class FileContentBuilder {
 			}
 		} catch (IOException e)
 		{
-			throw new WBIOException(e.getMessage(), e);
+			throw new WPBIOException(e.getMessage(), e);
 		}
 	}
 }

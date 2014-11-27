@@ -3,10 +3,10 @@ package com.webpagebytes.cms.cache;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.utility.WBConfiguration;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class DefaultWPBCacheFactory {
 	
@@ -22,7 +22,7 @@ public class DefaultWPBCacheFactory {
 			synchronized (lock) {
 				if (instance == null)
 				{
-					WBConfiguration config = WBConfigurationFactory.getConfiguration();
+					CmsConfiguration config = CmsConfigurationFactory.getConfiguration();
 					String factoryClass = "";
 					if (config!=null)
 					{

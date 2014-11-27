@@ -19,11 +19,11 @@ public class TestOperationsReader {
 			operationsReader.initialize("dummyfile");
 			assertTrue(false);
 		} 
-		catch (WBFileNotFoundException e)
+		catch (WPBFileNotFoundException e)
 		{
 			return;
 		}
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue(false);
 		}
@@ -75,7 +75,7 @@ public class TestOperationsReader {
 			assertTrue(operationsReader.operationToMethod("/resources", "DELETE").getSecond().compareTo("deleteResources") == 0);
 
 		} 
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue(false);
 		}
@@ -90,7 +90,7 @@ public class TestOperationsReader {
 			operationsReader.initialize("META-INF/config/ajaxwhitelist.properties");
 			assertTrue(operationsReader.operationToMethod("/login", "POST") == null);
 		} 
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue(false);
 		}
@@ -105,7 +105,7 @@ public class TestOperationsReader {
 			operationsReader.initialize("META-INF/config/ajaxwhitelist2.properties");
 			assertTrue(operationsReader.operationToMethod("/resource/{id}", "POST") == null);
 		} 
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue(false);
 		}		

@@ -34,12 +34,12 @@ import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
-import com.webpagebytes.cms.utility.WBConfiguration;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WPBModel.class, ModelBuilder.class})
@@ -53,14 +53,14 @@ URLMatcherResult urlMatcherResultMock;
 WPBModel modelMock;
 WPBProjectCache projectCacheMock;
 WBWebPage webPageMock;
-WBConfiguration configurationMock;
+CmsConfiguration configurationMock;
 Map<String, String> modelConfigs = new HashMap<String, String>();
 
 @Before
 public void setUp()
 {
-	configurationMock = EasyMock.createMock(WBConfiguration.class);
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", configurationMock);
+	configurationMock = EasyMock.createMock(CmsConfiguration.class);
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", configurationMock);
 	EasyMock.expect(configurationMock.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR)).andReturn(modelConfigs);
 	
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
@@ -75,7 +75,7 @@ public void setUp()
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (WBConfiguration) null);
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", (CmsConfiguration) null);
 }
 
 @Test
@@ -92,7 +92,7 @@ public void test_populateModelForUriData()
 		
 		modelBuilder.populateModelForUriData(requestMock, uriMock, urlMatcherResultMock, modelMock);		
 		EasyMock.verify(requestMock, uriMock, urlMatcherResultMock, modelMock, configurationMock);
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -131,7 +131,7 @@ public void test_populateModelForWebPage()
 		
 		assertTrue (model.getCmsModel().get(WPBModel.PAGE_PARAMETERS_KEY).equals(mapParams));
 		
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -205,7 +205,7 @@ public void test_populateUriParameters_OK_language_and_country()
 		
 		assertTrue (model.getCmsModel().get(WPBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -270,7 +270,7 @@ public void test_populateUriParameters_OK_only_language()
 		
 		assertTrue (model.getCmsModel().get(WPBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -329,7 +329,7 @@ public void test_populateUriParameters_empty_urlmatcher()
 		
 		assertTrue (model.getCmsModel().get(WPBModel.URI_PARAMETERS_KEY).equals(mapParams));
 		
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -399,7 +399,7 @@ public void test_populateUriParameters_language_not_supported()
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
 		} 
-		catch (WBLocaleException e)
+		catch (WPBLocaleException e)
 		{
 			// OK
 		}
@@ -410,7 +410,7 @@ public void test_populateUriParameters_language_not_supported()
 		
 		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 				
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -480,7 +480,7 @@ public void test_populateUriParameters_no_language_param()
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
 		} 
-		catch (WBLocaleException e)
+		catch (WPBLocaleException e)
 		{
 			// OK
 		}
@@ -491,7 +491,7 @@ public void test_populateUriParameters_no_language_param()
 		
 		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 			
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -561,7 +561,7 @@ public void test_populateUriParameters_no_country_param()
 		{
 			Whitebox.invokeMethod(modelBuilder, "populateUriParameters", requestMock, uriExternalKey, urlMatcherResult, model);
 		} 
-		catch (WBLocaleException e)
+		catch (WPBLocaleException e)
 		{
 			// OK
 		}
@@ -572,7 +572,7 @@ public void test_populateUriParameters_no_country_param()
 		
 		EasyMock.verify(requestMock, cacheInstancesMock, paramsCacheMock, projectCacheMock, configurationMock);
 			
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}
@@ -637,7 +637,7 @@ public void test_populateGlobalParameters()
 		
 		assertTrue (model.getCmsModel().get(WPBModel.GLOBALS_KEY).equals(mapParams));
 		
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}

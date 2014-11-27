@@ -1,18 +1,18 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class DummyPrivateClientL {
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	protected Long id;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	protected int age;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private long balance;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private byte binary;
 	private Long getId() {
 		return id;

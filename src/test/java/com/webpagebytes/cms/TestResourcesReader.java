@@ -18,7 +18,7 @@ public class TestResourcesReader {
 			ResourceReader reader = new ResourceReader();
 			byte[] b = reader.getResourceContent("META-INF/admin/js/base.js");
 			assertTrue(Arrays.equals(b, str.getBytes()));
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			assertTrue(false);
 		}
@@ -32,10 +32,10 @@ public class TestResourcesReader {
 			byte[] b = reader.getResourceContent("dummyReaderFile.txt");
 			assertTrue(false);
 		} 
-		catch (WBFileNotFoundException e)
+		catch (WPBFileNotFoundException e)
 		{
 		}
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue(false);
 		}
@@ -54,7 +54,7 @@ public class TestResourcesReader {
 			Set<String> res = reader.parseWhiteListFile("META-INF/config/resourceswhitelist.properties");
 			assertTrue (res.containsAll(files) && files.containsAll(res));
 		} 
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			assertTrue (false);
 		}	
@@ -69,7 +69,7 @@ public class TestResourcesReader {
 			reader.parseWhiteListFile("testFile.properties");
 		} catch (Exception e)
 		{
-			if (!(e instanceof WBFileNotFoundException))
+			if (!(e instanceof WPBFileNotFoundException))
 			{
 				assertTrue(false);
 			}

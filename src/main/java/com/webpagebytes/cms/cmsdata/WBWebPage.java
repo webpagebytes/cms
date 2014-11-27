@@ -4,36 +4,36 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.zip.CRC32;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
-import com.webpagebytes.cms.datautility.AdminFieldTextStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
 
 public class WBWebPage implements Serializable {
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private Long privkey;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 
-	@AdminFieldTextStore
+	@WPBAdminFieldTextStore
 	private String htmlSource;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer isTemplateSource;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String contentType;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String externalKey;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Long hash;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String pageModelProvider;
 	
 	public Long getPrivkey() {

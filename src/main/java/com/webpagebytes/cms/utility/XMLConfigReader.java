@@ -11,7 +11,7 @@ import org.xml.sax.XMLReader;
 
 public class XMLConfigReader {
 
-	public WBConfiguration readConfiguration(InputStream is) throws Exception 
+	public CmsConfiguration readConfiguration(InputStream is) throws Exception 
 	{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		spf.setNamespaceAware(true);

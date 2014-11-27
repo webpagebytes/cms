@@ -30,12 +30,12 @@ import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateEngine;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateLoader;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateObject;
-import com.webpagebytes.cms.template.WBTemplateEngine;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateObject.TemplateType;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
+import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;
+import com.webpagebytes.cms.template.FreeMarkerTemplateObject;
+import com.webpagebytes.cms.template.WPBTemplateEngine;
+import com.webpagebytes.cms.template.FreeMarkerTemplateObject.TemplateType;
 
 @RunWith(PowerMockRunner.class)
 public class TestWBFreeMarkerTemplateLoader {
@@ -72,7 +72,7 @@ public void test_findTemplateSource_page_ok()
 	try
 	{
 
-		String templatePage = WBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
 	
 		WBWebPage webPageMock = PowerMock.createMock(WBWebPage.class);
 		Date date = new Date();
@@ -80,8 +80,8 @@ public void test_findTemplateSource_page_ok()
 		EasyMock.expect(wbWebPageCacheMock.get("test")).andReturn(webPageMock);
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, webPageMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, webPageMock);
 		
@@ -101,12 +101,12 @@ public void test_findTemplateSource_page_notfound()
 	try
 	{
 
-		String templatePage = WBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
 	
 		EasyMock.expect(wbWebPageCacheMock.get("test")).andReturn(null);	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);		
 		assertTrue(object == null);
 		
@@ -122,13 +122,13 @@ public void test_findTemplateSource_page_exceptionGetFromCache()
 	try
 	{
 
-		String templatePage = WBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
 	
-		EasyMock.expect(wbWebPageCacheMock.get("test")).andThrow(new WBIOException(""));
+		EasyMock.expect(wbWebPageCacheMock.get("test")).andThrow(new WPBIOException(""));
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
 
 		assertTrue(object == null);
@@ -144,7 +144,7 @@ public void test_findTemplateSource_module_ok()
 {
 	try
 	{
-		String templatePage = WBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
 	
 		WBWebPageModule webPageModuleMock = PowerMock.createMock(WBWebPageModule.class);
 		Date date = new Date();
@@ -152,8 +152,8 @@ public void test_findTemplateSource_module_ok()
 		EasyMock.expect(wbWebPageModuleCacheMock.get("test")).andReturn(webPageModuleMock);
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, webPageModuleMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, webPageModuleMock);
 		assertTrue(object.getName().equals("test"));
@@ -172,13 +172,13 @@ public void test_findTemplateSource_module_notfound()
 	try
 	{
 
-		String templatePage = WBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
 	
 		EasyMock.expect(wbWebPageModuleCacheMock.get("test")).andReturn(null);
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
 		assertTrue(object == null);
 		
@@ -194,13 +194,13 @@ public void test_findTemplateSource_module_exceptionGetFromCache()
 	try
 	{
 
-		String templatePage = WBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
+		String templatePage = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
 	
-		EasyMock.expect(wbWebPageModuleCacheMock.get("test")).andThrow(new WBIOException(""));
+		EasyMock.expect(wbWebPageModuleCacheMock.get("test")).andThrow(new WPBIOException(""));
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
 
 		assertTrue(object == null);
@@ -218,8 +218,8 @@ public void test_findTemplateSource_wrongNameFormat()
 	{
 		String templatePage =  "random test";
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
-		WBFreeMarkerTemplateObject object = (WBFreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateObject object = (FreeMarkerTemplateObject) templateLoader.findTemplateSource(templatePage);
 		PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
 
 		assertTrue(object == null);
@@ -238,7 +238,7 @@ public void test_getLastModified_module()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
@@ -250,7 +250,7 @@ public void test_getLastModified_module()
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, pageModuleMock, templateObjectMock);
 
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
@@ -271,16 +271,16 @@ public void test_getLastModified_module_exception()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andThrow(new WBIOException(""));
+	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andThrow(new WPBIOException(""));
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
@@ -301,7 +301,7 @@ public void test_getLastModified_module_notfound()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
@@ -310,7 +310,7 @@ public void test_getLastModified_module_notfound()
 	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andReturn(null);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
@@ -331,7 +331,7 @@ public void test_getLastModified_page()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
@@ -342,7 +342,7 @@ public void test_getLastModified_page()
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(pageMock);
 
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, pageMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, pageMock, templateObjectMock);	
@@ -362,17 +362,17 @@ public void test_getLastModified_page_exception()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andThrow(new WBIOException(""));
+	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andThrow(new WPBIOException(""));
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
 
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	
 	PowerMock.verify(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
@@ -392,7 +392,7 @@ public void test_getLastModified_page_notfound()
 	String templateName = "testX";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
@@ -401,7 +401,7 @@ public void test_getLastModified_page_notfound()
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(null);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	long lastmodified = templateLoader.getLastModified(templateObjectMock);
 	
@@ -422,7 +422,7 @@ public void test_getLastModified_null()
 	{
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	long lastmodified = templateLoader.getLastModified(null);
 	
@@ -443,7 +443,7 @@ public void test_getReader_page()
 	String htmlSource = "<b>abc</b>";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
@@ -454,7 +454,7 @@ public void test_getReader_page()
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(pageMock);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock, pageMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	Reader reader = templateLoader.getReader(templateObjectMock, "");
 	BufferedReader strReader = new BufferedReader(reader);
@@ -476,7 +476,7 @@ public void test_getReader_module()
 	String htmlSource = "<b>abc</b>";
 	Date date = new Date();
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
@@ -487,7 +487,7 @@ public void test_getReader_module()
 	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andReturn(pageModuleMock);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock, pageModuleMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	Reader reader = templateLoader.getReader(templateObjectMock, "");
 	BufferedReader strReader = new BufferedReader(reader);
@@ -507,15 +507,15 @@ public void test_getReader_module_exception()
 	{
 	String templateName = "testX";
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 		
-	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andThrow(new WBIOException(""));
+	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andThrow(new WPBIOException(""));
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	templateLoader.getReader(templateObjectMock, "");
 	assertTrue(false);
@@ -539,15 +539,15 @@ public void test_getReader_page_exception()
 	{
 	String templateName = "testX";
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 		
-	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andThrow(new WBIOException(""));
+	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andThrow(new WPBIOException(""));
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	templateLoader.getReader(templateObjectMock, "");
 	assertTrue(false);
@@ -570,7 +570,7 @@ public void test_getReader_page_notfound()
 	{
 	String templateName = "testX";
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_PAGE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
@@ -578,7 +578,7 @@ public void test_getReader_page_notfound()
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(null);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	templateLoader.getReader(templateObjectMock, "");
 	assertTrue(false);
@@ -601,7 +601,7 @@ public void test_getReader_module_notfound()
 	{
 	String templateName = "testX";
 	
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);
 	EasyMock.expect(templateObjectMock.getType()).andReturn(TemplateType.TEMPLATE_MODULE);
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
@@ -609,7 +609,7 @@ public void test_getReader_module_notfound()
 	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andReturn(null);
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 	templateLoader.getReader(templateObjectMock, "");
 	assertTrue(false);
@@ -632,7 +632,7 @@ public void test_getReader_null()
 	{
 	
 		PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-		WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+		FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
 		templateLoader.getReader(null, "");
 		assertTrue(false);
@@ -653,19 +653,19 @@ public void test_getPrefix()
 {
 	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	
-	assertTrue (templateLoader.getWebModulesPathPrefix().equals(WBFreeMarkerTemplateEngine.WEBMODULES_PATH_PREFIX));
-	assertTrue (templateLoader.getWebPagesPathPrefix().equals(WBFreeMarkerTemplateEngine.WEBPAGES_PATH_PREFIX));
+	assertTrue (templateLoader.getWebModulesPathPrefix().equals(WPBFreeMarkerTemplateEngine.WEBMODULES_PATH_PREFIX));
+	assertTrue (templateLoader.getWebPagesPathPrefix().equals(WPBFreeMarkerTemplateEngine.WEBPAGES_PATH_PREFIX));
 		
 }
 
 @Test
 public void test_closeTemplateSource()
 {
-	WBFreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(WBFreeMarkerTemplateObject.class);	
+	FreeMarkerTemplateObject templateObjectMock = PowerMock.createMock(FreeMarkerTemplateObject.class);	
 	PowerMock.replay(wbUriCacheMock, wbWebPageCacheMock, wbWebPageModuleCacheMock, wbParameterCacheMock, wbImageCacheMock, wbArticleCacheMock, wbMessageCacheMock, wbProjectCacheMock, templateObjectMock);
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader(cacheInstances);
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader(cacheInstances);
 	try
 	{
 		templateLoader.closeTemplateSource(templateObjectMock);
@@ -678,7 +678,7 @@ public void test_closeTemplateSource()
 @Test
 public void test_defaultConstructor()
 {
-	WBFreeMarkerTemplateLoader templateLoader = new WBFreeMarkerTemplateLoader();
+	FreeMarkerTemplateLoader templateLoader = new FreeMarkerTemplateLoader();
 	assertTrue(templateLoader != null);
 }
 

@@ -16,10 +16,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest ({WPBCmsContextListener.class,WBConfigurationFactory.class})
+@PrepareForTest ({WPBCmsContextListener.class,CmsConfigurationFactory.class})
 public class TestWBCmsContextListener {
 
 private Logger loggerMock;
@@ -30,7 +30,7 @@ public void setUp()
 {
 	loggerMock = EasyMock.createMock(Logger.class);
 	Whitebox.setInternalState(WPBCmsContextListener.class, "log", loggerMock);
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (String)null);
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", (String)null);
 	contextListener = new WPBCmsContextListener();
 }
 
@@ -46,7 +46,7 @@ public void test_contextInitialized()
 	EasyMock.replay(loggerMock, contextEventMock, contextMock);
 	contextListener.contextInitialized(contextEventMock);
 	EasyMock.verify(loggerMock, contextEventMock, contextMock);
-	assertTrue(WBConfigurationFactory.getConfigPath().equals(configPath));
+	assertTrue(CmsConfigurationFactory.getConfigPath().equals(configPath));
 	
 }
 
@@ -58,7 +58,7 @@ public void test_contextInitialized_alreadyConfigured()
 	ServletContext contextMock = EasyMock.createMock(ServletContext.class);
 	EasyMock.expect(contextEventMock.getServletContext()).andReturn(contextMock);
 	String configPath = "a config path";
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (String)configPath);
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", (String)configPath);
 	EasyMock.expect(contextMock.getInitParameter(WPBCmsContextListener.CMS_CONFIG_KEY)).andReturn(configPath);
 	EasyMock.replay(loggerMock, contextEventMock, contextMock);
 	contextListener.contextInitialized(contextEventMock);

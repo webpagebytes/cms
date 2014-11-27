@@ -1,8 +1,12 @@
 package com.webpagebytes.cms.utility;
 
+import java.io.ByteArrayInputStream;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.HashMap;
+
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +23,12 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
-import com.webpagebytes.cms.utility.IOFactory;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest ({WBJSONToFromObjectConverter.class, ServletOutputStream.class})
+@PrepareForTest ({JSONToFromObjectConverter.class, ServletOutputStream.class})
 public class TestHttpServletToolbox {
 
 	HttpServletToolbox httpServletToolbox;
@@ -33,46 +37,7 @@ public class TestHttpServletToolbox {
 	{
 		httpServletToolbox = new HttpServletToolbox();
 	}
-	
-	@Test
-	public void testGetBodyText()
-	{
-		try
-		{
-			HttpServletRequest request = EasyMock.createMock(HttpServletRequest.class);
-			ServletInputStream inputStreamMock = EasyMock.createMock(ServletInputStream.class);
-			EasyMock.expect(request.getInputStream()).andReturn(inputStreamMock);
 			
-			IOFactory ioFactoryMock = EasyMock.createMock(IOFactory.class);
-			String buffer = "";
-			for(int i = 0;i< 1000; i++)
-			{
-				buffer = buffer + ("x" + i);
-			}
-			StringReader reader = new StringReader(buffer);
-			EasyMock.expect(ioFactoryMock.createBufferedUTF8Reader(inputStreamMock)).andReturn(reader);
-			inputStreamMock.close();
-			
-			EasyMock.replay(request, inputStreamMock, ioFactoryMock);
-			httpServletToolbox.setIoFactory(ioFactoryMock);
-			
-			String result = httpServletToolbox.getBodyText(request);
-			
-			EasyMock.verify(request, inputStreamMock, ioFactoryMock);
-			assertTrue (result.compareTo(buffer) == 0);
-			
-		} catch (Exception e)
-		{
-			assertTrue(false);
-		}
-	}
-	
-	@Test
-	public void testGetIOFactory()
-	{
-		assertTrue (httpServletToolbox.getIoFactory() != null);
-	}
-	
 	@Test
 	public void testWriteBodyResponseAsJson_ok()
 	{

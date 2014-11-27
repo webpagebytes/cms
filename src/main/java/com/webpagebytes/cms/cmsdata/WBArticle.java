@@ -3,24 +3,24 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
-import com.webpagebytes.cms.datautility.AdminFieldTextStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
 
 public class WBArticle implements Serializable {
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private Long privkey;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String title;
 
-	@AdminFieldTextStore
+	@WPBAdminFieldTextStore
 	private String htmlSource;
 		
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String externalKey;
 
 	public Long getPrivkey() {

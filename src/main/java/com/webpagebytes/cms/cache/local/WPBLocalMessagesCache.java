@@ -11,27 +11,27 @@ import java.util.Set;
 import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalMessagesCache implements WPBMessagesCache {
 	long cacheFingerPrint = 0;
 	Map<String, Map<String, String>> cacheMessages;
 	
-	private AdminDataStorage dataStorage;
+	private WPBAdminDataStorage dataStorage;
 	private static final Object lock = new Object();
 
 	public WPBLocalMessagesCache()
 	{
-		dataStorage = AdminDataStorageFactory.getInstance();
+		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
 		{
 			if (dataStorage != null)
 			{
 				Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			
 		}
@@ -42,13 +42,13 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 		return (locale.getCountry().length()>0) ? (locale.getLanguage() + "_" + locale.getCountry()): locale.getLanguage();  
 	}
 
-	public Map<String, String> getAllMessages(Locale locale) throws WBIOException
+	public Map<String, String> getAllMessages(Locale locale) throws WPBIOException
 	{
 		String lcid = lcidFromLocale(locale);
 		return getAllMessages(lcid);
 	}
 	
-	public Map<String, String> getAllMessages(String lcid) throws WBIOException
+	public Map<String, String> getAllMessages(String lcid) throws WPBIOException
 	{
 		if (cacheMessages != null)
 		{
@@ -62,7 +62,7 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 		return cacheFingerPrint;
 	}
 	
-	public void Refresh() throws WBIOException {
+	public void Refresh() throws WPBIOException {
 		synchronized (lock) {
 			Map<String, Map<String, String>> tempCache = new HashMap<String, Map<String, String>>();
 			List<WBMessage> records = dataStorage.getAllRecords(WBMessage.class);

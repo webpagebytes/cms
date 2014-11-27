@@ -15,15 +15,15 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.exception.WPBException;
 
 
 
-public class Statistics extends WBController {
+public class Statistics extends Controller {
 
 	private enum WBEntities
 	{
@@ -42,13 +42,13 @@ public class Statistics extends WBController {
 	private static final String ERROR_FIELD = "error";
 	
 	private static final int HISTORY_COUNT = 3;
-	private AdminDataStorage adminStorage;
-	private WBJSONToFromObjectConverter jsonObjectConverter;
+	private WPBAdminDataStorage adminStorage;
+	private JSONToFromObjectConverter jsonObjectConverter;
 	
 	public Statistics()
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
+		jsonObjectConverter = new JSONToFromObjectConverter();
 	}
 	
 	private void getRecordsStats(HttpServletRequest request, Class entityClass, org.json.JSONObject payloadJson, String entityName) throws Exception
@@ -63,7 +63,7 @@ public class Statistics extends WBController {
 			returnEntity.put(ADDTIONAL_DATA, additionalInfo);
 		} catch (Exception e)
 		{
-			returnEntity.put(ERROR_FIELD, WBErrors.WB_CANT_GET_RECORDS);
+			returnEntity.put(ERROR_FIELD, WPBErrors.WB_CANT_GET_RECORDS);
 		}
 		payloadJson.put(entityName, returnEntity);		
 	}
@@ -81,13 +81,13 @@ public class Statistics extends WBController {
 			returnEntity.put(DATA, languagesJson);
 		} catch (Exception e)
 		{
-			returnEntity.put(ERROR_FIELD, WBErrors.WB_CANT_GET_RECORDS);
+			returnEntity.put(ERROR_FIELD, WPBErrors.WB_CANT_GET_RECORDS);
 		}
 		payloadJson.put(entityName, returnEntity);		
 	}
 
 	
-	public void getStatistics(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getStatistics(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		String [] entities = request.getParameterValues(PARAM_ENTITY);
 		org.json.JSONObject payloadJson = new org.json.JSONObject();
@@ -133,7 +133,7 @@ public class Statistics extends WBController {
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);				
 		}
 	}

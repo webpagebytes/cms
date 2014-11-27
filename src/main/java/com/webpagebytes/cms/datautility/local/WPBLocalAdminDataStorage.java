@@ -11,31 +11,31 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener.AdminDataStorageOperation;
-import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
-import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.utility.WBConfiguration;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener.AdminDataStorageOperation;
+import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
+import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalSortDirection;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
-public class WPBLocalAdminDataStorage implements AdminDataStorage {
+public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
 	private static final String KEY_FILED_NAME = "privkey";
-	private Vector<AdminDataStorageListener> storageListeners = new Vector<AdminDataStorageListener>();
+	private Vector<WPBAdminDataStorageListener> storageListeners = new Vector<WPBAdminDataStorageListener>();
 	
-	private WBLocalDataStoreDao localDataStorageDao;
+	private WPBLocalDataStoreDao localDataStorageDao;
 	
 	public WPBLocalAdminDataStorage()
 	{
-		WBConfiguration config = WBConfigurationFactory.getConfiguration();
+		CmsConfiguration config = CmsConfigurationFactory.getConfiguration();
 		Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE);
-		localDataStorageDao = new WBLocalDataStoreDao(params);
+		localDataStorageDao = new WPBLocalDataStoreDao(params);
 	}
 
-	private WBLocalDataStoreDao.WBLocalQueryOperator adminOperatorToLocalOperator(AdminQueryOperator adminOperator)
+	private WPBLocalDataStoreDao.WBLocalQueryOperator adminOperatorToLocalOperator(AdminQueryOperator adminOperator)
 	{
 		switch (adminOperator)
 		{
@@ -56,7 +56,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	private WBLocalDataStoreDao.WBLocalSortDirection adminDirectionToLocalDirection(AdminSortOperator sortOperator)
+	private WPBLocalDataStoreDao.WBLocalSortDirection adminDirectionToLocalDirection(AdminSortOperator sortOperator)
 	{
 		switch (sortOperator)
 		{
@@ -71,7 +71,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	public void delete(String recordid, Class dataClass) throws WBIOException
+	public void delete(String recordid, Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -83,11 +83,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot delete record " + recordid, e);
+			throw new WPBIOException("Cannot delete record " + recordid, e);
 		}
 	}
 	
-	public void delete(Long recordid, Class dataClass) throws WBIOException
+	public void delete(Long recordid, Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -98,11 +98,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot delete record " + recordid, e);
+			throw new WPBIOException("Cannot delete record " + recordid, e);
 		}		
 	}
 	
-	public void delete(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WBIOException
+	public void delete(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
 	{
 		try
 		{
@@ -117,11 +117,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot delete records ", e);
+			throw new WPBIOException("Cannot delete records ", e);
 		}
 	}
 	
-	public<T> List<T> getAllRecords(Class dataClass) throws WBIOException
+	public<T> List<T> getAllRecords(Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -130,11 +130,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("cannot get all records", e);
+			throw new WPBIOException("cannot get all records", e);
 		} 
 	}
 	
-	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator sortOperator) throws WBIOException
+	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator sortOperator) throws WPBIOException
 	{
 		try
 		{
@@ -148,12 +148,12 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot get all records with sorting", e);
+			throw new WPBIOException("Cannot get all records with sorting", e);
 		}
 
 	}
 
-	public<T> T add(T t) throws WBIOException
+	public<T> T add(T t) throws WPBIOException
 	{
 		try
 		{
@@ -163,11 +163,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return res;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot add new record", e);
+			throw new WPBIOException("Cannot add new record", e);
 		}
 	}
 
-	public<T> T addWithKey(T t) throws WBIOException
+	public<T> T addWithKey(T t) throws WPBIOException
 	{
 		try
 		{
@@ -177,11 +177,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return res;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot add new record", e);
+			throw new WPBIOException("Cannot add new record", e);
 		}
 	}
 
-	public<T> T get(Long dataid, Class dataClass) throws WBIOException
+	public<T> T get(Long dataid, Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -189,11 +189,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot add new record", e);
+			throw new WPBIOException("Cannot add new record", e);
 		}
 	}
 	
-	public<T> T get(String dataid, Class dataClass) throws WBIOException
+	public<T> T get(String dataid, Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -201,11 +201,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return (T) localDataStorageDao.getRecord(dataClass, KEY_FILED_NAME, dataid);
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot add new record", e);
+			throw new WPBIOException("Cannot add new record", e);
 		}
 	}
 	
-	public<T> T update(T t) throws WBIOException
+	public<T> T update(T t) throws WPBIOException
 	{
 		try
 		{
@@ -215,11 +215,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return t;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot add new record", e);
+			throw new WPBIOException("Cannot add new record", e);
 		}
 	}
 	
-	public<T> List<T> query(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WBIOException
+	public<T> List<T> query(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
 	{
 		try
 		{
@@ -233,12 +233,12 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot get all records with sorting", e);
+			throw new WPBIOException("Cannot get all records with sorting", e);
 		}
 
 	}
 	
-	public<T> List<T> queryEx(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values) throws WBIOException
+	public<T> List<T> queryEx(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values) throws WPBIOException
 	{
 		try
 		{
@@ -251,11 +251,11 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot get all records with sorting", e);
+			throw new WPBIOException("Cannot get all records with sorting", e);
 		}
 	}
 
-	public<T> List<T> queryWithSort(Class dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WBIOException
+	public<T> List<T> queryWithSort(Class dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException
 	{
 		try
 		{
@@ -269,12 +269,12 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot get all records with sorting", e);
+			throw new WPBIOException("Cannot get all records with sorting", e);
 		}
 
 	}
 	
-	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WBIOException
+	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException
 	{
 		try
 		{
@@ -287,12 +287,12 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			return result;
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot get all records with sorting", e);
+			throw new WPBIOException("Cannot get all records with sorting", e);
 		}
 	}	
 	
 
-	public void addStorageListener(AdminDataStorageListener listener)
+	public void addStorageListener(WPBAdminDataStorageListener listener)
 	{
 		synchronized (storageListeners)
 		{
@@ -300,7 +300,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	public void removeStorageListener(AdminDataStorageListener listener)
+	public void removeStorageListener(WPBAdminDataStorageListener listener)
 	{
 		synchronized (storageListeners)
 		{
@@ -315,7 +315,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 		}
 	}
 	
-	protected<T> void notifyOperation(Object obj, AdminDataStorageListener.AdminDataStorageOperation operation, Class type)
+	protected<T> void notifyOperation(Object obj, WPBAdminDataStorageListener.AdminDataStorageOperation operation, Class type)
 	{
 		synchronized (storageListeners)
 		{
@@ -332,7 +332,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 		return "";
 	}
 	
-	public void deleteAllRecords(Class dataClass) throws WBIOException
+	public void deleteAllRecords(Class dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -340,7 +340,7 @@ public class WPBLocalAdminDataStorage implements AdminDataStorage {
 			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
 		} catch (Exception e)
 		{
-			throw new WBIOException("Cannot delete all records for class records " + dataClass.getSimpleName(), e);
+			throw new WPBIOException("Cannot delete all records for class records " + dataClass.getSimpleName(), e);
 		}
 	}
 	

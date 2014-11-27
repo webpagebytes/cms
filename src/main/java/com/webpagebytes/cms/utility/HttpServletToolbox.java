@@ -9,15 +9,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+
 import java.util.Map;
 
 public class HttpServletToolbox {
 
-	IOFactory ioFactory;
-	
 	public HttpServletToolbox()
 	{
-		ioFactory = new WBIOFactory();
 	}
 	public void writeBodyResponseAsJson(HttpServletResponse response, String data, Map<String, String> errors)
 	{
@@ -115,30 +114,12 @@ public class HttpServletToolbox {
 		
 	}
 
-	public String getBodyText(HttpServletRequest request) throws Exception
+	public String getBodyText(HttpServletRequest request) throws IOException
 	{
 		StringWriter writer = new StringWriter();
-		InputStream is = request.getInputStream();		
-		char[] buffer = new char[1024];
-	    try {
-	    	Reader reader = ioFactory.createBufferedUTF8Reader(is);
-	        int n;
-	            while ((n = reader.read(buffer)) != -1) {
-	                writer.write(buffer, 0, n);
-	            }
-	    } 
-	    finally {
-	    	is.close();
-	    }
-	    
+		InputStream is = request.getInputStream();	
+		IOUtils.copy(is, writer, "UTF-8");	    
 		return writer.toString();
-	}
-	public IOFactory getIoFactory() {
-		return ioFactory;
-	}
-	public void setIoFactory(IOFactory ioFactory) {
-		this.ioFactory = ioFactory;
-	}
-	
+	}	
 	
 }

@@ -6,30 +6,30 @@ import java.util.Map;
 
 import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalFilesCache implements WPBFilesCache {
 	
-	private AdminDataStorage dataStorage;
+	private WPBAdminDataStorage dataStorage;
 	private Map<String, WBFile> localCache;
 	private static final Object lock = new Object();
 	public WPBLocalFilesCache()
 	{
-		dataStorage = AdminDataStorageFactory.getInstance();
+		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
 		{
 			if (dataStorage != null)
 			{
 				Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			
 		}
 	}
-	public WBFile getByExternalKey(String externalKey) throws WBIOException
+	public WBFile getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCache == null)
 		{
@@ -42,7 +42,7 @@ public class WPBLocalFilesCache implements WPBFilesCache {
 		return null;
 	}
 
-	public void Refresh() throws WBIOException {
+	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
 			Map<String, WBFile> tempMap = new HashMap<String, WBFile>();

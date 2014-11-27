@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.controllers.WBErrors;
+import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.ParameterValidator;
 
 
@@ -64,7 +64,7 @@ public void test_validateCreate_null()
 	EasyMock.replay(wbParameter);
 	Map<String,String> errors = parameterValidator.validateCreate(wbParameter);
 	EasyMock.verify(wbParameter);
-	assertTrue (errors.get("name").compareTo(WBErrors.WBPARAMETER_EMPTY_NAME) == 0);
+	assertTrue (errors.get("name").compareTo(WPBErrors.WBPARAMETER_EMPTY_NAME) == 0);
 }
 
 @Test
@@ -74,7 +74,7 @@ public void test_validateUpdate_null()
 	EasyMock.replay(wbParameter);
 	Map<String,String> errors = parameterValidator.validateUpdate(wbParameter);
 	EasyMock.verify(wbParameter);
-	assertTrue (errors.get("name").compareTo(WBErrors.WBPARAMETER_EMPTY_NAME) == 0);
+	assertTrue (errors.get("name").compareTo(WPBErrors.WBPARAMETER_EMPTY_NAME) == 0);
 }
 
 @Test
@@ -84,7 +84,7 @@ public void test_validateCreate_empty()
 	EasyMock.replay(wbParameter);
 	Map<String,String> errors = parameterValidator.validateCreate(wbParameter);
 	EasyMock.verify(wbParameter);
-	assertTrue (errors.get("name").compareTo(WBErrors.WBPARAMETER_EMPTY_NAME) == 0);
+	assertTrue (errors.get("name").compareTo(WPBErrors.WBPARAMETER_EMPTY_NAME) == 0);
 }
 
 @Test
@@ -94,7 +94,7 @@ public void test_validateUpdate_empty()
 	EasyMock.replay(wbParameter);
 	Map<String,String> errors = parameterValidator.validateUpdate(wbParameter);
 	EasyMock.verify(wbParameter);
-	assertTrue (errors.get("name").compareTo(WBErrors.WBPARAMETER_EMPTY_NAME) == 0);
+	assertTrue (errors.get("name").compareTo(WPBErrors.WBPARAMETER_EMPTY_NAME) == 0);
 }
 
 }

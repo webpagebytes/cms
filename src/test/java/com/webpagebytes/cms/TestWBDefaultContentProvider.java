@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WPBException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest ({OutputStream.class, WPBDefaultContentProvider.class})
@@ -59,7 +59,7 @@ public void test_writeFileContent()
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, osMock);
 		boolean result = contentProvider.writeFileContent(externalKey, osMock);
 		assertTrue (result);
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue(false);
 	}	
@@ -76,7 +76,7 @@ public void test_writeFileContent_file_not_found()
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, osMock);
 		boolean result = contentProvider.writeFileContent(externalKey, osMock);
 		assertTrue (result == false);
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue(false);
 	}	
@@ -89,11 +89,11 @@ public void test_writeFileContent_exception()
 	{
 		String externalKey = "abc";
 		OutputStream osMock  = EasyMock.createMock(OutputStream.class);
-		EasyMock.expect(fileContentBuilderMock.find(externalKey)).andThrow(new WBException(""));
+		EasyMock.expect(fileContentBuilderMock.find(externalKey)).andThrow(new WPBException(""));
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, osMock);
 		boolean result = contentProvider.writeFileContent(externalKey, osMock);
 		assertTrue (result == false);
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue (false);
 	}		
@@ -178,7 +178,7 @@ public void test_writePageContent_wbexception()
 		WBWebPage pageMock = EasyMock.createMock(WBWebPage.class);
 		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
-		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andThrow(new WBException(""));
+		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andThrow(new WPBException(""));
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, pageMock, modelMock, osMock);
 		boolean result = contentProvider.writePageContent(externalKey, modelMock, osMock);
 		assertTrue (result == false);

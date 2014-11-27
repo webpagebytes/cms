@@ -8,7 +8,7 @@ import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WPBException;
 
 public class WPBDefaultContentProvider implements WPBContentProvider {
 
@@ -33,7 +33,7 @@ public class WPBDefaultContentProvider implements WPBContentProvider {
 			}
 			fileContentBuilder.writeFileContent(file, os);
 		}
-		catch (WBException e)
+		catch (WPBException e)
 		{
 			log.log(Level.SEVERE, "writeFileContent for " + externalKey, e);
 			return false;

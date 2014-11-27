@@ -26,9 +26,9 @@ import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({FileContentBuilder.class})
@@ -43,7 +43,7 @@ private WPBCloudFileStorage cloudFileStorageMock;
 public void setUp()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 	filesCacheMock = EasyMock.createMock(WPBFilesCache.class);
 	EasyMock.expect(cacheInstancesMock.getWBFilesCache()).andReturn(filesCacheMock);
@@ -52,7 +52,7 @@ public void setUp()
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
 }
 
 @Test
@@ -132,7 +132,7 @@ public void test_getFileContent_exception()
 		fileContentBuilder.getFileContent(fileMock);
 		assertTrue (false);
 	} 
-	catch (WBException e)
+	catch (WPBException e)
 	{
 		assertTrue(true);
 		// this is fine
@@ -181,7 +181,7 @@ public void test_writeFileContent_exception()
 		fileContentBuilder.writeFileContent(fileMock, osMock);
 		assertTrue(false); // we should not gete here
 	} 
-	catch (WBIOException e)
+	catch (WPBIOException e)
 	{
 		// all good here
 	}

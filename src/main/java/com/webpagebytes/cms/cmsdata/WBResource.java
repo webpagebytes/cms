@@ -3,8 +3,8 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class WBResource implements Serializable {
 	public static final int URI_TYPE = 1;
@@ -16,13 +16,13 @@ public class WBResource implements Serializable {
 	public static final int GLOBAL_PARAMETER_TYPE = 7;
 	
 
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private String rkey;
 				
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer type;
 
 	public WBResource()

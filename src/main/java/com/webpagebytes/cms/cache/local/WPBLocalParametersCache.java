@@ -8,13 +8,13 @@ import java.util.Map;
 import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalParametersCache implements WPBParametersCache {
 	
-	private AdminDataStorage dataStorage;
+	private WPBAdminDataStorage dataStorage;
 	private Map<String, WBParameter> cacheParameters;
 	private Map<String, List<WBParameter>> cacheOwnerParameters;
 	
@@ -22,19 +22,19 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 
 	public WPBLocalParametersCache()
 	{
-		dataStorage = AdminDataStorageFactory.getInstance();
+		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
 		{
 			if (dataStorage != null)
 			{
 				Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			
 		}
 	}
-	public WBParameter getByExternalKey(String externalKey) throws WBIOException
+	public WBParameter getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (cacheParameters != null) 
 		{
@@ -43,7 +43,7 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 		return null;
 	}
 	
-	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WBIOException
+	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WPBIOException
 	{
 		List<WBParameter> result = null;
 		if (cacheOwnerParameters != null)
@@ -57,7 +57,7 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 		return result;
 	}
 
-	public void Refresh() throws WBIOException {
+	public void Refresh() throws WPBIOException {
 		synchronized (lock) {
 			List<WBParameter> records = dataStorage.getAllRecords(WBParameter.class);
 			Map<String, WBParameter> localCache = new HashMap<String, WBParameter>();

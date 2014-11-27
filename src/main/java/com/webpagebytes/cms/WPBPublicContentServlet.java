@@ -20,11 +20,11 @@ import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBLocaleException;
-import com.webpagebytes.cms.exception.WBTemplateException;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBLocaleException;
+import com.webpagebytes.cms.exception.WPBTemplateException;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 public class WPBPublicContentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +53,7 @@ public WPBPublicContentServlet()
 	setServletUtility(new WPBServletUtility());		
 }
 
-public void initUrls() throws WBIOException
+public void initUrls() throws WPBIOException
 {
 	for(int i=0; i<4; i++)
 	{
@@ -63,7 +63,7 @@ public void initUrls() throws WBIOException
 	}	
 }
 
-public void initBuilders() throws WBException
+public void initBuilders() throws WPBException
 {
 	modelBuilder = new ModelBuilder(cacheInstances);
 
@@ -91,9 +91,9 @@ public void init() throws ServletException
 	}
 	// WBConfigurationFactory.setConfigPath needs to be one of the first things to do for the servlet initialization
 	// before at other code execution that relies on configurations
-	if (WBConfigurationFactory.getConfigPath() == null)
+	if (CmsConfigurationFactory.getConfigPath() == null)
 	{
-		WBConfigurationFactory.setConfigPath(configPath);
+		CmsConfigurationFactory.setConfigPath(configPath);
 	}
 	
 	cacheInstances = new WPBCacheInstances(cacheFactory.createWBUrisCacheInstance(), 
@@ -127,7 +127,7 @@ public void init() throws ServletException
 	}
 }
 	
-private URLMatcher getUrlMatcher(HttpServletRequest req) throws WBIOException
+private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 {
 	int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 	URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
@@ -140,7 +140,7 @@ private URLMatcher getUrlMatcher(HttpServletRequest req) throws WBIOException
 	return urlMatcher;
 }
 	
-private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WPBModel model) throws WBException, IOException
+private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WPBModel model) throws WPBException, IOException
 {
 	if (webPage == null)
 	{
@@ -167,7 +167,7 @@ private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, Ht
 	os.write(content.getBytes("UTF-8"));
 }
 
-private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WBException, IOException
+private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WPBException, IOException
 {
 	WBFile wbFile = fileContentBuilder.find(fileExternalKey);
 	if (wbFile == null)
@@ -186,7 +186,7 @@ private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest re
 	fileContentBuilder.writeFileContent(wbFile, os);
 }
 
-private boolean localFileContentHandler(HttpServletRequest req, HttpServletResponse resp, String uri) throws WBIOException
+private boolean localFileContentHandler(HttpServletRequest req, HttpServletResponse resp, String uri) throws WPBIOException
 {
 	if (uri.startsWith(LocalCloudFileContentBuilder.LOCAL_FILE_SERVE_URL))
 	{
@@ -212,7 +212,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 	try
 	{
 		urlMatcher = getUrlMatcher(req);
-	} catch (WBIOException e)
+	} catch (WPBIOException e)
 	{
 		//  nothing that can be done to serve better the request
 		log.log(Level.SEVERE, "ERROR: ", e);
@@ -279,7 +279,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			}
 		} 
 	}
-	catch (WBTemplateException e)
+	catch (WPBTemplateException e)
 	{
 		log.log(Level.SEVERE, "Template ERROR: ", e);
 		ServletOutputStream os = resp.getOutputStream();
@@ -289,7 +289,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 		os.write("-------------".getBytes());
 		resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);				
 	}
-	catch (WBLocaleException e)
+	catch (WPBLocaleException e)
 	{
 		// try to access a page with a locale that is not supported
 		log.log(Level.SEVERE, "ERROR: ", e);

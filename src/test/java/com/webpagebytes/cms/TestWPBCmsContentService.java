@@ -23,9 +23,9 @@ import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
 
 @RunWith(PowerMockRunner.class)
@@ -149,7 +149,7 @@ public void test_createModel_exception()
 	
 		Whitebox.setInternalState(contentService, "cacheInstances", cacheInstancesMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
-		EasyMock.expect(projectCacheMock.getDefaultLocale()).andThrow(new WBIOException(""));
+		EasyMock.expect(projectCacheMock.getDefaultLocale()).andThrow(new WPBIOException(""));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);
 		contentService.createModel();
@@ -157,7 +157,7 @@ public void test_createModel_exception()
 		assertTrue(false);
 		
 	}
-	catch (WBException e)
+	catch (WPBException e)
 	{
 		assertTrue(true);
 	}
@@ -250,9 +250,9 @@ public void test_createModel_param_exception()
 	
 		
 	} 
-	catch (WBException e)
+	catch (WPBException e)
 	{
-		assertTrue( e instanceof WBLocaleException);
+		assertTrue( e instanceof WPBLocaleException);
 	}
 	catch (Exception e)
 	{

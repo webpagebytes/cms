@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import com.webpagebytes.cms.exception.WBFileNotFoundException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBReadConfigException;
+import com.webpagebytes.cms.exception.WPBFileNotFoundException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBReadConfigException;
 
 import java.util.Locale;
 
@@ -25,7 +25,7 @@ public class LanguageLocaleManager {
 			localeManager = new LanguageLocaleManager();
 			try {
 				localeManager.loadLocalesfromFile(LANGUAGES_CONFIG_FILE);
-			} catch (WBIOException e)
+			} catch (WPBIOException e)
 			{
 				localeManager = null;
 				return null;
@@ -49,7 +49,7 @@ public class LanguageLocaleManager {
 	}
 	
 	
-	public void loadLocalesfromFile(String filePath) throws WBIOException
+	public void loadLocalesfromFile(String filePath) throws WPBIOException
 	{
 		langToLocales = new HashMap<String, Locale>();
 		langAndCountriesToLocales = new HashMap<String, Locale>();
@@ -59,7 +59,7 @@ public class LanguageLocaleManager {
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(filePath);
 			if (null == is)
 			{
-				throw new WBFileNotFoundException("Could not locate:" + filePath);
+				throw new WPBFileNotFoundException("Could not locate:" + filePath);
 			}
 			BufferedReader breader = new BufferedReader(new InputStreamReader(is));
 			String line = null;
@@ -95,7 +95,7 @@ public class LanguageLocaleManager {
 
 		} catch (IOException e)
 		{
-			throw new WBReadConfigException("Coult not read config file:" + filePath, e);
+			throw new WPBReadConfigException("Coult not read config file:" + filePath, e);
 		}
 	
 	}

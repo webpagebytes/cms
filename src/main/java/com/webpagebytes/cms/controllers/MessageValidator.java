@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class MessageValidator {
 	
-	AdminDataStorage adminStorage;
+	WPBAdminDataStorage adminStorage;
 	
 	public MessageValidator()
 	{
@@ -25,13 +25,13 @@ public class MessageValidator {
 		String name = message.getName().trim();
 		if (name.length() == 0)
 		{
-			errors.put("name", WBErrors.WBMESSAGE_EMPTY_NAME);
+			errors.put("name", WPBErrors.WBMESSAGE_EMPTY_NAME);
 			return errors;
 		}
 		String lcid = message.getLcid().trim();
 		if (lcid.length() == 0)
 		{
-			errors.put("lcid", WBErrors.WBMESSAGE_EMPTY_LCID);
+			errors.put("lcid", WPBErrors.WBMESSAGE_EMPTY_LCID);
 			return errors;
 		}
 		
@@ -53,11 +53,11 @@ public class MessageValidator {
 			List<WBMessage> records = adminStorage.queryEx(WBMessage.class, properties, operators, values);
 			if (records != null && records.size() > 0)
 			{
-				errors.put("name", WBErrors.WBMESSAGE_DUPLICATE_NAME);
+				errors.put("name", WPBErrors.WBMESSAGE_DUPLICATE_NAME);
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
-			errors.put("general", WBErrors.WB_UNKNOWN_ERROR);
+			errors.put("general", WPBErrors.WB_UNKNOWN_ERROR);
 		}
 		return errors;
 	}
@@ -66,7 +66,7 @@ public class MessageValidator {
 		return new HashMap<String, String>();
 	}
 	
-	public void setAdminStorage(AdminDataStorage adminStorage) {
+	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
 

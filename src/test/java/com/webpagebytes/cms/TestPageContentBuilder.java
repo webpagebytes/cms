@@ -24,9 +24,9 @@ import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBTemplateException;
-import com.webpagebytes.cms.template.WBTemplateEngine;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBTemplateException;
+import com.webpagebytes.cms.template.WPBTemplateEngine;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({PageContentBuilder.class})
@@ -36,7 +36,7 @@ WPBCacheInstances cacheInstancesMock;
 WPBWebPagesCache pagesCacheMock;
 PageContentBuilder pageContentBuilder;
 ModelBuilder modelBuilderMock;
-WBTemplateEngine templateEngineMock;
+WPBTemplateEngine templateEngineMock;
 HttpServletRequest requestMock;
 WBWebPage pageMock;
 WBProject projectMock;
@@ -48,7 +48,7 @@ public void setUp()
 	pagesCacheMock = EasyMock.createMock(WPBWebPagesCache.class);
 	modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 	pageContentBuilder = new PageContentBuilder(cacheInstancesMock, modelBuilderMock);
-	templateEngineMock = EasyMock.createMock(WBTemplateEngine.class);
+	templateEngineMock = EasyMock.createMock(WPBTemplateEngine.class);
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
 	pageMock = EasyMock.createMock(WBWebPage.class);
 	projectMock = EasyMock.createMock(WBProject.class);
@@ -250,12 +250,12 @@ public void test_buildPageContent_templateException()
 		EasyMock.expect(pageMock.getName()).andReturn(pageName);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
-		EasyMock.expectLastCall().andThrow(new WBTemplateException(""));
+		EasyMock.expectLastCall().andThrow(new WPBTemplateException(""));
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock, projectMock, requestMock);	
 		String result = pageContentBuilder.buildPageContent(requestMock, pageMock, model);
 				
 	}
-	catch (WBTemplateException e)
+	catch (WPBTemplateException e)
 	{
 		// OK
 	}
@@ -312,7 +312,7 @@ public void test_getPageModelProvider_exception()
 	{
 		Whitebox.invokeMethod(pageContentBuilder, "getPageModelProvider", controllerClass);		
 	} 
-	catch (WBException e)
+	catch (WPBException e)
 	{
 		// OK
 	}

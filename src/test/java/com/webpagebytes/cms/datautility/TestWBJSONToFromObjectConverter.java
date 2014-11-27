@@ -12,20 +12,20 @@ import org.powermock.reflect.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import com.webpagebytes.cms.DummyClientS;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest (WBJSONToFromObjectConverter.class)
+@PrepareForTest (JSONToFromObjectConverter.class)
 public class TestWBJSONToFromObjectConverter {
 
 	private org.json.JSONObject json;
-	private WBJSONToFromObjectConverter wbObjectfromJson;
+	private JSONToFromObjectConverter wbObjectfromJson;
 	
 	@Before
 	public void setup()
 	{
 		json = new org.json.JSONObject();
-		wbObjectfromJson = new WBJSONToFromObjectConverter();
+		wbObjectfromJson = new JSONToFromObjectConverter();
 		
 	}
 	@Test 

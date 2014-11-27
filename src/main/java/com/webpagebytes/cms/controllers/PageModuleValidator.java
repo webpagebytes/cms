@@ -15,19 +15,19 @@ public class PageModuleValidator {
 		
 		if (webPageModule == null || webPageModule.getName().length() == 0)
 		{
-			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
+			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		} else
 		if (webPageModule.getName().length() > MAX_PAGEMODULE_NAME_LENGHT)
 		{
-			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
+			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
 		if (webPageModule.getPrivkey() != null)
 		{
-			errors.put("key", WBErrors.ERROR_CANT_SPECIFY_KEY);
+			errors.put("key", WPBErrors.ERROR_CANT_SPECIFY_KEY);
 		}
 		if (webPageModule.getLastModified() != null)
 		{
-			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
+			errors.put("lastModified", WPBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 
 		return errors;
@@ -39,19 +39,19 @@ public class PageModuleValidator {
 		HashMap<String, String> errors = new HashMap<String, String>();
 		if (webPageModule == null || webPageModule.getName().length() == 0)
 		{
-			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
+			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		} else
 		if (webPageModule.getName().length() > MAX_PAGEMODULE_NAME_LENGHT)
 		{
-			errors.put("name", WBErrors.ERROR_PAGE_MODULENAME_LENGTH);
+			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
 		if (webPageModule.getPrivkey() == null)
 		{
-			errors.put("key", WBErrors.ERROR_NO_KEY);
+			errors.put("key", WPBErrors.ERROR_NO_KEY);
 		}
 		if (webPageModule.getLastModified() != null)
 		{
-			errors.put("lastModified", WBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
+			errors.put("lastModified", WPBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 
 		return errors;

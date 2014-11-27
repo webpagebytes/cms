@@ -6,12 +6,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XMLConfigContentHandler extends DefaultHandler {
 	StringBuilder strBuilder = new StringBuilder();
-	WBDefaultConfiguration configuration = new WBDefaultConfiguration();
-	WBConfiguration.WPBSECTION currentSection;
+	CmsDefaultConfiguration configuration = new CmsDefaultConfiguration();
+	CmsConfiguration.WPBSECTION currentSection;
 	String activeConfiguration = "";
 	boolean recordData = false; 
 	
-	public WBConfiguration getConfiguration() 
+	public CmsConfiguration getConfiguration() 
 	{
 		return configuration;
 	}
@@ -21,15 +21,15 @@ public class XMLConfigContentHandler extends DefaultHandler {
      {
 		strBuilder.setLength(0);
 		if (qName.equals("wpbcache")) {
-			currentSection = WBConfiguration.WPBSECTION.SECTION_CACHE;
+			currentSection = CmsConfiguration.WPBSECTION.SECTION_CACHE;
 		} else if (qName.equals("wpbadmindatastorage")) {
-			currentSection = WBConfiguration.WPBSECTION.SECTION_DATASTORAGE;
+			currentSection = CmsConfiguration.WPBSECTION.SECTION_DATASTORAGE;
 		} else if (qName.equals("wpbcloudfilestorage")) {
-			currentSection = WBConfiguration.WPBSECTION.SECTION_FILESTORAGE;
+			currentSection = CmsConfiguration.WPBSECTION.SECTION_FILESTORAGE;
 		} else if (qName.equals("wpbimageprocessor")) {
-			currentSection = WBConfiguration.WPBSECTION.SECTION_IMAGEPROCESSOR;
+			currentSection = CmsConfiguration.WPBSECTION.SECTION_IMAGEPROCESSOR;
 		} else if (qName.equals("wpbmodel")) {
-			currentSection = WBConfiguration.WPBSECTION.SECTION_MODEL_CONFIGURATOR;
+			currentSection = CmsConfiguration.WPBSECTION.SECTION_MODEL_CONFIGURATOR;
 		} 
 		else if (qName.equals("wpbconfiguration"))
 		{

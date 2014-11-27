@@ -23,40 +23,40 @@ import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.datautility.WBImageProcessor;
-import com.webpagebytes.cms.datautility.WBImageProcessorFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.datautility.WPBImageProcessor;
+import com.webpagebytes.cms.datautility.WPBImageProcessorFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
 
 
-public class FileController extends WBController implements AdminDataStorageListener<Object>{
+public class FileController extends Controller implements WPBAdminDataStorageListener<Object>{
 	public static final String PUBLIC_BUCKET = "public";
 	
-	private AdminDataStorage adminStorage;
+	private WPBAdminDataStorage adminStorage;
 	private WPBCloudFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
-	private WBImageProcessor imageProcessor;
+	private WPBImageProcessor imageProcessor;
 	
 	public FileController()
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new FileValidator();
-		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.createWBFilesCacheInstance();	
 		adminStorage.addStorageListener(this);
-		imageProcessor = WBImageProcessorFactory.getInstance();
+		imageProcessor = WPBImageProcessorFactory.getInstance();
 	}
 	
 	public void notify (Object t, AdminDataStorageOperation o, Class type)
@@ -67,13 +67,13 @@ public class FileController extends WBController implements AdminDataStorageList
 			{
 				filesCache.Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			// TBD
 		}
 	}
 
-	public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -168,12 +168,12 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
-	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -210,12 +210,12 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}				
 	}
 	
-	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -255,12 +255,12 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_DELETE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);	
 		}		
 	}
 
-	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -336,7 +336,7 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}
 	}
@@ -347,7 +347,7 @@ public class FileController extends WBController implements AdminDataStorageList
 		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getBlobKey())));
 		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
 	}
-	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBFile wbFile) throws WBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBFile wbFile) throws WPBException
 	{
 		try
 		{
@@ -367,10 +367,10 @@ public class FileController extends WBController implements AdminDataStorageList
 			return returnJson;
 		} catch (Exception e)
 		{
-			throw new WBException("cannot get file details", e);
+			throw new WPBException("cannot get file details", e);
 		}
 	}
-	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -382,12 +382,12 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}		
 	}
 
-	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -399,12 +399,12 @@ public class FileController extends WBController implements AdminDataStorageList
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}		
 	}
 
-	public void downloadResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void downloadResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -427,7 +427,7 @@ public class FileController extends WBController implements AdminDataStorageList
 		
 	}
 
-	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{

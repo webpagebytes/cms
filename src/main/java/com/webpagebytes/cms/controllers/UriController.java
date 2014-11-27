@@ -15,14 +15,14 @@ import com.webpagebytes.cms.cmsdata.WBParameter;
 import com.webpagebytes.cms.cmsdata.WBResource;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 import java.util.Calendar;
@@ -33,14 +33,14 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UriController extends WBController implements AdminDataStorageListener<Object> {
-	private AdminDataStorage adminStorage;
+public class UriController extends Controller implements WPBAdminDataStorageListener<Object> {
+	private WPBAdminDataStorage adminStorage;
 	private UriValidator uriValidator;
 	private WPBUrisCache wbUriCache;
 	private static final Logger log = Logger.getLogger(UriController.class.getName());
 	
 	public UriController() {
-		adminStorage = AdminDataStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		uriValidator = new UriValidator();
 		WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
@@ -55,7 +55,7 @@ public class UriController extends WBController implements AdminDataStorageListe
 			{
 				wbUriCache.Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			// TBD
 		}
@@ -70,11 +70,11 @@ public class UriController extends WBController implements AdminDataStorageListe
 	}
 
 	public void setJsonObjectConverter(
-			WBJSONToFromObjectConverter jsonObjectConverter) {
+			JSONToFromObjectConverter jsonObjectConverter) {
 		this.jsonObjectConverter = jsonObjectConverter;
 	}
 
-	public void setAdminStorage(AdminDataStorage adminStorage) {
+	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
 	
@@ -82,7 +82,7 @@ public class UriController extends WBController implements AdminDataStorageListe
 		this.wbUriCache = wbUriCache;
 	}
 
-	public void createWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void createWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -115,11 +115,11 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_CREATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
-	public void getAllWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getAllWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -161,11 +161,11 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
-	public void getWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -203,11 +203,11 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
-	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WBUri wburi) throws WBException
+	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WBUri wburi) throws WPBException
 	{
 		try
 		{
@@ -240,10 +240,10 @@ public class UriController extends WBController implements AdminDataStorageListe
 			
 		} catch (Exception e)		
 		{
-			throw new WBException("Cannot fetch additional data for uri "  ,e);
+			throw new WPBException("Cannot fetch additional data for uri "  ,e);
 		}		
 	}
-	public void getWBUriExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getWBUriExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -256,12 +256,12 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void deleteWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void deleteWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -291,12 +291,12 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_DELETE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void updateWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void updateWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -331,7 +331,7 @@ public class UriController extends WBController implements AdminDataStorageListe
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}

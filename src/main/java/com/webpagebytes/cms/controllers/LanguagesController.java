@@ -22,21 +22,21 @@ import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 
-public class LanguagesController extends WBController implements AdminDataStorageListener<Object> {
+public class LanguagesController extends Controller implements WPBAdminDataStorageListener<Object> {
 
 	private LanguageLocaleManager localeManager;
-	private AdminDataStorage adminStorage;
+	private WPBAdminDataStorage adminStorage;
 	private ArrayList<String> sortedLanguages;
 	private Map<String, Locale> allLocales;
 	private WPBProjectCache projectCache;
 	
-	private WBProject getProject() throws WBIOException
+	private WBProject getProject() throws WPBIOException
 	{
 		WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
 		if (null == project)
@@ -59,7 +59,7 @@ public class LanguagesController extends WBController implements AdminDataStorag
 			{
 				projectCache.Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			// TBD
 		}
@@ -67,7 +67,7 @@ public class LanguagesController extends WBController implements AdminDataStorag
 
 	public LanguagesController()
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		localeManager = LanguageLocaleManager.getInstance();
 		sortedLanguages = new ArrayList<String>();
 		
@@ -83,7 +83,7 @@ public class LanguagesController extends WBController implements AdminDataStorag
 
 	}
 
-	public void getAllLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getAllLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		JSONArray result = new JSONArray();		
 		try
@@ -101,13 +101,13 @@ public class LanguagesController extends WBController implements AdminDataStorag
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("WBErrors.WB_CANT_GET_RECORDS", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("WBErrors.WB_CANT_GET_RECORDS", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);			
 		}
 		
 	}
 	
-	public void getSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		WBProject project = getProject();
 		Set<String> projectLanguages = project.getSupportedLanguagesSet();
@@ -147,12 +147,12 @@ public class LanguagesController extends WBController implements AdminDataStorag
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("WBErrors.WB_CANT_GET_RECORDS", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("WBErrors.WB_CANT_GET_RECORDS", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 	
-	public void setSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void setSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -167,11 +167,11 @@ public class LanguagesController extends WBController implements AdminDataStorag
 				String aLanguage = aJson.getString("lcid");
 				if (inputLanguages.contains(aLanguage))
 				{
-					errors.put(WBErrors.WB_TWO_IDENTICAL_LANGUAGES, WBErrors.WB_TWO_IDENTICAL_LANGUAGES);
+					errors.put(WPBErrors.WB_TWO_IDENTICAL_LANGUAGES, WPBErrors.WB_TWO_IDENTICAL_LANGUAGES);
 				}
 				if (!allLocales.containsKey(aLanguage))
 				{
-					errors.put(WBErrors.WB_INVALID_LANGUAGE, WBErrors.WB_INVALID_LANGUAGE);
+					errors.put(WPBErrors.WB_INVALID_LANGUAGE, WPBErrors.WB_INVALID_LANGUAGE);
 				}
 				
 				String def = aJson.getString("default");
@@ -179,7 +179,7 @@ public class LanguagesController extends WBController implements AdminDataStorag
 				{
 					if (defaultLanguage.length()>0)
 					{
-						errors.put(WBErrors.WB_TWO_DEFAULT_LANGUAGES, WBErrors.WB_TWO_DEFAULT_LANGUAGES);
+						errors.put(WPBErrors.WB_TWO_DEFAULT_LANGUAGES, WPBErrors.WB_TWO_DEFAULT_LANGUAGES);
 					}
 					defaultLanguage = aLanguage;
 				} 	
@@ -187,12 +187,12 @@ public class LanguagesController extends WBController implements AdminDataStorag
 			}
 			if (array.length() == 0)
 			{
-				errors.put(WBErrors.WB_NO_LANGUAGES, WBErrors.WB_NO_LANGUAGES);				
+				errors.put(WPBErrors.WB_NO_LANGUAGES, WPBErrors.WB_NO_LANGUAGES);				
 			}
 		
 			if (array.length()> 0 && defaultLanguage.length() == 0)
 			{
-				errors.put(WBErrors.WB_NO_DEFAULT_LANGUAGES, WBErrors.WB_NO_DEFAULT_LANGUAGES);				
+				errors.put(WPBErrors.WB_NO_DEFAULT_LANGUAGES, WPBErrors.WB_NO_DEFAULT_LANGUAGES);				
 			}
 			if (errors.size() > 0)
 			{
@@ -219,7 +219,7 @@ public class LanguagesController extends WBController implements AdminDataStorag
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put(WBErrors.WB_CANT_UPDATE_RECORD, WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put(WPBErrors.WB_CANT_UPDATE_RECORD, WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);						
 		}
 		

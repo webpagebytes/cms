@@ -25,11 +25,11 @@ import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBDefaultCloudFileInfo;
-import com.webpagebytes.cms.utility.WBBase64Utility;
-import com.webpagebytes.cms.utility.WBConfiguration;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
-import com.webpagebytes.cms.utility.WBConfiguration.WPBSECTION;
+import com.webpagebytes.cms.datautility.WPBDefaultCloudFileInfo;
+import com.webpagebytes.cms.utility.CmsBase64Utility;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 	private static final String publicDataFolder = "public";
@@ -153,7 +153,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 	{
 		if (paramsFromConfig)
 		{
-			WBConfiguration config = WBConfigurationFactory.getConfiguration();
+			CmsConfiguration config = CmsConfigurationFactory.getConfiguration();
 			Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_FILESTORAGE);
 		
 			dataDirectory = params.get("dataDirectory");
@@ -175,7 +175,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 	 */
 	private String sanitizeCloudFilePath(String path)
 	{
-		return WBBase64Utility.toBase64(path.getBytes(Charset.forName("UTF-8")));
+		return CmsBase64Utility.toBase64(path.getBytes(Charset.forName("UTF-8")));
 	}
 	
 	private String getLocalFullDataPath(WPBCloudFile file)
@@ -298,7 +298,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 			
 			
 			boolean fileExists = checkIfFileExists(dataPath);
-			WPBCloudFileInfo fileInfo = new WBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
+			WPBCloudFileInfo fileInfo = new WPBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
 			props.remove("path");
 			props.remove("contentType");
 			props.remove("size");

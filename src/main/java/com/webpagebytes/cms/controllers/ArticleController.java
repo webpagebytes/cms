@@ -15,25 +15,25 @@ import com.webpagebytes.cms.cache.WPBArticlesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class ArticleController extends WBController implements AdminDataStorageListener<Object>{
-	private AdminDataStorage adminStorage;
+public class ArticleController extends Controller implements WPBAdminDataStorageListener<Object>{
+	private WPBAdminDataStorage adminStorage;
 	private ArticleValidator validator;
 	private WPBArticlesCache wbArticleCache;
 	public ArticleController()
 	{
 		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = AdminDataStorageFactory.getInstance();
+		jsonObjectConverter = new JSONToFromObjectConverter();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new ArticleValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();
@@ -48,13 +48,13 @@ public class ArticleController extends WBController implements AdminDataStorageL
 			{
 				wbArticleCache.Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			// do nothing
 		}
 	}
 	
-	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -87,12 +87,12 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_CREATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
 
-	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -135,11 +135,11 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}
-	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -152,12 +152,12 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 	
-	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -171,12 +171,12 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -202,12 +202,12 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_DELETE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_DELETE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
 
-	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -240,7 +240,7 @@ public class ArticleController extends WBController implements AdminDataStorageL
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_UPDATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}

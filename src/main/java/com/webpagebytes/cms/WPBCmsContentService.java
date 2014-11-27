@@ -6,9 +6,9 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBLocaleException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
 
 public class WPBCmsContentService implements WPBContentService {
@@ -44,7 +44,7 @@ public class WPBCmsContentService implements WPBContentService {
 		modelBuilder = createModelBuilder(cacheInstances);
 		
 	}
-	public WPBModel createModel(String language, String country) throws WBException
+	public WPBModel createModel(String language, String country) throws WPBException
 	{
 		WPBModel model =  new WPBModel();
 		String lcid = language.toLowerCase();
@@ -56,14 +56,14 @@ public class WPBCmsContentService implements WPBContentService {
 		}
 		if (! cacheInstances.getProjectCache().getSupportedLocales().contains(lcid))
 		{
-			throw new WBLocaleException("Not supported locale");
+			throw new WPBLocaleException("Not supported locale");
 		}
 		modelBuilder.populateLocale(language, country, model);
 		modelBuilder.populateGlobalParameters(model);
 		
 		return model;
 	}
-	public WPBModel createModel() throws WBException
+	public WPBModel createModel() throws WPBException
 	{
 		WPBModel model =  new WPBModel();
 		Pair<String, String> defaultLocale = cacheInstances.getProjectCache().getDefaultLocale();
@@ -72,7 +72,7 @@ public class WPBCmsContentService implements WPBContentService {
 		return model;
 	}
 	
-	private void initializeContentProvider() throws WBException
+	private void initializeContentProvider() throws WPBException
 	{
 		PageContentBuilder pageContentBuilder = createPageContentBuilder(cacheInstances, modelBuilder);
 		pageContentBuilder.initialize();
@@ -82,7 +82,7 @@ public class WPBCmsContentService implements WPBContentService {
 		contentProvider = new WPBDefaultContentProvider(fileContentBuilder, pageContentBuilder);
 	}
 	
-	public WPBContentProvider getContentProvider() throws WBException
+	public WPBContentProvider getContentProvider() throws WPBException
 	{
 		if (null == contentProvider)
 		{

@@ -35,8 +35,8 @@ import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
@@ -82,16 +82,16 @@ projectCacheMock = EasyMock.createMock(WPBProjectCache.class);
 
 cacheInstances = new WPBCacheInstances(urisCacheMock, pagesCacheMock, modulesCacheMock, parametersCacheMock, filesCacheMock, articlesCacheMock, messagesCacheMock, projectCacheMock); 
 
-Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
-Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (Object) null);	
+Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", (Object) null);
+Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", (Object) null);	
 
 }
 
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configuration", (Object) null);
-	Whitebox.setInternalState(WBConfigurationFactory.class, "configPath", (Object) null);	
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", (Object) null);
+	Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", (Object) null);	
 }
 
 @Test
@@ -175,7 +175,7 @@ public void test_init_exception()
 	
 	try
 	{
-		EasyMock.expect(urisCacheMock.getAllUris(0)).andThrow(new WBIOException(""));
+		EasyMock.expect(urisCacheMock.getAllUris(0)).andThrow(new WPBIOException(""));
 		EasyMock.replay(requestMock, responseMock, servletUtilityMock, urisCacheMock, cacheFactoryMock);
 		publicServlet.init();
 		

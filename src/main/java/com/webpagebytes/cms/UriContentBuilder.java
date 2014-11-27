@@ -12,7 +12,7 @@ import com.webpagebytes.cms.appinterfaces.WPBForward;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WPBException;
 
 class UriContentBuilder {
 
@@ -35,7 +35,7 @@ class UriContentBuilder {
 	public void buildUriContent(HttpServletRequest request, HttpServletResponse response,
 			WBUri wburi, 
 			WPBModel model,
-			WPBForward forward) throws WBException
+			WPBForward forward) throws WPBException
 	{
 		String controllerClassName = wburi.getControllerClass();
 		if (controllerClassName !=null && controllerClassName.length()>0)
@@ -50,7 +50,7 @@ class UriContentBuilder {
 				controllerInst = (WPBRequestHandler) Class.forName(controllerClassName).newInstance();
 				controllerInst.initialize(contentProvider);
 				customControllers.put(controllerClassName, controllerInst);
-				} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
+				} catch (Exception e) { throw new WPBException("Cannot instantiate page controller " + controllerClassName, e); }			
 			}
 			controllerInst.handleRequest(request, response, model, forward);
 		}

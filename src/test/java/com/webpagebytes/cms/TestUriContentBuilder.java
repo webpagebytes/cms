@@ -23,7 +23,7 @@ import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.UriContentBuilder;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.exception.WPBException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({UriContentBuilder.class})
@@ -101,7 +101,7 @@ public void test_buildUriContent_wrongController()
 		uriContentBuilder.buildUriContent(requestMock, responseMock, uriMock, model, forward);
 		EasyMock.verify(responseMock, requestMock, uriMock, cacheInstancesMock, modelBuilderMock);
 		
-	}catch (WBException e)
+	}catch (WPBException e)
 	{
 		//OK
 	}

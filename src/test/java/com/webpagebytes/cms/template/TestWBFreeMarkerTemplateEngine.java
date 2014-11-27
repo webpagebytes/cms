@@ -28,15 +28,15 @@ import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.template.WBFreeMarkerArticleDirective;
-import com.webpagebytes.cms.template.WBFreeMarkerFactory;
-import com.webpagebytes.cms.template.WBFreeMarkerImageDirective;
-import com.webpagebytes.cms.template.WBFreeMarkerModuleDirective;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateEngine;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateLoader;
-import com.webpagebytes.cms.template.WBResourceBundle;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.template.FreeMarkerArticleDirective;
+import com.webpagebytes.cms.template.FreeMarkerResourcesFactory;
+import com.webpagebytes.cms.template.FreeMarkerImageDirective;
+import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
+import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
+import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;
+import com.webpagebytes.cms.template.CmsResourceBundle;
 
 import freemarker.core.Environment;
 import freemarker.template.Configuration;
@@ -46,12 +46,12 @@ import freemarker.template.Template;
 public class TestWBFreeMarkerTemplateEngine {
 
 private WPBCacheFactory cacheFactoryMock;
-private WBFreeMarkerFactory freeMarkerFactoryMock;
+private FreeMarkerResourcesFactory freeMarkerFactoryMock;
 private Configuration configurationMock;
-private WBFreeMarkerTemplateLoader templateLoaderMock;
-private WBFreeMarkerModuleDirective moduleDirectiveMock;
-private WBFreeMarkerImageDirective imageDirectiveMock;
-private WBFreeMarkerArticleDirective articleDirectiveMock;
+private FreeMarkerTemplateLoader templateLoaderMock;
+private FreeMarkerModuleDirective moduleDirectiveMock;
+private FreeMarkerImageDirective imageDirectiveMock;
+private FreeMarkerArticleDirective articleDirectiveMock;
 private WPBMessagesCache messageCacheMock;
 private WPBCacheInstances cacheInstancesMock;
 private WPBCloudFileStorage cloudStorageMock;
@@ -61,36 +61,36 @@ private WPBCloudFileStorage cloudFileStorageMock;
 public void setUp()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 
 	cacheFactoryMock = PowerMock.createMock(WPBCacheFactory.class);
-	freeMarkerFactoryMock = PowerMock.createMock(WBFreeMarkerFactory.class);
+	freeMarkerFactoryMock = PowerMock.createMock(FreeMarkerResourcesFactory.class);
 	configurationMock = PowerMock.createMock(Configuration.class);
-	templateLoaderMock = PowerMock.createMock(WBFreeMarkerTemplateLoader.class);
-	moduleDirectiveMock = PowerMock.createMock(WBFreeMarkerModuleDirective.class);
-	imageDirectiveMock = PowerMock.createMock(WBFreeMarkerImageDirective.class);
-	articleDirectiveMock = PowerMock.createMock(WBFreeMarkerArticleDirective.class);
+	templateLoaderMock = PowerMock.createMock(FreeMarkerTemplateLoader.class);
+	moduleDirectiveMock = PowerMock.createMock(FreeMarkerModuleDirective.class);
+	imageDirectiveMock = PowerMock.createMock(FreeMarkerImageDirective.class);
+	articleDirectiveMock = PowerMock.createMock(FreeMarkerArticleDirective.class);
 	cloudStorageMock = PowerMock.createMock(WPBCloudFileStorage.class);
 	messageCacheMock = PowerMock.createMock(WPBMessagesCache.class);
 	cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
 	
 	Logger loggerMock = PowerMock.createMock(Logger.class);
-	Whitebox.setInternalState(WBFreeMarkerTemplateEngine.class, loggerMock);
+	Whitebox.setInternalState(WPBFreeMarkerTemplateEngine.class, loggerMock);
 }
 
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
 }
 
 
 @Test
 @SuppressStaticInitializationFor("WBFreeMarkerTemplateEngine.class")
-@PrepareForTest({Environment.class, WBFreeMarkerTemplateEngine.class})
+@PrepareForTest({Environment.class, WPBFreeMarkerTemplateEngine.class})
 public void test_initialize()
 {
-	WBFreeMarkerTemplateEngine templateEngine = new WBFreeMarkerTemplateEngine(cacheInstancesMock);
+	WPBFreeMarkerTemplateEngine templateEngine = new WPBFreeMarkerTemplateEngine(cacheInstancesMock);
 
 	EasyMock.expect(freeMarkerFactoryMock.createConfiguration()).andReturn(configurationMock);
 	EasyMock.expect(freeMarkerFactoryMock.createWBFreeMarkerModuleDirective()).andReturn(moduleDirectiveMock);
@@ -132,12 +132,12 @@ public void test_initialize()
 
 @Test
 @SuppressStaticInitializationFor("WBFreeMarkerTemplateEngine.class")
-@PrepareForTest({Environment.class, WBFreeMarkerTemplateEngine.class})
+@PrepareForTest({Environment.class, WPBFreeMarkerTemplateEngine.class})
 public void process_ok_no_messages()
 {
 	try
 	{
-		WBFreeMarkerTemplateEngine templateEngine = new WBFreeMarkerTemplateEngine(cacheInstancesMock);
+		WPBFreeMarkerTemplateEngine templateEngine = new WPBFreeMarkerTemplateEngine(cacheInstancesMock);
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
@@ -148,7 +148,7 @@ public void process_ok_no_messages()
 		EasyMock.expect(configurationMock.getTemplate(nameTemplate)).andReturn(templateMock);
 		
 		Locale locale = new Locale("en");
-		WBResourceBundle resourceBundleMock = PowerMock.createMock(WBResourceBundle.class);
+		CmsResourceBundle resourceBundleMock = PowerMock.createMock(CmsResourceBundle.class);
 		EasyMock.expect(freeMarkerFactoryMock.createResourceBundle(EasyMock.anyObject(WPBMessagesCache.class), EasyMock.anyObject(Locale.class))).andReturn(resourceBundleMock);
 		
 		Environment envMock = PowerMock.createMock(Environment.class);
@@ -173,12 +173,12 @@ public void process_ok_no_messages()
 
 @Test
 @SuppressStaticInitializationFor("WBFreeMarkerTemplateEngine.class")
-@PrepareForTest({Environment.class, WBFreeMarkerTemplateEngine.class})
+@PrepareForTest({Environment.class, WPBFreeMarkerTemplateEngine.class})
 public void process_ok_with_messages()
 {
 	try
 	{
-		WBFreeMarkerTemplateEngine templateEngine = new WBFreeMarkerTemplateEngine(cacheInstancesMock);
+		WPBFreeMarkerTemplateEngine templateEngine = new WPBFreeMarkerTemplateEngine(cacheInstancesMock);
 		Whitebox.setInternalState(templateEngine, "configuration", configurationMock);
 		String nameTemplate = "textXYZ";
 		Map rootMap = new HashMap();
@@ -213,12 +213,12 @@ public void process_ok_with_messages()
 
 @Test
 @SuppressStaticInitializationFor("WBFreeMarkerTemplateEngine.class")
-@PrepareForTest({Environment.class, WBFreeMarkerTemplateEngine.class})
+@PrepareForTest({Environment.class, WPBFreeMarkerTemplateEngine.class})
 public void process_exception()
 {
-	WBFreeMarkerTemplateEngine templateEngine = new WBFreeMarkerTemplateEngine(cacheInstancesMock);
+	WPBFreeMarkerTemplateEngine templateEngine = new WPBFreeMarkerTemplateEngine(cacheInstancesMock);
 	Template templateMock = PowerMock.createMock(Template.class);
-	WBResourceBundle resourceBundleMock = PowerMock.createMock(WBResourceBundle.class);
+	CmsResourceBundle resourceBundleMock = PowerMock.createMock(CmsResourceBundle.class);
 	Environment envMock = PowerMock.createMock(Environment.class);
 	Map rootMap = new HashMap();
 	
@@ -243,7 +243,7 @@ public void process_exception()
 		
 		assertTrue (false);
 	} 
-	catch (WBIOException e)
+	catch (WPBIOException e)
 	{
 		PowerMock.verify(cloudFileStorageMock, envMock, templateMock, cacheFactoryMock, freeMarkerFactoryMock, configurationMock, templateLoaderMock, moduleDirectiveMock, messageCacheMock);
 		assertTrue (rootMap.containsKey(WPBModel.LOCALE_LANGUAGE_KEY));

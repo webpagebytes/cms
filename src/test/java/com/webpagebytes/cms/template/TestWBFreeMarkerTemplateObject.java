@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateObject;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateObject.TemplateType;
+import com.webpagebytes.cms.template.FreeMarkerTemplateObject;
+import com.webpagebytes.cms.template.FreeMarkerTemplateObject.TemplateType;
 
 @RunWith(PowerMockRunner.class)
 public class TestWBFreeMarkerTemplateObject {
@@ -19,7 +19,7 @@ public class TestWBFreeMarkerTemplateObject {
 @Test
 public void testGettersTemplatePage()
 {
-	WBFreeMarkerTemplateObject object = new WBFreeMarkerTemplateObject("testpage", TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("testpage", TemplateType.TEMPLATE_PAGE, 2L);
 	assertTrue(object.getName().equals("testpage"));
 	assertTrue(object.getType() == TemplateType.TEMPLATE_PAGE);
 	assertTrue(object.getLastModified() == 2L);
@@ -28,7 +28,7 @@ public void testGettersTemplatePage()
 @Test
 public void testGettersTemplateModulePage()
 {
-	WBFreeMarkerTemplateObject object = new WBFreeMarkerTemplateObject("testmodule", TemplateType.TEMPLATE_MODULE, 3L);
+	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("testmodule", TemplateType.TEMPLATE_MODULE, 3L);
 	assertTrue(object.getName().equals("testmodule"));
 	assertTrue(object.getType() == TemplateType.TEMPLATE_MODULE);
 	assertTrue(object.getLastModified() == 3L);
@@ -37,7 +37,7 @@ public void testGettersTemplateModulePage()
 @Test
 public void testSetters()
 {
-	WBFreeMarkerTemplateObject object = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 1L);
+	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 1L);
 	object.setName("testset");
 	object.setType(TemplateType.TEMPLATE_MODULE);
 	object.setLastModified(5L);
@@ -49,11 +49,11 @@ public void testSetters()
 @Test
 public void testEquals()
 {
-	WBFreeMarkerTemplateObject object1 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object2 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object3 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
-	WBFreeMarkerTemplateObject object4 = new WBFreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object5 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object1 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object2 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object3 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
+	FreeMarkerTemplateObject object4 = new FreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object5 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
 
 	assertTrue(object1.equals(object2));
 	assertFalse(object1.equals(object3));
@@ -64,11 +64,11 @@ public void testEquals()
 @Test
 public void testHash()
 {
-	WBFreeMarkerTemplateObject object1 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object2 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object3 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
-	WBFreeMarkerTemplateObject object4 = new WBFreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object5 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object1 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object2 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object3 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
+	FreeMarkerTemplateObject object4 = new FreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object5 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
 
 	assertTrue(object1.hashCode() == object2.hashCode());
 	assertFalse(object1.hashCode() == object3.hashCode());
@@ -79,13 +79,13 @@ public void testHash()
 @Test
 public void testHash_with_map()
 {
-	WBFreeMarkerTemplateObject object1 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object2 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object3 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
-	WBFreeMarkerTemplateObject object4 = new WBFreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
-	WBFreeMarkerTemplateObject object5 = new WBFreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object1 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object2 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object3 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_MODULE, 10L);
+	FreeMarkerTemplateObject object4 = new FreeMarkerTemplateObject("testX", TemplateType.TEMPLATE_PAGE, 10L);
+	FreeMarkerTemplateObject object5 = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 2L);
 
-	Map<WBFreeMarkerTemplateObject, Integer> map = (Map<WBFreeMarkerTemplateObject, Integer>) new HashMap();
+	Map<FreeMarkerTemplateObject, Integer> map = (Map<FreeMarkerTemplateObject, Integer>) new HashMap();
 	map.put(object1, 1);
 	map.put(object2, 2);
 	map.put(object3, 3);
@@ -101,15 +101,15 @@ public void testHash_with_map()
 @Test
 public void testHash_nullname()
 {
-	WBFreeMarkerTemplateObject object1 = new WBFreeMarkerTemplateObject(null, TemplateType.TEMPLATE_PAGE, 2L);
-	WBFreeMarkerTemplateObject object2 = new WBFreeMarkerTemplateObject(null, TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object1 = new FreeMarkerTemplateObject(null, TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object2 = new FreeMarkerTemplateObject(null, TemplateType.TEMPLATE_PAGE, 2L);
 	assertTrue (object1.hashCode() == object2.hashCode());
 }
 
 @Test
 public void testHash_equalsWrongType()
 {
-	WBFreeMarkerTemplateObject object1 = new WBFreeMarkerTemplateObject("abc", TemplateType.TEMPLATE_PAGE, 2L);
+	FreeMarkerTemplateObject object1 = new FreeMarkerTemplateObject("abc", TemplateType.TEMPLATE_PAGE, 2L);
 	assertTrue (object1.equals("abc") == false);
 }
 

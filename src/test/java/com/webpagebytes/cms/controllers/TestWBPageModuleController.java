@@ -24,14 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.controllers.WBErrors;
+import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.PageModuleController;
 import com.webpagebytes.cms.controllers.PageModuleValidator;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 @Ignore
@@ -43,8 +43,8 @@ private PageModuleController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
-private WBJSONToFromObjectConverter jsonObjectConverterMock;
-private AdminDataStorage adminStorageMock;
+private JSONToFromObjectConverter jsonObjectConverterMock;
+private WPBAdminDataStorage adminStorageMock;
 private PageModuleValidator validatorMock;
 private Map<String, String> errors;
 private WPBWebPageModulesCache pageModuleCacheMock;
@@ -57,8 +57,8 @@ public void setUp()
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
-	jsonObjectConverterMock = PowerMock.createMock(WBJSONToFromObjectConverter.class);
-	adminStorageMock = PowerMock.createMock(AdminDataStorage.class);
+	jsonObjectConverterMock = PowerMock.createMock(JSONToFromObjectConverter.class);
+	adminStorageMock = PowerMock.createMock(WPBAdminDataStorage.class);
 	validatorMock = PowerMock.createMock(PageModuleValidator.class);
 	errors = new HashMap<String, String>();
 	pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
@@ -160,7 +160,7 @@ public void test_create_exception()
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setExternalKey(EasyMock.capture(captureExternalKey));
 
-		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andThrow(new WBIOException(""));
+		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andThrow(new WPBIOException(""));
 		
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -171,7 +171,7 @@ public void test_create_exception()
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		controllerForTest.create(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_CREATE_RECORD) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_CREATE_RECORD) == 0);
 		assertTrue (captureData.getValue().equals("{}"));
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		assertTrue (captureDate.getValue() != null);
@@ -206,7 +206,7 @@ public void test_getAll_ok()
 		assertTrue (responseMock == captureHttpResponse.getValue());
 		assertTrue (captureData.getValue().compareTo(jsonString) == 0);
 		assertTrue (captureErrors.getValue() == null);
-	} catch (WBException e)
+	} catch (WPBException e)
 	{
 		assertTrue(false);
 	}
@@ -218,7 +218,7 @@ public void test_getAll_exception()
 	try
 	{
 		List<Object> allUri = new ArrayList<Object>();
-		EasyMock.expect(adminStorageMock.getAllRecords(WBWebPageModule.class)).andThrow(new WBIOException(""));
+		EasyMock.expect(adminStorageMock.getAllRecords(WBWebPageModule.class)).andThrow(new WPBIOException(""));
 		String jsonString = "{}";
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -233,8 +233,8 @@ public void test_getAll_exception()
 		
 		assertTrue (responseMock == captureHttpResponse.getValue());
 		assertTrue (captureData.getValue().compareTo(jsonString) == 0);
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_GET_RECORDS) == 0);
-	} catch (WBException e)
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_GET_RECORDS) == 0);
+	} catch (WPBException e)
 	{
 		assertTrue(false);
 	}
@@ -276,7 +276,7 @@ public void test_get_exception()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WBWebPageModule.class)).andThrow(new WBIOException(""));
+		EasyMock.expect(adminStorageMock.get(123L, WBWebPageModule.class)).andThrow(new WPBIOException(""));
 
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -288,7 +288,7 @@ public void test_get_exception()
 		controllerForTest.get(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_GET_RECORDS) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_GET_RECORDS) == 0);
 		assertTrue (captureData.getValue().compareTo(json) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		
@@ -315,7 +315,7 @@ public void test_get_noKey()
 		controllerForTest.get(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_GET_RECORDS) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_GET_RECORDS) == 0);
 		assertTrue (captureData.getValue().compareTo(json) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		
@@ -378,7 +378,7 @@ public void test_update_errors()
 		Capture<Long> captureKey = new Capture<Long>();
 		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 
-		errors.put("uri", WBErrors.ERROR_URI_START_CHAR);
+		errors.put("uri", WPBErrors.ERROR_URI_START_CHAR);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 				
 		String returnJson = "{}";
@@ -392,7 +392,7 @@ public void test_update_errors()
 		controllerForTest.update(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
-		assertTrue (captureErrors.getValue().get("uri").compareTo(WBErrors.ERROR_URI_START_CHAR) == 0);
+		assertTrue (captureErrors.getValue().get("uri").compareTo(WPBErrors.ERROR_URI_START_CHAR) == 0);
 		assertTrue (captureErrors.getValue().size() == 1);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
@@ -419,7 +419,7 @@ public void test_update_nokey()
 		controllerForTest.update(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_UPDATE_RECORD) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_UPDATE_RECORD) == 0);
 		assertTrue (captureData.getValue().compareTo("{}") == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
 		
@@ -471,7 +471,7 @@ public void test_delete_exception()
 		Capture<Long> captureKey = new Capture<Long>();
 		Capture<Class> captureClass = new Capture<Class>();
 		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
-		EasyMock.expectLastCall().andThrow(new WBIOException(""));
+		EasyMock.expectLastCall().andThrow(new WPBIOException(""));
 		
 		String returnJson = "{}";
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
@@ -483,7 +483,7 @@ public void test_delete_exception()
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		controllerForTest.delete(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_DELETE_RECORD) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_DELETE_RECORD) == 0);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);	
 		assertTrue (captureKey.getValue().compareTo(123L) == 0);
@@ -510,7 +510,7 @@ public void test_delete_noKey()
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		controllerForTest.delete(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
-		assertTrue (captureErrors.getValue().get("").compareTo(WBErrors.WB_CANT_DELETE_RECORD) == 0);
+		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_DELETE_RECORD) == 0);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);	
 	} catch (Exception e)
@@ -527,7 +527,7 @@ public void test_notify_ok()
 	WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
 	pageModuleCacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageModuleMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(pageModuleMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
+	controllerForTest.notify(pageModuleMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -541,9 +541,9 @@ public void test_notify_exception()
 	{
 		WBWebPageModule pageMock = PowerMock.createMock(WBWebPageModule.class);
 		pageModuleCacheMock.Refresh();
-		EasyMock.expectLastCall().andThrow(new WBIOException(""));
+		EasyMock.expectLastCall().andThrow(new WPBIOException(""));
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-		controllerForTest.notify(pageMock, AdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
+		controllerForTest.notify(pageMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);

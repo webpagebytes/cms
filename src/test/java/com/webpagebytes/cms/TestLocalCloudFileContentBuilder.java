@@ -19,8 +19,8 @@ import org.powermock.reflect.Whitebox;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 @RunWith(PowerMockRunner.class)
 public class TestLocalCloudFileContentBuilder {
@@ -31,13 +31,13 @@ private WPBCloudFileStorage cloudFileStorageMock;
 public void before()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 }
 
 @After
 public void after()
 {
-	Whitebox.setInternalState(WBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
 }
 
 @Test
@@ -48,7 +48,7 @@ public void test_serveFile_wrong_file_path()
 		LocalCloudFileContentBuilder fileContentBuilder = new LocalCloudFileContentBuilder();
 		fileContentBuilder.serveFile(null, null, "/a_file_path");
 		assertTrue(true);
-	} catch (WBIOException e)
+	} catch (WPBIOException e)
 	{
 		assertTrue(false);
 	}
@@ -124,7 +124,7 @@ public void test_serveFile_exception()
 	
 	assertTrue(false);
 	
-	} catch (WBIOException e)
+	} catch (WPBIOException e)
 	{
 		assertTrue(true);
 	}

@@ -1,27 +1,27 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
-import com.webpagebytes.cms.datautility.AdminFieldTextStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
 
 public class DummyClientS {
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	protected String id;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	protected Integer age;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	public Long balance;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	public byte binary;
-	@AdminFieldTextStore
+	@WPBAdminFieldTextStore
 	private String summary;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Boolean isBoolean;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private int width;
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private long height;
 	
 	

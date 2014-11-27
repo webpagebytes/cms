@@ -17,9 +17,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao;
-import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalQueryOperator;
-import com.webpagebytes.cms.datautility.local.WBLocalDataStoreDao.WBLocalSortDirection;
+import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao;
+import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
+import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalSortDirection;
 
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.api.mockito.PowerMockito;
@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import static org.mockito.Matchers.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({WBLocalDataStoreDao.class})
+@PrepareForTest({WPBLocalDataStoreDao.class})
 public class TestWBLocalDataStoreDao {
 private Map<String, String> dbProps = new HashMap<String, String>();
 
@@ -41,7 +41,7 @@ public void test_addRecord()
 {
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		WBUri uri = new WBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
@@ -83,7 +83,7 @@ public void test_getRecord()
 	{
 		Object key = "123";
 		Object result = "result";
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
@@ -119,7 +119,7 @@ public void test_addRecordWithKey()
 	
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		connectionMock.setAutoCommit(true);
@@ -157,7 +157,7 @@ public void test_updateRecord()
 
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		WBUri uri = new WBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
@@ -196,7 +196,7 @@ public void test_query_more_properties()
 	
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		List<Object> result = new ArrayList<Object>();
 		
 		PowerMockito.doReturn(result).when(dao, "advanceQuery", any(Class.class), any(Set.class), any(Map.class), any(Map.class), any(String.class), any(WBLocalSortDirection.class));
@@ -221,7 +221,7 @@ public void test_query_no_conditions()
 	
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		List<Object> result = new ArrayList<Object>();
 		
 		PowerMockito.doReturn(result).when(dao, "advanceQuery", any(Class.class), any(Set.class), any(Map.class), any(Map.class), any(String.class), any(WBLocalSortDirection.class));
@@ -245,7 +245,7 @@ public void test_deleteRecord()
 {
 	try
 	{
-		WBLocalDataStoreDao dao = PowerMockito.spy(new WBLocalDataStoreDao(dbProps));
+		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
 		WBUri uri = new WBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);

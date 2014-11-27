@@ -27,28 +27,28 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorageListener;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.datautility.WBJSONToFromObjectConverter;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class CleanerController extends WBController implements AdminDataStorageListener<Object>{
-	private AdminDataStorage adminStorage;
+public class CleanerController extends Controller implements WPBAdminDataStorageListener<Object>{
+	private WPBAdminDataStorage adminStorage;
 	private WPBCacheFactory cacheFactory;
 	private WPBCloudFileStorage cloudFileStorage;
 	
 	public CleanerController()
 	{
-		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 
 		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new WBJSONToFromObjectConverter();
-		adminStorage = AdminDataStorageFactory.getInstance();
+		jsonObjectConverter = new JSONToFromObjectConverter();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		cacheFactory = DefaultWPBCacheFactory.getInstance();
 		adminStorage.addStorageListener(this);
 	}
@@ -100,7 +100,7 @@ public class CleanerController extends WBController implements AdminDataStorageL
 				projectCache.Refresh();
 			}
 			
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			// do nothing
 		}
@@ -118,7 +118,7 @@ public class CleanerController extends WBController implements AdminDataStorageL
 			cloudFileStorage.deleteFile(cloudThumbnailFile);
 		}						
 	}
-	public void deleteAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void deleteAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -144,7 +144,7 @@ public class CleanerController extends WBController implements AdminDataStorageL
 		catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_CREATE_RECORD);
+			errors.put("", WPBErrors.WB_CANT_CREATE_RECORD);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}

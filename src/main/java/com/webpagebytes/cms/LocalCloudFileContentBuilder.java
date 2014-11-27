@@ -10,9 +10,9 @@ import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.utility.WBBase64Utility;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.utility.CmsBase64Utility;
 
 class LocalCloudFileContentBuilder {
 
@@ -21,9 +21,9 @@ class LocalCloudFileContentBuilder {
 	private WPBCloudFileStorage cloudFileStorage;
 	public LocalCloudFileContentBuilder()
 	{
-		cloudFileStorage = WBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 	}
-	public void serveFile(HttpServletRequest request, HttpServletResponse response, String uri) throws WBIOException
+	public void serveFile(HttpServletRequest request, HttpServletResponse response, String uri) throws WPBIOException
 	{
 		if (! uri.startsWith(LOCAL_FILE_SERVE_URL))
 		{
@@ -33,7 +33,7 @@ class LocalCloudFileContentBuilder {
 		int pos = fullFilePath.indexOf('/');
 		String bucket = fullFilePath.substring(0, pos);
 		String file = fullFilePath.substring(pos+1);
-		file = new String(WBBase64Utility.fromSafePathBase64(file), Charset.forName("UTF-8"));
+		file = new String(CmsBase64Utility.fromSafePathBase64(file), Charset.forName("UTF-8"));
 		WPBCloudFile cloudFile = new WPBCloudFile(bucket, file);
 		InputStream is = null;
 		try
@@ -46,7 +46,7 @@ class LocalCloudFileContentBuilder {
 			// do not close the response outputstream here
 		} catch (Exception e)
 		{
-			throw new WBIOException("cannot serve file", e);
+			throw new WPBIOException("cannot serve file", e);
 		}
 		finally
 		{

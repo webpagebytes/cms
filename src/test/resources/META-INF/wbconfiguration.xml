@@ -18,7 +18,7 @@
 		</params>
 	</wpbcloudfilestorage>
 	<wpbimageprocessor>
-		<factoryclass>com.webpagebytes.cms.datautility.WBImageProcessor</factoryclass>
+		<factoryclass>com.webpagebytes.cms.datautility.WPBImageProcessor</factoryclass>
 	</wpbimageprocessor>
 </wpbconfiguration>
 
@@ -40,7 +40,7 @@
 		</params>
 	</wpbcloudfilestorage>
 	<wpbimageprocessor>
-		<factoryclass>com.webpagebytes.cms.datautility.WBImageProcessor</factoryclass>
+		<factoryclass>com.webpagebytes.cms.datautility.WPBImageProcessor</factoryclass>
 	</wpbimageprocessor>
 </wpbconfiguration>
 

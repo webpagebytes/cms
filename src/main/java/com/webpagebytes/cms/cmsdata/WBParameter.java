@@ -3,36 +3,36 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class WBParameter implements Serializable {
 	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;
 	
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private Long privkey;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String name;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String value;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String ownerExternalKey;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer overwriteFromUrl;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer localeType;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String externalKey;
 	
 	public Long getPrivkey() {

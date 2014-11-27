@@ -14,9 +14,9 @@ import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.template.WBFreeMarkerFactory;
-import com.webpagebytes.cms.template.WBFreeMarkerModuleDirective;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateLoader;
+import com.webpagebytes.cms.template.FreeMarkerResourcesFactory;
+import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
+import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;
 
 import freemarker.template.Configuration;
 
@@ -26,7 +26,7 @@ public class TestWBFreeMarkerFactory {
 @Test
 public void createConfiguration()
 {
-	WBFreeMarkerFactory factory = new WBFreeMarkerFactory();
+	FreeMarkerResourcesFactory factory = new FreeMarkerResourcesFactory();
 	Configuration configuration = factory.createConfiguration();
 	assertTrue (configuration != null);
 }
@@ -34,19 +34,19 @@ public void createConfiguration()
 @Test
 public void createWBFreeMarkerModuleDirective()
 {
-	WBFreeMarkerFactory factory = new WBFreeMarkerFactory();
-	WBFreeMarkerModuleDirective moduleDirective = factory.createWBFreeMarkerModuleDirective();
+	FreeMarkerResourcesFactory factory = new FreeMarkerResourcesFactory();
+	FreeMarkerModuleDirective moduleDirective = factory.createWBFreeMarkerModuleDirective();
 	assertTrue (moduleDirective != null);	
 }
 
 @Test
 public void createWBFreeMarkerTemplateLoader()
 {
-	WBFreeMarkerFactory factory = new WBFreeMarkerFactory();
+	FreeMarkerResourcesFactory factory = new FreeMarkerResourcesFactory();
 	WPBCacheInstances cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
 	
 	PowerMock.replay(cacheInstancesMock);
-	WBFreeMarkerTemplateLoader loader = factory.createWBFreeMarkerTemplateLoader(cacheInstancesMock);	
+	FreeMarkerTemplateLoader loader = factory.createWBFreeMarkerTemplateLoader(cacheInstancesMock);	
 }
 
 }

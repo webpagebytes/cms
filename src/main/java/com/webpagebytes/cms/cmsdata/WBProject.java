@@ -5,22 +5,22 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.webpagebytes.cms.datautility.AdminFieldKey;
-import com.webpagebytes.cms.datautility.AdminFieldStore;
+import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
+import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class WBProject implements Serializable{
 	public static final String PROJECT_KEY = "wbprojectid";
 	
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private String privkey;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String supportedLanguages;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String defaultLanguage;
 	
 	public String getPrivkey() {

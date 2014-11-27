@@ -14,25 +14,25 @@ import org.json.JSONObject;
 
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.exception.WBException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.exception.WPBException;
 
-public class ReadOnlyDataController  extends WBController {
+public class ReadOnlyDataController  extends Controller {
 
 	public static final String DATA_FILES = "data_files";
 	public static final String DATA_PAGES = "data_pages";
 	
-	private AdminDataStorage adminStorage;
+	private WPBAdminDataStorage adminStorage;
 
 
 	public ReadOnlyDataController() 
 	{
-		adminStorage = AdminDataStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 	}
 	
-	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		List<WBFile> files = adminStorage.getAllRecords(WBFile.class);
 		List<WBWebPage> pages = adminStorage.getAllRecords(WBWebPage.class);
@@ -66,13 +66,13 @@ public class ReadOnlyDataController  extends WBController {
 		} catch (JSONException e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
 		}
 		
 	}
 	
-	public void search(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WBException
+	public void search(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
@@ -102,7 +102,7 @@ public class ReadOnlyDataController  extends WBController {
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WBErrors.WB_CANT_GET_RECORDS);
+			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}
 	}

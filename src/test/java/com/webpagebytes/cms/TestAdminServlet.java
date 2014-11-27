@@ -22,8 +22,8 @@ import com.webpagebytes.cms.WPBAdminServlet;
 import com.webpagebytes.cms.AjaxRequestProcessor;
 import com.webpagebytes.cms.ResourceRequestProcessor;
 import com.webpagebytes.cms.WPBServletUtility;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 public class TestAdminServlet {
 
@@ -43,7 +43,7 @@ public class TestAdminServlet {
 		ajaxProcessor = EasyMock.createMock(AjaxRequestProcessor.class);
 		servletUtility = EasyMock.createMock(WPBServletUtility.class);
 		adminServlet = new WPBAdminServlet();		
-		WBConfigurationFactory.setConfigPath("wbConfiguration.xml");
+		CmsConfigurationFactory.setConfigPath("wbConfiguration.xml");
 	}
 	
 	@Test
@@ -236,7 +236,7 @@ public class TestAdminServlet {
 			Capture<String> adminConfigA = new Capture<String>();
 			
 			resourceProcessor.initialize(EasyMock.capture(adminFolderR), EasyMock.capture(adminConfigR));
-			EasyMock.expectLastCall().andThrow(new WBException(""));
+			EasyMock.expectLastCall().andThrow(new WPBException(""));
 			
 			EasyMock.expect(testProcessor.createResourceRequestProcessor()).andReturn(resourceProcessor);
 			EasyMock.expect(servletUtility.getContextParameter(WPBCmsContextListener.CMS_CONFIG_KEY, adminServlet)).andReturn("/path");
@@ -545,7 +545,7 @@ public class TestAdminServlet {
 			adminServlet.setAdminURIPart("/admin");		
 			EasyMock.expect(ajaxProcessor.isAjaxRequest(request, "/pages")).andReturn(true);
 			ajaxProcessor.process(request, response, "/pages");
-			EasyMock.expectLastCall().andThrow(new WBException(""));
+			EasyMock.expectLastCall().andThrow(new WPBException(""));
 			
 			adminServlet.setAjaxRequestProcssor(ajaxProcessor);
 			EasyMock.replay(ajaxProcessor, request, response);

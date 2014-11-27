@@ -10,37 +10,37 @@ import java.util.Set;
 import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WBFile;
 import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalUrisCache implements WPBUrisCache {
 
 	private static final Object lock = new Object();
-	private AdminDataStorage dataStorage;
+	private WPBAdminDataStorage dataStorage;
 	Map<Integer, Map<String, WBUri>> localCache;
 	long cacheFingerPrint;
 	
 	public WPBLocalUrisCache()
 	{
-		dataStorage = AdminDataStorageFactory.getInstance();
+		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
 		{
 			if (dataStorage != null)
 			{
 				Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			
 		}
 	}
-	public WBUri getByExternalKey(String key) throws WBIOException
+	public WBUri getByExternalKey(String key) throws WPBIOException
 	{
 		return null;
 	}
 	
-	public WBUri get(String uri, int httpIndex) throws WBIOException
+	public WBUri get(String uri, int httpIndex) throws WPBIOException
 	{
 		if (localCache != null)
 		{
@@ -53,7 +53,7 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 		return null;
 	}
 
-	public Set<String> getAllUris(int httpIndex) throws WBIOException
+	public Set<String> getAllUris(int httpIndex) throws WPBIOException
 	{
 		if (localCache != null)
 		{
@@ -106,7 +106,7 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 		return null;
 	}
 
-	public void Refresh() throws WBIOException {
+	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
 			Map<Integer, Map<String, WBUri>> tempMapUris = new HashMap<Integer, Map<String, WBUri>>();

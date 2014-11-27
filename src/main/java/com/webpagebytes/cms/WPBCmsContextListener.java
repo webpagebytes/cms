@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import com.webpagebytes.cms.utility.WBConfigurationFactory;
+import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 public class WPBCmsContextListener implements ServletContextListener {
 	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
@@ -27,9 +27,9 @@ public class WPBCmsContextListener implements ServletContextListener {
     	}
     	// WBConfigurationFactory.setConfigPath needs to be one of the first things to do for the servlet initialization
     	// before at other code execution that relies on configurations
-    	if (WBConfigurationFactory.getConfigPath() == null)
+    	if (CmsConfigurationFactory.getConfigPath() == null)
     	{
-    		WBConfigurationFactory.setConfigPath(configPath);
+    		CmsConfigurationFactory.setConfigPath(configPath);
     	}
 
 		

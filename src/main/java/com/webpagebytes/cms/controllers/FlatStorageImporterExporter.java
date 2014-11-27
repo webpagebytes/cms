@@ -28,17 +28,17 @@ import com.webpagebytes.cms.cmsdata.WBProject;
 import com.webpagebytes.cms.cmsdata.WBUri;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.WBCloudFileStorageFactory;
-import com.webpagebytes.cms.datautility.WBImageProcessor;
-import com.webpagebytes.cms.datautility.WBImageProcessorFactory;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.datautility.WPBImageProcessor;
+import com.webpagebytes.cms.datautility.WPBImageProcessorFactory;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class FlatStorageImporterExporter {
 	private static final Logger log = Logger.getLogger(FlatStorageImporterExporter.class.getName());
@@ -61,9 +61,9 @@ public class FlatStorageImporterExporter {
 	private WBExporter exporter = new WBExporter();
 	private WBImporter importer = new WBImporter();
 	
-	private AdminDataStorage dataStorage = AdminDataStorageFactory.getInstance();
-	private WPBCloudFileStorage cloudFileStorage = WBCloudFileStorageFactory.getInstance();
-	private WBImageProcessor imageProcessor = WBImageProcessorFactory.getInstance();
+	private WPBAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
+	private WPBCloudFileStorage cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+	private WPBImageProcessor imageProcessor = WPBImageProcessorFactory.getInstance();
 	
 	private UriValidator uriValidator = new UriValidator();
 	
@@ -87,7 +87,7 @@ public class FlatStorageImporterExporter {
 	}
 	
 
-	public void importFromZip(InputStream is) throws WBIOException
+	public void importFromZip(InputStream is) throws WPBIOException
 	{
 		ZipInputStream zis = new ZipInputStream(is);
 	
@@ -177,7 +177,7 @@ public class FlatStorageImporterExporter {
 		} catch (Exception e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("cannot import from  zip", e);
+			throw new WPBIOException("cannot import from  zip", e);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class FlatStorageImporterExporter {
 		return os.toByteArray();
 	}
 	
-	public void importUri(ZipInputStream zis) throws WBIOException
+	public void importUri(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -204,7 +204,7 @@ public class FlatStorageImporterExporter {
 				if (uriValidator.validateCreateWithExternalKey(uri).size()>0)
 				{
 					log.log(Level.SEVERE, String.format("uri validator failed for record ext key: '%s' and path: '%s'  ", uri.getExternalKey(), uri.getUri()));
-					throw new WBIOException("Uri validator failed");
+					throw new WPBIOException("Uri validator failed");
 				}
 				dataStorage.add(uri);
 			}
@@ -214,7 +214,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importWebPage(ZipInputStream zis) throws WBIOException
+	public void importWebPage(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -230,7 +230,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importWebPageSource(ZipInputStream zis, String path) throws WBIOException
+	public void importWebPageSource(ZipInputStream zis, String path) throws WPBIOException
 	{
 		try 
 		{
@@ -257,7 +257,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importWebPageModuleSource(ZipInputStream zis, String path) throws WBIOException
+	public void importWebPageModuleSource(ZipInputStream zis, String path) throws WPBIOException
 	{
 		try 
 		{
@@ -283,7 +283,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importFileContent(ZipInputStream zis, String path) throws WBIOException
+	public void importFileContent(ZipInputStream zis, String path) throws WPBIOException
 	{
 		try
 		{
@@ -320,7 +320,7 @@ public class FlatStorageImporterExporter {
 				          
 						bos.close();
 						bis.close();
-					} catch (WBException e)
+					} catch (WPBException e)
 		        	{
 		        		// do nothing as thumbnail fail might because by an unsupported image type
 		        		
@@ -337,7 +337,7 @@ public class FlatStorageImporterExporter {
 		}
 	}	
 	
-	public void importArticleSource(ZipInputStream zis, String path) throws WBIOException
+	public void importArticleSource(ZipInputStream zis, String path) throws WPBIOException
 	{
 		try 
 		{
@@ -363,7 +363,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importProject(ZipInputStream zis) throws WBIOException
+	public void importProject(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -384,7 +384,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importPageModule(ZipInputStream zis) throws WBIOException
+	public void importPageModule(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -400,7 +400,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importArticle(ZipInputStream zis) throws WBIOException
+	public void importArticle(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -416,7 +416,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importFile(ZipInputStream zis) throws WBIOException
+	public void importFile(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -432,7 +432,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importMessage(ZipInputStream zis) throws WBIOException
+	public void importMessage(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -448,7 +448,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importParameter(ZipInputStream zis) throws WBIOException
+	public void importParameter(ZipInputStream zis) throws WPBIOException
 	{
 		try 
 		{
@@ -464,7 +464,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void exportToZip(OutputStream os) throws WBIOException
+	public void exportToZip(OutputStream os) throws WPBIOException
 	{
 		ZipOutputStream zos = new ZipOutputStream(os);
 		exportUris(zos, PATH_URIS);
@@ -482,11 +482,11 @@ public class FlatStorageImporterExporter {
 		} catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export project, error flushing/closing stream", e);
+			throw new WPBIOException("Cannot export project, error flushing/closing stream", e);
 		}
 	}
 
-	protected void exportLocales(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportLocales(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -502,16 +502,16 @@ public class FlatStorageImporterExporter {
 		} catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export uri's to Zip", e);
+			throw new WPBIOException("Cannot export uri's to Zip", e);
 		}		
 	}
 
-	protected void exportGlobals(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportGlobals(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		exportParameters("", zos, path);
 	}
 
-	protected void exportUris(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportUris(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -540,11 +540,11 @@ public class FlatStorageImporterExporter {
 		} catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export uri's to Zip", e);
+			throw new WPBIOException("Cannot export uri's to Zip", e);
 		}
 	}
 	
-	public void exportParameters(String ownerExternalKey, ZipOutputStream zos, String path) throws WBIOException
+	public void exportParameters(String ownerExternalKey, ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -563,11 +563,11 @@ public class FlatStorageImporterExporter {
 		} catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export parameters for uri's to Zip", e);
+			throw new WPBIOException("Cannot export parameters for uri's to Zip", e);
 		}
 	}
 	
-	protected void exportSitePages(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportSitePages(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -600,11 +600,11 @@ public class FlatStorageImporterExporter {
 		catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export site web pages to Zip", e);
+			throw new WPBIOException("Cannot export site web pages to Zip", e);
 		}
 	}
 
-	protected void exportArticles(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportArticles(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -629,11 +629,11 @@ public class FlatStorageImporterExporter {
 		catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export articles to Zip", e);
+			throw new WPBIOException("Cannot export articles to Zip", e);
 		}
 	}
 
-	protected void exportPageModules(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportPageModules(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -658,11 +658,11 @@ public class FlatStorageImporterExporter {
 		catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export site web page modules to Zip", e);
+			throw new WPBIOException("Cannot export site web page modules to Zip", e);
 		}
 	}
 
-	protected void exportMessages(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportMessages(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -697,11 +697,11 @@ public class FlatStorageImporterExporter {
 		catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export messages to Zip", e);
+			throw new WPBIOException("Cannot export messages to Zip", e);
 		}
 	}
 
-	protected void exportFiles(ZipOutputStream zos, String path) throws WBIOException
+	protected void exportFiles(ZipOutputStream zos, String path) throws WPBIOException
 	{
 		try
 		{
@@ -743,7 +743,7 @@ public class FlatStorageImporterExporter {
 		catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WBIOException("Cannot export files to Zip", e);
+			throw new WPBIOException("Cannot export files to Zip", e);
 		}
 	}
 

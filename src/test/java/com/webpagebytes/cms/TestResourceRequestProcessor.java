@@ -3,9 +3,9 @@ package com.webpagebytes.cms;
 import java.io.IOException;
 import com.webpagebytes.cms.ResourceRequestProcessor;
 import com.webpagebytes.cms.StaticResourceMap;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBIOException;
-import com.webpagebytes.cms.exception.WBResourceNotFoundException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.exception.WPBResourceNotFoundException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.*;
 import org.junit.Test;
@@ -82,7 +82,7 @@ public class TestResourceRequestProcessor{
 		try
 		{
 			processor.initialize("admin", "META-INF/config/resourceswhitelist.properties");
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			exception = e;
 		}
@@ -246,7 +246,7 @@ public class TestResourceRequestProcessor{
 			assertTrue (captureExpireValue.getValue().compareTo("no-cache;no-store;") == 0);
 			
 		} 
-		catch (WBIOException e)
+		catch (WPBIOException e)
 		{
 			// OK
 		}
@@ -269,7 +269,7 @@ public class TestResourceRequestProcessor{
 			String hash = "1234";
 			String content = " body { color: #123456; } \n a { color: #567890; }";
 			
-			EasyMock.expect(resourceMapMock.getResource("/notfound.css")).andThrow(new WBResourceNotFoundException("resource not found in testing"));
+			EasyMock.expect(resourceMapMock.getResource("/notfound.css")).andThrow(new WPBResourceNotFoundException("resource not found in testing"));
 			
 			Capture<Integer> captureCode = new Capture<Integer>();
 			response.setStatus(EasyMock.captureInt(captureCode));

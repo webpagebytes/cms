@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.exception.WBFileNotFoundException;
-import com.webpagebytes.cms.exception.WBReadConfigException;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBFileNotFoundException;
+import com.webpagebytes.cms.exception.WPBReadConfigException;
 import com.webpagebytes.cms.utility.Pair;
 
 public class AdminServletOperationsReader {
@@ -24,7 +24,7 @@ public class AdminServletOperationsReader {
 		
 	}
 	
-	public void initialize(String configFile) throws WBException
+	public void initialize(String configFile) throws WPBException
 	{
 		HashSet<String> httpOperations = new HashSet<String>();
 		httpOperations.add("PUT");
@@ -39,7 +39,7 @@ public class AdminServletOperationsReader {
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(configFile);
 			if (null == is)
 			{
-				throw new WBFileNotFoundException("Could not locate:" + configFile);
+				throw new WPBFileNotFoundException("Could not locate:" + configFile);
 			}
 			Properties prop = new Properties();  
             prop.load(is);  
@@ -74,7 +74,7 @@ public class AdminServletOperationsReader {
             is.close();
 		} catch (IOException e)
 		{
-			throw new WBReadConfigException("Coult not read config file:" + configFile, e);
+			throw new WPBReadConfigException("Coult not read config file:" + configFile, e);
 		}		
 	}
 	

@@ -7,31 +7,31 @@ import java.util.Map;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WBArticle;
 import com.webpagebytes.cms.cmsdata.WBWebPageModule;
-import com.webpagebytes.cms.datautility.AdminDataStorage;
-import com.webpagebytes.cms.datautility.AdminDataStorageFactory;
-import com.webpagebytes.cms.exception.WBIOException;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	
-	private AdminDataStorage dataStorage;
+	private WPBAdminDataStorage dataStorage;
 	private Map<String, WBWebPageModule> localCacheByID;
 	private Map<String, WBWebPageModule> localCacheByName;
 	private static final Object lock = new Object();
 	public WPBLocalWebPageModulesCache()
 	{
-		dataStorage = AdminDataStorageFactory.getInstance();
+		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
 		{
 			if (dataStorage != null)
 			{
 				Refresh();
 			}
-		} catch (WBIOException e)
+		} catch (WPBIOException e)
 		{
 			
 		}
 	}
-	public WBWebPageModule getByExternalKey(String externalKey) throws WBIOException
+	public WBWebPageModule getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCacheByID != null)
 		{
@@ -40,7 +40,7 @@ public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 		return null;
 	}
 
-	public void Refresh() throws WBIOException {
+	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
 			Map<String, WBWebPageModule> tempMapByID = new HashMap<String, WBWebPageModule>();
@@ -59,7 +59,7 @@ public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	}
 
 		
-	public WBWebPageModule get(String moduleName) throws WBIOException
+	public WBWebPageModule get(String moduleName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{

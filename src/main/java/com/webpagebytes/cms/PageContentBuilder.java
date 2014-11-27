@@ -10,13 +10,13 @@ import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.exception.WBException;
-import com.webpagebytes.cms.template.WBFreeMarkerTemplateEngine;
-import com.webpagebytes.cms.template.WBTemplateEngine;
+import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
+import com.webpagebytes.cms.template.WPBTemplateEngine;
 
 class PageContentBuilder {
 		
-	private WBTemplateEngine templateEngine;
+	private WPBTemplateEngine templateEngine;
 	private WPBCacheInstances cacheInstances;
 	private Map<String, WPBPageModelProvider> customControllers;
 	private ModelBuilder modelBuilder;
@@ -27,21 +27,21 @@ class PageContentBuilder {
 		this.customControllers = new HashMap<String, WPBPageModelProvider>();
 		this.cacheInstances = cacheInstances;
 		this.modelBuilder = modelBuilder;
-		this.templateEngine = new WBFreeMarkerTemplateEngine(cacheInstances);
+		this.templateEngine = new WPBFreeMarkerTemplateEngine(cacheInstances);
 		
 	}
 	
-	public void initialize() throws WBException
+	public void initialize() throws WPBException
 	{
 			templateEngine.initialize();
 	}
 	
-	public WBWebPage findWebPage(String pageExternalKey) throws WBException
+	public WBWebPage findWebPage(String pageExternalKey) throws WPBException
 	{
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
-	private WPBPageModelProvider getPageModelProvider(String controllerClassName) throws WBException
+	private WPBPageModelProvider getPageModelProvider(String controllerClassName) throws WPBException
 	{
 		WPBPageModelProvider controllerInst = null;
 		if (customControllers.containsKey(controllerClassName))
@@ -52,14 +52,14 @@ class PageContentBuilder {
 			try {
 			controllerInst = (WPBPageModelProvider) Class.forName(controllerClassName).newInstance();
 			customControllers.put(controllerClassName, controllerInst);
-			} catch (Exception e) { throw new WBException("Cannot instantiate page controller " + controllerClassName, e); }			
+			} catch (Exception e) { throw new WPBException("Cannot instantiate page controller " + controllerClassName, e); }			
 		}
 		return controllerInst;
 	}
 	
 	public String buildPageContent(HttpServletRequest request,
 			WBWebPage wbWebPage, 
-			WPBModel model) throws WBException
+			WPBModel model) throws WPBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();
@@ -93,9 +93,9 @@ class PageContentBuilder {
 		String result = "";
 		try {
 			StringWriter out = new StringWriter();			
-			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
+			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
 			result += out.toString();
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			throw e;
 		}
@@ -105,7 +105,7 @@ class PageContentBuilder {
 
 	public String buildPageContent(
 			WBWebPage wbWebPage, 
-			WPBModel model) throws WBException
+			WPBModel model) throws WPBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();
@@ -139,9 +139,9 @@ class PageContentBuilder {
 		String result = "";
 		try {
 			StringWriter out = new StringWriter();			
-			templateEngine.process(WBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
+			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
 			result += out.toString();
-		} catch (WBException e)
+		} catch (WPBException e)
 		{
 			throw e;
 		}

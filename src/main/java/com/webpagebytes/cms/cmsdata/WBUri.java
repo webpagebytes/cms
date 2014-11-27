@@ -10,31 +10,31 @@ public class WBUri implements Serializable {
 	public final static int RESOURCE_TYPE_URL_CONTROLLER = 3;
 	
 
-	@AdminFieldKey
+	@WPBAdminFieldKey
 	private Long privkey;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer enabled;
 
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String uri;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Date lastModified;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String httpOperation;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String controllerClass;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private Integer resourceType;
 	
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String resourceExternalKey;
 			
-	@AdminFieldStore
+	@WPBAdminFieldStore
 	private String externalKey;
 	
 	public Long getPrivkey() {

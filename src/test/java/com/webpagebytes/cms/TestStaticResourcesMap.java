@@ -60,7 +60,7 @@ public class TestStaticResourcesMap {
 				exception = e;
 			}
 			
-			assertTrue( exception instanceof WBResourceNotFoundException);
+			assertTrue( exception instanceof WPBResourceNotFoundException);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class TestStaticResourcesMap {
 		{
 			exception = e;
 		}
-		assertTrue (exception instanceof WBResourceNotFoundException);
+		assertTrue (exception instanceof WPBResourceNotFoundException);
 	
 	}
 
