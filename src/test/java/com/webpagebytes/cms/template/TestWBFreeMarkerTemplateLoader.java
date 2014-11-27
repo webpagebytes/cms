@@ -27,9 +27,9 @@ import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
 import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;
@@ -74,7 +74,7 @@ public void test_findTemplateSource_page_ok()
 
 		String templatePage = WPBTemplateEngine.WEBPAGES_PATH_PREFIX + "test";
 	
-		WBWebPage webPageMock = PowerMock.createMock(WBWebPage.class);
+		WPBWebPage webPageMock = PowerMock.createMock(WPBWebPage.class);
 		Date date = new Date();
 		EasyMock.expect(webPageMock.getLastModified()).andReturn(date);
 		EasyMock.expect(wbWebPageCacheMock.get("test")).andReturn(webPageMock);
@@ -146,7 +146,7 @@ public void test_findTemplateSource_module_ok()
 	{
 		String templatePage = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + "test";
 	
-		WBWebPageModule webPageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+		WPBWebPageModule webPageModuleMock = PowerMock.createMock(WPBWebPageModule.class);
 		Date date = new Date();
 		EasyMock.expect(webPageModuleMock.getLastModified()).andReturn(date);
 		EasyMock.expect(wbWebPageModuleCacheMock.get("test")).andReturn(webPageModuleMock);
@@ -244,7 +244,7 @@ public void test_getLastModified_module()
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+	WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);
 	EasyMock.expect(pageModuleMock.getLastModified()).andReturn(date);
 	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andReturn(pageModuleMock);
 	
@@ -337,7 +337,7 @@ public void test_getLastModified_page()
 	//EasyMock.expect(templateObject.getLastModified()).andReturn(date.getTime());
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	WBWebPage pageMock = PowerMock.createMock(WBWebPage.class);
+	WPBWebPage pageMock = PowerMock.createMock(WPBWebPage.class);
 	EasyMock.expect(pageMock.getLastModified()).andReturn(date);
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(pageMock);
 
@@ -448,7 +448,7 @@ public void test_getReader_page()
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	WBWebPage pageMock = PowerMock.createMock(WBWebPage.class);
+	WPBWebPage pageMock = PowerMock.createMock(WPBWebPage.class);
 	EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
 	
 	EasyMock.expect(wbWebPageCacheMock.get(templateName)).andReturn(pageMock);
@@ -481,7 +481,7 @@ public void test_getReader_module()
 	
 	EasyMock.expect(templateObjectMock.getName()).andReturn(templateName);
 	
-	WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+	WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);
 	EasyMock.expect(pageModuleMock.getHtmlSource()).andReturn(htmlSource);
 	
 	EasyMock.expect(wbWebPageModuleCacheMock.get(templateName)).andReturn(pageModuleMock);

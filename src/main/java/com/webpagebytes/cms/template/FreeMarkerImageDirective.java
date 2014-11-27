@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -65,7 +65,7 @@ class FreeMarkerImageDirective implements TemplateDirectiveModel {
         try
         {
         	String serveUrl = "";
-        	WBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
+        	WPBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
         	if (image == null)
         	{
         		log.log(Level.WARNING, "cannot find iamge with key" + externalKey);

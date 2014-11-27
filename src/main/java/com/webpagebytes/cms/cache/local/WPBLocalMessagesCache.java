@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.Set;
 
 import com.webpagebytes.cms.cache.WPBMessagesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBMessage;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -65,8 +65,8 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock) {
 			Map<String, Map<String, String>> tempCache = new HashMap<String, Map<String, String>>();
-			List<WBMessage> records = dataStorage.getAllRecords(WBMessage.class);
-			for(WBMessage item: records)
+			List<WPBMessage> records = dataStorage.getAllRecords(WPBMessage.class);
+			for(WPBMessage item: records)
 			{
 				String lcid = item.getLcid();
 				Map<String, String> lcidRecords = tempCache.get(lcid);

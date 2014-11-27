@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.webpagebytes.cms.cmsdata.WBMessage;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -19,7 +19,7 @@ public class MessageValidator {
 	{
 		
 	}
-	public Map<String, String> validateCreate(WBMessage message)
+	public Map<String, String> validateCreate(WPBMessage message)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
 		String name = message.getName().trim();
@@ -50,7 +50,7 @@ public class MessageValidator {
 			values.put("lcid", lcid);
 
 			
-			List<WBMessage> records = adminStorage.queryEx(WBMessage.class, properties, operators, values);
+			List<WPBMessage> records = adminStorage.queryEx(WPBMessage.class, properties, operators, values);
 			if (records != null && records.size() > 0)
 			{
 				errors.put("name", WPBErrors.WBMESSAGE_DUPLICATE_NAME);
@@ -61,7 +61,7 @@ public class MessageValidator {
 		}
 		return errors;
 	}
-	public Map<String, String> validateUpdate(WBMessage message)
+	public Map<String, String> validateUpdate(WPBMessage message)
 	{
 		return new HashMap<String, String>();
 	}

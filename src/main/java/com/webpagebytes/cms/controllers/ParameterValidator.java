@@ -3,10 +3,10 @@ package com.webpagebytes.cms.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.webpagebytes.cms.cmsdata.WBParameter;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
 
 class ParameterValidator {
-	public Map<String, String> validateCreate(WBParameter wbParameter)
+	public Map<String, String> validateCreate(WPBParameter wbParameter)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
 		String name = wbParameter.getName();
@@ -18,7 +18,7 @@ class ParameterValidator {
 		return errors;
 	}
 
-	public Map<String, String> validateUpdate(WBParameter wbParameter)
+	public Map<String, String> validateUpdate(WPBParameter wbParameter)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
 		String name = wbParameter.getName();

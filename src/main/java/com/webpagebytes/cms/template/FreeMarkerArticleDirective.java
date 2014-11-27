@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBArticle;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 import freemarker.core.Environment;
@@ -47,7 +47,7 @@ class FreeMarkerArticleDirective implements TemplateDirectiveModel {
     	
         try
         {
-        	WBArticle article = cacheInstances.getWBArticleCache().getByExternalKey(articleKeyStr);
+        	WPBArticle article = cacheInstances.getWBArticleCache().getByExternalKey(articleKeyStr);
         	if (article == null)
         	{
         		throw new TemplateModelException("WBFreeMarkerArticleDirective externalKey does not match an existing Article : " + articleKeyStr);       

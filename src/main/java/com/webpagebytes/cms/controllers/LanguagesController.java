@@ -21,7 +21,7 @@ import com.webpagebytes.cms.LanguageLocaleManager;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cmsdata.WBProject;
+import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -36,12 +36,12 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 	private Map<String, Locale> allLocales;
 	private WPBProjectCache projectCache;
 	
-	private WBProject getProject() throws WPBIOException
+	private WPBProject getProject() throws WPBIOException
 	{
-		WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+		WPBProject project = adminStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 		if (null == project)
 		{
-			project = new WBProject();
+			project = new WPBProject();
 			project.setPrivkey("wbprojectid");
 			project.setDefaultLanguage("en");
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
@@ -55,7 +55,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 	{
 		try
 		{
-			if (type.equals(WBProject.class))
+			if (type.equals(WPBProject.class))
 			{
 				projectCache.Refresh();
 			}
@@ -109,7 +109,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 	
 	public void getSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
-		WBProject project = getProject();
+		WPBProject project = getProject();
 		Set<String> projectLanguages = project.getSupportedLanguagesSet();
 		Set<String> supportedlanguages = new HashSet<String>();
 		for(String language: projectLanguages)
@@ -209,7 +209,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 				selections += str;
 			}
 			
-			WBProject project = getProject();
+			WPBProject project = getProject();
 			project.setDefaultLanguage(defaultLanguage);
 			project.setSupportedLanguages(selections);
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());			

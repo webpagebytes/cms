@@ -19,8 +19,8 @@ import org.json.JSONObject;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBMessagesCache;
-import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.cmsdata.WBResource;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
+import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -48,7 +48,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			if (type.equals(WBMessage.class))
+			if (type.equals(WPBMessage.class))
 			{
 				wbMessageCache.Refresh();
 			}
@@ -63,7 +63,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBMessage record = (WBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBMessage.class);
+			WPBMessage record = (WPBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBMessage.class);
 			Map<String, String> errors = validator.validateCreate(record);
 			
 			if (errors.size()>0)
@@ -75,8 +75,8 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			record.setLcid(record.getLcid().trim());
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
-			WBMessage newRecord = adminStorage.add(record);
-			WBResource resource = new WBResource(newRecord.getName(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			WPBMessage newRecord = adminStorage.add(record);
+			WPBResource resource = new WPBResource(newRecord.getName(), newRecord.getName(), WPBResource.MESSAGE_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -105,7 +105,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
-			List<WBMessage> allRecords = null;
+			List<WPBMessage> allRecords = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -115,10 +115,10 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
 					if (request.getParameter("lcid") != null)
 					{
-						allRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.ASCENDING);
+						allRecords = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.ASCENDING);
 					} else
 					{
-						allRecords = adminStorage.getAllRecords(WBMessage.class, sortParamProp, AdminSortOperator.ASCENDING);
+						allRecords = adminStorage.getAllRecords(WPBMessage.class, sortParamProp, AdminSortOperator.ASCENDING);
 					}
 				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
 				{
@@ -126,21 +126,21 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
 					if (request.getParameter("lcid") != null)
 					{
-						allRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.DESCENDING);
+						allRecords = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, request.getParameter("lcid"), sortParamProp, AdminSortOperator.DESCENDING);
 					} else
 					{
-						allRecords = adminStorage.getAllRecords(WBMessage.class, sortParamProp, AdminSortOperator.DESCENDING);
+						allRecords = adminStorage.getAllRecords(WPBMessage.class, sortParamProp, AdminSortOperator.DESCENDING);
 					}
 				} else
 				{
-					allRecords = adminStorage.getAllRecords(WBMessage.class);
+					allRecords = adminStorage.getAllRecords(WPBMessage.class);
 				}
 			} else
 			{
-				allRecords = adminStorage.getAllRecords(WBMessage.class);
+				allRecords = adminStorage.getAllRecords(WPBMessage.class);
 			}
 			
-			List<WBMessage> result = filterPagination(request, allRecords, additionalInfo);
+			List<WPBMessage> result = filterPagination(request, allRecords, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
@@ -156,7 +156,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		}
 	}
 
-	private JSONObject jsonFromMessage(WBMessage message) throws JSONException
+	private JSONObject jsonFromMessage(WPBMessage message) throws JSONException
 	{
 		JSONObject json = new JSONObject();
 		json.put("name", message.getName());
@@ -189,8 +189,8 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			
-			List<WBMessage> defaultRecords = null;
-			List<WBMessage> records = null;
+			List<WPBMessage> defaultRecords = null;
+			List<WPBMessage> records = null;
 
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -198,37 +198,37 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					defaultRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.ASCENDING);
-					records = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.ASCENDING);
+					defaultRecords = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.ASCENDING);
+					records = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.ASCENDING);
 
 				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					defaultRecords = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.DESCENDING);
-					records = adminStorage.queryWithSort(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.DESCENDING);
+					defaultRecords = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid, sortParamProp, AdminSortOperator.DESCENDING);
+					records = adminStorage.queryWithSort(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid, sortParamProp, AdminSortOperator.DESCENDING);
 				} else
 				{
-					defaultRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
-					records = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
+					defaultRecords = adminStorage.query(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
+					records = adminStorage.query(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
 				}
 			} else
 			{
-				defaultRecords = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
-				records = adminStorage.query(WBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
+				defaultRecords = adminStorage.query(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, dlcid);
+				records = adminStorage.query(WPBMessage.class, "lcid", AdminQueryOperator.EQUAL, lcid);
 			}
 
-			Map<String, WBMessage> defaultRecordsMap = new HashMap<String, WBMessage>();
+			Map<String, WPBMessage> defaultRecordsMap = new HashMap<String, WPBMessage>();
 			Set<String> bkDefaultNames = new HashSet<String>();
 			
-			for(WBMessage message: defaultRecords)
+			for(WPBMessage message: defaultRecords)
 			{
 				defaultRecordsMap.put(message.getName(), message);
 			}
 			bkDefaultNames.addAll(defaultRecordsMap.keySet());
 			
 			JSONArray jsonArray = new JSONArray();
-			for(WBMessage message: records)
+			for(WPBMessage message: records)
 			{
 				String name = message.getName();
 				String diff = "both";
@@ -243,7 +243,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			}
 			if (bkDefaultNames.size()>0)
 			{
-				for(WBMessage message: defaultRecords)
+				for(WPBMessage message: defaultRecords)
 				{
 					if (bkDefaultNames.contains(message.getName())) {
 						JSONObject json = jsonFromMessage(message);
@@ -272,7 +272,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBMessage record = adminStorage.get(key, WBMessage.class);
+			WPBMessage record = adminStorage.get(key, WPBMessage.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -289,14 +289,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBMessage record = adminStorage.get(key, WBMessage.class);
+			WPBMessage record = adminStorage.get(key, WPBMessage.class);
 			
-			adminStorage.delete(key, WBMessage.class);
+			adminStorage.delete(key, WPBMessage.class);
 			try
 			{
 				if (record != null)
 				{
-					adminStorage.delete(record.getName(), WBResource.class);
+					adminStorage.delete(record.getName(), WPBResource.class);
 				}
 			} catch (Exception e)
 			{
@@ -321,7 +321,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBMessage record = (WBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBMessage.class);
+			WPBMessage record = (WPBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBMessage.class);
 			record.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(record);
 			
@@ -330,12 +330,12 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);
 				return;
 			}
-			WBMessage existingMessage = adminStorage.get(key, WBMessage.class);
+			WPBMessage existingMessage = adminStorage.get(key, WPBMessage.class);
 			existingMessage.setValue(record.getValue());
 			existingMessage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBMessage newRecord = adminStorage.update(existingMessage);
+			WPBMessage newRecord = adminStorage.update(existingMessage);
 			
-			WBResource resource = new WBResource(newRecord.getName(), newRecord.getName(), WBResource.MESSAGE_TYPE);
+			WPBResource resource = new WPBResource(newRecord.getName(), newRecord.getName(), WPBResource.MESSAGE_TYPE);
 			try
 			{
 				adminStorage.update(resource);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 
 class UriValidator {
 	public final static int MAX_URI_LENGHT = 255;
@@ -22,7 +22,7 @@ class UriValidator {
 		httpOperations.add("GET");
 		httpOperations.add("DELETE");
 	}
-	public Map<String, String> validateUpdate(WBUri wbUri)
+	public Map<String, String> validateUpdate(WPBUri wbUri)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
 		if (wbUri.getUri() == null || wbUri.getUri().length() == 0)
@@ -65,7 +65,7 @@ class UriValidator {
 			errors.put("lastModified", WPBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)))
 		{
 			errors.put("resourceType", WPBErrors.ERROR_INVALID_VALUE);
 		}
@@ -86,7 +86,7 @@ class UriValidator {
 		
 	}
 	
-	public Map<String, String> validateCreateWithExternalKey(WBUri wbUri)
+	public Map<String, String> validateCreateWithExternalKey(WPBUri wbUri)
 	{
 		Map<String, String> errors = validateCreate(wbUri);
 		if (null == wbUri.getExternalKey() || 0 == wbUri.getExternalKey().length() || (wbUri.getExternalKey().length() > MAX_EXTERNAL_KEY))
@@ -96,7 +96,7 @@ class UriValidator {
 		return errors;		
 	}
 	
-	public Map<String, String> validateCreate(WBUri wbUri)
+	public Map<String, String> validateCreate(WPBUri wbUri)
 	{
 		Map<String, String> errors = new HashMap<String, String>();
 		if (wbUri.getUri() == null || wbUri.getUri().length() == 0)
@@ -136,7 +136,7 @@ class UriValidator {
 			errors.put("key", WPBErrors.ERROR_CANT_SPECIFY_KEY);
 		}
 		
-		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)))
+		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)))
 		{
 			errors.put("resourceType", WPBErrors.ERROR_INVALID_VALUE);
 		}

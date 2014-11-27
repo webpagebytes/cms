@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -13,7 +13,7 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public class WPBLocalFilesCache implements WPBFilesCache {
 	
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WBFile> localCache;
+	private Map<String, WPBFile> localCache;
 	private static final Object lock = new Object();
 	public WPBLocalFilesCache()
 	{
@@ -29,7 +29,7 @@ public class WPBLocalFilesCache implements WPBFilesCache {
 			
 		}
 	}
-	public WBFile getByExternalKey(String externalKey) throws WPBIOException
+	public WPBFile getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCache == null)
 		{
@@ -45,9 +45,9 @@ public class WPBLocalFilesCache implements WPBFilesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WBFile> tempMap = new HashMap<String, WBFile>();
-			List<WBFile> recList = dataStorage.getAllRecords(WBFile.class);
-			for(WBFile item: recList)
+			Map<String, WPBFile> tempMap = new HashMap<String, WPBFile>();
+			List<WPBFile> recList = dataStorage.getAllRecords(WPBFile.class);
+			for(WPBFile item: recList)
 			{
 				tempMap.put(item.getExternalKey(), item);
 			}

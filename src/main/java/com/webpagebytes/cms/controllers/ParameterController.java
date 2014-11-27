@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBResource;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -44,7 +44,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	{
 		try
 		{
-			if (type.equals(WBParameter.class))
+			if (type.equals(WPBParameter.class))
 			{
 				wbParameterCache.Refresh();
 			}
@@ -59,7 +59,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBParameter wbparameter = adminStorage.get(key, WBParameter.class);
+			WPBParameter wbparameter = adminStorage.get(key, WPBParameter.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbparameter));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
@@ -80,7 +80,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 
-			List<WBParameter> parameters = null;
+			List<WPBParameter> parameters = null;
 			String keyOwner = request.getParameter("ownerExternalKey");
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -91,10 +91,10 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 
 					if (keyOwner != null)
 					{
-						parameters = adminStorage.queryWithSort(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.ASCENDING);
+						parameters = adminStorage.queryWithSort(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.ASCENDING);
 					} else
 					{
-						parameters = adminStorage.getAllRecords(WBParameter.class, sortParamProp, AdminSortOperator.ASCENDING);
+						parameters = adminStorage.getAllRecords(WPBParameter.class, sortParamProp, AdminSortOperator.ASCENDING);
 					}
 					
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
@@ -104,33 +104,33 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 
 					if (keyOwner != null)
 					{
-						parameters = adminStorage.queryWithSort(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.DESCENDING);
+						parameters = adminStorage.queryWithSort(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner, sortParamProp, AdminSortOperator.DESCENDING);
 					} else
 					{
-						parameters = adminStorage.getAllRecords(WBParameter.class, sortParamProp, AdminSortOperator.DESCENDING);
+						parameters = adminStorage.getAllRecords(WPBParameter.class, sortParamProp, AdminSortOperator.DESCENDING);
 					}
 					
 				} else
 				{
 					if (keyOwner != null)
 					{
-						parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
+						parameters = adminStorage.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
 					} else
 					{
-						parameters = adminStorage.getAllRecords(WBParameter.class);
+						parameters = adminStorage.getAllRecords(WPBParameter.class);
 					}					
 				}
 			} else
 			{
 				if (keyOwner != null)
 				{
-					parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
+					parameters = adminStorage.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, keyOwner);
 				} else
 				{
-					parameters = adminStorage.getAllRecords(WBParameter.class);
+					parameters = adminStorage.getAllRecords(WPBParameter.class);
 				}				
 			}
-			List<WBParameter> filteredParams = filterPagination(request, parameters, additionalInfo);
+			List<WPBParameter> filteredParams = filterPagination(request, parameters, additionalInfo);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(filteredParams));	
 			returnJson.put(ADDTIONAL_DATA, additionalInfo);
@@ -150,7 +150,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBParameter wbParameter = (WBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WBParameter.class);
+			WPBParameter wbParameter = (WPBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBParameter.class);
 			wbParameter.setPrivkey(key);
 			Map<String, String> errors = parameterValidator.validateUpdate(wbParameter);
 			
@@ -160,11 +160,11 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				return;
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBParameter newParameter = adminStorage.update(wbParameter);
+			WPBParameter newParameter = adminStorage.update(wbParameter);
 			
 			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
 			{
-				WBResource resource = new WBResource(newParameter.getExternalKey(), newParameter.getName(), WBResource.ARTICLE_TYPE);
+				WPBResource resource = new WPBResource(newParameter.getExternalKey(), newParameter.getName(), WPBResource.ARTICLE_TYPE);
 				try
 				{
 					adminStorage.update(resource);
@@ -190,16 +190,16 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBParameter param = adminStorage.get(key, WBParameter.class);
+			WPBParameter param = adminStorage.get(key, WPBParameter.class);
 			
-			adminStorage.delete(key, WBParameter.class);
+			adminStorage.delete(key, WPBParameter.class);
 			if (param != null)
 			{
 				try
 				{
 					if (param != null)
 					{
-						adminStorage.delete(param.getExternalKey(), WBResource.class);
+						adminStorage.delete(param.getExternalKey(), WPBResource.class);
 					}
 				} catch (Exception e)
 				{
@@ -224,7 +224,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBParameter wbParameter = (WBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WBParameter.class);
+			WPBParameter wbParameter = (WPBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBParameter.class);
 			Map<String, String> errors = parameterValidator.validateCreate(wbParameter);
 			
 			if (errors.size()>0)
@@ -234,11 +234,11 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbParameter.setExternalKey(adminStorage.getUniqueId());
-			WBParameter newParameter = adminStorage.add(wbParameter);
+			WPBParameter newParameter = adminStorage.add(wbParameter);
 			
 			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
 			{
-				WBResource resource = new WBResource(newParameter.getExternalKey(), newParameter.getName(), WBResource.ARTICLE_TYPE);
+				WPBResource resource = new WPBResource(newParameter.getExternalKey(), newParameter.getName(), WPBResource.ARTICLE_TYPE);
 				try
 				{
 					adminStorage.addWithKey(resource);
@@ -277,16 +277,16 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			{
 				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);									
 			}
-			List<WBParameter> ownerParams = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, fromOwnerExternalKey);			
-			List<WBParameter> newParams = new ArrayList<WBParameter>();
-			for(WBParameter parameter: ownerParams)
+			List<WPBParameter> ownerParams = adminStorage.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, fromOwnerExternalKey);			
+			List<WPBParameter> newParams = new ArrayList<WPBParameter>();
+			for(WPBParameter parameter: ownerParams)
 			{
 				parameter.setOwnerExternalKey(ownerExternalKey);
 				parameter.setPrivkey(null);
 				parameter.setExternalKey(adminStorage.getUniqueId());
 				parameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 				
-				WBParameter newParam = adminStorage.add(parameter);
+				WPBParameter newParam = adminStorage.add(parameter);
 				newParams.add(newParam);
 			}
 			

@@ -19,14 +19,14 @@ import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -59,42 +59,42 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 			Class type) {	
 		try
 		{
-			if (type.equals(WBUri.class))
+			if (type.equals(WPBUri.class))
 			{
 				WPBUrisCache urisCache = cacheFactory.createWBUrisCacheInstance();
 				urisCache.Refresh();
 			}
-			if (type.equals(WBWebPage.class))
+			if (type.equals(WPBWebPage.class))
 			{
 				WPBWebPagesCache pagesCache = cacheFactory.createWBWebPagesCacheInstance();
 				pagesCache.Refresh();
 			}
-			if (type.equals(WBWebPageModule.class))
+			if (type.equals(WPBWebPageModule.class))
 			{
 				WPBWebPageModulesCache modulesCache = cacheFactory.createWBWebPageModulesCacheInstance();
 				modulesCache.Refresh();
 			}
-			if (type.equals(WBMessage.class))
+			if (type.equals(WPBMessage.class))
 			{
 				WPBMessagesCache messagesCache = cacheFactory.createWBMessagesCacheInstance();
 				messagesCache.Refresh();
 			}
-			if (type.equals(WBArticle.class))
+			if (type.equals(WPBArticle.class))
 			{
 				WPBArticlesCache articlesCache = cacheFactory.createWBArticlesCacheInstance();
 				articlesCache.Refresh();
 			}
-			if (type.equals(WBFile.class))
+			if (type.equals(WPBFile.class))
 			{
 				WPBFilesCache filesCache = cacheFactory.createWBFilesCacheInstance();
 				filesCache.Refresh();
 			}
-			if (type.equals(WBParameter.class))
+			if (type.equals(WPBParameter.class))
 			{
 				WPBParametersCache parametersCache = cacheFactory.createWBParametersCacheInstance();
 				parametersCache.Refresh();
 			}
-			if (type.equals(WBProject.class))
+			if (type.equals(WPBProject.class))
 			{
 				WPBProjectCache projectCache = cacheFactory.createWBProjectCacheInstance();
 				projectCache.Refresh();
@@ -105,7 +105,7 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 			// do nothing
 		}
 	}
-	private void deleteFile(WBFile file) throws IOException
+	private void deleteFile(WPBFile file) throws IOException
 	{
 		if (file.getBlobKey() != null)
 		{
@@ -122,19 +122,19 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			adminStorage.deleteAllRecords(WBUri.class);
-			adminStorage.deleteAllRecords(WBWebPage.class);
-			adminStorage.deleteAllRecords(WBWebPageModule.class);
-			adminStorage.deleteAllRecords(WBArticle.class);
-			adminStorage.deleteAllRecords(WBMessage.class);
-			adminStorage.deleteAllRecords(WBParameter.class);
-			adminStorage.deleteAllRecords(WBProject.class);
-			List<WBFile> files = adminStorage.getAllRecords(WBFile.class);
-			for(WBFile file: files)
+			adminStorage.deleteAllRecords(WPBUri.class);
+			adminStorage.deleteAllRecords(WPBWebPage.class);
+			adminStorage.deleteAllRecords(WPBWebPageModule.class);
+			adminStorage.deleteAllRecords(WPBArticle.class);
+			adminStorage.deleteAllRecords(WPBMessage.class);
+			adminStorage.deleteAllRecords(WPBParameter.class);
+			adminStorage.deleteAllRecords(WPBProject.class);
+			List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
+			for(WPBFile file: files)
 			{
 				deleteFile(file);
 			}
-			adminStorage.deleteAllRecords(WBFile.class);
+			adminStorage.deleteAllRecords(WPBFile.class);
 
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, "{}");			

@@ -8,8 +8,8 @@ import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerTemplateObject.TemplateType;
 
@@ -38,7 +38,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 	{
 		try
 		{
-			WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(name);
+			WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(name);
 			if (null != wbWebPage)
 			{
 				return new FreeMarkerTemplateObject(name, FreeMarkerTemplateObject.TemplateType.TEMPLATE_PAGE, wbWebPage.getLastModified().getTime());
@@ -53,7 +53,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 	{
 		try
 		{
-			WBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(name);
+			WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(name);
 			if (null != wbWebPageModule)
 			{
 				return new FreeMarkerTemplateObject(name, FreeMarkerTemplateObject.TemplateType.TEMPLATE_MODULE, wbWebPageModule.getLastModified().getTime());
@@ -89,7 +89,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
+				WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
 				if (null != wbWebPage)
 				{
 					return wbWebPage.getLastModified().getTime();
@@ -103,7 +103,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
+				WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
 				if (null != wbWebPageModule)
 				{
 					return wbWebPageModule.getLastModified().getTime();
@@ -131,7 +131,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
+				WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
 				if (null != wbWebPage)
 				{
 					return new StringReader(wbWebPage.getHtmlSource());
@@ -145,7 +145,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
+				WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
 				if (null != wbWebPageModule)
 				{
 					return new StringReader(wbWebPageModule.getHtmlSource());

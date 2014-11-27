@@ -17,9 +17,9 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
@@ -140,7 +140,7 @@ private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 	return urlMatcher;
 }
 	
-private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WPBModel model) throws WPBException, IOException
+private void handleRequestTypeText(WPBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WPBModel model) throws WPBException, IOException
 {
 	if (webPage == null)
 	{
@@ -169,7 +169,7 @@ private void handleRequestTypeText(WBWebPage webPage, HttpServletRequest req, Ht
 
 private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WPBException, IOException
 {
-	WBFile wbFile = fileContentBuilder.find(fileExternalKey);
+	WPBFile wbFile = fileContentBuilder.find(fileExternalKey);
 	if (wbFile == null)
 	{
 		resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -235,7 +235,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 		} else
 		{
 			int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
-			WBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
+			WPBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
 			
 			if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 			{
@@ -248,7 +248,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			WPBForward forward = new WPBForward();
 			modelBuilder.populateModelForUriData(req, wbUri, urlMatcherResult, model);
 			
-			if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
+			if (wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)
 			{
 				uriContentBuilder.buildUriContent(req, resp, wbUri, model, forward);
 				if (!forward.isRequestForwarded())
@@ -257,9 +257,9 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 				}
 				// the request is forwarded to a page so we need to pass the same model
 			}
-			if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_TEXT || forward.isRequestForwarded())
+			if (wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT || forward.isRequestForwarded())
 			{
-				WBWebPage webPage = null;
+				WPBWebPage webPage = null;
 				if (forward.isRequestForwarded())
 				{
 					webPage = pageContentBuilder.findWebPage(forward.getForwardTo());
@@ -269,7 +269,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 				}
 				handleRequestTypeText(webPage, req, resp, model);
 			} else
-			if (wbUri.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
+			if (wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 			{
 				handleRequestTypeFile(wbUri.getResourceExternalKey(), req, resp);
 			} else

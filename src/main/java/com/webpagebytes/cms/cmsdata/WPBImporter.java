@@ -3,11 +3,11 @@ package com.webpagebytes.cms.cmsdata;
 import java.util.Date;
 import java.util.Map;
 
-public class WBImporter {
+public class WPBImporter {
 
-	public WBParameter buildParameter(Map<Object, Object> properties)
+	public WPBParameter buildParameter(Map<Object, Object> properties)
 	{
-		WBParameter parameter = new WBParameter();
+		WPBParameter parameter = new WPBParameter();
 		if (properties.get("externalKey") != null)
 			parameter.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -61,9 +61,9 @@ public class WBImporter {
 		
 		return parameter;
 	}
-	public WBUri buildUri(Map<Object, Object> properties)
+	public WPBUri buildUri(Map<Object, Object> properties)
 	{
-		WBUri uri = new WBUri();
+		WPBUri uri = new WPBUri();
 		if (properties.get("externalKey") != null)
 			uri.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -108,9 +108,9 @@ public class WBImporter {
 		return uri;
 	}
 
-	public WBWebPage buildWebPage(Map<Object, Object> properties)
+	public WPBWebPage buildWebPage(Map<Object, Object> properties)
 	{
-		WBWebPage page = new WBWebPage();
+		WPBWebPage page = new WPBWebPage();
 		if (properties.get("externalKey") != null)
 			page.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -164,9 +164,9 @@ public class WBImporter {
 		return page;
 	}
 
-	public WBFile buildFile(Map<Object, Object> properties)
+	public WPBFile buildFile(Map<Object, Object> properties)
 	{
-		WBFile file = new WBFile();
+		WPBFile file = new WPBFile();
 		if (properties.get("externalKey") != null)
 			file.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -214,9 +214,9 @@ public class WBImporter {
 		return file;
 	}
 
-	public WBWebPageModule buildWebPageModule(Map<Object, Object> properties)
+	public WPBWebPageModule buildWebPageModule(Map<Object, Object> properties)
 	{
-		WBWebPageModule pageModule = new WBWebPageModule();
+		WPBWebPageModule pageModule = new WPBWebPageModule();
 		if (properties.get("externalKey") != null)
 			pageModule.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -256,9 +256,9 @@ public class WBImporter {
 		return pageModule;
 	}
 
-	public WBProject buildProject(Map<Object, Object> properties)
+	public WPBProject buildProject(Map<Object, Object> properties)
 	{
-		WBProject project = new WBProject();
+		WPBProject project = new WPBProject();
 		if (properties.get("defaultLanguage") != null)
 			project.setDefaultLanguage(properties.get("defaultLanguage").toString().trim());
 		else
@@ -280,13 +280,13 @@ public class WBImporter {
 		}
 		project.setLastModified(new Date(lastModified));
 
-		project.setPrivkey(WBProject.PROJECT_KEY);
+		project.setPrivkey(WPBProject.PROJECT_KEY);
 		return project;
 	}
 
-	public WBArticle buildArticle(Map<Object, Object> properties)
+	public WPBArticle buildArticle(Map<Object, Object> properties)
 	{
-		WBArticle article = new WBArticle();
+		WPBArticle article = new WPBArticle();
 		if (properties.get("externalKey") != null)
 			article.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -322,9 +322,9 @@ public class WBImporter {
 		return article;
 	}
 
-	public WBMessage buildMessage(Map<Object, Object> properties)
+	public WPBMessage buildMessage(Map<Object, Object> properties)
 	{
-		WBMessage message = new WBMessage();
+		WPBMessage message = new WPBMessage();
 		if (properties.get("externalKey") != null)
 			message.setExternalKey(properties.get("externalKey").toString().trim());
 		else

@@ -23,7 +23,7 @@ import org.powermock.reflect.Whitebox;
 import com.webpagebytes.cms.FileContentBuilder;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
@@ -67,7 +67,7 @@ public void test_initialize()
 @Test
 public void test_find()
 {
-	WBFile fileMock = EasyMock.createMock(WBFile.class);
+	WPBFile fileMock = EasyMock.createMock(WPBFile.class);
 	String externalKey = "1234";
 	
 	try
@@ -76,7 +76,7 @@ public void test_find()
 		EasyMock.replay(cloudFileStorageMock, cacheInstancesMock, filesCacheMock, fileMock);
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
-		WBFile result = fileContentBuilder.find(externalKey);
+		WPBFile result = fileContentBuilder.find(externalKey);
 		EasyMock.verify(cloudFileStorageMock, cacheInstancesMock, filesCacheMock, fileMock);
 		
 		assertTrue (result == fileMock);
@@ -92,7 +92,7 @@ public void test_getFileContent()
 	try
 	{
 		String key = "abc";
-		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		WPBFile fileMock = EasyMock.createMock(WPBFile.class);
 		EasyMock.expect(fileMock.getBlobKey()).andReturn(key);
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
@@ -119,7 +119,7 @@ public void test_getFileContent_exception()
 	try
 	{
 		String key = "abc";
-		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		WPBFile fileMock = EasyMock.createMock(WPBFile.class);
 		EasyMock.expect(fileMock.getBlobKey()).andReturn(key);
 		
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
@@ -151,7 +151,7 @@ public void test_writeFileContent()
 	try
 	{
 		String content = "value";
-		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		WPBFile fileMock = EasyMock.createMock(WPBFile.class);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
 		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(bais);
@@ -170,7 +170,7 @@ public void test_writeFileContent_exception()
 {
 	try
 	{
-		WBFile fileMock = EasyMock.createMock(WBFile.class);
+		WPBFile fileMock = EasyMock.createMock(WPBFile.class);
 		InputStream isMock = EasyMock.createMock(InputStream.class);
 		OutputStream osMock = EasyMock.createMock(OutputStream.class);
 		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(isMock);

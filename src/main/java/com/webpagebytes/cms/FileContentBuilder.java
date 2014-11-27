@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
+import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
@@ -27,11 +27,11 @@ class FileContentBuilder {
 	{
 	}
 	
-	public WBFile find(String externalKey) throws WPBException
+	public WPBFile find(String externalKey) throws WPBException
 	{
 		return filesCache.getByExternalKey(externalKey);
 	}
-	public InputStream getFileContent(WBFile file) throws WPBException
+	public InputStream getFileContent(WPBFile file) throws WPBException
 	{
 		WPBCloudFile cloudFile = new WPBCloudFile("public", file.getBlobKey());
 		try
@@ -42,7 +42,7 @@ class FileContentBuilder {
 			throw new WPBException ("cannot get file content ", e);
 		}
 	}
-	public void writeFileContent(WBFile wbFile, OutputStream os) throws WPBException 
+	public void writeFileContent(WPBFile wbFile, OutputStream os) throws WPBException 
 	{
 		InputStream is = getFileContent(wbFile);
 		byte[] buffer = new byte[4096];

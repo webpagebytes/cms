@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBUrisCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -51,7 +51,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	{
 		try
 		{
-			if (type.equals(WBUri.class))
+			if (type.equals(WPBUri.class))
 			{
 				wbUriCache.Refresh();
 			}
@@ -87,7 +87,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBUri wbUri = (WBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WBUri.class);
+			WPBUri wbUri = (WPBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBUri.class);
 			Map<String, String> errors = uriValidator.validateCreate(wbUri);
 			
 			if (errors.size()>0)
@@ -97,9 +97,9 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			}
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbUri.setExternalKey(adminStorage.getUniqueId());
-			WBUri newUri = adminStorage.add(wbUri);
+			WPBUri newUri = adminStorage.add(wbUri);
 			
-			WBResource resource = new WBResource(newUri.getExternalKey(), newUri.getUri(), WBResource.URI_TYPE);
+			WPBResource resource = new WPBResource(newUri.getExternalKey(), newUri.getUri(), WPBResource.URI_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -126,7 +126,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
-			List<WBUri> allUri = null;
+			List<WPBUri> allUri = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -134,22 +134,22 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					allUri = adminStorage.getAllRecords(WBUri.class, sortParamProp, AdminSortOperator.ASCENDING);
+					allUri = adminStorage.getAllRecords(WPBUri.class, sortParamProp, AdminSortOperator.ASCENDING);
 				} else if (sortParamDir.equalsIgnoreCase(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					allUri = adminStorage.getAllRecords(WBUri.class, sortParamProp, AdminSortOperator.DESCENDING);
+					allUri = adminStorage.getAllRecords(WPBUri.class, sortParamProp, AdminSortOperator.DESCENDING);
 				} else
 				{
-					allUri = adminStorage.getAllRecords(WBUri.class);
+					allUri = adminStorage.getAllRecords(WPBUri.class);
 				}
 			} else
 			{
-				allUri = adminStorage.getAllRecords(WBUri.class);
+				allUri = adminStorage.getAllRecords(WPBUri.class);
 			}
 			
-			List<WBUri> result = filterPagination(request, allUri, additionalInfo);
+			List<WPBUri> result = filterPagination(request, allUri, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
@@ -170,27 +170,27 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBUri wburi = adminStorage.get(key, WBUri.class);
+			WPBUri wburi = adminStorage.get(key, WPBUri.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
-				if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
+				if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 				{
-					List<WBWebPage> pages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBWebPage> pages = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("pages_links", arrayPages);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
+				} else if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT)
 				{
-					List<WBFile> pages = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBFile> pages = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayFiles = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("files_links", arrayFiles);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
+				} else if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					returnJson.put(ADDTIONAL_DATA, additionalData);
@@ -207,7 +207,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 		}		
 	}
-	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WBUri wburi) throws WPBException
+	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WPBUri wburi) throws WPBException
 	{
 		try
 		{
@@ -216,21 +216,21 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
-				if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_FILE)
+				if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 				{
-					List<WBWebPage> pages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBWebPage> pages = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("pages_links", arrayPages);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_TEXT)
+				} else if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT)
 				{
-					List<WBFile> pages = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBFile> pages = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayFiles = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("files_links", arrayFiles);
 					returnJson.put(ADDTIONAL_DATA, additionalData);
-				} else if (wburi.getResourceType() == WBUri.RESOURCE_TYPE_URL_CONTROLLER)
+				} else if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)
 				{
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					returnJson.put(ADDTIONAL_DATA, additionalData);
@@ -248,8 +248,8 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
-			List<WBUri> wburis = adminStorage.query(WBUri.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
-			WBUri wburi = (wburis.size()>0)? wburis.get(0): null;
+			List<WPBUri> wburis = adminStorage.query(WPBUri.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WPBUri wburi = (wburis.size()>0)? wburis.get(0): null;
 			org.json.JSONObject returnJson = getWBUri(request, response, wburi);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)		
@@ -266,22 +266,22 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBUri tempUri = adminStorage.get(key, WBUri.class);
+			WPBUri tempUri = adminStorage.get(key, WPBUri.class);
 			
-			adminStorage.delete(key, WBUri.class);
+			adminStorage.delete(key, WPBUri.class);
 			
 			// delete the owned parameters
-			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempUri.getExternalKey());
+			adminStorage.delete(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempUri.getExternalKey());
 			
 			try
 			{
-				adminStorage.delete(tempUri.getUri(), WBResource.class);
+				adminStorage.delete(tempUri.getUri(), WPBResource.class);
 			} catch (Exception e)
 			{
 				// do not propagate further
 			}
 
-			WBUri wburi = new WBUri();
+			WPBUri wburi = new WPBUri();
 			wburi.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));						
@@ -302,7 +302,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBUri wbUri = (WBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WBUri.class);
+			WPBUri wbUri = (WPBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBUri.class);
 			wbUri.setPrivkey(key);
 			Map<String, String> errors = uriValidator.validateUpdate(wbUri);
 			
@@ -312,9 +312,9 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				return;
 			}
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBUri newUri = adminStorage.update(wbUri);
+			WPBUri newUri = adminStorage.update(wbUri);
 			
-			WBResource resource = new WBResource(newUri.getUri(), newUri.getUri(), WBResource.URI_TYPE);
+			WPBResource resource = new WPBResource(newUri.getUri(), newUri.getUri(), WPBResource.URI_TYPE);
 			try
 			{
 				adminStorage.update(resource);

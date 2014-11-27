@@ -6,7 +6,7 @@ import java.util.Date;
 import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
 import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
-public class WBParameter implements Serializable {
+public class WPBParameter implements Serializable {
 	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;

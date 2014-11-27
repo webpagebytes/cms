@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
@@ -34,15 +34,15 @@ public class ReadOnlyDataController  extends Controller {
 	
 	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
-		List<WBFile> files = adminStorage.getAllRecords(WBFile.class);
-		List<WBWebPage> pages = adminStorage.getAllRecords(WBWebPage.class);
+		List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
+		List<WPBWebPage> pages = adminStorage.getAllRecords(WPBWebPage.class);
 
 		
 		try 
 		{
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			org.json.JSONArray jsonFilesArray = new org.json.JSONArray(); 
-			for(WBFile file : files)
+			for(WPBFile file : files)
 			{
 				JSONObject object = new JSONObject();
 				object.put("externalKey", file.getExternalKey());
@@ -52,7 +52,7 @@ public class ReadOnlyDataController  extends Controller {
 			returnJson.put(DATA_FILES, jsonFilesArray);
 			
 			org.json.JSONArray jsonPagesArray = new org.json.JSONArray(); 
-			for(WBWebPage page : pages)
+			for(WPBWebPage page : pages)
 			{
 				JSONObject object = new JSONObject();
 				object.put("externalKey", page.getExternalKey());
@@ -76,7 +76,7 @@ public class ReadOnlyDataController  extends Controller {
 	{
 		try
 		{
-			List<WBWebPage> allRecords = null;
+			List<WPBWebPage> allRecords = null;
 			
 			String property = request.getParameter("externalKey");
 			String entityName = request.getParameter("class");
@@ -84,15 +84,15 @@ public class ReadOnlyDataController  extends Controller {
 			{
 				if (entityName != null && entityName.equals("wbpage"))
 				{
-					allRecords = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, property);
+					allRecords = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, property);
 				}
 				if (entityName != null && entityName.equals("wbfile"))
 				{
-					allRecords = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, property);
+					allRecords = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, property);
 				}				
 			} else
 			{
-				allRecords = new ArrayList<WBWebPage>();
+				allRecords = new ArrayList<WPBWebPage>();
 			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();

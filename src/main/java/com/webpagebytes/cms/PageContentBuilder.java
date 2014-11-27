@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
 import com.webpagebytes.cms.template.WPBTemplateEngine;
@@ -36,7 +36,7 @@ class PageContentBuilder {
 			templateEngine.initialize();
 	}
 	
-	public WBWebPage findWebPage(String pageExternalKey) throws WPBException
+	public WPBWebPage findWebPage(String pageExternalKey) throws WPBException
 	{
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
@@ -58,7 +58,7 @@ class PageContentBuilder {
 	}
 	
 	public String buildPageContent(HttpServletRequest request,
-			WBWebPage wbWebPage, 
+			WPBWebPage wbWebPage, 
 			WPBModel model) throws WPBException
 	{
 
@@ -104,7 +104,7 @@ class PageContentBuilder {
 	}
 
 	public String buildPageContent(
-			WBWebPage wbWebPage, 
+			WPBWebPage wbWebPage, 
 			WPBModel model) throws WPBException
 	{
 

@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.Set;
 
 import com.webpagebytes.cms.cache.WPBUrisCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -18,7 +18,7 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 
 	private static final Object lock = new Object();
 	private WPBAdminDataStorage dataStorage;
-	Map<Integer, Map<String, WBUri>> localCache;
+	Map<Integer, Map<String, WPBUri>> localCache;
 	long cacheFingerPrint;
 	
 	public WPBLocalUrisCache()
@@ -35,16 +35,16 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 			
 		}
 	}
-	public WBUri getByExternalKey(String key) throws WPBIOException
+	public WPBUri getByExternalKey(String key) throws WPBIOException
 	{
 		return null;
 	}
 	
-	public WBUri get(String uri, int httpIndex) throws WPBIOException
+	public WPBUri get(String uri, int httpIndex) throws WPBIOException
 	{
 		if (localCache != null)
 		{
-			Map<String, WBUri> uris = localCache.get(httpIndex);
+			Map<String, WPBUri> uris = localCache.get(httpIndex);
 			if (uris != null)
 			{
 				return uris.get(uri);
@@ -57,7 +57,7 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 	{
 		if (localCache != null)
 		{
-			Map<String, WBUri> uris = localCache.get(httpIndex);
+			Map<String, WPBUri> uris = localCache.get(httpIndex);
 			if (uris != null)
 			{
 				return uris.keySet();
@@ -109,18 +109,18 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<Integer, Map<String, WBUri>> tempMapUris = new HashMap<Integer, Map<String, WBUri>>();
+			Map<Integer, Map<String, WPBUri>> tempMapUris = new HashMap<Integer, Map<String, WPBUri>>();
 			
-			List<WBUri> recList = dataStorage.getAllRecords(WBUri.class);
-			for(WBUri item: recList)
+			List<WPBUri> recList = dataStorage.getAllRecords(WPBUri.class);
+			for(WPBUri item: recList)
 			{
 				int httpIndex = httpToOperationIndex(item.getHttpOperation().toUpperCase());
 				if (httpIndex >=0)
 				{
-					Map<String, WBUri> aMap = tempMapUris.get(httpIndex);
+					Map<String, WPBUri> aMap = tempMapUris.get(httpIndex);
 					if (aMap == null)
 					{
-						aMap = new HashMap<String, WBUri>();
+						aMap = new HashMap<String, WPBUri>();
 						tempMapUris.put(httpIndex, aMap);
 					}
 					aMap.put(item.getUri(), item);

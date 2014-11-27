@@ -13,9 +13,9 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
@@ -48,20 +48,20 @@ class ModelBuilder {
 	 * URL_REQUEST_PARAMETERS_KEY
 	 * 
 	 */
-	public void populateModelForUriData(HttpServletRequest request, WBUri uri, URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
+	public void populateModelForUriData(HttpServletRequest request, WPBUri uri, URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
 	{
 		populateUriParameters(request, uri.getExternalKey(), urlMatcherResult, model);
 		populateGlobalParameters(model);
 		populateStaticParameters(request, model);
 	}
 
-	public void populateModelForWebPage(WBWebPage page, WPBModel model) throws WPBException
+	public void populateModelForWebPage(WPBWebPage page, WPBModel model) throws WPBException
 	{
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
 		
-		List<WBParameter> wbPageParams = parametersCache.getAllForOwner(page.getExternalKey());
+		List<WPBParameter> wbPageParams = parametersCache.getAllForOwner(page.getExternalKey());
 		Map<String, String> pageParams = new HashMap<String, String>();
-		for(WBParameter param: wbPageParams)
+		for(WPBParameter param: wbPageParams)
 		{
 			pageParams.put(param.getName(), param.getValue());
 		}
@@ -87,8 +87,8 @@ class ModelBuilder {
 		Map<String, String> urlPatternParams = urlMatcherResult.getPatternParams();
 		Map<String, String> uriParams = new HashMap<String, String>();
 		
-		List<WBParameter> wbUriParams = parametersCache.getAllForOwner(uriExternalKey);
-		for(WBParameter param: wbUriParams)
+		List<WPBParameter> wbUriParams = parametersCache.getAllForOwner(uriExternalKey);
+		for(WPBParameter param: wbUriParams)
 		{
 			String paramKey = param.getName();
 			if (urlPatternParams == null)
@@ -103,12 +103,12 @@ class ModelBuilder {
 			{
 				uriParams.put(paramKey, param.getValue());
 			}
-			if (param.getLocaleType() == WBParameter.PARAMETER_LOCALE_LANGUAGE)
+			if (param.getLocaleType() == WPBParameter.PARAMETER_LOCALE_LANGUAGE)
 			{
 				hasLocaleParams = true;
 				languageParam = urlPatternParams.get(paramKey);
 			}
-			if (param.getLocaleType() == WBParameter.PARAMETER_LOCALE_COUNTRY)
+			if (param.getLocaleType() == WPBParameter.PARAMETER_LOCALE_COUNTRY)
 			{
 				hasLocaleParams = true;
 				countryParam = urlPatternParams.get(paramKey);
@@ -150,8 +150,8 @@ class ModelBuilder {
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();
-		List<WBParameter> wbGlobalParams = cacheInstances.getWBParameterCache().getAllForOwner("");
-		for(WBParameter param: wbGlobalParams)
+		List<WPBParameter> wbGlobalParams = cacheInstances.getWBParameterCache().getAllForOwner("");
+		for(WPBParameter param: wbGlobalParams)
 		{
 			globalParams.put(param.getName(), param.getValue());
 		}

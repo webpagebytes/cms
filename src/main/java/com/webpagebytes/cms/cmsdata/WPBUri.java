@@ -4,7 +4,7 @@ import com.webpagebytes.cms.datautility.*;
 import java.io.Serializable;
 import java.util.Date;
 
-public class WBUri implements Serializable {
+public class WPBUri implements Serializable {
 	public final static int RESOURCE_TYPE_TEXT = 1;
 	public final static int RESOURCE_TYPE_FILE = 2;
 	public final static int RESOURCE_TYPE_URL_CONTROLLER = 3;

@@ -7,7 +7,7 @@ import com.webpagebytes.cms.datautility.WPBAdminField;
 import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
 import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
-public class WBFile implements Serializable {
+public class WPBFile implements Serializable {
 
 	@WPBAdminFieldKey
 	private Long privkey;

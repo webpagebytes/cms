@@ -16,8 +16,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.ParameterValidator;
 
@@ -27,14 +27,14 @@ import com.webpagebytes.cms.controllers.ParameterValidator;
 public class TestWBParameterValidator {
 
 private ParameterValidator parameterValidator;
-private WBParameter wbParameter;
+private WPBParameter wbParameter;
 private Map<String,String> noErrors;
 
 @Before
 public void setup()
 {
 	parameterValidator = new ParameterValidator();
-	wbParameter = EasyMock.createMock(WBParameter.class);
+	wbParameter = EasyMock.createMock(WPBParameter.class);
 	noErrors = new HashMap<String,String>();
 }
 @Test

@@ -7,15 +7,15 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBProject;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.Pair;
 
 public class WPBLocalProjectCache implements WPBProjectCache {
-	private WBProject project;
+	private WPBProject project;
 	Pair<String, String> defaultLocale;
 	Set<String> supportedLanguages;
 	private WPBAdminDataStorage dataStorage;
@@ -48,15 +48,15 @@ public class WPBLocalProjectCache implements WPBProjectCache {
 	{
 		return supportedLanguages;
 	}
-	public WBProject getProject() throws WPBIOException
+	public WPBProject getProject() throws WPBIOException
 	{
 		return project;
 	}
 	
-	private WBProject createDefaultProject() throws WPBIOException
+	private WPBProject createDefaultProject() throws WPBIOException
 	{
-		WBProject project = new WBProject();
-		project.setPrivkey(WBProject.PROJECT_KEY);
+		WPBProject project = new WPBProject();
+		project.setPrivkey(WPBProject.PROJECT_KEY);
 		project.setDefaultLanguage("en");
 		project.setSupportedLanguages("en");
 		project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());	
@@ -66,7 +66,7 @@ public class WPBLocalProjectCache implements WPBProjectCache {
 	
 	public void Refresh() throws WPBIOException {
 		synchronized (lock) {
-			project = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			project = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			if (null == project)
 			{
 				project = createDefaultProject();

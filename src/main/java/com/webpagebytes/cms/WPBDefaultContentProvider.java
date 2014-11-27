@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 
 import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class WPBDefaultContentProvider implements WPBContentProvider {
@@ -26,7 +26,7 @@ public class WPBDefaultContentProvider implements WPBContentProvider {
 	{
 		try
 		{
-			WBFile file = fileContentBuilder.find(externalKey);
+			WPBFile file = fileContentBuilder.find(externalKey);
 			if (null == file)
 			{
 				return false;
@@ -46,7 +46,7 @@ public class WPBDefaultContentProvider implements WPBContentProvider {
 	{
 		try
 		{
-			WBWebPage wbWebPage = pageContentBuilder.findWebPage(externalKey);
+			WPBWebPage wbWebPage = pageContentBuilder.findWebPage(externalKey);
 			if (null == wbWebPage)
 			{
 				return false;

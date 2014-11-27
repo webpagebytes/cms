@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -14,8 +14,8 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WBWebPageModule> localCacheByID;
-	private Map<String, WBWebPageModule> localCacheByName;
+	private Map<String, WPBWebPageModule> localCacheByID;
+	private Map<String, WPBWebPageModule> localCacheByName;
 	private static final Object lock = new Object();
 	public WPBLocalWebPageModulesCache()
 	{
@@ -31,7 +31,7 @@ public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 			
 		}
 	}
-	public WBWebPageModule getByExternalKey(String externalKey) throws WPBIOException
+	public WPBWebPageModule getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCacheByID != null)
 		{
@@ -43,11 +43,11 @@ public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WBWebPageModule> tempMapByID = new HashMap<String, WBWebPageModule>();
-			Map<String, WBWebPageModule> tempMapByName = new HashMap<String, WBWebPageModule>();
+			Map<String, WPBWebPageModule> tempMapByID = new HashMap<String, WPBWebPageModule>();
+			Map<String, WPBWebPageModule> tempMapByName = new HashMap<String, WPBWebPageModule>();
 			
-			List<WBWebPageModule> recList = dataStorage.getAllRecords(WBWebPageModule.class);
-			for(WBWebPageModule item: recList)
+			List<WPBWebPageModule> recList = dataStorage.getAllRecords(WPBWebPageModule.class);
+			for(WPBWebPageModule item: recList)
 			{
 				tempMapByID.put(item.getExternalKey(), item);
 				tempMapByName.put(item.getName(), item);
@@ -59,7 +59,7 @@ public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
 	}
 
 		
-	public WBWebPageModule get(String moduleName) throws WPBIOException
+	public WPBWebPageModule get(String moduleName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{

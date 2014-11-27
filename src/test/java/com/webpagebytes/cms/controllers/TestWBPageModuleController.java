@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.PageModuleController;
 import com.webpagebytes.cms.controllers.PageModuleValidator;
@@ -38,7 +38,7 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 @RunWith(PowerMockRunner.class)
 public class TestWBPageModuleController {
 
-private WBWebPageModule objectForControllerMock;
+private WPBWebPageModule objectForControllerMock;
 private PageModuleController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
@@ -52,7 +52,7 @@ private WPBWebPageModulesCache pageModuleCacheMock;
 @Before
 public void setUp()
 {
-	objectForControllerMock = PowerMock.createMock(WBWebPageModule.class);
+	objectForControllerMock = PowerMock.createMock(WPBWebPageModule.class);
 	controllerForTest = new PageModuleController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
@@ -79,14 +79,14 @@ public void test_create_ok()
 		String externalKey="123abc";
 		String json = "{name:\"testpage\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
 		Capture<String> captureExternalKey = new Capture<String>();
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setExternalKey(EasyMock.capture(captureExternalKey));
-		WBWebPageModule newPageModule = new WBWebPageModule();
+		WPBWebPageModule newPageModule = new WPBWebPageModule();
 		newPageModule.setPrivkey(10L);
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andReturn(newPageModule);
 		
@@ -119,7 +119,7 @@ public void test_create_errors()
 	{
 		String json = "{name:\"testpage\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		
 		errors.put("uri", "error");
@@ -152,7 +152,7 @@ public void test_create_exception()
 		String externalKey = "123abc";
 		String json = "{uri:\"test\", httpOperation:\"GET\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
@@ -189,7 +189,7 @@ public void test_getAll_ok()
 	try
 	{
 		List<Object> all = new ArrayList<Object>();
-		EasyMock.expect(adminStorageMock.getAllRecords(WBWebPageModule.class)).andReturn(all);
+		EasyMock.expect(adminStorageMock.getAllRecords(WPBWebPageModule.class)).andReturn(all);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(all)).andReturn(jsonString);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
@@ -218,7 +218,7 @@ public void test_getAll_exception()
 	try
 	{
 		List<Object> allUri = new ArrayList<Object>();
-		EasyMock.expect(adminStorageMock.getAllRecords(WBWebPageModule.class)).andThrow(new WPBIOException(""));
+		EasyMock.expect(adminStorageMock.getAllRecords(WPBWebPageModule.class)).andThrow(new WPBIOException(""));
 		String jsonString = "{}";
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -247,7 +247,7 @@ public void test_get_ok()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(adminStorageMock.get(123L, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(objectForControllerMock, null)).andReturn(json);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -276,7 +276,7 @@ public void test_get_exception()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WBWebPageModule.class)).andThrow(new WPBIOException(""));
+		EasyMock.expect(adminStorageMock.get(123L, WPBWebPageModule.class)).andThrow(new WPBIOException(""));
 
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -333,13 +333,13 @@ public void test_update_ok()
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 		Capture<Long> captureKey = new Capture<Long>();
 		Capture<Date> captureDate = new Capture<Date>();
 		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
-		WBWebPageModule newPageModule = new WBWebPageModule();
+		WPBWebPageModule newPageModule = new WPBWebPageModule();
 		newPageModule.setPrivkey(123L);
 		EasyMock.expect(adminStorageMock.update(objectForControllerMock)).andReturn(newPageModule);
 		
@@ -374,7 +374,7 @@ public void test_update_errors()
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBWebPageModule.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBWebPageModule.class)).andReturn(objectForControllerMock);
 		Capture<Long> captureKey = new Capture<Long>();
 		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 
@@ -441,7 +441,7 @@ public void test_delete_ok()
 		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
 
 		String returnJson = "{}"; //really doesn't matter
-		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(EasyMock.anyObject(WBWebPageModule.class), EasyMock.anyObject(Map.class))).andReturn(returnJson);
+		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(EasyMock.anyObject(WPBWebPageModule.class), EasyMock.anyObject(Map.class))).andReturn(returnJson);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();
@@ -524,10 +524,10 @@ public void test_notify_ok()
 {
 	try
 	{
-	WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+	WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);
 	pageModuleCacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageModuleMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(pageModuleMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
+	controllerForTest.notify(pageModuleMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WPBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -539,11 +539,11 @@ public void test_notify_exception()
 {
 	try
 	{
-		WBWebPageModule pageMock = PowerMock.createMock(WBWebPageModule.class);
+		WPBWebPageModule pageMock = PowerMock.createMock(WPBWebPageModule.class);
 		pageModuleCacheMock.Refresh();
 		EasyMock.expectLastCall().andThrow(new WPBIOException(""));
 		EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, pageModuleCacheMock, pageMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-		controllerForTest.notify(pageMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBWebPageModule.class);
+		controllerForTest.notify(pageMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WPBWebPageModule.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);

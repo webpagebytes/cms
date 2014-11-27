@@ -15,8 +15,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao;
 import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalSortDirection;
@@ -42,7 +42,7 @@ public void test_addRecord()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		WBUri uri = new WBUri();
+		WPBUri uri = new WPBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		connectionMock.setAutoCommit(true);
@@ -65,7 +65,7 @@ public void test_addRecord()
 		statementMock.close();
 		connectionMock.close();
 		PowerMock.replay(connectionMock, statementMock, resultSetMock);
-		WBUri newUri = dao.addRecord(uri, "key");		
+		WPBUri newUri = dao.addRecord(uri, "key");		
 		PowerMock.verify(connectionMock, statementMock, resultSetMock);
 		assertTrue (newUri == uri);
 		
@@ -89,7 +89,7 @@ public void test_getRecord()
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
 		
 		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
-		String sqlStatement = "SELECT * FROM WBURI WHERE key=?";
+		String sqlStatement = "SELECT * FROM WPBURI WHERE key=?";
 		EasyMock.expect(connectionMock.prepareStatement(sqlStatement)).andReturn(statementMock);
 		PowerMockito.doNothing().when(dao, "setPrepareStatementParameter", any(PreparedStatement.class), any(int.class), any(Object.class));
 		
@@ -102,7 +102,7 @@ public void test_getRecord()
 		connectionMock.close();
 		resultSetMock.close();
 		PowerMock.replay(connectionMock, statementMock, resultSetMock);
-		Object res = dao.getRecord(WBUri.class, "key", key);		
+		Object res = dao.getRecord(WPBUri.class, "key", key);		
 		PowerMock.verify(connectionMock, statementMock, resultSetMock);
 		assertTrue (res == result);
 		
@@ -137,8 +137,8 @@ public void test_addRecordWithKey()
 		statementMock.close();
 		connectionMock.close();
 		PowerMock.replay(connectionMock, statementMock);
-		WBProject newProject = new WBProject();
-		WBProject result = dao.addRecordWithKey(newProject, "key");		
+		WPBProject newProject = new WPBProject();
+		WPBProject result = dao.addRecordWithKey(newProject, "key");		
 		PowerMock.verify(connectionMock, statementMock);
 		assertTrue (result == newProject);
 		
@@ -158,13 +158,13 @@ public void test_updateRecord()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		WBUri uri = new WBUri();
+		WPBUri uri = new WPBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		connectionMock.setAutoCommit(true);
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
 		
-		String sqlStatement = "UPDATE WBUri SET ENABLED=?,URI=?,LASTMODIFIED=?,HTTPOPERATION=?,CONTROLLERCLASS=?,RESOURCETYPE=?,RESOURCEEXTERNALKEY=?,EXTERNALKEY=? WHERE key=?";
+		String sqlStatement = "UPDATE WPBUri SET ENABLED=?,URI=?,LASTMODIFIED=?,HTTPOPERATION=?,CONTROLLERCLASS=?,RESOURCETYPE=?,RESOURCEEXTERNALKEY=?,EXTERNALKEY=? WHERE key=?";
 		PowerMockito.doReturn(sqlStatement).when(dao, "getSQLStringForInsert", any(Object.class), any(Set.class));
 		
 		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
@@ -205,7 +205,7 @@ public void test_query_more_properties()
 		Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 		Map<String, Object> values = new HashMap<String, Object>();
 		
-		List<Object> records = dao.query(WBUri.class, properties, operators, values);
+		List<Object> records = dao.query(WPBUri.class, properties, operators, values);
 		assertTrue(records == result);
 	} catch (Exception e)
 	{
@@ -230,7 +230,7 @@ public void test_query_no_conditions()
 		Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 		Map<String, Object> values = new HashMap<String, Object>();
 		
-		List<Object> records = dao.queryWithSort(WBUri.class, properties, operators, values, "uri", WBLocalSortDirection.ASCENDING);
+		List<Object> records = dao.queryWithSort(WPBUri.class, properties, operators, values, "uri", WBLocalSortDirection.ASCENDING);
 		assertTrue(records == result);
 	} catch (Exception e)
 	{
@@ -246,7 +246,7 @@ public void test_deleteRecord()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		WBUri uri = new WBUri();
+		WPBUri uri = new WPBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		connectionMock.setAutoCommit(true);
@@ -265,7 +265,7 @@ public void test_deleteRecord()
 		statementMock.close();
 		connectionMock.close();
 		PowerMock.replay(connectionMock, statementMock);
-		dao.deleteRecord(WBUri.class, "key", keyValue);		
+		dao.deleteRecord(WPBUri.class, "key", keyValue);		
 		PowerMock.verify(connectionMock, statementMock);
 		
 	} catch (Exception e)

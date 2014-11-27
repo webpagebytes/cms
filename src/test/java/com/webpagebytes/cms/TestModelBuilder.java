@@ -31,9 +31,9 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
@@ -48,11 +48,11 @@ public class TestModelBuilder {
 HttpServletRequest requestMock;
 WPBCacheInstances cacheInstancesMock;
 ModelBuilder modelBuilder;
-WBUri uriMock;
+WPBUri uriMock;
 URLMatcherResult urlMatcherResultMock;
 WPBModel modelMock;
 WPBProjectCache projectCacheMock;
-WBWebPage webPageMock;
+WPBWebPage webPageMock;
 CmsConfiguration configurationMock;
 Map<String, String> modelConfigs = new HashMap<String, String>();
 
@@ -65,10 +65,10 @@ public void setUp()
 	
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
-	uriMock = EasyMock.createMock(WBUri.class);
+	uriMock = EasyMock.createMock(WPBUri.class);
 	urlMatcherResultMock = EasyMock.createMock(URLMatcherResult.class);
 	modelMock = EasyMock.createMock(WPBModel.class);
-	webPageMock = EasyMock.createMock(WBWebPage.class);
+	webPageMock = EasyMock.createMock(WPBWebPage.class);
 	projectCacheMock  = EasyMock.createMock(WPBProjectCache.class);
 }
 
@@ -104,14 +104,14 @@ public void test_populateModelForWebPage()
 	try
 	{
 		String pageExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "param1";
 		String value1 = "value1";
 		mapParams.put(param1, value1);
 		
-		WBParameter parameter = new WBParameter();
+		WPBParameter parameter = new WPBParameter();
 		parameter.setName(param1);
 		parameter.setValue(value1);
 		pageParams.add(parameter);
@@ -145,7 +145,7 @@ public void test_populateUriParameters_OK_language_and_country()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
@@ -155,17 +155,17 @@ public void test_populateUriParameters_OK_language_and_country()
 		mapParams.put(param1, value1);
 		mapParams.put(param2, value2);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(1);
-		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_LOCALE_LANGUAGE);
 		pageParams.add(parameter1);
-		WBParameter parameter2 = new WBParameter();
+		WPBParameter parameter2 = new WPBParameter();
 		parameter2.setName(param2);
 		parameter2.setValue(value2);
 		parameter2.setOverwriteFromUrl(1);
-		parameter2.setLocaleType(WBParameter.PARAMETER_LOCALE_COUNTRY);
+		parameter2.setLocaleType(WPBParameter.PARAMETER_LOCALE_COUNTRY);
 		pageParams.add(parameter2);		
 		
 		
@@ -219,18 +219,18 @@ public void test_populateUriParameters_OK_only_language()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
 		mapParams.put(param1, value1);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(1);
-		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_LOCALE_LANGUAGE);
 		pageParams.add(parameter1);
 		
 		
@@ -284,18 +284,18 @@ public void test_populateUriParameters_empty_urlmatcher()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		Map<String, String> mapParams = new HashMap<String, String>();
 		WPBModel model = new WPBModel();
 		String param1 = "language";
 		String value1 = "en";
 		mapParams.put(param1, value1);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(0);
-		parameter1.setLocaleType(WBParameter.PARAMETER_NO_TYPE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_NO_TYPE);
 		pageParams.add(parameter1);		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
@@ -346,7 +346,7 @@ public void test_populateUriParameters_language_not_supported()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
@@ -356,17 +356,17 @@ public void test_populateUriParameters_language_not_supported()
 		mapParams.put(param1, value1);
 		mapParams.put(param2, value2);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(1);
-		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_LOCALE_LANGUAGE);
 		pageParams.add(parameter1);
-		WBParameter parameter2 = new WBParameter();
+		WPBParameter parameter2 = new WPBParameter();
 		parameter2.setName(param2);
 		parameter2.setValue(value2);
 		parameter2.setOverwriteFromUrl(1);
-		parameter2.setLocaleType(WBParameter.PARAMETER_LOCALE_COUNTRY);
+		parameter2.setLocaleType(WPBParameter.PARAMETER_LOCALE_COUNTRY);
 		pageParams.add(parameter2);		
 		
 		
@@ -428,7 +428,7 @@ public void test_populateUriParameters_no_language_param()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
@@ -438,17 +438,17 @@ public void test_populateUriParameters_no_language_param()
 		mapParams.put(param1, value1);
 		mapParams.put(param2, value2);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(1);
-		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_LOCALE_LANGUAGE);
 		pageParams.add(parameter1);
-		WBParameter parameter2 = new WBParameter();
+		WPBParameter parameter2 = new WPBParameter();
 		parameter2.setName(param2);
 		parameter2.setValue(value2);
 		parameter2.setOverwriteFromUrl(0);
-		parameter2.setLocaleType(WBParameter.PARAMETER_NO_TYPE);
+		parameter2.setLocaleType(WPBParameter.PARAMETER_NO_TYPE);
 		pageParams.add(parameter2);		
 		
 		
@@ -508,7 +508,7 @@ public void test_populateUriParameters_no_country_param()
 		suppress(method(ModelBuilder.class, "populateLocale"));
 		
 		String uriExternalKey = "abc";
-		List<WBParameter> pageParams = new ArrayList<WBParameter>();
+		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
@@ -518,17 +518,17 @@ public void test_populateUriParameters_no_country_param()
 		mapParams.put(param1, value1);
 		mapParams.put(param2, value2);
 		
-		WBParameter parameter1 = new WBParameter();
+		WPBParameter parameter1 = new WPBParameter();
 		parameter1.setName(param1);
 		parameter1.setValue(value1);
 		parameter1.setOverwriteFromUrl(1);
-		parameter1.setLocaleType(WBParameter.PARAMETER_LOCALE_LANGUAGE);
+		parameter1.setLocaleType(WPBParameter.PARAMETER_LOCALE_LANGUAGE);
 		pageParams.add(parameter1);
-		WBParameter parameter2 = new WBParameter();
+		WPBParameter parameter2 = new WPBParameter();
 		parameter2.setName(param2);
 		parameter2.setValue(value2);
 		parameter2.setOverwriteFromUrl(1);
-		parameter2.setLocaleType(WBParameter.PARAMETER_LOCALE_COUNTRY);
+		parameter2.setLocaleType(WPBParameter.PARAMETER_LOCALE_COUNTRY);
 		pageParams.add(parameter2);		
 		
 		
@@ -607,14 +607,14 @@ public void test_populateGlobalParameters()
 	{
 		modelBuilder = new ModelBuilder(cacheInstancesMock);
 		
-		List<WBParameter> globalParams = new ArrayList<WBParameter>();
+		List<WPBParameter> globalParams = new ArrayList<WPBParameter>();
 		WPBModel model = new WPBModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "param1";
 		String value1 = "value1";
 		mapParams.put(param1, value1);
 		
-		WBParameter parameter = new WBParameter();
+		WPBParameter parameter = new WPBParameter();
 		parameter.setName(param1);
 		parameter.setValue(value1);
 		globalParams.add(parameter);

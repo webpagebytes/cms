@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WBWebPage> localCacheByExternalId;
-	private Map<String, WBWebPage> localCacheByName;	
+	private Map<String, WPBWebPage> localCacheByExternalId;
+	private Map<String, WPBWebPage> localCacheByName;	
 	private static final Object lock = new Object();
 	public WPBLocalWebPagesCache()
 	{
@@ -29,7 +29,7 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 			
 		}
 	}
-	public WBWebPage getByExternalKey(String externalKey) throws WPBIOException
+	public WPBWebPage getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCacheByExternalId != null)
 		{
@@ -41,10 +41,10 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WBWebPage> tempMapByID = new HashMap<String, WBWebPage>();
-			Map<String, WBWebPage> tempMapByName = new HashMap<String, WBWebPage>();
-			List<WBWebPage> recList = dataStorage.getAllRecords(WBWebPage.class);
-			for(WBWebPage item: recList)
+			Map<String, WPBWebPage> tempMapByID = new HashMap<String, WPBWebPage>();
+			Map<String, WPBWebPage> tempMapByName = new HashMap<String, WPBWebPage>();
+			List<WPBWebPage> recList = dataStorage.getAllRecords(WPBWebPage.class);
+			for(WPBWebPage item: recList)
 			{
 				tempMapByID.put(item.getExternalKey(), item);
 				tempMapByName.put(item.getName(), item);
@@ -55,7 +55,7 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 		
 	}
 
-	public WBWebPage get(String pageName) throws WPBIOException
+	public WPBWebPage get(String pageName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{

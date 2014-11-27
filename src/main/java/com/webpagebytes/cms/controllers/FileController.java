@@ -20,9 +20,9 @@ import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -63,7 +63,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			if (type.equals(WBFile.class))
+			if (type.equals(WPBFile.class))
 			{
 				filesCache.Refresh();
 			}
@@ -84,12 +84,12 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		        FileItemStream item = iterator.next(); 
 		        if (!item.isFormField() && item.getFieldName().equals("file")) {
 		          InputStream stream = item.openStream();
-		          WBFile wbFile = null;
+		          WPBFile wbFile = null;
 		          if (request.getAttribute("key") != null)
 		          {
 		        	  // this is an upload as update for an existing file
 		        	  Long key = Long.valueOf((String)request.getAttribute("key"));
-		        	  wbFile = adminStorage.get(key, WBFile.class);
+		        	  wbFile = adminStorage.get(key, WPBFile.class);
 		        	  
 		        	  //old file need to be deleted from cloud
 		              String oldFilePath = wbFile.getBlobKey();
@@ -105,7 +105,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          } else
 		          {
 		        	  // this is a new upload
-		        	  wbFile = new WBFile();
+		        	  wbFile = new WPBFile();
 		        	  wbFile.setExternalKey(adminStorage.getUniqueId());    			        
 		          }
 		          String uniqueId = adminStorage.getUniqueId();
@@ -134,7 +134,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          cloudFileStorage.updateContentType(thumbnailCloudFile, "image/jpg");
 		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
 		          
-		  		WBResource resource = new WBResource(wbFile.getExternalKey(), wbFile.getName(), WBResource.FILE_TYPE);
+		  		WPBResource resource = new WPBResource(wbFile.getExternalKey(), wbFile.getName(), WPBResource.FILE_TYPE);
 
 		          if (wbFile.getPrivkey() != null)
 		          {
@@ -179,7 +179,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBFile wbimage = (WBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WBFile.class);
+			WPBFile wbimage = (WPBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBFile.class);
 			wbimage.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(wbimage);
 			
@@ -188,13 +188,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);
 				return;
 			}
-			WBFile existingImage = adminStorage.get(key, WBFile.class);
+			WPBFile existingImage = adminStorage.get(key, WPBFile.class);
 			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			existingImage.setName(wbimage.getName());
 			existingImage.setAdjustedContentType(wbimage.getAdjustedContentType());
-			WBFile newFile = adminStorage.update(existingImage);
+			WPBFile newFile = adminStorage.update(existingImage);
 			
-			WBResource resource = new WBResource(newFile.getExternalKey(), newFile.getName(), WBResource.FILE_TYPE);
+			WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getName(), WPBResource.FILE_TYPE);
 			try
 			{
 				adminStorage.update(resource);
@@ -220,7 +220,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile tempFile = adminStorage.get(key, WBFile.class);
+			WPBFile tempFile = adminStorage.get(key, WPBFile.class);
 			if (tempFile != null)
 			{
 				if (tempFile.getBlobKey() != null)
@@ -236,16 +236,16 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 				
 				try
 				{
-					adminStorage.delete(tempFile.getExternalKey(), WBResource.class);
+					adminStorage.delete(tempFile.getExternalKey(), WPBResource.class);
 				} catch (Exception e)
 				{
 					// do not propagate further
 				}
 
 			}
-			adminStorage.delete(key, WBFile.class);
+			adminStorage.delete(key, WPBFile.class);
 			
-			WBFile param = new WBFile();
+			WPBFile param = new WPBFile();
 			param.setPrivkey(key);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -269,7 +269,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 
 			String shortType = request.getParameter("type");
-			List<WBFile> files = null;
+			List<WPBFile> files = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -279,11 +279,11 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
 					if (null == shortType)
 					{
-						files = adminStorage.getAllRecords(WBFile.class, sortParamProp, AdminSortOperator.ASCENDING);
+						files = adminStorage.getAllRecords(WPBFile.class, sortParamProp, AdminSortOperator.ASCENDING);
 					} else
 					{
 						shortType = shortType.toLowerCase();
-						files = adminStorage.queryWithSort(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.ASCENDING);
+						files = adminStorage.queryWithSort(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.ASCENDING);
 					}
 
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
@@ -292,38 +292,38 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
 					if (null == shortType)
 					{
-						files = adminStorage.getAllRecords(WBFile.class, sortParamProp, AdminSortOperator.DESCENDING);
+						files = adminStorage.getAllRecords(WPBFile.class, sortParamProp, AdminSortOperator.DESCENDING);
 					} else
 					{
 						shortType = shortType.toLowerCase();
-						files = adminStorage.queryWithSort(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.DESCENDING);
+						files = adminStorage.queryWithSort(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.DESCENDING);
 					}
 
 				} else
 				{
 					if (null == shortType)
 					{
-						files = adminStorage.getAllRecords(WBFile.class);
+						files = adminStorage.getAllRecords(WPBFile.class);
 					} else
 					{
 						shortType = shortType.toLowerCase();
-						files = adminStorage.query(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+						files = adminStorage.query(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
 					}
 				}
 			} else
 			{
 				if (null == shortType)
 				{
-					files = adminStorage.getAllRecords(WBFile.class);
+					files = adminStorage.getAllRecords(WPBFile.class);
 				} else
 				{
 					shortType = shortType.toLowerCase();
-					files = adminStorage.query(WBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
+					files = adminStorage.query(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
 				}
 			}
 
-			List<WBFile> result = filterPagination(request, files, additionalInfo);
-			for(WBFile wbFile: result)
+			List<WPBFile> result = filterPagination(request, files, additionalInfo);
+			for(WPBFile wbFile: result)
 			{
 				setPublicFilePath(wbFile, cloudFileStorage);
 			}
@@ -342,12 +342,12 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	}
 
 
-	private static void setPublicFilePath(WBFile wbFile, WPBCloudFileStorage cloudFileStorage)
+	private static void setPublicFilePath(WPBFile wbFile, WPBCloudFileStorage cloudFileStorage)
 	{
 		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getBlobKey())));
 		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
 	}
-	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBFile wbFile) throws WPBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBFile wbFile) throws WPBException
 	{
 		try
 		{
@@ -358,7 +358,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
-				List<WBUri> uris = adminStorage.query(WBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, wbFile.getExternalKey());
+				List<WPBUri> uris = adminStorage.query(WPBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, wbFile.getExternalKey());
 				org.json.JSONArray arrayUris = jsonObjectConverter.JSONArrayFromListObjects(uris);
 				org.json.JSONObject additionalData = new org.json.JSONObject();
 				additionalData.put("uri_links", arrayUris);
@@ -375,7 +375,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbFile = adminStorage.get(key, WBFile.class);			
+			WPBFile wbFile = adminStorage.get(key, WPBFile.class);			
 			org.json.JSONObject returnJson = get(request, response, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
@@ -392,8 +392,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
-			List<WBFile> wbFiles = adminStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
-			WBFile wbFile = (wbFiles.size()>0) ? wbFiles.get(0) : null; 
+			List<WPBFile> wbFiles = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WPBFile wbFile = (wbFiles.size()>0) ? wbFiles.get(0) : null; 
 			org.json.JSONObject returnJson = get(request, response, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)		
@@ -409,7 +409,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbfile = adminStorage.get(key, WBFile.class);
+			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
 			WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());			
@@ -432,7 +432,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBFile wbfile = adminStorage.get(key, WBFile.class);
+			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
 			WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());

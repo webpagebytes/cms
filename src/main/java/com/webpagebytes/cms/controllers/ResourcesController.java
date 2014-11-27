@@ -9,14 +9,14 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
@@ -33,7 +33,7 @@ public class ResourcesController extends Controller {
 	{
 		try
 		{
-			List<WBResource> allResources = adminStorage.getAllRecords(WBResource.class);			
+			List<WPBResource> allResources = adminStorage.getAllRecords(WPBResource.class);			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(allResources));
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -50,56 +50,56 @@ public class ResourcesController extends Controller {
 	{
 		try
 		{
-			adminStorage.deleteAllRecords(WBResource.class);
-			List<WBUri> uris = adminStorage.getAllRecords(WBUri.class);
-			for( WBUri uri: uris)
+			adminStorage.deleteAllRecords(WPBResource.class);
+			List<WPBUri> uris = adminStorage.getAllRecords(WPBUri.class);
+			for( WPBUri uri: uris)
 			{
-				WBResource res = new WBResource(uri.getExternalKey(), uri.getUri(), WBResource.URI_TYPE);
+				WPBResource res = new WPBResource(uri.getExternalKey(), uri.getUri(), WPBResource.URI_TYPE);
 				adminStorage.addWithKey(res);
 			}
-			List<WBWebPage> pages = adminStorage.getAllRecords(WBWebPage.class);
-			for( WBWebPage page: pages)
+			List<WPBWebPage> pages = adminStorage.getAllRecords(WPBWebPage.class);
+			for( WPBWebPage page: pages)
 			{
-				WBResource res = new WBResource(page.getExternalKey(), page.getName(), WBResource.PAGE_TYPE);
+				WPBResource res = new WPBResource(page.getExternalKey(), page.getName(), WPBResource.PAGE_TYPE);
 				adminStorage.addWithKey(res);
 			}
-			List<WBWebPageModule> modules = adminStorage.getAllRecords(WBWebPageModule.class);
-			for( WBWebPageModule module: modules)
+			List<WPBWebPageModule> modules = adminStorage.getAllRecords(WPBWebPageModule.class);
+			for( WPBWebPageModule module: modules)
 			{
-				WBResource res = new WBResource(module.getExternalKey(), module.getName(), WBResource.PAGE_MODULE_TYPE);
+				WPBResource res = new WPBResource(module.getExternalKey(), module.getName(), WPBResource.PAGE_MODULE_TYPE);
 				adminStorage.addWithKey(res);
 			}
 					
-			List<WBArticle> articles = adminStorage.getAllRecords(WBArticle.class);
-			for( WBArticle article: articles)
+			List<WPBArticle> articles = adminStorage.getAllRecords(WPBArticle.class);
+			for( WPBArticle article: articles)
 			{
-				WBResource res = new WBResource(article.getExternalKey(), article.getTitle(), WBResource.ARTICLE_TYPE);
+				WPBResource res = new WPBResource(article.getExternalKey(), article.getTitle(), WPBResource.ARTICLE_TYPE);
 				adminStorage.addWithKey(res);
 			}
 
-			List<WBFile> files = adminStorage.getAllRecords(WBFile.class);
-			for( WBFile file: files)
+			List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
+			for( WPBFile file: files)
 			{
-				WBResource res = new WBResource(file.getExternalKey(), file.getName(), WBResource.FILE_TYPE);
+				WPBResource res = new WPBResource(file.getExternalKey(), file.getName(), WPBResource.FILE_TYPE);
 				adminStorage.addWithKey(res);
 			}
 			
-			List<WBMessage> messages = adminStorage.getAllRecords(WBMessage.class);
+			List<WPBMessage> messages = adminStorage.getAllRecords(WPBMessage.class);
 			Set<String> setMessages = new HashSet<String>();
-			for( WBMessage message: messages)
+			for( WPBMessage message: messages)
 			{
 				setMessages.add(message.getName());
 			}
 			for(String item: setMessages)
 			{
-				WBResource res = new WBResource(item, item, WBResource.MESSAGE_TYPE);
+				WPBResource res = new WPBResource(item, item, WPBResource.MESSAGE_TYPE);
 				adminStorage.addWithKey(res);
 			}
 
-			List<WBParameter> parameters = adminStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, "");
-			for(WBParameter param: parameters)
+			List<WPBParameter> parameters = adminStorage.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, "");
+			for(WPBParameter param: parameters)
 			{
-				WBResource res = new WBResource(param.getExternalKey(), param.getName(), WBResource.GLOBAL_PARAMETER_TYPE);
+				WPBResource res = new WPBResource(param.getExternalKey(), param.getName(), WPBResource.GLOBAL_PARAMETER_TYPE);
 				adminStorage.addWithKey(res);
 			}
 

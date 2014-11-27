@@ -2,9 +2,9 @@ package com.webpagebytes.cms.cmsdata;
 
 import java.util.Map;
 
-public class WBExporter {
+public class WPBExporter {
 
-	public void export(WBUri uri, Map<String, Object> properties)
+	public void export(WPBUri uri, Map<String, Object> properties)
 	{
 		if (uri.getExternalKey() != null)
 			properties.put("externalKey", uri.getExternalKey());
@@ -47,7 +47,7 @@ public class WBExporter {
 			properties.put("lastModified", "0");
 	}
 
-	public void export(WBProject project, Map<String, Object> properties)
+	public void export(WPBProject project, Map<String, Object> properties)
 	{
 		if (project.getDefaultLanguage() != null)
 			properties.put("defaultLanguage", project.getDefaultLanguage());
@@ -66,7 +66,7 @@ public class WBExporter {
 
 	}
 
-	public void export(WBParameter parameter, Map<String, Object> properties)
+	public void export(WPBParameter parameter, Map<String, Object> properties)
 	{
 		if (parameter.getExternalKey() != null)
 			properties.put("externalKey", parameter.getExternalKey());
@@ -105,7 +105,7 @@ public class WBExporter {
 			
 		}
 	
-	public void export(WBWebPage page, Map<String, Object> properties)
+	public void export(WPBWebPage page, Map<String, Object> properties)
 	{
 		if (page.getExternalKey() != null)
 			properties.put("externalKey", page.getExternalKey());
@@ -139,7 +139,7 @@ public class WBExporter {
 		
 	}
 
-	public void export(WBArticle article, Map<String, Object> properties)
+	public void export(WPBArticle article, Map<String, Object> properties)
 	{
 		if (article.getExternalKey() != null)
 			properties.put("externalKey", article.getExternalKey());
@@ -158,7 +158,7 @@ public class WBExporter {
 		
 	}
 
-	public void export(WBFile file, Map<String, Object> properties)
+	public void export(WPBFile file, Map<String, Object> properties)
 	{
 		if (file.getExternalKey() != null)
 			properties.put("externalKey", file.getExternalKey());
@@ -198,7 +198,7 @@ public class WBExporter {
 		
 	}
 
-	public void export(WBWebPageModule module, Map<String, Object> properties)
+	public void export(WPBWebPageModule module, Map<String, Object> properties)
 	{
 		if (module.getExternalKey() != null)
 			properties.put("externalKey", module.getExternalKey());
@@ -222,7 +222,7 @@ public class WBExporter {
 		
 	}
 
-	public void export(WBMessage message, Map<String, Object> properties)
+	public void export(WPBMessage message, Map<String, Object> properties)
 	{
 		if (message.getExternalKey() != null)
 			properties.put("externalKey", message.getExternalKey());

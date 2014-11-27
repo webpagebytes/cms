@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.UriValidator;
 
@@ -19,12 +19,12 @@ import com.webpagebytes.cms.controllers.UriValidator;
 public class TestWBUriValidator {
 
 private UriValidator uriValidator;
-private WBUri wburi;
+private WPBUri wburi;
 private Map<String, String> errorsContainer;
 @Before
 public void setUp()
 {
-	wburi = new WBUri();
+	wburi = new WPBUri();
 	errorsContainer = new HashMap<String, String>();
 	uriValidator = new UriValidator();
 }
@@ -53,7 +53,7 @@ public void test_validateCreateWBUri_wrongUriFirstCharacter()
 	errorsContainer.put("uri", WPBErrors.ERROR_URI_START_CHAR);
 	wburi.setHttpOperation("GET");
 	wburi.setUri("test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("123");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -66,7 +66,7 @@ public void test_validateCreateWBUri_OK_uri()
 {
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -106,17 +106,17 @@ public void test_validateCreateWBUri_okResourceType()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("abc");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_TEXT);
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
 	Map<String, String> errors1 = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors1));
 
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE); 
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE); 
 	Map<String, String> errors2 = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors2));
 	
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_URL_CONTROLLER); 
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_URL_CONTROLLER); 
 	Map<String, String> errors3 = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors3));
 }
@@ -127,7 +127,7 @@ public void test_validateCreateWBUri_okController()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("abc");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_TEXT);
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
 	wburi.setControllerClass("com.test.test");
@@ -142,7 +142,7 @@ public void test_validateCreateWBUri_invalidController()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("abc");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_TEXT);
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
 	wburi.setControllerClass("Test*");
@@ -166,7 +166,7 @@ public void test_validateCreateWBUri_NoResourceExternalKey()
 {
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
 	Map<String, String> errors = uriValidator.validateCreate(wburi);
@@ -180,7 +180,7 @@ public void test_validateCreateWBUri_ZeroResourceExternalKey()
 	wburi.setUri("/test");
 	wburi.setEnabled(0);
 	wburi.setResourceExternalKey("");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setExternalKey("xyz");
 	Map<String, String> errors = uriValidator.validateCreate(wburi);
 	assertTrue( errorsContainer.equals(errors));
@@ -226,15 +226,15 @@ public void test_validateUpdateWBUri_okResourceType()
 	wburi.setEnabled(1);
 	wburi.setResourceExternalKey("abc");
 
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	Map<String, String> errors2 = uriValidator.validateUpdate(wburi);
 	assertTrue( errorsContainer.equals(errors2));
 
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_TEXT);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_TEXT);
 	Map<String, String> errors1 = uriValidator.validateUpdate(wburi);
 	assertTrue( errorsContainer.equals(errors1));
 	
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_URL_CONTROLLER);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_URL_CONTROLLER);
 	Map<String, String> errors3 = uriValidator.validateUpdate(wburi);
 	assertTrue( errorsContainer.equals(errors3));
 
@@ -247,7 +247,7 @@ public void test_validateUpdateWBUri_NoResourceExternalKey()
 	wburi.setHttpOperation("GET");
 	wburi.setPrivkey(1L);
 	wburi.setUri("/test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
 
@@ -262,7 +262,7 @@ public void test_validateUpdateWBUri_ZeroResourceExternalKey()
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
 	wburi.setResourceExternalKey("");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
 
@@ -276,7 +276,7 @@ public void test_validateCreateWBUri_uriTooLong()
 {
 	errorsContainer.put("uri", WPBErrors.ERROR_URI_LENGTH);
 	wburi.setHttpOperation("GET");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
@@ -296,7 +296,7 @@ public void test_validateCreateWBUri_emptyHttpOperation()
 	errorsContainer.put("httpOperation", WPBErrors.ERROR_INVALID_VALUE);
 	String uri = "/test";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -317,7 +317,7 @@ public void test_validateCreateWBUri_invalidHttpOperation()
 	wburi.setHttpOperation("ABC");	
 	String uri = "/test";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
@@ -334,7 +334,7 @@ public void test_validateCreateWBUri_cantSpecifyLastModified()
 	wburi.setUri(uri);
 	wburi.setLastModified( new Date());
 	wburi.setPrivkey(10L);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
@@ -370,7 +370,7 @@ public void test_validateUpdateWBUri_wrongUriFirstCharacter()
 	wburi.setHttpOperation("GET");
 	wburi.setPrivkey(10L);
 	wburi.setUri("test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -385,7 +385,7 @@ public void test_validateUpdateWBUri_OK_uri()
 	wburi.setPrivkey(10L);
 	wburi.setHttpOperation("GET");
 	wburi.setUri("/test");
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setExternalKey("xyz");
 	wburi.setEnabled(1);
@@ -406,7 +406,7 @@ public void test_validateUpdateWBUri_uriTooLong()
 		uri = uri + "a";
 	}
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -422,7 +422,7 @@ public void test_validateUpdateWBUri_emptyHttpOperation()
 	errorsContainer.put("httpOperation", WPBErrors.ERROR_INVALID_VALUE);
 	String uri = "/test";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -445,7 +445,7 @@ public void test_validateUpdateWBUri_invalidHttpOperation()
 	wburi.setHttpOperation("ABC");	
 	String uri = "/test";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -463,7 +463,7 @@ public void test_validateUpdateWBUri_cantSpecifyLastModify()
 	String uri = "/test";
 	wburi.setUri(uri);
 	wburi.setLastModified( new Date());
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -481,7 +481,7 @@ public void test_validateUpdateWBUri_OK()
 	wburi.setUri(uri);
 	wburi.setExternalKey("xyz");
 	wburi.setEnabled(1);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 
 	Map<String, String> errors = uriValidator.validateUpdate(wburi);
@@ -495,7 +495,7 @@ public void test_validateCreateWBUri_uri_goodformat()
 	wburi.setHttpOperation("GET");	
 	String uri = "/test/aaa/bb-cc/aaa_123/123/AAA/~1";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
@@ -509,7 +509,7 @@ public void test_validateCreateWBUri_uri_badformat1()
 	wburi.setHttpOperation("GET");	
 	String uri = "/t?est/aaa/bb-cc/aaa_123/123/AAA/~1";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(0);
 	wburi.setExternalKey("xyz");
@@ -524,7 +524,7 @@ public void test_validateCreateWBUri_uri_badformat2()
 	wburi.setHttpOperation("GET");	
 	String uri = "/+?&";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -540,7 +540,7 @@ public void test_validateUpdateWBUri_uri_badformat1()
 	wburi.setHttpOperation("GET");	
 	String uri = "/t?est/aaa/bb-cc/aaa_123/123/AAA/~1";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -557,7 +557,7 @@ public void test_validateUpdateWBUri_uri_badformat2()
 	wburi.setHttpOperation("GET");	
 	String uri = "/+?&";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 	wburi.setEnabled(1);
 	wburi.setExternalKey("xyz");
@@ -573,7 +573,7 @@ public void test_validateUpdateWBUri_noKey()
 	wburi.setHttpOperation("GET");	
 	String uri = "/test";
 	wburi.setUri(uri);
-	wburi.setResourceType(WBUri.RESOURCE_TYPE_FILE);
+	wburi.setResourceType(WPBUri.RESOURCE_TYPE_FILE);
 	wburi.setResourceExternalKey("abc");
 
 	Map<String, String> errors1 = uriValidator.validateUpdate(wburi);

@@ -21,7 +21,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cache.WPBUrisCache;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.UriController;
 import com.webpagebytes.cms.controllers.UriValidator;
@@ -36,7 +36,7 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 @RunWith(PowerMockRunner.class)
 public class TestWBUriController {
 
-private WBUri objectForControllerMock;
+private WPBUri objectForControllerMock;
 private UriController controllerForTest;
 private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
@@ -49,7 +49,7 @@ private WPBUrisCache cacheMock;
 @Before
 public void setUp()
 {
-	objectForControllerMock = PowerMock.createMock(WBUri.class);
+	objectForControllerMock = PowerMock.createMock(WPBUri.class);
 	controllerForTest = new UriController();
 	requestMock = PowerMock.createMock(HttpServletRequest.class);
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
@@ -75,7 +75,7 @@ public void test_createWBUri_ok()
 		String externalKey = "mnp";
 		String json = "{uri:\"test\", httpOperation:\"GET\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBUri.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
@@ -83,7 +83,7 @@ public void test_createWBUri_ok()
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setExternalKey(EasyMock.capture(captureExternalKey));
 
-		WBUri newUri = new WBUri();
+		WPBUri newUri = new WPBUri();
 		newUri.setPrivkey(10L);
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andReturn(newUri);
 		
@@ -117,7 +117,7 @@ public void test_createWBUri_errors()
 	{
 		String json = "{uri:\"test\", httpOperation:\"GET\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBUri.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		
 		errors.put("uri", "error");
@@ -150,7 +150,7 @@ public void test_createWBUri_exception()
 		String externalKey = "mnp";
 		String json = "{uri:\"test\", httpOperation:\"GET\"}";
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBUri.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateCreate(objectForControllerMock)).andReturn(errors);
 		EasyMock.expect(adminStorageMock.getUniqueId()).andReturn(externalKey);
 		Capture<Date> captureDate = new Capture<Date>();
@@ -246,7 +246,7 @@ public void test_getWBUri_ok()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(adminStorageMock.get(123L, WPBUri.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(objectForControllerMock, null)).andReturn(json);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -275,7 +275,7 @@ public void test_getWBUri_exception()
 	{
 		String json = "";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WBUri.class)).andThrow(new WPBIOException(""));
+		EasyMock.expect(adminStorageMock.get(123L, WPBUri.class)).andThrow(new WPBIOException(""));
 
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -329,10 +329,10 @@ public void test_notify_ok()
 {
 	try
 	{
-	WBUri uriMock = PowerMock.createMock(WBUri.class);
+	WPBUri uriMock = PowerMock.createMock(WPBUri.class);
 	cacheMock.Refresh();
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, cacheMock, uriMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(uriMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBUri.class);
+	controllerForTest.notify(uriMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WPBUri.class);
 	} catch (Exception e)
 	{
 		assertTrue (false);
@@ -344,11 +344,11 @@ public void test_notify_exception()
 {
 	try
 	{
-	WBUri uriMock = PowerMock.createMock(WBUri.class);
+	WPBUri uriMock = PowerMock.createMock(WPBUri.class);
 	cacheMock.Refresh();
 	EasyMock.expectLastCall().andThrow(new WPBIOException(""));
 	EasyMock.replay(httpServletToolboxMock, requestMock, responseMock, cacheMock, uriMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);	
-	controllerForTest.notify(uriMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WBUri.class);
+	controllerForTest.notify(uriMock, WPBAdminDataStorageListener.AdminDataStorageOperation.CREATE_RECORD, WPBUri.class);
 	
 	} catch (Exception e)
 	{
@@ -364,14 +364,14 @@ public void test_updateWBUri_ok()
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBUri.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 		Capture<Date> captureDate = new Capture<Date>();
 		Capture<Long> captureKey = new Capture<Long>();
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
 		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 		
-		WBUri newUri = new WBUri();
+		WPBUri newUri = new WPBUri();
 		newUri.setPrivkey(123L);
 		EasyMock.expect(adminStorageMock.update(objectForControllerMock)).andReturn(newUri);
 		
@@ -407,7 +407,7 @@ public void test_updateWBUri_errors()
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
-		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WBUri.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBUri.class)).andReturn(objectForControllerMock);
 		Capture<Long> captureKey = new Capture<Long>();
 		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
 
@@ -474,7 +474,7 @@ public void test_deleteWBUri_ok()
 		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
 
 		String returnJson = "{}"; //really doesn't matter
-		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(EasyMock.anyObject(WBUri.class), EasyMock.anyObject(Map.class))).andReturn(returnJson);
+		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(EasyMock.anyObject(WPBUri.class), EasyMock.anyObject(Map.class))).andReturn(returnJson);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
 		Capture<Map<String, String>> captureErrors = new Capture<Map<String,String>>();

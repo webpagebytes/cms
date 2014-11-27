@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -52,7 +52,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			if (type.equals(WBWebPage.class))
+			if (type.equals(WPBWebPage.class))
 			{
 				log.log(Level.INFO, "WbWebPage datastore notification, going to refresh the cache");
 				wbWebPageCache.Refresh();
@@ -68,7 +68,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBWebPage webPage = (WBWebPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPage.class);
+			WPBWebPage webPage = (WPBWebPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBWebPage.class);
 			Map<String, String> errors = pageValidator.validateCreate(webPage);
 			
 			if (errors.size()>0)
@@ -76,12 +76,12 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 				httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
 				return;
 			}
-			webPage.setHash( WBWebPage.crc32(webPage.getHtmlSource()));
+			webPage.setHash( WPBWebPage.crc32(webPage.getHtmlSource()));
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
-			WBWebPage newWebPage = adminStorage.add(webPage);
+			WPBWebPage newWebPage = adminStorage.add(webPage);
 			
-			WBResource resource = new WBResource(newWebPage.getExternalKey(), newWebPage.getName(), WBResource.PAGE_TYPE);
+			WPBResource resource = new WPBResource(newWebPage.getExternalKey(), newWebPage.getName(), WPBResource.PAGE_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -107,29 +107,29 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
-			List<WBWebPage> allRecords = null;
+			List<WPBWebPage> allRecords = null;
 			if (sortParamDir != null && sortParamProp != null)
 			{
 				if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_ASC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					allRecords = adminStorage.getAllRecords(WBWebPage.class, sortParamProp, AdminSortOperator.ASCENDING);					
+					allRecords = adminStorage.getAllRecords(WPBWebPage.class, sortParamProp, AdminSortOperator.ASCENDING);					
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					allRecords = adminStorage.getAllRecords(WBWebPage.class, sortParamProp, AdminSortOperator.DESCENDING);
+					allRecords = adminStorage.getAllRecords(WPBWebPage.class, sortParamProp, AdminSortOperator.DESCENDING);
 				} else
 				{
-					allRecords = adminStorage.getAllRecords(WBWebPage.class);					
+					allRecords = adminStorage.getAllRecords(WPBWebPage.class);					
 				}
 			} else
 			{
-				allRecords = adminStorage.getAllRecords(WBWebPage.class);				
+				allRecords = adminStorage.getAllRecords(WPBWebPage.class);				
 			}
 					
-			List<WBWebPage> result = filterPagination(request, allRecords, additionalInfo);
+			List<WPBWebPage> result = filterPagination(request, allRecords, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
@@ -145,7 +145,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		}
 	}
 	
-	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WBWebPage webPage) throws WPBException
+	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBWebPage webPage) throws WPBException
 	{
 		try
 		{
@@ -155,7 +155,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
-				List<WBUri> uris = adminStorage.query(WBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, webPage.getExternalKey());
+				List<WPBUri> uris = adminStorage.query(WPBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, webPage.getExternalKey());
 				org.json.JSONArray arrayUris = jsonObjectConverter.JSONArrayFromListObjects(uris);
 				org.json.JSONObject additionalData = new org.json.JSONObject();
 				additionalData.put("uri_links", arrayUris);
@@ -176,7 +176,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBWebPage webPage = adminStorage.get(key, WBWebPage.class);
+			WPBWebPage webPage = adminStorage.get(key, WPBWebPage.class);
 			org.json.JSONObject returnJson = get(request, response, webPage);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 
@@ -193,8 +193,8 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
-			List<WBWebPage> webPages = adminStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
-			WBWebPage webPage = (webPages.size()>0) ? webPages.get(0) : null; 		
+			List<WPBWebPage> webPages = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
+			WPBWebPage webPage = (webPages.size()>0) ? webPages.get(0) : null; 		
 			org.json.JSONObject returnJson = get(request, response, webPage);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 
@@ -211,19 +211,19 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBWebPage tempPage = adminStorage.get(key, WBWebPage.class);
-			adminStorage.delete(key, WBWebPage.class);
+			WPBWebPage tempPage = adminStorage.get(key, WPBWebPage.class);
+			adminStorage.delete(key, WPBWebPage.class);
 			
 			// delete the owned parameters
-			adminStorage.delete(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempPage.getExternalKey());
+			adminStorage.delete(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, tempPage.getExternalKey());
 			try
 			{
-				adminStorage.delete(tempPage.getExternalKey(), WBResource.class);
+				adminStorage.delete(tempPage.getExternalKey(), WPBResource.class);
 			} catch (Exception e)
 			{
 				// do not propagate further
 			}
-			WBWebPage page = new WBWebPage();
+			WPBWebPage page = new WPBWebPage();
 			page.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(page));			
@@ -243,7 +243,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBWebPage webPage = (WBWebPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPage.class);
+			WPBWebPage webPage = (WPBWebPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBWebPage.class);
 			webPage.setPrivkey(key);
 			Map<String, String> errors = pageValidator.validateUpdate(webPage);
 			
@@ -257,9 +257,9 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			webPage.setHash( crc.getValue() );
 
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBWebPage newWebPage = adminStorage.update(webPage);
+			WPBWebPage newWebPage = adminStorage.update(webPage);
 			
-			WBResource resource = new WBResource(newWebPage.getExternalKey(), newWebPage.getName(), WBResource.PAGE_TYPE);
+			WPBResource resource = new WPBResource(newWebPage.getExternalKey(), newWebPage.getName(), WPBResource.PAGE_TYPE);
 			try
 			{
 				adminStorage.update(resource);

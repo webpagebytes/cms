@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBArticlesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBResource;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -44,7 +44,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			if (type.equals(WBArticle.class))
+			if (type.equals(WPBArticle.class))
 			{
 				wbArticleCache.Refresh();
 			}
@@ -59,7 +59,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBArticle article = (WBArticle)jsonObjectConverter.objectFromJSONString(jsonRequest, WBArticle.class);
+			WPBArticle article = (WPBArticle)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBArticle.class);
 			Map<String, String> errors = validator.validateCreate(article);
 			
 			if (errors.size()>0)
@@ -69,9 +69,9 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 			}
 			article.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			article.setExternalKey(adminStorage.getUniqueId());
-			WBArticle newArticle = adminStorage.add(article);
+			WPBArticle newArticle = adminStorage.add(article);
 
-			WBResource resource = new WBResource(newArticle.getExternalKey(), newArticle.getTitle(), WBResource.ARTICLE_TYPE);
+			WPBResource resource = new WPBResource(newArticle.getExternalKey(), newArticle.getTitle(), WPBResource.ARTICLE_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);
@@ -101,7 +101,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 
-			List<WBArticle> articles = null;
+			List<WPBArticle> articles = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -109,22 +109,22 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					articles = adminStorage.getAllRecords(WBArticle.class, sortParamProp, AdminSortOperator.ASCENDING);					
+					articles = adminStorage.getAllRecords(WPBArticle.class, sortParamProp, AdminSortOperator.ASCENDING);					
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					articles = adminStorage.getAllRecords(WBArticle.class, sortParamProp, AdminSortOperator.DESCENDING);
+					articles = adminStorage.getAllRecords(WPBArticle.class, sortParamProp, AdminSortOperator.DESCENDING);
 				} else
 				{
-					articles = adminStorage.getAllRecords(WBArticle.class);					
+					articles = adminStorage.getAllRecords(WPBArticle.class);					
 				}
 			} else
 			{
-				articles = adminStorage.getAllRecords(WBArticle.class);				
+				articles = adminStorage.getAllRecords(WPBArticle.class);				
 			}
 
-			List<WBArticle> result = filterPagination(request, articles, additionalInfo);
+			List<WPBArticle> result = filterPagination(request, articles, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
@@ -144,7 +144,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBArticle article = adminStorage.get(key, WBArticle.class);
+			WPBArticle article = adminStorage.get(key, WPBArticle.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(article));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -162,8 +162,8 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
-			List<WBArticle> articles = adminStorage.query(WBArticle.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
-			WBArticle article = (articles.size()>0) ? articles.get(0) : null;
+			List<WPBArticle> articles = adminStorage.query(WPBArticle.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
+			WPBArticle article = (articles.size()>0) ? articles.get(0) : null;
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(article));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -181,14 +181,14 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBArticle article = adminStorage.get(key, WBArticle.class);
-			adminStorage.delete(key, WBArticle.class);
+			WPBArticle article = adminStorage.get(key, WPBArticle.class);
+			adminStorage.delete(key, WPBArticle.class);
 			
 			try
 			{
 				if (article != null)
 				{
-					adminStorage.delete(article.getExternalKey(), WBResource.class);
+					adminStorage.delete(article.getExternalKey(), WPBResource.class);
 				}
 			} catch (Exception e)
 			{
@@ -213,7 +213,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBArticle article = (WBArticle)jsonObjectConverter.objectFromJSONString(jsonRequest, WBArticle.class);
+			WPBArticle article = (WPBArticle)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBArticle.class);
 			article.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(article);
 			
@@ -223,9 +223,9 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 				return;
 			}
 			article.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBArticle newArticle = adminStorage.update(article);
+			WPBArticle newArticle = adminStorage.update(article);
 			
-			WBResource resource = new WBResource(newArticle.getExternalKey(), newArticle.getTitle(), WBResource.ARTICLE_TYPE);
+			WPBResource resource = new WPBResource(newArticle.getExternalKey(), newArticle.getTitle(), WPBResource.ARTICLE_TYPE);
 			try
 			{
 				adminStorage.update(resource);

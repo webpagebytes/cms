@@ -22,7 +22,7 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.UriContentBuilder;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.exception.WPBException;
 
 @RunWith(PowerMockRunner.class)
@@ -59,7 +59,7 @@ public void test_buildUriContent()
 {
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	HttpServletRequest requestMock = EasyMock.createMock(HttpServletRequest.class);
-	WBUri uriMock = EasyMock.createMock(WBUri.class);
+	WPBUri uriMock = EasyMock.createMock(WPBUri.class);
 	
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
@@ -88,7 +88,7 @@ public void test_buildUriContent_wrongController()
 {
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	HttpServletRequest requestMock = EasyMock.createMock(HttpServletRequest.class);
-	WBUri uriMock = EasyMock.createMock(WBUri.class);
+	WPBUri uriMock = EasyMock.createMock(WPBUri.class);
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn("com.webpagebytes.cms.DoesNotExist");
 	
@@ -116,7 +116,7 @@ public void test_buildUriContent_controller_already_exists()
 {
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	HttpServletRequest requestMock = EasyMock.createMock(HttpServletRequest.class);
-	WBUri uriMock = EasyMock.createMock(WBUri.class);
+	WPBUri uriMock = EasyMock.createMock(WPBUri.class);
 	
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	
@@ -158,7 +158,7 @@ public void test_buildUriContent_empty_controller()
 {
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	HttpServletRequest requestMock = EasyMock.createMock(HttpServletRequest.class);
-	WBUri uriMock = EasyMock.createMock(WBUri.class);
+	WPBUri uriMock = EasyMock.createMock(WPBUri.class);
 	
 	String controllerClass = "";
 	
@@ -183,7 +183,7 @@ public void test_buildUriContent_null_controller()
 {
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	HttpServletRequest requestMock = EasyMock.createMock(HttpServletRequest.class);
-	WBUri uriMock = EasyMock.createMock(WBUri.class);
+	WPBUri uriMock = EasyMock.createMock(WPBUri.class);
 	
 	String controllerClass = null;
 	

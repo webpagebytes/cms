@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cmsdata.WBResource;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -45,7 +45,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 	{
 		try
 		{
-			if (type.equals(WBWebPageModule.class))
+			if (type.equals(WPBWebPageModule.class))
 			{
 				wbPageModuleCache.Refresh();
 			}
@@ -60,7 +60,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBWebPageModule wbmodule = adminStorage.get(key, WBWebPageModule.class);
+			WPBWebPageModule wbmodule = adminStorage.get(key, WPBWebPageModule.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbmodule));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -78,8 +78,8 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
-			List<WBWebPageModule> wbModules = adminStorage.query(WBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
-			WBWebPageModule wbmodule = (wbModules.size()>0) ? wbModules.get(0) : null;
+			List<WPBWebPageModule> wbModules = adminStorage.query(WPBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, extKey);
+			WPBWebPageModule wbmodule = (wbModules.size()>0) ? wbModules.get(0) : null;
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbmodule));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -100,7 +100,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 
-			List<WBWebPageModule> modules = null;
+			List<WPBWebPageModule> modules = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
 			{
@@ -108,22 +108,22 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					modules = adminStorage.getAllRecords(WBWebPageModule.class, sortParamProp, AdminSortOperator.ASCENDING);					
+					modules = adminStorage.getAllRecords(WPBWebPageModule.class, sortParamProp, AdminSortOperator.ASCENDING);					
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					modules = adminStorage.getAllRecords(WBWebPageModule.class, sortParamProp, AdminSortOperator.DESCENDING);
+					modules = adminStorage.getAllRecords(WPBWebPageModule.class, sortParamProp, AdminSortOperator.DESCENDING);
 				} else
 				{
-					modules = adminStorage.getAllRecords(WBWebPageModule.class);					
+					modules = adminStorage.getAllRecords(WPBWebPageModule.class);					
 				}
 			} else
 			{
-				modules = adminStorage.getAllRecords(WBWebPageModule.class);				
+				modules = adminStorage.getAllRecords(WPBWebPageModule.class);				
 			}
 
-			List<WBWebPageModule> result = filterPagination(request, modules, additionalInfo);
+			List<WPBWebPageModule> result = filterPagination(request, modules, additionalInfo);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));	
@@ -145,7 +145,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBWebPageModule wbmodule = (WBWebPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPageModule.class);
+			WPBWebPageModule wbmodule = (WPBWebPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBWebPageModule.class);
 			wbmodule.setPrivkey(key);
 			Map<String, String> errors = validator.validateUpdate(wbmodule);
 			
@@ -155,9 +155,9 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 				return;
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			WBWebPageModule newModule = adminStorage.update(wbmodule);
+			WPBWebPageModule newModule = adminStorage.update(wbmodule);
 			
-			WBResource resource = new WBResource(newModule.getExternalKey(), newModule.getName(), WBResource.PAGE_MODULE_TYPE);
+			WPBResource resource = new WPBResource(newModule.getExternalKey(), newModule.getName(), WPBResource.PAGE_MODULE_TYPE);
 			try
 			{
 				adminStorage.update(resource);
@@ -183,21 +183,21 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
-			WBWebPageModule pageModule = adminStorage.get(key, WBWebPageModule.class);
+			WPBWebPageModule pageModule = adminStorage.get(key, WPBWebPageModule.class);
 			
-			adminStorage.delete(key, WBWebPageModule.class);
+			adminStorage.delete(key, WPBWebPageModule.class);
 			try
 			{
 				if (pageModule != null)
 				{
-					adminStorage.delete(pageModule.getExternalKey(), WBResource.class);
+					adminStorage.delete(pageModule.getExternalKey(), WPBResource.class);
 				}
 			} catch (Exception e)
 			{
 				// do not propagate further
 			}
 			
-			WBWebPageModule param = new WBWebPageModule();
+			WPBWebPageModule param = new WPBWebPageModule();
 			param.setPrivkey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(returnJson));			
@@ -216,7 +216,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WBWebPageModule wbmodule = (WBWebPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WBWebPageModule.class);
+			WPBWebPageModule wbmodule = (WPBWebPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBWebPageModule.class);
 			Map<String, String> errors = validator.validateCreate(wbmodule);
 			
 			if (errors.size()>0)
@@ -226,9 +226,9 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbmodule.setExternalKey(adminStorage.getUniqueId());
-			WBWebPageModule newModule = adminStorage.add(wbmodule);
+			WPBWebPageModule newModule = adminStorage.add(wbmodule);
 			
-			WBResource resource = new WBResource(newModule.getExternalKey(), newModule.getName(), WBResource.PAGE_MODULE_TYPE);
+			WPBResource resource = new WPBResource(newModule.getExternalKey(), newModule.getName(), WPBResource.PAGE_MODULE_TYPE);
 			try
 			{
 				adminStorage.addWithKey(resource);

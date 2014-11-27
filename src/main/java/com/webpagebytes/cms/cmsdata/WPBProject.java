@@ -8,7 +8,7 @@ import java.util.Set;
 import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
 import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
-public class WBProject implements Serializable{
+public class WPBProject implements Serializable{
 	public static final String PROJECT_KEY = "wbprojectid";
 	
 	@WPBAdminFieldKey

@@ -18,16 +18,16 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBExporter;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBImporter;
-import com.webpagebytes.cms.cmsdata.WBMessage;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBExporter;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBImporter;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
@@ -58,8 +58,8 @@ public class FlatStorageImporterExporter {
 	
 	public static final String PUBLIC_BUCKET = "public";
 	
-	private WBExporter exporter = new WBExporter();
-	private WBImporter importer = new WBImporter();
+	private WPBExporter exporter = new WPBExporter();
+	private WPBImporter importer = new WPBImporter();
 	
 	private WPBAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
 	private WPBCloudFileStorage cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
@@ -198,7 +198,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBUri uri = importer.buildUri(props);
+			WPBUri uri = importer.buildUri(props);
 			if (uri != null)
 			{
 				if (uriValidator.validateCreateWithExternalKey(uri).size()>0)
@@ -219,7 +219,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBWebPage webPage = importer.buildWebPage(props);
+			WPBWebPage webPage = importer.buildWebPage(props);
 			if (webPage != null)
 			{
 				dataStorage.add(webPage);
@@ -237,15 +237,15 @@ public class FlatStorageImporterExporter {
 			String[] parts = path.split("/");
 			String externalKey = parts.length == 3 ? parts[1] : "";
 			
-			List<WBWebPage> pages = dataStorage.query(WBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBWebPage> pages = dataStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (pages.size() == 1)
 			{
-				WBWebPage page = pages.get(0);
+				WPBWebPage page = pages.get(0);
 				
 				byte[] content = getBytesFromInputStream(zis);
 				String pageContent = new String(content, "utf-8");
 				page.setHtmlSource(pageContent);
-				page.setHash(WBWebPage.crc32(pageContent));
+				page.setHash(WPBWebPage.crc32(pageContent));
 				dataStorage.update(page);			
 			} else
 			{
@@ -264,10 +264,10 @@ public class FlatStorageImporterExporter {
 			String[] parts = path.split("/");
 			String externalKey = parts.length == 3 ? parts[1] : "";
 			
-			List<WBWebPageModule> pageModules = dataStorage.query(WBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBWebPageModule> pageModules = dataStorage.query(WPBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (pageModules.size() == 1)
 			{
-				WBWebPageModule pageModule = pageModules.get(0);
+				WPBWebPageModule pageModule = pageModules.get(0);
 				
 				byte[] content = getBytesFromInputStream(zis);
 				String pageContent = new String(content, "utf-8");
@@ -289,11 +289,11 @@ public class FlatStorageImporterExporter {
 		{
 			String[] parts = path.split("/");
 			String externalKey = parts.length > 3 ? parts[1] : "";
-			List<WBFile> files = dataStorage.query(WBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBFile> files = dataStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (files.size() >= 1)
 			{
 				// just take the first file, normally there should be a single file
-				WBFile file = files.get(0);
+				WPBFile file = files.get(0);
 				String uniqueId = dataStorage.getUniqueId();
 				String cloudPath = uniqueId + "/" + file.getFileName();
 				WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, cloudPath);
@@ -344,10 +344,10 @@ public class FlatStorageImporterExporter {
 			String[] parts = path.split("/");
 			String externalKey = parts.length == 3 ? parts[1] : "";
 			
-			List<WBArticle> articles = dataStorage.query(WBArticle.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBArticle> articles = dataStorage.query(WPBArticle.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (articles.size() == 1)
 			{
-				WBArticle article = articles.get(0);
+				WPBArticle article = articles.get(0);
 				
 				byte[] contentBinary = getBytesFromInputStream(zis);
 				String stringContent = new String(contentBinary, "utf-8");
@@ -368,9 +368,9 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBProject project = importer.buildProject(props);
+			WPBProject project = importer.buildProject(props);
 			
-			WBProject tempProject = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			WPBProject tempProject = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			if (tempProject == null)
 			{
 				dataStorage.add(project);
@@ -389,7 +389,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBWebPageModule webPageModule = importer.buildWebPageModule(props);
+			WPBWebPageModule webPageModule = importer.buildWebPageModule(props);
 			if (webPageModule != null)
 			{
 				dataStorage.add(webPageModule);
@@ -405,7 +405,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBArticle article = importer.buildArticle(props);
+			WPBArticle article = importer.buildArticle(props);
 			if (article != null)
 			{
 				dataStorage.add(article);
@@ -421,7 +421,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBFile file = importer.buildFile(props);
+			WPBFile file = importer.buildFile(props);
 			if (file != null)
 			{
 				dataStorage.add(file);
@@ -437,7 +437,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBMessage message = importer.buildMessage(props);
+			WPBMessage message = importer.buildMessage(props);
 			if (message != null)
 			{
 				dataStorage.add(message);
@@ -453,7 +453,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WBParameter parameter = importer.buildParameter(props);
+			WPBParameter parameter = importer.buildParameter(props);
 			if (parameter != null)
 			{
 				dataStorage.add(parameter);
@@ -490,7 +490,7 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			WBProject project = dataStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			WPBProject project = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			Map<String, Object> map = new HashMap<String, Object>();
 			exporter.export(project, map);								
 			String metadataXml = path + "metadata.xml";
@@ -515,11 +515,11 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBUri> uris = dataStorage.getAllRecords(WBUri.class);
+			List<WPBUri> uris = dataStorage.getAllRecords(WPBUri.class);
 			ZipEntry zeExternalGuid = new ZipEntry(path);
 			zos.putNextEntry(zeExternalGuid);
 			zos.closeEntry();
-			for(WBUri uri: uris)
+			for(WPBUri uri: uris)
 			{
 				String guidPath =  PATH_URIS + uri.getExternalKey() + "/";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -548,8 +548,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBParameter> params = dataStorage.query(WBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, ownerExternalKey);
-			for (WBParameter parameter: params)
+			List<WPBParameter> params = dataStorage.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, ownerExternalKey);
+			for (WPBParameter parameter: params)
 			{
 				String paramXmlPath = path + parameter.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -571,8 +571,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBWebPage> pages = dataStorage.getAllRecords(WBWebPage.class);
-			for(WBWebPage page: pages)
+			List<WPBWebPage> pages = dataStorage.getAllRecords(WPBWebPage.class);
+			for(WPBWebPage page: pages)
 			{
 				String pageXmlPath = path + page.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -608,8 +608,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBArticle> articles = dataStorage.getAllRecords(WBArticle.class);
-			for(WBArticle article: articles)
+			List<WPBArticle> articles = dataStorage.getAllRecords(WPBArticle.class);
+			for(WPBArticle article: articles)
 			{
 				String articleXmlPath = path + article.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -637,8 +637,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBWebPageModule> modules = dataStorage.getAllRecords(WBWebPageModule.class);
-			for(WBWebPageModule module: modules)
+			List<WPBWebPageModule> modules = dataStorage.getAllRecords(WPBWebPageModule.class);
+			for(WPBWebPageModule module: modules)
 			{
 				String moduleXmlPath = path + module.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -666,14 +666,14 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBMessage> messages = dataStorage.getAllRecords(WBMessage.class);
-			Map<String, List<WBMessage>> languageToMessages = new HashMap<String, List<WBMessage>>();
-			for(WBMessage message: messages)
+			List<WPBMessage> messages = dataStorage.getAllRecords(WPBMessage.class);
+			Map<String, List<WPBMessage>> languageToMessages = new HashMap<String, List<WPBMessage>>();
+			for(WPBMessage message: messages)
 			{
 				String lcid = message.getLcid();
 				if (!languageToMessages.containsKey(lcid))
 				{
-					languageToMessages.put(lcid, new ArrayList<WBMessage>());
+					languageToMessages.put(lcid, new ArrayList<WPBMessage>());
 				}
 				languageToMessages.get(lcid).add(message);
 			}
@@ -681,7 +681,7 @@ public class FlatStorageImporterExporter {
 			Set<String> languages = languageToMessages.keySet();
 			for(String language: languages)
 			{
-				for(WBMessage message: languageToMessages.get(language))
+				for(WPBMessage message: languageToMessages.get(language))
 				{
 					String messageXmlPath = path + language + "/" + message.getExternalKey() + "/" + "metadata.xml";
 					Map<String, Object> map = new HashMap<String, Object>();
@@ -705,8 +705,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WBFile> files = dataStorage.getAllRecords(WBFile.class);
-			for(WBFile file: files)
+			List<WPBFile> files = dataStorage.getAllRecords(WPBFile.class);
+			for(WPBFile file: files)
 			{
 				String fileXmlPath = path + file.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();

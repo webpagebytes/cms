@@ -11,7 +11,7 @@ import com.webpagebytes.cms.appinterfaces.WPBRequestHandler;
 import com.webpagebytes.cms.appinterfaces.WPBForward;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WBUri;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.exception.WPBException;
 
 class UriContentBuilder {
@@ -33,7 +33,7 @@ class UriContentBuilder {
 	}
 	
 	public void buildUriContent(HttpServletRequest request, HttpServletResponse response,
-			WBUri wburi, 
+			WPBUri wburi, 
 			WPBModel model,
 			WPBForward forward) throws WPBException
 	{

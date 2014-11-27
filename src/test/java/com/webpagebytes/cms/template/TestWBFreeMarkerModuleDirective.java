@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
 import com.webpagebytes.cms.template.WPBTemplateEngine;
@@ -165,7 +165,7 @@ public void test_execute_plainhtml()
 	{
 
 		
-		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);		
+		WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);		
 		WPBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
 		EasyMock.expect(pageModuleMock.getIsTemplateSource()).andReturn(0);
@@ -211,7 +211,7 @@ public void test_execute_templathtml()
 	try
 	{
 	
-		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);
+		WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);
 		EasyMock.expect(pageModuleMock.getName()).andReturn(name);
 		WPBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
@@ -262,7 +262,7 @@ public void test_execute_catch_exception()
 	try
 	{
 		
-		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);		
+		WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);		
 		WPBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.get(name)).andThrow(new WPBIOException(""));
 		
@@ -298,7 +298,7 @@ public void test_execute_noPageModule()
 	try
 	{
 
-		WBWebPageModule pageModuleMock = PowerMock.createMock(WBWebPageModule.class);		
+		WPBWebPageModule pageModuleMock = PowerMock.createMock(WPBWebPageModule.class);		
 		WPBWebPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBWebPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.get(name)).andReturn(null);
 		

@@ -22,8 +22,8 @@ import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cache.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
 import com.webpagebytes.cms.template.WPBTemplateEngine;
@@ -38,8 +38,8 @@ PageContentBuilder pageContentBuilder;
 ModelBuilder modelBuilderMock;
 WPBTemplateEngine templateEngineMock;
 HttpServletRequest requestMock;
-WBWebPage pageMock;
-WBProject projectMock;
+WPBWebPage pageMock;
+WPBProject projectMock;
 
 @Before
 public void setUp()
@@ -50,8 +50,8 @@ public void setUp()
 	pageContentBuilder = new PageContentBuilder(cacheInstancesMock, modelBuilderMock);
 	templateEngineMock = EasyMock.createMock(WPBTemplateEngine.class);
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
-	pageMock = EasyMock.createMock(WBWebPage.class);
-	projectMock = EasyMock.createMock(WBProject.class);
+	pageMock = EasyMock.createMock(WPBWebPage.class);
+	projectMock = EasyMock.createMock(WPBProject.class);
 	Whitebox.setInternalState(pageContentBuilder, "templateEngine", templateEngineMock);
 }
 
@@ -82,7 +82,7 @@ public void test_find_web_page()
 		EasyMock.expect(cacheInstancesMock.getWBWebPageCache()).andReturn(pagesCacheMock);
 		EasyMock.expect(pagesCacheMock.getByExternalKey(pageExternalKey)).andReturn(pageMock);		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock);	
-		WBWebPage result = pageContentBuilder.findWebPage(pageExternalKey);
+		WPBWebPage result = pageContentBuilder.findWebPage(pageExternalKey);
 		assertTrue (result == pageMock);
 		
 	}catch (Exception e)

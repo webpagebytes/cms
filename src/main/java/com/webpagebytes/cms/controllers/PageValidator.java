@@ -3,13 +3,13 @@ package com.webpagebytes.cms.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 
 class PageValidator {
 	public final static int MAX_PAGENAME_LENGHT = 250;
 	public final static int MAX_CONTROLLER_LENGTH = 250;
 	
-	public Map<String, String> validateCreate(WBWebPage webPage)
+	public Map<String, String> validateCreate(WPBWebPage webPage)
 	{
 		HashMap<String, String> errors = new HashMap<String, String>();
 		
@@ -49,7 +49,7 @@ class PageValidator {
 		
 	}
 	
-	public Map<String, String> validateUpdate(WBWebPage webPage)
+	public Map<String, String> validateUpdate(WPBWebPage webPage)
 	{
 		HashMap<String, String> errors = new HashMap<String, String>();
 		if (webPage == null || webPage.getName().length() == 0)

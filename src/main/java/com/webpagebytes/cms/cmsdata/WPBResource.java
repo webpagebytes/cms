@@ -6,7 +6,7 @@ import java.util.Date;
 import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
 import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
-public class WBResource implements Serializable {
+public class WPBResource implements Serializable {
 	public static final int URI_TYPE = 1;
 	public static final int PAGE_TYPE = 2;
 	public static final int PAGE_MODULE_TYPE = 3;
@@ -25,11 +25,11 @@ public class WBResource implements Serializable {
 	@WPBAdminFieldStore
 	private Integer type;
 
-	public WBResource()
+	public WPBResource()
 	{
 		
 	}
-	public WBResource(String key, String name, int type)
+	public WPBResource(String key, String name, int type)
 	{
 		this.rkey = key;
 		this.name = name;

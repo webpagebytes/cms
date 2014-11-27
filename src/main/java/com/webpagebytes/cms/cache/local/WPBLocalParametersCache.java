@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cmsdata.WBParameter;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -15,8 +15,8 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public class WPBLocalParametersCache implements WPBParametersCache {
 	
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WBParameter> cacheParameters;
-	private Map<String, List<WBParameter>> cacheOwnerParameters;
+	private Map<String, WPBParameter> cacheParameters;
+	private Map<String, List<WPBParameter>> cacheOwnerParameters;
 	
 	private static final Object lock = new Object();
 
@@ -34,7 +34,7 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 			
 		}
 	}
-	public WBParameter getByExternalKey(String externalKey) throws WPBIOException
+	public WPBParameter getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (cacheParameters != null) 
 		{
@@ -43,33 +43,33 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 		return null;
 	}
 	
-	public List<WBParameter> getAllForOwner(String ownerExternalKey) throws WPBIOException
+	public List<WPBParameter> getAllForOwner(String ownerExternalKey) throws WPBIOException
 	{
-		List<WBParameter> result = null;
+		List<WPBParameter> result = null;
 		if (cacheOwnerParameters != null)
 		{
 			result = cacheOwnerParameters.get(ownerExternalKey);
 		}
 		if (result == null)
 		{
-			result = new ArrayList<WBParameter>();
+			result = new ArrayList<WPBParameter>();
 		}
 		return result;
 	}
 
 	public void Refresh() throws WPBIOException {
 		synchronized (lock) {
-			List<WBParameter> records = dataStorage.getAllRecords(WBParameter.class);
-			Map<String, WBParameter> localCache = new HashMap<String, WBParameter>();
-			Map<String, List<WBParameter>> ownersLocalCache = new HashMap<String, List<WBParameter>>();
-			for(WBParameter item: records)
+			List<WPBParameter> records = dataStorage.getAllRecords(WPBParameter.class);
+			Map<String, WPBParameter> localCache = new HashMap<String, WPBParameter>();
+			Map<String, List<WPBParameter>> ownersLocalCache = new HashMap<String, List<WPBParameter>>();
+			for(WPBParameter item: records)
 			{
 				localCache.put(item.getExternalKey(), item);
 				String ownerKey = item.getOwnerExternalKey();
-				List<WBParameter> aList = ownersLocalCache.get(ownerKey);
+				List<WPBParameter> aList = ownersLocalCache.get(ownerKey);
 				if (null == aList)
 				{
-					aList = new ArrayList<WBParameter>();
+					aList = new ArrayList<WPBParameter>();
 					ownersLocalCache.put(ownerKey, aList);
 				}
 				aList.add(item);

@@ -9,12 +9,12 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.cmsdata.WBArticle;
-import com.webpagebytes.cms.cmsdata.WBFile;
-import com.webpagebytes.cms.cmsdata.WBProject;
-import com.webpagebytes.cms.cmsdata.WBUri;
-import com.webpagebytes.cms.cmsdata.WBWebPage;
-import com.webpagebytes.cms.cmsdata.WBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBUri;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
@@ -74,7 +74,7 @@ public class Statistics extends Controller {
 		org.json.JSONObject languagesJson = new org.json.JSONObject();					
 		try
 		{
-			WBProject project = adminStorage.get(WBProject.PROJECT_KEY, WBProject.class);
+			WPBProject project = adminStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			Set<String> languages = project.getSupportedLanguagesSet();
 			languagesJson.put("languages", languages);
 			languagesJson.put("defaultLanguage", project.getDefaultLanguage());
@@ -103,19 +103,19 @@ public class Statistics extends Controller {
 					switch (paramEntity)
 					{
 						case URIS:
-							getRecordsStats(request, WBUri.class, payloadJson, entity);
+							getRecordsStats(request, WPBUri.class, payloadJson, entity);
 							break;
 						case PAGES:
-							getRecordsStats(request, WBWebPage.class, payloadJson, entity);
+							getRecordsStats(request, WPBWebPage.class, payloadJson, entity);
 							break;
 						case MODULES:
-							getRecordsStats(request, WBWebPageModule.class, payloadJson, entity);
+							getRecordsStats(request, WPBWebPageModule.class, payloadJson, entity);
 							break;
 						case ARTICLES:
-							getRecordsStats(request, WBArticle.class, payloadJson, entity);
+							getRecordsStats(request, WPBArticle.class, payloadJson, entity);
 							break;
 						case FILES:
-							getRecordsStats(request, WBFile.class, payloadJson, entity);
+							getRecordsStats(request, WPBFile.class, payloadJson, entity);
 							break;
 						case LANGUAGES:
 							getLanguagesStats(request, payloadJson, entity);
