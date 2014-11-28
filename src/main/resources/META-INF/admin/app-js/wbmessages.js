@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 	'ERROR_MESSAGE_NAME_LENGTH': 'Message name length must be between 1 and 250 characters',
 	'WBMESSAGE_DUPLICATE_NAME': 'Key already exists for this locale',

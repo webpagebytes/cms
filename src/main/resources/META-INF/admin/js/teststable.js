@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 module('wbtable');
 test ("test wbtable - creation", function () {
 	var $fixture = $( "#qunit-fixture" );

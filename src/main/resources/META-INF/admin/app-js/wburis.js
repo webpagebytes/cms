@@ -1,4 +1,7 @@
-
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 	'ERROR_URI_START_CHAR': "Site url must to start with /",
 	'ERROR_URI_LENGTH': 'Site url length must be between 1 and 255 characters',

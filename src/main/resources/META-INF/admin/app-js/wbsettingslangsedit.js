@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 		"WB_NO_DEFAULT_LANGUAGES": "One of the selected language must be set as the default language.",
 		"WB_NO_LANGUAGES": "At least one language must be selected from the languages catalog."

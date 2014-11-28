@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 module('wbsearchbox');
 test ("test functions - format", function () {
 	var x1 = "this is a text";

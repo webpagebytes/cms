@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 	'ERROR_FILE_NAME_LENGTH': 'File name length must be between 1 and 250 characters',
 	'ERROR_FILE_FILENAME_LENGTH': 'File file path cannot be empty',

@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 	ERROR_PARAM_NAME_LENGTH: 'Parameter name length must be between 1 and 250 characters',
 	ERROR_PARAM_INVALID_OVERWRITE: 'Operation on overwrite not supported',

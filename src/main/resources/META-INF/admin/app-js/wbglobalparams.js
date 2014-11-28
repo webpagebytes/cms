@@ -1,3 +1,7 @@
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var errorsGeneral = {
 	ERROR_PARAM_NAME_LENGTH: 'Parameter name length must be between 1 and 250 characters',
 	ERROR_PARAM_NAME_BAD_FORMAT: 'Invalid name format: allowed characters are 0-9, a-z, A-Z,-,_,~,. (, is not an allowed character)',

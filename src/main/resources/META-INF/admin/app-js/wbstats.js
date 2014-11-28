@@ -1,4 +1,7 @@
-
+/*
+* Copyright 2014 Webpagebytes
+* http://www.apache.org/licenses/LICENSE-2.0.txt
+*/
 var WBLanguages = {
 		"ar":"Arabic",
 		"ar_AE":"Arabic (United Arab Emirates)",
