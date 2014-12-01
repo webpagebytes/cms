@@ -29,8 +29,8 @@ public class WPBModel {
 	public static final String APPLICATION_CONTROLLER_MODEL_KEY = "wpbAppModel";
 	
 	public static final String LOCALE_KEY = "wpbLocale";
-	public static final String LOCALE_LANGUAGE_KEY = "wpbLocaleLanguage";
-	public static final String LOCALE_COUNTRY_KEY = "wpbLocaleCountry";
+	public static final String LOCALE_LANGUAGE_KEY = "WPB_LOCALE_LANGUAGE";
+	public static final String LOCALE_COUNTRY_KEY = "WPB_LOCALE_COUNTRY";
 	public static final String LOCALE_MESSAGES = "wpbMessages";
 	public static final String MODULE_DIRECTIVE = "wpbModule";
 	public static final String IMAGE_DIRECTIVE = "wpbImage";
