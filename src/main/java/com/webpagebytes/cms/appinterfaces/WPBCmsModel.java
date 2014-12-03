@@ -18,7 +18,11 @@ package com.webpagebytes.cms.appinterfaces;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Class that represents the Webpagebytes CMS specific model data. Controllers or the site pages/site modules can get CMS specific data about the current request using this class.
+ * The class will be populated by the CMS engine with the current request information (Locale, Global parameters, Site urls customization parameters, Site pages customization parameters).  
+ * @see WPBCmsModel
+ */
 public class WPBCmsModel extends HashMap<String, Map<String, String>> {
 
 }

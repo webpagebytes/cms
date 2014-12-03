@@ -18,7 +18,10 @@ package com.webpagebytes.cms.appinterfaces;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * Interface that defines a Site url controller.
+ *
+ */
 public interface WPBRequestHandler 
 {
 	public void initialize(WPBContentProvider contentProvider);

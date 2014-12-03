@@ -17,7 +17,10 @@
 package com.webpagebytes.cms.appinterfaces;
 
 import java.util.HashMap;
-
+/**
+ * Class that represents the application specific model. This is a standard map with string keys and Object values. 
+ * @see WPBCmsModel
+ */
 public class WPBApplicationModel extends HashMap<String, Object> {
 
 }

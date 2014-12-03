@@ -18,7 +18,11 @@ package com.webpagebytes.cms.appinterfaces;
 
 import java.util.Map;
 import java.util.Set;
-
+/**
+ * WPBModel class represents the Webpagebytes CMS Model implementation from the MVC pattern.
+ * @see WPBApplicationModel, WPBCmsModel 
+ *
+ */
 public class WPBModel {
 	
 	public static final String GLOBALS_KEY = "wpbGlobals";
@@ -52,7 +56,7 @@ public class WPBModel {
 	{
 		return cmsModel;
 	}
-	public WPBApplicationModel getCmsCustomModel()
+	public WPBApplicationModel getCmsApplicationModel()
 	{
 		return applicationModel;
 	}

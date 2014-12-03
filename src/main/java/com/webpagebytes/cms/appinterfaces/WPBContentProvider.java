@@ -18,8 +18,19 @@ package com.webpagebytes.cms.appinterfaces;
 
 import java.io.OutputStream;
 
+/**
+ * WPBContentProvider class is used to fetch content from the CMS. This can be used from controllers implementation or in batch mode.
+ * @see WPBContentService 
+ * 
+ */
 public interface WPBContentProvider {
 
+    /**
+     * 
+     * @param externalKey The externalKey identificator for a resource 
+     * @param os The output stream where the method will write the content 
+     * @return Returns true if the content was written, false if no content was found to match externalKey
+     */
 	public boolean writeFileContent(String externalKey, OutputStream os);
 	
 	public boolean writePageContent(String externalKey, WPBModel model, OutputStream os);

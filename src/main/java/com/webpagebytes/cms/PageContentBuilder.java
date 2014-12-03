@@ -97,7 +97,7 @@ class PageContentBuilder {
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsApplicationModel());
 		
 		if (model.getCmsModel().containsKey(WPBModel.LOCALE_KEY))
 		{
@@ -143,7 +143,7 @@ class PageContentBuilder {
 			controllerInst.populatePageModel(model);
 		}
 		model.transferModel(rootModel);
-		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsCustomModel());
+		rootModel.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, model.getCmsApplicationModel());
 		
 		if (model.getCmsModel().containsKey(WPBModel.LOCALE_KEY))
 		{
