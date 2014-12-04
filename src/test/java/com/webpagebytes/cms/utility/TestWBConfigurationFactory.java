@@ -43,16 +43,6 @@ public void test_getConfiguration()
 }
 
 @Test
-public void test_no_active_Configuration()
-{
-	Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", "META-INF/wbconfiguration_noactive.xml");
-	CmsConfiguration config1 = CmsConfigurationFactory.getConfiguration();
-	assertTrue(config1 != null);
-	assertTrue(config1.getSectionClassFactory(CmsConfiguration.WPBSECTION.SECTION_CACHE) == null);
-
-}
-
-@Test
 public void test_getConfiguration_no_config()
 {
 	Logger loggerMock = EasyMock.createMock(Logger.class);

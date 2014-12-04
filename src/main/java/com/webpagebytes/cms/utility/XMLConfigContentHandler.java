@@ -24,8 +24,6 @@ public class XMLConfigContentHandler extends DefaultHandler {
 	StringBuilder strBuilder = new StringBuilder();
 	CmsDefaultConfiguration configuration = new CmsDefaultConfiguration();
 	CmsConfiguration.WPBSECTION currentSection;
-	String activeConfiguration = "";
-	boolean recordData = false; 
 	
 	public CmsConfiguration getConfiguration() 
 	{
@@ -47,15 +45,8 @@ public class XMLConfigContentHandler extends DefaultHandler {
 		} else if (qName.equals("wpbmodel")) {
 			currentSection = CmsConfiguration.WPBSECTION.SECTION_MODEL_CONFIGURATOR;
 		} 
-		else if (qName.equals("wpbconfiguration"))
-		{
-			if (activeConfiguration.length()>0 && attributes.getValue("name")!=null && attributes.getValue("name").equals(activeConfiguration))
-			{
-				recordData = true;
-			}
-		}
 		
-		if (qName.equals("param") && recordData)
+		if (qName.equals("param"))
 		{
 			String name = attributes.getValue("name");
 			String value = attributes.getValue("value");
@@ -64,20 +55,10 @@ public class XMLConfigContentHandler extends DefaultHandler {
      }
 	 public void endElement(String uri, String localName, String qName)
 	 {
-		 if (recordData)
+		 if (qName.equals("factoryclass"))
 		 {
-			 if (qName.equals("factoryclass"))
-			 {
-				 configuration.setSectionClassFactory(currentSection, strBuilder.toString().trim());
-			 } 
-		 }
-		 if (qName.equals("activeconfiguration"))
-		 {
-			 activeConfiguration = strBuilder.toString().trim();
-		 } else if (qName.equals("wpbconfiguration"))
-		{
-				 recordData = false;
-		}
+			 configuration.setSectionClassFactory(currentSection, strBuilder.toString().trim());
+		 } 
 		 strBuilder.setLength(0);
 	 }
 	 
