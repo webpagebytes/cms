@@ -20,10 +20,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.zip.CRC32;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
-
 public class WPBWebPage implements Serializable {
 	@WPBAdminFieldKey
 	private Long privkey;

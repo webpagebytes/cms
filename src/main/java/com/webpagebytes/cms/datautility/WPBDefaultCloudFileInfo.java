@@ -19,6 +19,9 @@ package com.webpagebytes.cms.datautility;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+
 public class WPBDefaultCloudFileInfo implements WPBCloudFileInfo {
 	private WPBCloudFile cloudFile;
 	private String contentType;

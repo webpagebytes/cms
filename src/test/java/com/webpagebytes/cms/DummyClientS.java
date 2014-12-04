@@ -1,8 +1,8 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldTextStore;
 
 public class DummyClientS {
 	@WPBAdminFieldKey

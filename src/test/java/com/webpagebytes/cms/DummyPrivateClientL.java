@@ -1,7 +1,7 @@
 package com.webpagebytes.cms;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
 
 public class DummyPrivateClientL {
 	@WPBAdminFieldKey

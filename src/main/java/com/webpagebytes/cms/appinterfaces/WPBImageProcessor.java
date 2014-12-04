@@ -14,15 +14,14 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.appinterfaces;
+import java.io.OutputStream;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.exception.WPBException;
 
-@Retention(value=RetentionPolicy.RUNTIME)
-@Target(value={ElementType.FIELD})
-public @interface WPBAdminFieldTextStore {
+public interface WPBImageProcessor {
 
+    public boolean resizeImage(WPBCloudFileStorage cloudStorage, WPBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WPBException;
+    
 }

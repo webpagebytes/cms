@@ -14,22 +14,24 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.cmsdata;
 
-import java.util.Map;
+public class WPBCloudFile {
+	private String bucket;
+	private String path;
+	
+	public WPBCloudFile(String bucket, String path)
+	{
+		this.bucket = bucket;
+		this.path = path;
+	}
+	public String getPath()
+	{
+		return path;
+	}
+	public String getBucket()
+	{
+		return bucket;
+	}
 
-public interface WPBCloudFileInfo {
-	
-	public WPBCloudFile getCloudFile();
-	public long getSize();
-	public String getContentType();
-	public void setContentType(String contentType);
-	public Map<String, String> getCustomProperties();
-	public void setCustomProperties(Map<String, String> customProperties);
-	public void setProperty(String name, String value);
-	public String getProperty(String name);
-	public String getMd5();
-	public long getCrc32();
-	public long getCreationDate();
-	
 }

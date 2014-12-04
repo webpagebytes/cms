@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 

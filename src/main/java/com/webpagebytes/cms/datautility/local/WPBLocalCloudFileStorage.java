@@ -38,9 +38,9 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.datautility.WPBCloudFile;
-import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBDefaultCloudFileInfo;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
 import com.webpagebytes.cms.utility.CmsConfiguration;

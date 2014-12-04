@@ -16,19 +16,19 @@
 
 package com.webpagebytes.cms.datautility;
 
+import com.webpagebytes.cms.DefaultImageProcessor;
 import com.webpagebytes.cms.utility.CmsConfiguration;
-
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBImageProcessorFactory {
 
-	private static WPBImageProcessor instance;
+	private static DefaultImageProcessor instance;
 	private static final Object lock = new Object();
 
 	private WPBImageProcessorFactory() {};
 	
-	public static WPBImageProcessor getInstance()
+	public static DefaultImageProcessor getInstance()
 	{
 		if (instance == null) 
 		{
@@ -43,7 +43,7 @@ public class WPBImageProcessorFactory {
 					}
 					try
 					{
-						instance = (WPBImageProcessor) Class.forName(factoryClass).newInstance();
+						instance = (DefaultImageProcessor) Class.forName(factoryClass).newInstance();
 						return instance;
 					} 
 					

@@ -14,10 +14,9 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms;
 
 import java.awt.Graphics2D;
-
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -27,11 +26,16 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 
+import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBImageProcessor;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.datautility.Dimension;
 import com.webpagebytes.cms.exception.WPBException;
 
-public class WPBImageProcessor {
+public class DefaultImageProcessor implements WPBImageProcessor {
 
-	public WPBImageProcessor() {
+	public DefaultImageProcessor() {
 	}
 	public boolean resizeImage(WPBCloudFileStorage cloudStorage, WPBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WPBException
 	{

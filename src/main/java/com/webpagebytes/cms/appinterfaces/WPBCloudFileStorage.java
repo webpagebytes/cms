@@ -14,12 +14,14 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.appinterfaces;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.util.Map;
+
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
 
 public interface WPBCloudFileStorage {
 	public void storeFile(InputStream is, WPBCloudFile file) throws IOException;

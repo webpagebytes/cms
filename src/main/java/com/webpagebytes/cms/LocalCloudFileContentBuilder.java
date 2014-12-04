@@ -18,14 +18,15 @@ package com.webpagebytes.cms;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.datautility.WPBCloudFile;
-import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsBase64Utility;

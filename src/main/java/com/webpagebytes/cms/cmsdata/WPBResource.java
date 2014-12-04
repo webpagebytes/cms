@@ -17,8 +17,6 @@
 package com.webpagebytes.cms.cmsdata;
 
 import java.io.Serializable;
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
 
 public class WPBResource implements Serializable {
 	public static final int URI_TYPE = 1;

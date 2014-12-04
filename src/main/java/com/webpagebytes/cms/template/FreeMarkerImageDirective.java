@@ -25,10 +25,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 
+import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.datautility.WPBCloudFile;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
 

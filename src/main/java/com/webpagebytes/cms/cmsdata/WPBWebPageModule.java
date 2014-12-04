@@ -19,10 +19,6 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
-
 public class WPBWebPageModule implements Serializable {
 	@WPBAdminFieldKey
 	private Long privkey;

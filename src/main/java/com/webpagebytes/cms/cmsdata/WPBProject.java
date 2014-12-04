@@ -21,9 +21,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-
 public class WPBProject implements Serializable{
 	public static final String PROJECT_KEY = "wbprojectid";
 	

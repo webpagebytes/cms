@@ -23,6 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.webpagebytes.cms.cmsdata.WPBAdminField;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldTextStore;
+
 public class JSONToFromObjectConverter {
 
 	private String STRING_CLASS_NAME = "java.lang.String";

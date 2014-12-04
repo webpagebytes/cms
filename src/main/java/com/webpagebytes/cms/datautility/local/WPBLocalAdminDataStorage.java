@@ -27,7 +27,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener.AdminDataStorageOperation;
 import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalQueryOperator;

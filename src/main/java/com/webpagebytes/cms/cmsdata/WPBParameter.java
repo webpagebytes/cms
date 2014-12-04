@@ -19,9 +19,6 @@ package com.webpagebytes.cms.cmsdata;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-
 public class WPBParameter implements Serializable {
 	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;

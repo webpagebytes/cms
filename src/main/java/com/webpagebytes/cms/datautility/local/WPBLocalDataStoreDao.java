@@ -37,9 +37,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.webpagebytes.cms.datautility.WPBAdminFieldKey;
-import com.webpagebytes.cms.datautility.WPBAdminFieldStore;
-import com.webpagebytes.cms.datautility.WPBAdminFieldTextStore;
+
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
+import com.webpagebytes.cms.cmsdata.WPBAdminFieldTextStore;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBSerializerException;
 

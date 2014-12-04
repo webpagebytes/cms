@@ -36,23 +36,23 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
+import com.webpagebytes.cms.DefaultImageProcessor;
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
+import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
+import com.webpagebytes.cms.cmsdata.WPBCloudFile;
+import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WPBCloudFile;
-import com.webpagebytes.cms.datautility.WPBCloudFileInfo;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
-import com.webpagebytes.cms.datautility.WPBImageProcessor;
 import com.webpagebytes.cms.datautility.WPBImageProcessorFactory;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
@@ -65,7 +65,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	private WPBCloudFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
-	private WPBImageProcessor imageProcessor;
+	private DefaultImageProcessor imageProcessor;
 	
 	public FileController()
 	{

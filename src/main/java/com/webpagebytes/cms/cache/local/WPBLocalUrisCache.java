@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 

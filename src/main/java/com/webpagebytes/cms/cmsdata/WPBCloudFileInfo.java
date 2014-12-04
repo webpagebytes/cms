@@ -14,12 +14,22 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.cmsdata;
 
-import java.lang.annotation.*;
+import java.util.Map;
 
-@Retention(value=RetentionPolicy.RUNTIME)
-@Target(value={ElementType.FIELD})
-public @interface WPBAdminFieldStore
-{
+public interface WPBCloudFileInfo {
+	
+	public WPBCloudFile getCloudFile();
+	public long getSize();
+	public String getContentType();
+	public void setContentType(String contentType);
+	public Map<String, String> getCustomProperties();
+	public void setCustomProperties(Map<String, String> customProperties);
+	public void setProperty(String name, String value);
+	public String getProperty(String name);
+	public String getMd5();
+	public long getCrc32();
+	public long getCreationDate();
+	
 }

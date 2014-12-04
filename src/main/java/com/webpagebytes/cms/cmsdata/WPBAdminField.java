@@ -14,24 +14,15 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.cmsdata;
 
-public class WPBCloudFile {
-	private String bucket;
-	private String path;
-	
-	public WPBCloudFile(String bucket, String path)
-	{
-		this.bucket = bucket;
-		this.path = path;
-	}
-	public String getPath()
-	{
-		return path;
-	}
-	public String getBucket()
-	{
-		return bucket;
-	}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(value=RetentionPolicy.RUNTIME)
+@Target(value={ElementType.FIELD})
+public @interface WPBAdminField {
 
 }
