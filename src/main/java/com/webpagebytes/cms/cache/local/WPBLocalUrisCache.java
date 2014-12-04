@@ -17,13 +17,13 @@
 package com.webpagebytes.cms.cache.local;
 
 import java.util.HashMap;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import com.webpagebytes.cms.cache.WPBUrisCache;
+
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;

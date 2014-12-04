@@ -16,28 +16,28 @@
 
 package com.webpagebytes.cms.cache.local;
 
-import com.webpagebytes.cms.cache.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cache.WPBMessagesCache;
-import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cache.WPBUrisCache;
-import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
 
 public class WPBLocalCacheFactory implements WPBCacheFactory {
 	
 	private static WPBUrisCache uriCacheInstance;
 	private static WPBWebPagesCache pageCacheInstance;
 	private static WPBParametersCache parametersCacheInstance;
-	private static WPBWebPageModulesCache pageModulesCacheInstance;
+	private static WPBPageModulesCache pageModulesCacheInstance;
 	private static WPBFilesCache filesCacheInstance;
 	private static WPBArticlesCache articlesCacheInstance;
 	private static WPBMessagesCache messagesCacheInstance;
 	private static WPBProjectCache projectCacheInstance;
 	
-	public WPBUrisCache createWBUrisCacheInstance()
+	public WPBUrisCache getUrisCacheInstance()
 	{
 		if (null == uriCacheInstance)
 		{
@@ -45,7 +45,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return uriCacheInstance;
 	}
-	public WPBWebPagesCache createWBWebPagesCacheInstance()
+	public WPBWebPagesCache getWebPagesCacheInstance()
 	{
 		if (null == pageCacheInstance)
 		{
@@ -53,7 +53,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return pageCacheInstance;
 	}
-	public WPBParametersCache createWBParametersCacheInstance()
+	public WPBParametersCache getParametersCacheInstance()
 	{
 		if (parametersCacheInstance == null)
 		{
@@ -62,7 +62,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		return parametersCacheInstance;
 	}
 	
-	public WPBWebPageModulesCache createWBWebPageModulesCacheInstance()
+	public WPBPageModulesCache getPageModulesCacheInstance()
 	{
 		if (pageModulesCacheInstance == null)
 		{
@@ -70,7 +70,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return pageModulesCacheInstance;
 	}
-	public WPBFilesCache createWBFilesCacheInstance()
+	public WPBFilesCache getFilesCacheInstance()
 	{
 		if (filesCacheInstance == null)
 		{
@@ -78,7 +78,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return filesCacheInstance;
 	}
-	public WPBArticlesCache createWBArticlesCacheInstance()
+	public WPBArticlesCache getArticlesCacheInstance()
 	{
 		if (articlesCacheInstance == null)
 		{
@@ -86,7 +86,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return articlesCacheInstance;
 	}
-	public WPBMessagesCache createWBMessagesCacheInstance()
+	public WPBMessagesCache getMessagesCacheInstance()
 	{
 		if (messagesCacheInstance == null)
 		{
@@ -94,7 +94,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return messagesCacheInstance;
 	}
-	public WPBProjectCache createWBProjectCacheInstance()
+	public WPBProjectCache getProjectCacheInstance()
 	{
 		if (projectCacheInstance == null)
 		{

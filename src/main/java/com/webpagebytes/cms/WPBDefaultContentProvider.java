@@ -67,7 +67,7 @@ public class WPBDefaultContentProvider implements WPBContentProvider {
 			{
 				return false;
 			}
-			String content = pageContentBuilder.buildPageContent(wbWebPage, model);
+			String content = pageContentBuilder.buildPageContent(wbWebPage, (InternalModel)model);
 			os.write(content.getBytes("UTF-8"));
 		} catch (Exception e)
 		{

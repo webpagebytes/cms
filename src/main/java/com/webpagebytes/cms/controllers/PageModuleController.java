@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
@@ -44,14 +43,14 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class PageModuleController extends Controller implements WPBAdminDataStorageListener<Object>{
 	private WPBAdminDataStorage adminStorage;
 	private PageModuleValidator validator;
-	private WPBWebPageModulesCache wbPageModuleCache;
+	private WPBPageModulesCache wbPageModuleCache;
 	public PageModuleController()
 	{
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new PageModuleValidator();
 		
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbPageModuleCache = wbCacheFactory.createWBWebPageModulesCacheInstance(); 
+		wbPageModuleCache = wbCacheFactory.getPageModulesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 
@@ -282,7 +281,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 		this.validator = validator;
 	}
 	
-	public void setPageModuleCache(WPBWebPageModulesCache cache)
+	public void setPageModuleCache(WPBPageModulesCache cache)
 	{
 		this.wbPageModuleCache = cache;
 	}

@@ -14,11 +14,17 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
+import java.util.List;
+
+import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public interface WPBRefreshableCache {
-	public void Refresh() throws WPBIOException;
+public interface WPBParametersCache extends WPBRefreshableCache {
+
+	public WPBParameter getByExternalKey(String externalKey) throws WPBIOException;
+	
+	public List<WPBParameter> getAllForOwner(String ownerExternalKey) throws WPBIOException;
 
 }

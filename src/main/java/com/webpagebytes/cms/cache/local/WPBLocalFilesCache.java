@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.webpagebytes.cms.cache.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;

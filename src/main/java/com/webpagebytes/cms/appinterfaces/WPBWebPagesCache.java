@@ -14,12 +14,15 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
-import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public interface WPBArticlesCache extends WPBRefreshableCache {
-	public WPBArticle getByExternalKey(String externalKey) throws WPBIOException;
+public interface WPBWebPagesCache extends WPBRefreshableCache {
+
+	public WPBWebPage getByExternalKey(String key) throws WPBIOException;
+	
+	public WPBWebPage get(String pageName) throws WPBIOException;
 	
 }

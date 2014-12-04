@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +28,9 @@ import java.util.zip.CRC32;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
@@ -59,7 +58,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		pageValidator = new PageValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbWebPageCache = wbCacheFactory.createWBWebPagesCacheInstance(); 
+		wbWebPageCache = wbCacheFactory.getWebPagesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}

@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
@@ -59,7 +59,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		uriValidator = new UriValidator();
 		WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbUriCache = cacheFactory.createWBUrisCacheInstance();	
+		wbUriCache = cacheFactory.getUrisCacheInstance();	
 		adminStorage.addStorageListener(this);
 	}
 	

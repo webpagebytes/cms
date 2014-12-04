@@ -28,9 +28,9 @@ import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.WPBPublicContentServlet;
 import com.webpagebytes.cms.URLMatcherResult;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;
@@ -50,7 +50,7 @@ WPBCacheInstances cacheInstancesMock;
 ModelBuilder modelBuilder;
 WPBUri uriMock;
 URLMatcherResult urlMatcherResultMock;
-WPBModel modelMock;
+InternalModel modelMock;
 WPBProjectCache projectCacheMock;
 WPBWebPage webPageMock;
 CmsConfiguration configurationMock;
@@ -67,7 +67,7 @@ public void setUp()
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 	uriMock = EasyMock.createMock(WPBUri.class);
 	urlMatcherResultMock = EasyMock.createMock(URLMatcherResult.class);
-	modelMock = EasyMock.createMock(WPBModel.class);
+	modelMock = EasyMock.createMock(InternalModel.class);
 	webPageMock = EasyMock.createMock(WPBWebPage.class);
 	projectCacheMock  = EasyMock.createMock(WPBProjectCache.class);
 }
@@ -105,7 +105,7 @@ public void test_populateModelForWebPage()
 	{
 		String pageExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "param1";
 		String value1 = "value1";
@@ -146,7 +146,7 @@ public void test_populateUriParameters_OK_language_and_country()
 		
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
@@ -220,7 +220,7 @@ public void test_populateUriParameters_OK_only_language()
 		
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
@@ -286,7 +286,7 @@ public void test_populateUriParameters_empty_urlmatcher()
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
 		Map<String, String> mapParams = new HashMap<String, String>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		String param1 = "language";
 		String value1 = "en";
 		mapParams.put(param1, value1);
@@ -347,7 +347,7 @@ public void test_populateUriParameters_language_not_supported()
 		
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
@@ -429,7 +429,7 @@ public void test_populateUriParameters_no_language_param()
 		
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
@@ -509,7 +509,7 @@ public void test_populateUriParameters_no_country_param()
 		
 		String uriExternalKey = "abc";
 		List<WPBParameter> pageParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "language";
 		String value1 = "en";
@@ -587,7 +587,7 @@ public void test_populateLocale()
 	Map<String, String> mapLocale = new HashMap<String, String>();
 	mapLocale.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
 	mapLocale.put(WPBModel.LOCALE_COUNTRY_KEY, "GB");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	try
 	{
@@ -608,7 +608,7 @@ public void test_populateGlobalParameters()
 		modelBuilder = new ModelBuilder(cacheInstancesMock);
 		
 		List<WPBParameter> globalParams = new ArrayList<WPBParameter>();
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> mapParams = new HashMap<String, String>(); 
 		String param1 = "param1";
 		String value1 = "value1";
@@ -655,7 +655,7 @@ public void test_populateStaticParametersFromHeader_http()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "/test");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "http://www.example.com/test");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock);
 
@@ -680,7 +680,7 @@ public void test_populateStaticParametersFromHeader_https()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock, configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
@@ -708,7 +708,7 @@ public void test_populateStaticParametersFromConfig_http()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock, configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
@@ -737,7 +737,7 @@ public void test_populateStaticParametersFromRequest_http()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "/test1/test2");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "https://www.example.com/test1/test2");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock, configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
@@ -763,7 +763,7 @@ public void test_populateStaticParameters_uppercase()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "www.example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "/test1/TEST2");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "http://www.EXAMPLE.com/test1/TEST2");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock, configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
@@ -789,7 +789,7 @@ public void test_populateStaticParameters_justdomain()
 	mapStaticParams.put(WPBModel.GLOBAL_DOMAIN, "example.com");
 	mapStaticParams.put(WPBModel.GLOBAL_CONTEXT_PATH, "");
 	mapStaticParams.put(WPBModel.GLOBAL_BASE_URL, "http://EXAMPLE.com");
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	
 	EasyMock.replay(requestMock, configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);

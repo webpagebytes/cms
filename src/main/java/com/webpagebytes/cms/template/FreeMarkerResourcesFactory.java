@@ -18,8 +18,8 @@ package com.webpagebytes.cms.template;
 
 import java.util.Locale;
 
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBMessagesCache;
 
 import freemarker.template.Configuration;
 

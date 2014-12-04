@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.cache.WPBUrisCache;
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.UriController;

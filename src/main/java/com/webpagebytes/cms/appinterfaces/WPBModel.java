@@ -19,11 +19,11 @@ package com.webpagebytes.cms.appinterfaces;
 import java.util.Map;
 import java.util.Set;
 /**
- * WPBModel class represents the Webpagebytes CMS Model implementation from the MVC pattern.
+ * WPBModel interface represents the Webpagebytes CMS Model implementation from the MVC pattern.
  * @see WPBApplicationModel, WPBCmsModel 
  *
  */
-public class WPBModel {
+public interface WPBModel {
 	
 	public static final String GLOBALS_KEY = "wpbGlobals";
 	public static final String REQUEST_KEY = "wpbRequest";
@@ -48,26 +48,6 @@ public class WPBModel {
 	public static final String GLOBAL_CONTEXT_PATH = "WPB_GLOBAL_CONTEXT_PATH";
 	public static final String GLOBAL_BASE_URL = "WPB_GLOBAL_BASE_URL";
 	
-
-	protected WPBCmsModel cmsModel = new WPBCmsModel();
-	protected WPBApplicationModel applicationModel = new WPBApplicationModel();
-	
-	public WPBCmsModel getCmsModel()
-	{
-		return cmsModel;
-	}
-	public WPBApplicationModel getCmsApplicationModel()
-	{
-		return applicationModel;
-	}
-	
-	public void transferModel(Map<String, Object> rootObject)
-	{
-		Set<String> keys = cmsModel.keySet();
-		for(String key: keys)
-		{
-			rootObject.put(key, cmsModel.get(key));
-		}
-				
-	}
+	public WPBCmsModel getCmsModel();
+	public WPBApplicationModel getCmsApplicationModel();
 }

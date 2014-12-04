@@ -14,9 +14,10 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
 import java.util.Set;
+
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.exception.WPBIOException;
 

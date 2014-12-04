@@ -17,16 +17,16 @@
 package com.webpagebytes.cms.cache.local;
 
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
-import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
+
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class WPBLocalWebPageModulesCache implements WPBWebPageModulesCache {
+public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
 	
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBWebPageModule> localCacheByID;

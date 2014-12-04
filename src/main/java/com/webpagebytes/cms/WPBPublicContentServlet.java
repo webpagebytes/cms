@@ -112,14 +112,14 @@ public void init() throws ServletException
 		CmsConfigurationFactory.setConfigPath(configPath);
 	}
 	
-	cacheInstances = new WPBCacheInstances(cacheFactory.createWBUrisCacheInstance(), 
-			cacheFactory.createWBWebPagesCacheInstance(), 
-			cacheFactory.createWBWebPageModulesCacheInstance(), 
-			cacheFactory.createWBParametersCacheInstance(),
-			cacheFactory.createWBFilesCacheInstance(),
-			cacheFactory.createWBArticlesCacheInstance(),
-			cacheFactory.createWBMessagesCacheInstance(),
-			cacheFactory.createWBProjectCacheInstance());
+	cacheInstances = new WPBCacheInstances(cacheFactory.getUrisCacheInstance(), 
+			cacheFactory.getWebPagesCacheInstance(), 
+			cacheFactory.getPageModulesCacheInstance(), 
+			cacheFactory.getParametersCacheInstance(),
+			cacheFactory.getFilesCacheInstance(),
+			cacheFactory.getArticlesCacheInstance(),
+			cacheFactory.getMessagesCacheInstance(),
+			cacheFactory.getProjectCacheInstance());
 
 	String initUriPrefix = servletUtility.getContextPath(this);
 	if (initUriPrefix.length() > 0)
@@ -156,7 +156,7 @@ private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 	return urlMatcher;
 }
 	
-private void handleRequestTypeText(WPBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, WPBModel model) throws WPBException, IOException
+private void handleRequestTypeText(WPBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, InternalModel model) throws WPBException, IOException
 {
 	if (webPage == null)
 	{
@@ -260,7 +260,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			}
 			
 			// build the uri model
-			WPBModel model = new WPBModel();
+			InternalModel model = new InternalModel();
 			WPBForward forward = new WPBForward();
 			modelBuilder.populateModelForUriData(req, wbUri, urlMatcherResult, model);
 			

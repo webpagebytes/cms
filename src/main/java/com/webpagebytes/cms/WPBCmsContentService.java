@@ -62,7 +62,7 @@ public class WPBCmsContentService implements WPBContentService {
 	}
 	public WPBModel createModel(String language, String country) throws WPBException
 	{
-		WPBModel model =  new WPBModel();
+		InternalModel model =  new InternalModel();
 		String lcid = language.toLowerCase();
 		language = language.toLowerCase();
 		if (country != null && country.length()>0)
@@ -81,7 +81,7 @@ public class WPBCmsContentService implements WPBContentService {
 	}
 	public WPBModel createModel() throws WPBException
 	{
-		WPBModel model =  new WPBModel();
+		InternalModel model =  new InternalModel();
 		Pair<String, String> defaultLocale = cacheInstances.getProjectCache().getDefaultLocale();
 		modelBuilder.populateLocale(defaultLocale.getFirst(), defaultLocale.getSecond(), model);	
 		modelBuilder.populateGlobalParameters(model);

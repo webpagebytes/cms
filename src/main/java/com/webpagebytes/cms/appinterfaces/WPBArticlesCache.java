@@ -14,17 +14,12 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
-import java.util.Locale;
-
-import java.util.Map;
-import java.util.Set;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public interface WPBMessagesCache extends WPBRefreshableCache {
-	public Map<String, String> getAllMessages(Locale locale) throws WPBIOException;
-	public Map<String, String> getAllMessages(String lcid) throws WPBIOException;
-	public Set<String> getSupportedLocales();
-	public Long getFingerPrint(Locale locale);
+public interface WPBArticlesCache extends WPBRefreshableCache {
+	public WPBArticle getByExternalKey(String externalKey) throws WPBIOException;
+	
 }

@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;

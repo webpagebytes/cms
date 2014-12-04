@@ -21,8 +21,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.FileContentBuilder;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;

@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +26,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
@@ -51,7 +50,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		parameterValidator = new ParameterValidator();
 		
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbParameterCache = wbCacheFactory.createWBParametersCacheInstance(); 
+		wbParameterCache = wbCacheFactory.getParametersCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}

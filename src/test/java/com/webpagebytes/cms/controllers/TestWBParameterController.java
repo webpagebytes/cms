@@ -18,7 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.webpagebytes.cms.cache.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.controllers.WPBErrors;

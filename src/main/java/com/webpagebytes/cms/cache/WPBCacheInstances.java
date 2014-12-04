@@ -16,10 +16,19 @@
 
 package com.webpagebytes.cms.cache;
 
+import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+
 public class WPBCacheInstances {
 	private WPBUrisCache wbUriCache;
 	private WPBWebPagesCache wbWebPageCache;
-	private WPBWebPageModulesCache wbWebPageModuleCache;
+	private WPBPageModulesCache wbWebPageModuleCache;
 	private WPBParametersCache wbParameterCache;
 	private WPBFilesCache wbFilesCache;
 	private WPBArticlesCache wbArticleCache;
@@ -27,7 +36,7 @@ public class WPBCacheInstances {
 	private WPBProjectCache wbProjectCache;
 	public WPBCacheInstances(WPBUrisCache uriCache,
 							WPBWebPagesCache webPageCache,
-							WPBWebPageModulesCache webPageModuleCache,
+							WPBPageModulesCache webPageModuleCache,
 							WPBParametersCache parameterCache,
 							WPBFilesCache filesCache,
 							WPBArticlesCache articleCache,
@@ -45,14 +54,14 @@ public class WPBCacheInstances {
 	}
 	public WPBCacheInstances(WPBCacheFactory cacheFactory)
 	{
-		wbUriCache = cacheFactory.createWBUrisCacheInstance();
-		wbWebPageCache = cacheFactory.createWBWebPagesCacheInstance();
-		wbWebPageModuleCache = cacheFactory.createWBWebPageModulesCacheInstance();
-		wbParameterCache = cacheFactory.createWBParametersCacheInstance();
-		wbFilesCache = cacheFactory.createWBFilesCacheInstance();
-		wbArticleCache = cacheFactory.createWBArticlesCacheInstance();
-		wbMessageCache = cacheFactory.createWBMessagesCacheInstance();
-		wbProjectCache = cacheFactory.createWBProjectCacheInstance();
+		wbUriCache = cacheFactory.getUrisCacheInstance();
+		wbWebPageCache = cacheFactory.getWebPagesCacheInstance();
+		wbWebPageModuleCache = cacheFactory.getPageModulesCacheInstance();
+		wbParameterCache = cacheFactory.getParametersCacheInstance();
+		wbFilesCache = cacheFactory.getFilesCacheInstance();
+		wbArticleCache = cacheFactory.getArticlesCacheInstance();
+		wbMessageCache = cacheFactory.getMessagesCacheInstance();
+		wbProjectCache = cacheFactory.getProjectCacheInstance();
 	}
 	public WPBMessagesCache getWBMessageCache()
 	{
@@ -62,7 +71,7 @@ public class WPBCacheInstances {
 	{
 		return wbWebPageCache;
 	}
-	public WPBWebPageModulesCache getWBWebPageModuleCache()
+	public WPBPageModulesCache getWBWebPageModuleCache()
 	{
 		return wbWebPageModuleCache;
 	}

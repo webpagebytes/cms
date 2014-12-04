@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;

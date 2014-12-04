@@ -64,7 +64,7 @@ public void test_buildUriContent()
 	String controllerClass = "com.webpagebytes.cms.DummyRequestHandler";
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
 	
-	WPBModel model = new WPBModel();
+	InternalModel model = new InternalModel();
 	WPBForward forward = new WPBForward();
 	try
 	{
@@ -92,7 +92,7 @@ public void test_buildUriContent_wrongController()
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn("com.webpagebytes.cms.DoesNotExist");
 	
-	WPBModel model = new WPBModel();
+    InternalModel model = new InternalModel();
 	WPBForward forward = new WPBForward();
 	try
 	{
@@ -133,7 +133,7 @@ public void test_buildUriContent_controller_already_exists()
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);
 	
-	WPBModel model = new WPBModel();
+    InternalModel model = new InternalModel();
 	WPBForward forward = new WPBForward();
 	try
 	{
@@ -163,7 +163,7 @@ public void test_buildUriContent_empty_controller()
 	String controllerClass = "";
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);	
-	WPBModel model = new WPBModel();
+    InternalModel model = new InternalModel();
 	WPBForward forward = new WPBForward();
 	try
 	{
@@ -188,7 +188,7 @@ public void test_buildUriContent_null_controller()
 	String controllerClass = null;
 	
 	EasyMock.expect(uriMock.getControllerClass()).andReturn(controllerClass);	
-	WPBModel model = new WPBModel();
+    InternalModel model = new InternalModel();
 	WPBForward forward = new WPBForward();
 	try
 	{

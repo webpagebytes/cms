@@ -19,7 +19,8 @@ package com.webpagebytes.cms.cache.local;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
+
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;

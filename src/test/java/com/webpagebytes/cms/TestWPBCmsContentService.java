@@ -21,8 +21,8 @@ import org.powermock.reflect.Whitebox;
 
 import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
@@ -115,10 +115,10 @@ public void test_createModel()
 		EasyMock.expect(projectCacheMock.getDefaultLocale()).andReturn(new Pair<String, String>("en", "GB"));
 		Capture<String> captureLanguage = new Capture<String>();
 		Capture<String> captureCountry = new Capture<String>();
-		Capture<WPBModel> captureModel1 = new Capture<WPBModel>();		
+		Capture<InternalModel> captureModel1 = new Capture<InternalModel>();		
 		modelBuilderMock.populateLocale(EasyMock.capture(captureLanguage), EasyMock.capture(captureCountry), EasyMock.capture(captureModel1));
 		
-		Capture<WPBModel> captureModel2 = new Capture<WPBModel>();		
+		Capture<InternalModel> captureModel2 = new Capture<InternalModel>();		
 		modelBuilderMock.populateGlobalParameters(EasyMock.capture(captureModel2));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);
@@ -183,10 +183,10 @@ public void createModel_param(String language, String country)
 		EasyMock.expect(projectCacheMock.getSupportedLocales()).andReturn(supportedLocales);
 		Capture<String> captureLanguage = new Capture<String>();
 		Capture<String> captureCountry = new Capture<String>();
-		Capture<WPBModel> captureModel1 = new Capture<WPBModel>();		
+		Capture<InternalModel> captureModel1 = new Capture<InternalModel>();		
 		modelBuilderMock.populateLocale(EasyMock.capture(captureLanguage), EasyMock.capture(captureCountry), EasyMock.capture(captureModel1));
 		
-		Capture<WPBModel> captureModel2 = new Capture<WPBModel>();		
+		Capture<InternalModel> captureModel2 = new Capture<InternalModel>();		
 		modelBuilderMock.populateGlobalParameters(EasyMock.capture(captureModel2));
 		
 		EasyMock.replay(modelBuilderMock, cacheInstancesMock, projectCacheMock);

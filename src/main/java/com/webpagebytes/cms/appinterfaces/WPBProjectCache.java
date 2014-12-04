@@ -14,15 +14,17 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import java.util.Set;
+
+import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.utility.Pair;
 
-public interface WPBWebPageModulesCache extends WPBRefreshableCache {
-
-	public WPBWebPageModule getByExternalKey(String key) throws WPBIOException;
-	
-	public WPBWebPageModule get(String pageName) throws WPBIOException;
-
+public interface WPBProjectCache extends WPBRefreshableCache {
+	public String getDefaultLanguage() throws WPBIOException;
+	public Pair<String, String> getDefaultLocale() throws WPBIOException;
+	public Set<String> getSupportedLocales() throws WPBIOException;	
+	public WPBProject getProject() throws WPBIOException;
 }

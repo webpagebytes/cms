@@ -27,15 +27,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
@@ -70,7 +73,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		validator = new FileValidator();
 		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		filesCache = wbCacheFactory.createWBFilesCacheInstance();	
+		filesCache = wbCacheFactory.getFilesCacheInstance();	
 		adminStorage.addStorageListener(this);
 		imageProcessor = WPBImageProcessorFactory.getInstance();
 	}

@@ -16,14 +16,23 @@
 
 package com.webpagebytes.cms.cache;
 
+import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+
 public interface WPBCacheFactory {
-	public WPBUrisCache createWBUrisCacheInstance();
-	public WPBWebPagesCache createWBWebPagesCacheInstance();
-	public WPBWebPageModulesCache createWBWebPageModulesCacheInstance();
-	public WPBParametersCache createWBParametersCacheInstance();
-	public WPBFilesCache createWBFilesCacheInstance();
-	public WPBArticlesCache createWBArticlesCacheInstance();
-	public WPBMessagesCache createWBMessagesCacheInstance();
-	public WPBProjectCache createWBProjectCacheInstance();
+	public WPBUrisCache getUrisCacheInstance();
+	public WPBWebPagesCache getWebPagesCacheInstance();
+	public WPBPageModulesCache getPageModulesCacheInstance();
+	public WPBParametersCache getParametersCacheInstance();
+	public WPBFilesCache getFilesCacheInstance();
+	public WPBArticlesCache getArticlesCacheInstance();
+	public WPBMessagesCache getMessagesCacheInstance();
+	public WPBProjectCache getProjectCacheInstance();
 	
 }

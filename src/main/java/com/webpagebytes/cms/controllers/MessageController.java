@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBMessagesCache;
 import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
@@ -56,7 +55,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		validator = new MessageValidator();
 		validator.setAdminStorage(adminStorage);
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbMessageCache = wbCacheFactory.createWBMessagesCacheInstance();
+		wbMessageCache = wbCacheFactory.getMessagesCacheInstance();
 		adminStorage.addStorageListener(this);
 	}
 	

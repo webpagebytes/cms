@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;
@@ -64,14 +64,14 @@ class ModelBuilder {
 	 * URL_REQUEST_PARAMETERS_KEY
 	 * 
 	 */
-	public void populateModelForUriData(HttpServletRequest request, WPBUri uri, URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
+	public void populateModelForUriData(HttpServletRequest request, WPBUri uri, URLMatcherResult urlMatcherResult, InternalModel model) throws WPBException
 	{
 		populateUriParameters(request, uri.getExternalKey(), urlMatcherResult, model);
 		populateGlobalParameters(model);
 		populateStaticParameters(request, model);
 	}
 
-	public void populateModelForWebPage(WPBWebPage page, WPBModel model) throws WPBException
+	public void populateModelForWebPage(WPBWebPage page, InternalModel model) throws WPBException
 	{
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
 		
@@ -87,7 +87,7 @@ class ModelBuilder {
 	}
 
 	private void populateUriParameters(HttpServletRequest request, String uriExternalKey,
-										URLMatcherResult urlMatcherResult, WPBModel model) throws WPBException
+										URLMatcherResult urlMatcherResult, InternalModel model) throws WPBException
 	{
 		WPBProjectCache projectCache = cacheInstances.getProjectCache();
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
@@ -153,7 +153,7 @@ class ModelBuilder {
 		populateLocale(languageParam, countryParam, model);
 	}
 	
-	public void populateLocale(String language, String country, WPBModel model)
+	public void populateLocale(String language, String country, InternalModel model)
 	{
 		// populate the LOCALE_KEY
 		Map<String, String> localeMap = new HashMap<String, String>();
@@ -162,7 +162,7 @@ class ModelBuilder {
 		model.getCmsModel().put(WPBModel.LOCALE_KEY, localeMap);				
 	}
 	
-	public void populateGlobalParameters(WPBModel model) throws WPBException
+	public void populateGlobalParameters(InternalModel model) throws WPBException
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();
@@ -235,7 +235,7 @@ class ModelBuilder {
 		return "";		
 	}
 	
-	private void populateStaticParameters(HttpServletRequest request, WPBModel model)
+	private void populateStaticParameters(HttpServletRequest request, InternalModel model)
 	{
 		//the static path params are taken in the following order
 		// the header value (X-BaseModelUrlPath), the value of baseModelUrlPath from configuration and finally the requestUrl

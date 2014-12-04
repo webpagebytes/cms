@@ -22,8 +22,9 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.datautility.WPBCloudFile;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorage;

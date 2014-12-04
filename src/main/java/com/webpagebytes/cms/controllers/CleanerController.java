@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,16 +24,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
+import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
+import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBArticlesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBFilesCache;
-import com.webpagebytes.cms.cache.WPBMessagesCache;
-import com.webpagebytes.cms.cache.WPBParametersCache;
-import com.webpagebytes.cms.cache.WPBProjectCache;
-import com.webpagebytes.cms.cache.WPBUrisCache;
-import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBMessage;
@@ -77,42 +76,42 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 		{
 			if (type.equals(WPBUri.class))
 			{
-				WPBUrisCache urisCache = cacheFactory.createWBUrisCacheInstance();
+				WPBUrisCache urisCache = cacheFactory.getUrisCacheInstance();
 				urisCache.Refresh();
 			}
 			if (type.equals(WPBWebPage.class))
 			{
-				WPBWebPagesCache pagesCache = cacheFactory.createWBWebPagesCacheInstance();
+				WPBWebPagesCache pagesCache = cacheFactory.getWebPagesCacheInstance();
 				pagesCache.Refresh();
 			}
 			if (type.equals(WPBWebPageModule.class))
 			{
-				WPBWebPageModulesCache modulesCache = cacheFactory.createWBWebPageModulesCacheInstance();
+				WPBPageModulesCache modulesCache = cacheFactory.getPageModulesCacheInstance();
 				modulesCache.Refresh();
 			}
 			if (type.equals(WPBMessage.class))
 			{
-				WPBMessagesCache messagesCache = cacheFactory.createWBMessagesCacheInstance();
+				WPBMessagesCache messagesCache = cacheFactory.getMessagesCacheInstance();
 				messagesCache.Refresh();
 			}
 			if (type.equals(WPBArticle.class))
 			{
-				WPBArticlesCache articlesCache = cacheFactory.createWBArticlesCacheInstance();
+				WPBArticlesCache articlesCache = cacheFactory.getArticlesCacheInstance();
 				articlesCache.Refresh();
 			}
 			if (type.equals(WPBFile.class))
 			{
-				WPBFilesCache filesCache = cacheFactory.createWBFilesCacheInstance();
+				WPBFilesCache filesCache = cacheFactory.getFilesCacheInstance();
 				filesCache.Refresh();
 			}
 			if (type.equals(WPBParameter.class))
 			{
-				WPBParametersCache parametersCache = cacheFactory.createWBParametersCacheInstance();
+				WPBParametersCache parametersCache = cacheFactory.getParametersCacheInstance();
 				parametersCache.Refresh();
 			}
 			if (type.equals(WPBProject.class))
 			{
-				WPBProjectCache projectCache = cacheFactory.createWBProjectCacheInstance();
+				WPBProjectCache projectCache = cacheFactory.getProjectCacheInstance();
 				projectCache.Refresh();
 			}
 			

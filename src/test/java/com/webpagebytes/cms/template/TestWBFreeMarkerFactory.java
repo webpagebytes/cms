@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBWebPageModulesCache;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.template.FreeMarkerResourcesFactory;
 import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
 import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;

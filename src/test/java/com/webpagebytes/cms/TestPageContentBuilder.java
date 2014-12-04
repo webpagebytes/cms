@@ -20,8 +20,8 @@ import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.PageContentBuilder;
 import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cache.WPBWebPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;
 import com.webpagebytes.cms.exception.WPBException;
@@ -100,7 +100,7 @@ public void test_buildPageContent_null_isTemplateSource()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		String htmlSource = "<html>text</html>";
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(null);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
@@ -121,7 +121,7 @@ public void test_buildPageContent_zero_isTemplateSource()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		String htmlSource = "<html>text</html>";
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
 		EasyMock.expect(pageMock.getHtmlSource()).andReturn(htmlSource);
@@ -142,8 +142,7 @@ public void test_buildPageContent_zero_ok_nullController()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
-		String htmlSource = "<html>text</html>";
+		InternalModel model = new InternalModel();
 		String pageName = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
@@ -172,7 +171,7 @@ public void test_buildPageContent_validController()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
+		InternalModel model = new InternalModel();
 		Map<String, String> locale = new HashMap<String, String>();
 		locale.put(WPBModel.LOCALE_COUNTRY_KEY, "");
 		locale.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
@@ -208,8 +207,7 @@ public void test_buildPageContent_zero_ok_emptyController()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
-		String htmlSource = "<html>text</html>";
+		InternalModel model = new InternalModel();
 		String pageName = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
@@ -238,8 +236,7 @@ public void test_buildPageContent_templateException()
 	
 	try
 	{
-		WPBModel model = new WPBModel();
-		String htmlSource = "<html>text</html>";
+		InternalModel model = new InternalModel();
 		String pageName = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);

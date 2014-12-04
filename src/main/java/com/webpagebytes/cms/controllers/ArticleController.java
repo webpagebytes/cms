@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +25,8 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBArticlesCache;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBResource;
@@ -52,7 +51,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new ArticleValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbArticleCache = wbCacheFactory.createWBArticlesCacheInstance();
+		wbArticleCache = wbCacheFactory.getArticlesCacheInstance();
 		adminStorage.addStorageListener(this);
 	}
 	

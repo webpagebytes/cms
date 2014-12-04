@@ -74,7 +74,7 @@ class PageContentBuilder {
 	
 	public String buildPageContent(HttpServletRequest request,
 			WPBWebPage wbWebPage, 
-			WPBModel model) throws WPBException
+			InternalModel model) throws WPBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();
@@ -120,7 +120,7 @@ class PageContentBuilder {
 
 	public String buildPageContent(
 			WPBWebPage wbWebPage, 
-			WPBModel model) throws WPBException
+			InternalModel model) throws WPBException
 	{
 
 		Integer istemplateSource = wbWebPage.getIsTemplateSource();

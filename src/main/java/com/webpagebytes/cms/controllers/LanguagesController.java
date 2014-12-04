@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,9 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.webpagebytes.cms.LanguageLocaleManager;
+import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
@@ -93,7 +92,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 		Collections.sort(sortedLanguages);
 	
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		projectCache = wbCacheFactory.createWBProjectCacheInstance();
+		projectCache = wbCacheFactory.getProjectCacheInstance();
 		
 		adminStorage.addStorageListener(this);
 
