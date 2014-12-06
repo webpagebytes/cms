@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.cache;
 
 import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBParametersCache;

@@ -38,12 +38,12 @@ import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.DefaultImageProcessor;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
 import com.webpagebytes.cms.cmsdata.WPBFile;

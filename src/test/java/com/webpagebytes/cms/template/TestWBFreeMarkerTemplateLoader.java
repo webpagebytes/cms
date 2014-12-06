@@ -18,6 +18,7 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 
 import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
@@ -25,7 +26,6 @@ import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
-import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;

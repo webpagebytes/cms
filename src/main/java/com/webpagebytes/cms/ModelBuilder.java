@@ -57,13 +57,6 @@ class ModelBuilder {
 		}
 	}
 
-	/*
-	 * populate the WBModel based on uri data. This will populate:
-	 * REQUEST_KEY
-	 * GLOBALS_KEY
-	 * URL_REQUEST_PARAMETERS_KEY
-	 * 
-	 */
 	public void populateModelForUriData(HttpServletRequest request, WPBUri uri, URLMatcherResult urlMatcherResult, InternalModel model) throws WPBException
 	{
 		populateUriParameters(request, uri.getExternalKey(), urlMatcherResult, model);

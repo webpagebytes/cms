@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
@@ -35,7 +36,6 @@ import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBFile;

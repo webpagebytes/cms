@@ -18,6 +18,8 @@ package com.webpagebytes.cms.cache;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;

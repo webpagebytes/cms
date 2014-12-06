@@ -14,16 +14,8 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cache;
+package com.webpagebytes.cms.appinterfaces;
 
-import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
-import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
-import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
-import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
-import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
-import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
-import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 
 public interface WPBCacheFactory {
 	public WPBUrisCache getUrisCacheInstance();

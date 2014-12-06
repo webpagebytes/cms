@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cache.WPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
