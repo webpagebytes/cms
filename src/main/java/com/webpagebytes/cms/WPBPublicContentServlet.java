@@ -51,9 +51,6 @@ public class WPBPublicContentServlet extends HttpServlet {
 
 	private WPBServletUtility servletUtility = null;
 	
-	// this is the common uri part that will be common to all requests served by this CMS
-	// corresponds to uri-prefix init parameter. macher 
-	
 	private String uriCommonPrefix = ""; 
 	
 	private URLMatcher urlMatcherArray[] = new URLMatcher[4];
