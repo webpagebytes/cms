@@ -43,6 +43,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	private Vector<WPBAdminDataStorageListener> storageListeners = new Vector<WPBAdminDataStorageListener>();
 	
 	private WPBLocalDataStoreDao localDataStorageDao;
+	private boolean notificationsFlag = true;
 	
 	public WPBLocalAdminDataStorage()
 	{
@@ -333,13 +334,16 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	
 	protected<T> void notifyOperation(Object obj, WPBAdminDataStorageListener.AdminDataStorageOperation operation, Class type)
 	{
-		synchronized (storageListeners)
-		{
-			for(int i=0; i< storageListeners.size(); i++)
-			{
-				storageListeners.get(i).notify(obj, operation, type);
-			}
-		}		
+	    if (notificationsFlag)
+	    {
+    		synchronized (storageListeners)
+    		{
+    			for(int i=0; i< storageListeners.size(); i++)
+    			{
+    				storageListeners.get(i).notify(obj, operation, type);
+    			}
+    		}
+	    }
 	}
 
 	
@@ -364,5 +368,18 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	{
 		return java.util.UUID.randomUUID().toString();
 	}
+
+    public void stopNotifications() {
+        notificationsFlag = false;
+        
+    }
+
+    public void startNotifications() {
+        notificationsFlag = true;
+    }
+
+    public boolean isNotificationActive() {
+        return notificationsFlag;
+    }
 
 }

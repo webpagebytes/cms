@@ -70,6 +70,12 @@ public interface WPBAdminDataStorage {
 	
 	public void removeStorageListener(WPBAdminDataStorageListener listener);
 	
+	public void stopNotifications();
+	
+	public void startNotifications();
+	
+	public boolean isNotificationActive();
+	
 	public String getUploadUrl(String returnUrl);
 	
 	public void deleteAllRecords(Class dataClass) throws WPBIOException;

@@ -38,6 +38,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.dbcp.BasicDataSource;
+
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldTextStore;
@@ -67,30 +69,24 @@ public class WPBLocalDataStoreDao {
 		DESCENDING
 	};
 
+	private BasicDataSource dataSource = new BasicDataSource();
 	private Map<String, String> dbProps = new HashMap<String, String>();
 	private static final String QUERY_RECORD = "SELECT * FROM %s WHERE %s=?";
 	private static final String QUERY_ALL_RECORDS = "SELECT * FROM %s";
 	
 	public WPBLocalDataStoreDao(Map<String, String> dbProps)
 	{
+	    
 		this.dbProps.putAll(dbProps);
+		dataSource.setDriverClassName(dbProps.get("driverClass"));
+		dataSource.setUrl(dbProps.get("connectionUrl"));
+		dataSource.setUsername(dbProps.get("userName"));
+		dataSource.setPassword(dbProps.get("password"));
 	}
-	private synchronized Connection getConnection() throws SQLException
+	
+	private Connection getConnection() throws SQLException
 	{
-		String driverClass = dbProps.get("driverClass");
-		String connectionUrl = dbProps.get("connectionUrl");
-		String userName = dbProps.get("userName");
-		String password = dbProps.get("password");
-		
-		try {
-            //Loading Driver class
-            Class.forName(driverClass);
-		} catch (ClassNotFoundException e) 
-		{
-            log.log(Level.SEVERE, "Cannot load database driver", e);
-            throw new SQLException("Cannot load database driver " + driverClass);
-		}
-		return DriverManager.getConnection(connectionUrl, userName, password);
+		return dataSource.getConnection();
 	}
 	
 	/*

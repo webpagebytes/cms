@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.easymock.EasyMock;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
@@ -36,6 +37,12 @@ import static org.mockito.Matchers.*;
 public class TestWBLocalDataStoreDao {
 private Map<String, String> dbProps = new HashMap<String, String>();
 
+@Before
+public void before()
+{
+    // just put a anexisting class for the driver
+    dbProps.put("driverClass", "java.lang.String");
+    }
 @Test
 public void test_addRecord()
 {

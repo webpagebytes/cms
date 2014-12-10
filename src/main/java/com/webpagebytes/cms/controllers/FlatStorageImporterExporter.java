@@ -37,9 +37,11 @@ import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.DefaultImageProcessor;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
+import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
 import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBImageProcessor;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
@@ -103,12 +105,26 @@ public class FlatStorageImporterExporter {
 		properties.loadFromXML(byteIs);
 		return properties;		
 	}
-	
+	private void resetCache() throws WPBIOException
+	{
+	    WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
+	    
+	    cacheFactory.getWebPagesCacheInstance().Refresh();
+	    cacheFactory.getPageModulesCacheInstance().Refresh();
+	    cacheFactory.getArticlesCacheInstance().Refresh();
+	    cacheFactory.getMessagesCacheInstance().Refresh();
+	    cacheFactory.getParametersCacheInstance().Refresh();
+	    cacheFactory.getFilesCacheInstance().Refresh();
+	    cacheFactory.getProjectCacheInstance().Refresh();
+	    cacheFactory.getUrisCacheInstance().Refresh();
+        
+	}
 
 	public void importFromZip(InputStream is) throws WPBIOException
 	{
 		ZipInputStream zis = new ZipInputStream(is);
-	
+		// we need to stop the notifications during import
+		dataStorage.stopNotifications();
 		try
 		{
 			ZipEntry ze = null;
@@ -197,6 +213,11 @@ public class FlatStorageImporterExporter {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WPBIOException("cannot import from  zip", e);
 		}
+		finally
+		{
+		    dataStorage.startNotifications();
+		}
+		resetCache();
 	}
 	
 	private byte[] getBytesFromInputStream(InputStream is) throws IOException

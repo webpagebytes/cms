@@ -53,17 +53,7 @@ public class ExportImportController extends Controller {
 		          InputStream is = item.openStream();
 		          storageExporter.importFromZip(is);		  		
 		          
-		          WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		  		  wbCacheFactory.getUrisCacheInstance().Refresh();
-		  		  wbCacheFactory.getWebPagesCacheInstance().Refresh();
-		  		  wbCacheFactory.getPageModulesCacheInstance().Refresh();
-		  		  wbCacheFactory.getArticlesCacheInstance().Refresh();
-		  		  wbCacheFactory.getMessagesCacheInstance().Refresh();
-		  		  wbCacheFactory.getFilesCacheInstance().Refresh();
-		  		  wbCacheFactory.getParametersCacheInstance().Refresh();
-		  		  wbCacheFactory.getProjectCacheInstance().Refresh();
-		  		  
-		          org.json.JSONObject returnJson = new org.json.JSONObject();
+		         org.json.JSONObject returnJson = new org.json.JSONObject();
 		          returnJson.put(DATA, "");			
 		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 		        }
