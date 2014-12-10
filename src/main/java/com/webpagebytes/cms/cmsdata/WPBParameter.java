@@ -16,10 +16,9 @@
 
 package com.webpagebytes.cms.cmsdata;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class WPBParameter implements Serializable {
+public class WPBParameter {
 	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;

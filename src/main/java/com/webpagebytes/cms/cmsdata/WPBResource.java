@@ -16,9 +16,8 @@
 
 package com.webpagebytes.cms.cmsdata;
 
-import java.io.Serializable;
 
-public class WPBResource implements Serializable {
+public class WPBResource {
 	public static final int URI_TYPE = 1;
 	public static final int PAGE_TYPE = 2;
 	public static final int PAGE_MODULE_TYPE = 3;

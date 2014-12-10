@@ -16,12 +16,9 @@
 
 package com.webpagebytes.cms.cmsdata;
 
-import com.webpagebytes.cms.datautility.*;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class WPBUri implements Serializable {
+public class WPBUri {
 	public final static int RESOURCE_TYPE_TEXT = 1;
 	public final static int RESOURCE_TYPE_FILE = 2;
 	public final static int RESOURCE_TYPE_URL_CONTROLLER = 3;

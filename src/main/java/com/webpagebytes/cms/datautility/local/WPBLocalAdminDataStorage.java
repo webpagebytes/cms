@@ -290,24 +290,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 
 	}
-	
-	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException
-	{
-		try
-		{
-			Map<String, WBLocalQueryOperator> localOperators = new HashMap<String, WBLocalQueryOperator>();
-			for(String property: propertyNames)
-			{
-				localOperators.put(property, adminOperatorToLocalOperator(operators.get(property)));
-			}
-			List<T> result = (List<T>)localDataStorageDao.queryWithSort(dataClass, propertyNames, localOperators, values, sortProperty, adminDirectionToLocalDirection(sortOperator));
-			return result;
-		} catch (Exception e)
-		{
-			throw new WPBIOException("Cannot get all records with sorting", e);
-		}
-	}	
-	
+		
 
 	public void addStorageListener(WPBAdminDataStorageListener listener)
 	{

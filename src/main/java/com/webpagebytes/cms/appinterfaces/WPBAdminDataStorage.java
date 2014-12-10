@@ -64,8 +64,6 @@ public interface WPBAdminDataStorage {
 
 	public<T> List<T> queryWithSort(Class dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException;
 	
-	public<T> List<T> queryExWithSort(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException;
-
 	public void addStorageListener(WPBAdminDataStorageListener listener);
 	
 	public void removeStorageListener(WPBAdminDataStorageListener listener);
@@ -75,9 +73,7 @@ public interface WPBAdminDataStorage {
 	public void startNotifications();
 	
 	public boolean isNotificationActive();
-	
-	public String getUploadUrl(String returnUrl);
-	
+		
 	public void deleteAllRecords(Class dataClass) throws WPBIOException;
 	
 	public String getUniqueId();
