@@ -40,7 +40,7 @@ import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class ArticleController extends Controller implements WPBAdminDataStorageListener<Object>{
+public class ArticleController extends Controller implements WPBAdminDataStorageListener{
 	private WPBAdminDataStorage adminStorage;
 	private ArticleValidator validator;
 	private WPBArticlesCache wbArticleCache;
@@ -55,7 +55,7 @@ public class ArticleController extends Controller implements WPBAdminDataStorage
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{

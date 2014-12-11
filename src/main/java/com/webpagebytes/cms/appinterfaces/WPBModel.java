@@ -16,8 +16,6 @@
 
 package com.webpagebytes.cms.appinterfaces;
 
-import java.util.Map;
-import java.util.Set;
 /**
  * WPBModel interface represents the Webpagebytes CMS Model implementation from the MVC pattern.
  * @see WPBApplicationModel, WPBCmsModel 

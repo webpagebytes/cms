@@ -25,4 +25,9 @@ import java.util.Map;
  */
 public class WPBCmsModel extends HashMap<String, Map<String, String>> {
 
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = 1L;
+
 }

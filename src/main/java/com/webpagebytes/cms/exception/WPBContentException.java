@@ -17,7 +17,10 @@
 package com.webpagebytes.cms.exception;
 
 public class WPBContentException extends WPBException {
-	public WPBContentException(String message, Throwable e)
+	
+    private static final long serialVersionUID = 5560528767387741168L;
+    
+    public WPBContentException(String message, Throwable e)
 	{
 		super(message, e);
 	}

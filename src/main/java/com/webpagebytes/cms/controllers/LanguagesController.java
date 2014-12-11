@@ -43,7 +43,7 @@ import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class LanguagesController extends Controller implements WPBAdminDataStorageListener<Object> {
+public class LanguagesController extends Controller implements WPBAdminDataStorageListener {
 
 	private LanguageLocaleManager localeManager;
 	private WPBAdminDataStorage adminStorage;
@@ -66,7 +66,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 		return project;
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{

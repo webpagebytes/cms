@@ -160,7 +160,7 @@ public class WPBImporter {
 		{
 			page.setHtmlSource("");
 		}
-		page.setHash( page.crc32(page.getHtmlSource()));
+		page.setHash( WPBWebPage.crc32(page.getHtmlSource()));
 		
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;

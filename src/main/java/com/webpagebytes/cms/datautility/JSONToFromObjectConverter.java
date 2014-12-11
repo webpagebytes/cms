@@ -37,7 +37,7 @@ public class JSONToFromObjectConverter {
 	private String INT_CLASS_NAME = "int";
 	private String LNG_CLASS_NAME = "long";
 	
-	private String JSONStringFromField(Object fieldValue, Class fieldClass)
+	private<T> String JSONStringFromField(Object fieldValue, Class<T> fieldClass)
 	{
 		if (fieldClass.getName().compareTo(STRING_CLASS_NAME) == 0)
 		{
@@ -66,7 +66,7 @@ public class JSONToFromObjectConverter {
 		return null;
 	}
 	
-	private Object fieldFromJSON(org.json.JSONObject json, String fieldName, Class fieldClass)
+	private<T> Object fieldFromJSON(org.json.JSONObject json, String fieldName, Class<T> fieldClass)
 	{
 		try
 		{
@@ -101,12 +101,12 @@ public class JSONToFromObjectConverter {
 		return null;
 	}
 	
-	public Object objectFromJSONString(String jsonString, Class objClass)
+	public<T> T objectFromJSONString(String jsonString, Class<T> objClass)
 	{
 		try
 		{
 			org.json.JSONObject json = new org.json.JSONObject(jsonString);
-			Object newObj = objClass.newInstance();
+			T newObj = objClass.newInstance();
 			Field[] fields = objClass.getDeclaredFields();
 			for(Field field: fields)
 			{
@@ -155,7 +155,7 @@ public class JSONToFromObjectConverter {
 	public org.json.JSONObject JSONFromObject(Object object) 
 	{
 		org.json.JSONObject json = new org.json.JSONObject(); 
-		Class objClass = object.getClass();
+		Class<? extends Object> objClass = object.getClass();
 		Field[] fields = objClass.getDeclaredFields();
 		for(Field field: fields)
 		{
@@ -213,16 +213,16 @@ public class JSONToFromObjectConverter {
 		return json.toString();				
 	}
 	
-	public List listObjectsFromJSONString(String jsonSource, Class objClass)
+	public<T> List<T> listObjectsFromJSONString(String jsonSource, Class<T> objClass)
 	{
-		List result = new ArrayList();
+		List<T> result = new ArrayList<T>();
 		try
 		{
 			org.json.JSONArray jsonArray = new org.json.JSONArray(jsonSource);
 			for (int i =0; i< jsonArray.length(); i++)
 			{
 				org.json.JSONObject objectJson = jsonArray.getJSONObject(i);
-				Object obj = objectFromJSONString(objectJson.toString(), objClass);
+				T obj = objectFromJSONString(objectJson.toString(), objClass);
 				result.add(obj);
 			}
 			
@@ -233,7 +233,7 @@ public class JSONToFromObjectConverter {
 		return result;
 	}
 	
-	public String JSONStringFromListObjects(List listObject)
+	public<T> String JSONStringFromListObjects(List<T> listObject)
 	{
 		org.json.JSONArray jsonArray = new org.json.JSONArray();
 		for(Object obj: listObject)
@@ -244,7 +244,7 @@ public class JSONToFromObjectConverter {
 		return jsonArray.toString();
 	}
 	
-	public org.json.JSONArray JSONArrayFromListObjects(List listObject)
+	public<T> org.json.JSONArray JSONArrayFromListObjects(List<T> listObject)
 	{
 		org.json.JSONArray jsonArray = new org.json.JSONArray();
 		for(Object obj: listObject)

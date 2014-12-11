@@ -46,7 +46,7 @@ import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class PageController extends Controller implements WPBAdminDataStorageListener<Object>{
+public class PageController extends Controller implements WPBAdminDataStorageListener {
 
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
 	private WPBAdminDataStorage adminStorage;
@@ -63,7 +63,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{

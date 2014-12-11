@@ -16,7 +16,7 @@
 
 package com.webpagebytes.cms.datautility;
 
-public interface WPBAdminDataStorageListener<T> {
+public interface WPBAdminDataStorageListener {
 
 	enum AdminDataStorageOperation
 	{
@@ -26,5 +26,5 @@ public interface WPBAdminDataStorageListener<T> {
 		DELETE_RECORDS
 		
 	}
-	public void notify (T t, AdminDataStorageOperation o, Class type);
+	public<T> void notify (T obj, AdminDataStorageOperation o, Class<? extends Object> type);
 }

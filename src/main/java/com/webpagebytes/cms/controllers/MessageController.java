@@ -44,7 +44,7 @@ import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class MessageController extends Controller implements WPBAdminDataStorageListener<Object> {
+public class MessageController extends Controller implements WPBAdminDataStorageListener {
 	private WPBAdminDataStorage adminStorage;
 	private MessageValidator validator;
 	private WPBMessagesCache wbMessageCache;
@@ -59,7 +59,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{

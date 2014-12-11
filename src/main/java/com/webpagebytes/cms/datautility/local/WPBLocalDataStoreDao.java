@@ -20,10 +20,10 @@ import java.beans.PropertyDescriptor;
 
 
 
+
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -106,6 +106,7 @@ public class WPBLocalDataStoreDao {
 			pd.getWriteMethod().invoke(object, propertyValue);
 		} catch (Exception e)
 		{
+		    log.log(Level.SEVERE, "cannot setObjectProperty on " + property, e);
 			throw new WPBSerializerException("Cannot set property for object", e);
 		}
 
@@ -121,7 +122,7 @@ public class WPBLocalDataStoreDao {
 			throw new WPBSerializerException("Cannot set property for object", e);
 		}
 	}
-	public boolean hasClassProperty(Class kind, String property) throws WPBSerializerException
+	public<T> boolean hasClassProperty(Class<T> kind, String property) throws WPBSerializerException
 	{
 		try
 		{
@@ -134,11 +135,11 @@ public class WPBLocalDataStoreDao {
 	}
 	
 	
-	private Object copyResultSetToObject(ResultSet resultSet, Class kind) throws SQLException, WPBSerializerException
+	private<T> T copyResultSetToObject(ResultSet resultSet, Class<T> kind) throws SQLException, WPBSerializerException
 	{
 		try
 		{
-			Object result = kind.newInstance();
+			T result = kind.newInstance();
 			Field[] fields = kind.getDeclaredFields();
 			for(Field field: fields)
 			{
@@ -180,10 +181,10 @@ public class WPBLocalDataStoreDao {
 		}
 	}
 	
-	private String getSQLStringForInsert(Object obj, Set<String> fieldsToIgnore)
+	private<T> String getSQLStringForInsert(T obj, Set<String> fieldsToIgnore)
 	{
 		String sqlTemplate = "INSERT INTO %s (%s) values (%s)";
-		Class kind = obj.getClass();
+		Class<? extends Object> kind = obj.getClass();
 		String tableName = kind.getSimpleName();
 		String listColumns = "";
 		String listParams = "";
@@ -222,7 +223,7 @@ public class WPBLocalDataStoreDao {
 	private String getSQLStringForUpdate(Object object, String keyFieldName) throws WPBSerializerException
 	{
 		String sqlTemplate = "UPDATE %s SET %s WHERE %s=?";
-		Class kind = object.getClass();
+		Class<? extends Object> kind = object.getClass();
 		String tableName = kind.getSimpleName();
 		String listColumns = "";
 		
@@ -249,7 +250,7 @@ public class WPBLocalDataStoreDao {
 		return String.format(sqlTemplate, tableName, listColumns, keyFieldName) ;
 	}
 
-	private String getSQLStringForDelete(Class kind, String keyFieldName) throws WPBSerializerException
+	private<T> String getSQLStringForDelete(Class<T> kind, String keyFieldName) throws WPBSerializerException
 	{
 		String sqlTemplate = "DELETE FROM %s WHERE %s=?";
 		String tableName = kind.getSimpleName();		
@@ -258,7 +259,7 @@ public class WPBLocalDataStoreDao {
 
 	private int buildStatementForInsertUpdate(Object obj, Set<String> ignoreFields, PreparedStatement preparedStatement, Connection connection) throws SQLException, WPBSerializerException
 	{
-		Class kind = obj.getClass();
+	    Class<? extends Object> kind = obj.getClass();
 		Field[] fields = kind.getDeclaredFields();		
 		int fieldIndex = 0;
 		for(int i = 0; i< fields.length; i++)
@@ -319,7 +320,7 @@ public class WPBLocalDataStoreDao {
 		return fieldIndex;
 	}
 	
-	public Object getRecord(Class kind, String keyFieldName, Object keyValue) throws SQLException, WPBException
+	public<T> T getRecord(Class<T> kind, String keyFieldName, Object keyValue) throws SQLException, WPBException
 	{
 		Connection con = getConnection();
 		ResultSet resultSet = null;
@@ -333,7 +334,7 @@ public class WPBLocalDataStoreDao {
 			resultSet = statement.executeQuery();
 			if (resultSet.next())
 			{	
-				Object obj = copyResultSetToObject(resultSet, kind);
+				T obj = copyResultSetToObject(resultSet, kind);
 				return obj;
 			} else
 			{
@@ -403,7 +404,7 @@ public class WPBLocalDataStoreDao {
 	}
 
 	
-	private List<Object> advanceQuery(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values, String sortProperty, WBLocalSortDirection sortDirection) throws SQLException, WPBSerializerException
+	private<T> List<T> advanceQuery(Class<T> kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values, String sortProperty, WBLocalSortDirection sortDirection) throws SQLException, WPBSerializerException
 	{
 		List<String> propertiesList = new ArrayList<String>();
 		propertiesList.addAll(propertyNames);
@@ -448,7 +449,7 @@ public class WPBLocalDataStoreDao {
 		PreparedStatement preparedStatement = null;
 		try
 		{
-			List<Object> records = new ArrayList<Object>();
+			List<T> records = new ArrayList<T>();
 			preparedStatement = connection.prepareStatement(queryString);
 			
 			for (int i = 0; i< propertiesList.size(); i++)
@@ -458,7 +459,7 @@ public class WPBLocalDataStoreDao {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next())
 			{	
-				Object obj = copyResultSetToObject(resultSet, kind);
+				T obj = copyResultSetToObject(resultSet, kind);
 				records.add(obj);				
 			} 
 			resultSet.close();
@@ -481,7 +482,7 @@ public class WPBLocalDataStoreDao {
 		}
 	}
 	
-	private boolean advanceDelete(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
+	private<T> boolean advanceDelete(Class<T> kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
 	{
 		List<String> propertiesList = new ArrayList<String>();
 		propertiesList.addAll(propertyNames);
@@ -531,12 +532,12 @@ public class WPBLocalDataStoreDao {
 		}
 	}
 
-	public List<Object> query(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
+	public<T> List<T> query(Class<T> kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
 	{
 		return advanceQuery(kind, propertyNames, operators, values, null, WBLocalSortDirection.NO_SORT);
 	}
 
-	public boolean deleteRecords(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
+	public<T> boolean deleteRecords(Class<T> kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values) throws SQLException, WPBSerializerException
 	{
 		return advanceDelete(kind, propertyNames, operators, values);
 	}
@@ -571,17 +572,17 @@ public class WPBLocalDataStoreDao {
 		}
 	}
 	
-	public List<Object> queryWithSort(Class kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values, String sortProperty, WBLocalSortDirection sortDirection) throws SQLException, WPBSerializerException
+	public<T> List<T> queryWithSort(Class<T> kind, Set<String> propertyNames, Map<String, WBLocalQueryOperator> operators, Map<String, Object> values, String sortProperty, WBLocalSortDirection sortDirection) throws SQLException, WPBSerializerException
 	{
 		return advanceQuery(kind, propertyNames, operators, values, sortProperty, sortDirection);
 	}
 
 	
-	public List<Object> getAllRecords(Class kind) throws SQLException, WPBException
+	public<T> List<T> getAllRecords(Class<T> kind) throws SQLException, WPBException
 	{
 		Connection con = getConnection();
 		PreparedStatement statement = null;
-		List<Object> objects = new ArrayList<Object>();
+		List<T> objects = new ArrayList<T>();
 		try
 		{
 			String table = kind.getSimpleName().toUpperCase();
@@ -590,7 +591,7 @@ public class WPBLocalDataStoreDao {
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next())
 			{	
-				Object obj = copyResultSetToObject(resultSet, kind);
+				T obj = copyResultSetToObject(resultSet, kind);
 				objects.add(obj);				
 			} 
 			resultSet.close();
@@ -615,7 +616,7 @@ public class WPBLocalDataStoreDao {
 		PreparedStatement preparedStatement = null;
 		try
 		{
-			Set<String> ignoreFields = new HashSet();
+			Set<String> ignoreFields = new HashSet<String>();
 			String sqlStatement = getSQLStringForInsert(object, ignoreFields) ;			
 			connection.setAutoCommit(true);
 			preparedStatement = connection.prepareStatement(sqlStatement);
@@ -642,7 +643,7 @@ public class WPBLocalDataStoreDao {
 		PreparedStatement preparedStatement = null;
 		try
 		{
-			Set<String> ignoreFields = new HashSet();
+			Set<String> ignoreFields = new HashSet<String>();
 			ignoreFields.add(keyFieldName);
 			String sqlStatement = getSQLStringForInsert(object, ignoreFields) ;			
 			connection.setAutoCommit(true);
@@ -701,7 +702,7 @@ public class WPBLocalDataStoreDao {
 		}
 	}
 
-	public void deleteRecord(Class kind, String fieldName, Object keyValue) throws SQLException, WPBSerializerException
+	public<T> void deleteRecord(Class<T> kind, String fieldName, Object keyValue) throws SQLException, WPBSerializerException
 	{
 		Connection connection = getConnection();
 		PreparedStatement preparedStatement = null;

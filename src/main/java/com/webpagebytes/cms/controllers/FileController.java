@@ -58,7 +58,7 @@ import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
 
 
-public class FileController extends Controller implements WPBAdminDataStorageListener<Object>{
+public class FileController extends Controller implements WPBAdminDataStorageListener{
 	public static final String PUBLIC_BUCKET = "public";
 	
 	private WPBAdminDataStorage adminStorage;
@@ -78,7 +78,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		imageProcessor = WPBImageProcessorFactory.getInstance();
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{

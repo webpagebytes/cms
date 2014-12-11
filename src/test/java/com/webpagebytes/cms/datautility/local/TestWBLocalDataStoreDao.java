@@ -204,7 +204,7 @@ public void test_query_more_properties()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		List<Object> result = new ArrayList<Object>();
+		List<WPBUri> result = new ArrayList<WPBUri>();
 		
 		PowerMockito.doReturn(result).when(dao, "advanceQuery", any(Class.class), any(Set.class), any(Map.class), any(Map.class), any(String.class), any(WBLocalSortDirection.class));
 		
@@ -212,7 +212,7 @@ public void test_query_more_properties()
 		Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 		Map<String, Object> values = new HashMap<String, Object>();
 		
-		List<Object> records = dao.query(WPBUri.class, properties, operators, values);
+		List<WPBUri> records = dao.query(WPBUri.class, properties, operators, values);
 		assertTrue(records == result);
 	} catch (Exception e)
 	{
@@ -229,7 +229,7 @@ public void test_query_no_conditions()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		List<Object> result = new ArrayList<Object>();
+		List<WPBUri> result = new ArrayList<WPBUri>();
 		
 		PowerMockito.doReturn(result).when(dao, "advanceQuery", any(Class.class), any(Set.class), any(Map.class), any(Map.class), any(String.class), any(WBLocalSortDirection.class));
 		
@@ -237,7 +237,7 @@ public void test_query_no_conditions()
 		Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 		Map<String, Object> values = new HashMap<String, Object>();
 		
-		List<Object> records = dao.queryWithSort(WPBUri.class, properties, operators, values, "uri", WBLocalSortDirection.ASCENDING);
+		List<WPBUri> records = dao.queryWithSort(WPBUri.class, properties, operators, values, "uri", WBLocalSortDirection.ASCENDING);
 		assertTrue(records == result);
 	} catch (Exception e)
 	{
@@ -253,7 +253,6 @@ public void test_deleteRecord()
 	try
 	{
 		WPBLocalDataStoreDao dao = PowerMockito.spy(new WPBLocalDataStoreDao(dbProps));
-		WPBUri uri = new WPBUri();
 		
 		Connection connectionMock = PowerMock.createMock(Connection.class);
 		connectionMock.setAutoCommit(true);

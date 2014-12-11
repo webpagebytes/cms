@@ -94,7 +94,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		{
 			log.log(Level.INFO, "delete records {0}", recordid);
 			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);			
-			Object obj = dataClass.newInstance();
+			T obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
 			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 
@@ -110,7 +110,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		{
 			log.log(Level.INFO, "delete records {0}", recordid);
 			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);
-			Object obj = dataClass.newInstance();
+			T obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
 			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 		} catch (Exception e)
@@ -158,7 +158,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 			Object [] logObjects = { dataClass.getSimpleName(), property};
 			log.log(Level.INFO, "get all records {0} with condition on property {1}", logObjects);			
 			
-			Set<String> properties = new HashSet();
+			Set<String> properties = new HashSet<String>();
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 			Map<String, Object> values = new HashMap<String, Object>();
 			List<T> result = (List<T>)localDataStorageDao.queryWithSort(dataClass, properties, operators, values, property, adminDirectionToLocalDirection(sortOperator));
@@ -240,7 +240,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	{
 		try
 		{
-			Set<String> properties = new HashSet();
+			Set<String> properties = new HashSet<String>();
 			properties.add(property);
 			Map<String, WBLocalQueryOperator> operators = new HashMap<String, WBLocalQueryOperator>();
 			operators.put(property, adminOperatorToLocalOperator(operator));
@@ -315,7 +315,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	protected<T> void notifyOperation(Object obj, WPBAdminDataStorageListener.AdminDataStorageOperation operation, Class type)
+	protected<T> void notifyOperation(T obj, WPBAdminDataStorageListener.AdminDataStorageOperation operation, Class<? extends Object> type)
 	{
 	    if (notificationsFlag)
 	    {
@@ -335,7 +335,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		return "";
 	}
 	
-	public void deleteAllRecords(Class dataClass) throws WPBIOException
+	public<T> void deleteAllRecords(Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{

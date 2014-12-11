@@ -17,10 +17,10 @@
 package com.webpagebytes.cms.datautility;
 
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;

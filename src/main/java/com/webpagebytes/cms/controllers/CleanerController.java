@@ -52,7 +52,7 @@ import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
-public class CleanerController extends Controller implements WPBAdminDataStorageListener<Object>{
+public class CleanerController extends Controller implements WPBAdminDataStorageListener{
 	private WPBAdminDataStorage adminStorage;
 	private WPBCacheFactory cacheFactory;
 	private WPBCloudFileStorage cloudFileStorage;
@@ -68,10 +68,10 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify(
-			Object t,
+	public<T> void notify(
+			T t,
 			AdminDataStorageOperation operation,
-			Class type) {	
+			Class<? extends Object> type) {	
 		try
 		{
 			if (type.equals(WPBUri.class))

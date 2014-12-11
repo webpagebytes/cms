@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ExportImportController extends Controller {

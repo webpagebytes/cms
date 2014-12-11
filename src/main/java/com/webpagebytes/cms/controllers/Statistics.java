@@ -51,12 +51,10 @@ public class Statistics extends Controller {
 		GLOBALPARAMS		
 	};
 	private static final String PARAM_ENTITY = "entity"; 
-	private static final String PARAM_HISTORY_COUNT = "count"; 
 	
 	private static final String SORT_PARAM = "lastModified";
 	private static final String ERROR_FIELD = "error";
 	
-	private static final int HISTORY_COUNT = 3;
 	private WPBAdminDataStorage adminStorage;
 	private JSONToFromObjectConverter jsonObjectConverter;
 	
@@ -66,14 +64,14 @@ public class Statistics extends Controller {
 		jsonObjectConverter = new JSONToFromObjectConverter();
 	}
 	
-	private void getRecordsStats(HttpServletRequest request, Class entityClass, org.json.JSONObject payloadJson, String entityName) throws Exception
+	private<T> void getRecordsStats(HttpServletRequest request, Class<T> entityClass, org.json.JSONObject payloadJson, String entityName) throws Exception
 	{
 		org.json.JSONObject returnEntity = new org.json.JSONObject();					
 		try
 		{
-			List<Object> records = adminStorage.getAllRecords(entityClass, SORT_PARAM, AdminSortOperator.DESCENDING);
+			List<T> records = adminStorage.getAllRecords(entityClass, SORT_PARAM, AdminSortOperator.DESCENDING);
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();
-			List<Object> filteredRecords = filterPagination(request, records, additionalInfo);
+			List<T> filteredRecords = filterPagination(request, records, additionalInfo);
 			returnEntity.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(filteredRecords));
 			returnEntity.put(ADDTIONAL_DATA, additionalInfo);
 		} catch (Exception e)

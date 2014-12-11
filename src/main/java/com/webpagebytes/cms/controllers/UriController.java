@@ -49,7 +49,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UriController extends Controller implements WPBAdminDataStorageListener<Object> {
+public class UriController extends Controller implements WPBAdminDataStorageListener {
 	private WPBAdminDataStorage adminStorage;
 	private UriValidator uriValidator;
 	private WPBUrisCache wbUriCache;
@@ -63,7 +63,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 		adminStorage.addStorageListener(this);
 	}
 	
-	public void notify (Object t, AdminDataStorageOperation o, Class type)
+	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
 	{
 		try
 		{
