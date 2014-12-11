@@ -88,7 +88,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	public void delete(String recordid, Class dataClass) throws WPBIOException
+	public<T> void delete(String recordid, Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -104,7 +104,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	public void delete(Long recordid, Class dataClass) throws WPBIOException
+	public<T> void delete(Long recordid, Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -119,7 +119,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}		
 	}
 	
-	public void delete(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
+	public<T> void delete(Class<T> dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
 	{
 		try
 		{
@@ -138,7 +138,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	public<T> List<T> getAllRecords(Class dataClass) throws WPBIOException
+	public<T> List<T> getAllRecords(Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -151,7 +151,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		} 
 	}
 	
-	public<T> List<T> getAllRecords(Class dataClass, String property, AdminSortOperator sortOperator) throws WPBIOException
+	public<T> List<T> getAllRecords(Class<T> dataClass, String property, AdminSortOperator sortOperator) throws WPBIOException
 	{
 		try
 		{
@@ -198,7 +198,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 
-	public<T> T get(Long dataid, Class dataClass) throws WPBIOException
+	public<T> T get(Long dataid, Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -210,7 +210,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	public<T> T get(String dataid, Class dataClass) throws WPBIOException
+	public<T> T get(String dataid, Class<T> dataClass) throws WPBIOException
 	{
 		try
 		{
@@ -236,7 +236,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 	
-	public<T> List<T> query(Class dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
+	public<T> List<T> query(Class<T> dataClass, String property, AdminQueryOperator operator, Object parameter) throws WPBIOException
 	{
 		try
 		{
@@ -255,7 +255,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 
 	}
 	
-	public<T> List<T> queryEx(Class dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values) throws WPBIOException
+	public<T> List<T> queryEx(Class<T> dataClass, Set<String> propertyNames, Map<String, AdminQueryOperator> operators, Map<String, Object> values) throws WPBIOException
 	{
 		try
 		{
@@ -272,7 +272,7 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		}
 	}
 
-	public<T> List<T> queryWithSort(Class dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException
+	public<T> List<T> queryWithSort(Class<T> dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException
 	{
 		try
 		{

@@ -1,5 +1,6 @@
 package com.webpagebytes.cms.controllers;
 import org.junit.runner.RunWith;
+
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
@@ -9,9 +10,7 @@ import org.easymock.EasyMock;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
-import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.PageModuleController;
 import com.webpagebytes.cms.controllers.PageModuleValidator;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -188,7 +186,7 @@ public void test_getAll_ok()
 {
 	try
 	{
-		List<Object> all = new ArrayList<Object>();
+		List<WPBWebPageModule> all = new ArrayList<WPBWebPageModule>();
 		EasyMock.expect(adminStorageMock.getAllRecords(WPBWebPageModule.class)).andReturn(all);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(all)).andReturn(jsonString);

@@ -2,6 +2,7 @@ package com.webpagebytes.cms.controllers;
 
 import static org.junit.Assert.assertTrue;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,8 +23,6 @@ import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
-import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.ParameterController;
 import com.webpagebytes.cms.controllers.ParameterValidator;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
@@ -187,7 +186,7 @@ public void test_getAll_ok()
 	try
 	{
 		EasyMock.expect(requestMock.getParameter("ownerExternalKey")).andReturn(null);
-		List<Object> allUri = new ArrayList<Object>();
+		List<WPBParameter> allUri = new ArrayList<WPBParameter>();
 		EasyMock.expect(adminStorageMock.getAllRecords(WPBParameter.class)).andReturn(allUri);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(allUri)).andReturn(jsonString);
@@ -217,7 +216,7 @@ public void test_getForOwner_ok()
 	try
 	{
 		EasyMock.expect(requestMock.getParameter("ownerExternalKey")).andReturn("123");
-		List<Object> allUri = new ArrayList<Object>();
+		List<WPBParameter> allUri = new ArrayList<WPBParameter>();
 		EasyMock.expect(adminStorageMock.query(WPBParameter.class, "ownerExternalKey", AdminQueryOperator.EQUAL, "123")).andReturn(allUri);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(allUri)).andReturn(jsonString);

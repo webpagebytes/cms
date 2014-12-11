@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class ReadOnlyDataController  extends Controller {
 	{
 		try
 		{
-			List<WPBWebPage> allRecords = null;
+			List allRecords = null;
 			
 			String property = request.getParameter("externalKey");
 			String entityName = request.getParameter("class");

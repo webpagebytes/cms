@@ -2,13 +2,12 @@ package com.webpagebytes.cms.controllers;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,14 +23,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WPBParameter;
-import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.PageController;
 import com.webpagebytes.cms.controllers.PageValidator;
-import com.webpagebytes.cms.controllers.UriController;
-import com.webpagebytes.cms.controllers.UriValidator;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WPBException;
@@ -199,7 +193,7 @@ public void test_getAll_ok()
 {
 	try
 	{
-		List<Object> allUri = new ArrayList<Object>();
+		List<WPBWebPage> allUri = new ArrayList<WPBWebPage>();
 		EasyMock.expect(adminStorageMock.getAllRecords(WPBWebPage.class)).andReturn(allUri);
 		String jsonString = "{}";
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromListObjects(allUri)).andReturn(jsonString);
