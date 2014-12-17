@@ -39,13 +39,13 @@ import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.DefaultImageProcessor;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
@@ -62,7 +62,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	public static final String PUBLIC_BUCKET = "public";
 	
 	private WPBAdminDataStorage adminStorage;
-	private WPBCloudFileStorage cloudFileStorage;
+	private WPBFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
 	private DefaultImageProcessor imageProcessor;
@@ -112,13 +112,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		        	  
 		        	  //old file need to be deleted from cloud
 		              String oldFilePath = wbFile.getBlobKey();
-			          WPBCloudFile oldCloudFile = new WPBCloudFile(PUBLIC_BUCKET, oldFilePath);
+			          WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
 			          cloudFileStorage.deleteFile(oldCloudFile);
 			          
 			          // if there is a thumbnail then that needs to be deleted too
 			          if (wbFile.getThumbnailBlobKey() != null)
 			          {
-			        	  WPBCloudFile oldThumbnail = new WPBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey());
+			        	  WPBFilePath oldThumbnail = new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey());
 			        	  cloudFileStorage.deleteFile(oldThumbnail);
 			          }
 		          } else
@@ -129,11 +129,11 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          }
 		          String uniqueId = adminStorage.getUniqueId();
 		          String filePath = uniqueId + "/" + item.getName();
-		          WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, filePath);
+		          WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
 		          cloudFileStorage.storeFile(stream, cloudFile);
 		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
 		          
-		          WPBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+		          WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 		          wbFile.setBlobKey(cloudFile.getPath());
 		          wbFile.setHash(fileInfo.getCrc32());
 		          wbFile.setFileName(item.getName());
@@ -145,7 +145,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
 		          
 		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
-		          WPBCloudFile thumbnailCloudFile = new WPBCloudFile(PUBLIC_BUCKET, thumbnailfilePath);
+		          WPBFilePath thumbnailCloudFile = new WPBFilePath(PUBLIC_BUCKET, thumbnailfilePath);
 		          ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		          imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
 		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
@@ -244,12 +244,12 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			{
 				if (tempFile.getBlobKey() != null)
 				{
-					WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, tempFile.getBlobKey());
+					WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, tempFile.getBlobKey());
 					cloudFileStorage.deleteFile(cloudFile);
 				}
 				if (tempFile.getThumbnailBlobKey() != null)
 				{
-					WPBCloudFile cloudThumbnailFile = new WPBCloudFile(PUBLIC_BUCKET, tempFile.getThumbnailBlobKey());
+					WPBFilePath cloudThumbnailFile = new WPBFilePath(PUBLIC_BUCKET, tempFile.getThumbnailBlobKey());
 					cloudFileStorage.deleteFile(cloudThumbnailFile);
 				}
 				
@@ -361,10 +361,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	}
 
 
-	private static void setPublicFilePath(WPBFile wbFile, WPBCloudFileStorage cloudFileStorage)
+	private static void setPublicFilePath(WPBFile wbFile, WPBFileStorage cloudFileStorage)
 	{
-		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getBlobKey())));
-		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBCloudFile(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
+		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
 	}
 	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBFile wbFile) throws WPBException
 	{
@@ -429,7 +429,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
-			WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
+			WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());			
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + wbfile.getFileName() + "\"");
@@ -452,7 +452,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
-			WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, wbfile.getBlobKey());
+			WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
 			response.setContentType(wbfile.getContentType());
 			response.setContentLength(wbfile.getSize().intValue());

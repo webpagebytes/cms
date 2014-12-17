@@ -18,7 +18,15 @@ package com.webpagebytes.cms.appinterfaces;
 
 import com.webpagebytes.cms.exception.WPBIOException;
 
+/**
+ * Interface to allow a cache to refresh its content.
+ *
+ */
 public interface WPBRefreshableCache {
+    /**
+     * Refresh the cache content.
+     * @throws WPBIOException
+     */
 	public void Refresh() throws WPBIOException;
 
 }

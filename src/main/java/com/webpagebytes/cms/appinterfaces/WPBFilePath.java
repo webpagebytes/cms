@@ -14,21 +14,37 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.cmsdata;
+package com.webpagebytes.cms.appinterfaces;
 
-public class WPBCloudFile {
+/**
+ * WPBFilePath represents an file location based on bucket and a path relative to that bucket.
+ */
+public class WPBFilePath {
 	private String bucket;
 	private String path;
 	
-	public WPBCloudFile(String bucket, String path)
+	/**
+	 * Contructor that takes bucket and path parameters.
+	 * @param bucket Storage bucket
+	 * @param path Path relative to the bucket
+	 */
+	public WPBFilePath(String bucket, String path)
 	{
 		this.bucket = bucket;
 		this.path = path;
 	}
+	/**
+	 * Returns the file path
+	 * @return Returns the file path
+	 */
 	public String getPath()
 	{
 		return path;
 	}
+	/**
+	 * Returns the file bucket
+	 * @return Returns the file bucket
+	 */
 	public String getBucket()
 	{
 		return bucket;

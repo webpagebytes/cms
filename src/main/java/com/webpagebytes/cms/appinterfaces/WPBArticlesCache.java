@@ -19,7 +19,16 @@ package com.webpagebytes.cms.appinterfaces;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.exception.WPBIOException;
 
+/**
+ * Cache interface to access CMS articles.
+ */
 public interface WPBArticlesCache extends WPBRefreshableCache {
+    /**
+     * Gets a WPBArticle from cache based on its externalKey
+     * @param externalKey externalKey that identifies the record.
+     * @return WPBArticle instance or null if there is no article with the provided externalKey. 
+     * @throws WPBIOException
+     */
 	public WPBArticle getByExternalKey(String externalKey) throws WPBIOException;
 	
 }

@@ -16,6 +16,8 @@
 
 package com.webpagebytes.cms.appinterfaces;
 
+import com.webpagebytes.cms.exception.WPBException;
+
 public interface WPBPageModelProvider {
-	public void populatePageModel(WPBModel model);
+	public void populatePageModel(WPBModel model) throws WPBException;
 }

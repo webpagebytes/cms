@@ -17,13 +17,13 @@
 package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
+
 import com.webpagebytes.cms.appinterfaces.WPBContentService;
 import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBException;
-import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
 

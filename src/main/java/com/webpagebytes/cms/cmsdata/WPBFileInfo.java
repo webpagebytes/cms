@@ -18,9 +18,11 @@ package com.webpagebytes.cms.cmsdata;
 
 import java.util.Map;
 
-public interface WPBCloudFileInfo {
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+
+public interface WPBFileInfo {
 	
-	public WPBCloudFile getCloudFile();
+	public WPBFilePath getCloudFile();
 	public long getSize();
 	public String getContentType();
 	public void setContentType(String contentType);

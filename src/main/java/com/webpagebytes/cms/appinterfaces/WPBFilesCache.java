@@ -19,8 +19,17 @@ package com.webpagebytes.cms.appinterfaces;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.exception.WPBIOException;
 
+/**
+ * Cache interface to access CMS site files.
+ */
 public interface WPBFilesCache extends WPBRefreshableCache {
 
+    /**
+     * Gets a WPBFile from cache based on its externalKey
+     * @param externalKey externalKey that identifies the record.
+     * @return WPBFile instance or null if there is no record with the provided externalKey. 
+     * @throws WPBIOException
+     */
 	public WPBFile getByExternalKey(String externalKey)throws WPBIOException;
 	
 }

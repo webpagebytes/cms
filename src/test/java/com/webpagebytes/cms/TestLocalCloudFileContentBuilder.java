@@ -16,28 +16,28 @@ import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 @RunWith(PowerMockRunner.class)
 public class TestLocalCloudFileContentBuilder {
 
-private WPBCloudFileStorage cloudFileStorageMock;
+private WPBFileStorage cloudFileStorageMock;
 
 @Before
 public void before()
 {
-	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
+	cloudFileStorageMock = EasyMock.createMock(WPBFileStorage.class);
 	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 }
 
 @After
 public void after()
 {
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBFileStorage)null);
 }
 
 @Test
@@ -68,16 +68,16 @@ public void test_serveFile()
 	
 	
 	ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
-	EasyMock.expect(cloudFileStorageMock.getFileContent(EasyMock.anyObject(WPBCloudFile.class))).andReturn(bais);
+	EasyMock.expect(cloudFileStorageMock.getFileContent(EasyMock.anyObject(WPBFilePath.class))).andReturn(bais);
 	
 	ServletOutputStream sosMock = EasyMock.createMock(ServletOutputStream.class);
 	CacheServletOutputStream cachesos = new CacheServletOutputStream(sosMock);
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	EasyMock.expect(responseMock.getOutputStream()).andReturn(cachesos);
-	WPBCloudFileInfo fileInfoMock = EasyMock.createMock(WPBCloudFileInfo.class);
+	WPBFileInfo fileInfoMock = EasyMock.createMock(WPBFileInfo.class);
 	sosMock.write(EasyMock.anyObject(byte[].class),EasyMock.anyInt(), EasyMock.anyInt());
 	String contentType = "image/png";
-	EasyMock.expect(cloudFileStorageMock.getFileInfo(EasyMock.anyObject(WPBCloudFile.class))).andReturn(fileInfoMock);
+	EasyMock.expect(cloudFileStorageMock.getFileInfo(EasyMock.anyObject(WPBFilePath.class))).andReturn(fileInfoMock);
 	EasyMock.expect(fileInfoMock.getContentType()).andReturn(contentType);
 	
 	responseMock.setContentType(contentType);
@@ -104,16 +104,16 @@ public void test_serveFile_exception()
 	Whitebox.setInternalState(fileContentBuilder, "cloudFileStorage", cloudFileStorageMock);
 	
 	ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
-	EasyMock.expect(cloudFileStorageMock.getFileContent(EasyMock.anyObject(WPBCloudFile.class))).andReturn(bais);
+	EasyMock.expect(cloudFileStorageMock.getFileContent(EasyMock.anyObject(WPBFilePath.class))).andReturn(bais);
 	
 	ServletOutputStream sosMock = EasyMock.createMock(ServletOutputStream.class);
 	CacheServletOutputStream cachesos = new CacheServletOutputStream(sosMock);
 	HttpServletResponse responseMock = EasyMock.createMock(HttpServletResponse.class);
 	EasyMock.expect(responseMock.getOutputStream()).andReturn(cachesos);
-	WPBCloudFileInfo fileInfoMock = EasyMock.createMock(WPBCloudFileInfo.class);
+	WPBFileInfo fileInfoMock = EasyMock.createMock(WPBFileInfo.class);
 	sosMock.write(EasyMock.anyObject(byte[].class),EasyMock.anyInt(), EasyMock.anyInt());
 	String contentType = "image/png";
-	EasyMock.expect(cloudFileStorageMock.getFileInfo(EasyMock.anyObject(WPBCloudFile.class))).andThrow(new IOException());
+	EasyMock.expect(cloudFileStorageMock.getFileInfo(EasyMock.anyObject(WPBFilePath.class))).andThrow(new IOException());
 	EasyMock.expect(fileInfoMock.getContentType()).andReturn(contentType);
 	
 	responseMock.setContentType(contentType);

@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,15 +34,16 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
+
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBImageProcessor;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.cmsdata.WPBExporter;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBImporter;
@@ -81,7 +81,7 @@ public class FlatStorageImporterExporter {
 	private WPBImporter importer = new WPBImporter();
 	
 	private WPBAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
-	private WPBCloudFileStorage cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+	private WPBFileStorage cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
 	private WPBImageProcessor imageProcessor = WPBImageProcessorFactory.getInstance();
 	
 	private UriValidator uriValidator = new UriValidator();
@@ -334,10 +334,10 @@ public class FlatStorageImporterExporter {
 				WPBFile file = files.get(0);
 				String uniqueId = dataStorage.getUniqueId();
 				String cloudPath = uniqueId + "/" + file.getFileName();
-				WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, cloudPath);
+				WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, cloudPath);
 				cloudFileStorage.storeFile(zis, cloudFile);
 				cloudFileStorage.updateContentType(cloudFile, file.getAdjustedContentType());
-			    WPBCloudFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+			    WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
@@ -347,7 +347,7 @@ public class FlatStorageImporterExporter {
 		        	try
 		        	{
 		        		String thumbnailPath = uniqueId + "/thumnail/" + uniqueId + ".jpg";
-		        		WPBCloudFile cloudThumbnailFile = new WPBCloudFile(PUBLIC_BUCKET, thumbnailPath);
+		        		WPBFilePath cloudThumbnailFile = new WPBFilePath(PUBLIC_BUCKET, thumbnailPath);
 		        		
 		        		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				        imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
@@ -761,7 +761,7 @@ public class FlatStorageImporterExporter {
 				try
 				{
 					String filePath = contentPath + file.getFileName();
-					WPBCloudFile cloudFile = new WPBCloudFile(PUBLIC_BUCKET, file.getBlobKey());
+					WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
 					InputStream is = cloudFileStorage.getFileContent(cloudFile);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					IOUtils.copy(is, bos);

@@ -19,18 +19,18 @@ package com.webpagebytes.cms.datautility;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBCloudFileStorageFactory {
-	static WPBCloudFileStorage instance = null;
+	static WPBFileStorage instance = null;
 	private WPBCloudFileStorageFactory() {}
 	private static final Object lock = new Object();
 	private static final Logger log = Logger.getLogger(WPBCloudFileStorageFactory.class.getName());
 
-	public static WPBCloudFileStorage getInstance()
+	public static WPBFileStorage getInstance()
 	{
 		if (instance == null) {
 				synchronized (lock) {
@@ -42,7 +42,7 @@ public class WPBCloudFileStorageFactory {
 					}
 					try
 					{
-						instance = (WPBCloudFileStorage) Class.forName(factoryClass).newInstance();
+						instance = (WPBFileStorage) Class.forName(factoryClass).newInstance();
 						return instance;
 					} 
 					

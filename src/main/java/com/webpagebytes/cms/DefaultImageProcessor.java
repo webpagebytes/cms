@@ -26,10 +26,10 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBImageProcessor;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.datautility.Dimension;
 import com.webpagebytes.cms.exception.WPBException;
 
@@ -37,13 +37,13 @@ public class DefaultImageProcessor implements WPBImageProcessor {
 
 	public DefaultImageProcessor() {
 	}
-	public boolean resizeImage(WPBCloudFileStorage cloudStorage, WPBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WPBException
+	public boolean resizeImage(WPBFileStorage cloudStorage, WPBFilePath cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WPBException
 	{
 		InputStream is = null;
 		try
 		{
 			//get the file content
-			WPBCloudFileInfo fileInfo = cloudStorage.getFileInfo(cloudFile);
+			WPBFileInfo fileInfo = cloudStorage.getFileInfo(cloudFile);
 			String type = fileInfo.getContentType().toLowerCase();
 			if (!type.startsWith("image"))
 			{

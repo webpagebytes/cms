@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
@@ -54,13 +54,13 @@ private FreeMarkerImageDirective imageDirectiveMock;
 private FreeMarkerArticleDirective articleDirectiveMock;
 private WPBMessagesCache messageCacheMock;
 private WPBCacheInstances cacheInstancesMock;
-private WPBCloudFileStorage cloudStorageMock;
-private WPBCloudFileStorage cloudFileStorageMock;
+private WPBFileStorage cloudStorageMock;
+private WPBFileStorage cloudFileStorageMock;
 
 @Before
 public void setUp()
 {
-	cloudFileStorageMock = EasyMock.createMock(WPBCloudFileStorage.class);
+	cloudFileStorageMock = EasyMock.createMock(WPBFileStorage.class);
 	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
 
 	cacheFactoryMock = PowerMock.createMock(WPBCacheFactory.class);
@@ -70,7 +70,7 @@ public void setUp()
 	moduleDirectiveMock = PowerMock.createMock(FreeMarkerModuleDirective.class);
 	imageDirectiveMock = PowerMock.createMock(FreeMarkerImageDirective.class);
 	articleDirectiveMock = PowerMock.createMock(FreeMarkerArticleDirective.class);
-	cloudStorageMock = PowerMock.createMock(WPBCloudFileStorage.class);
+	cloudStorageMock = PowerMock.createMock(WPBFileStorage.class);
 	messageCacheMock = PowerMock.createMock(WPBMessagesCache.class);
 	cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
 	
@@ -81,7 +81,7 @@ public void setUp()
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBCloudFileStorage)null);
+	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBFileStorage)null);
 }
 
 

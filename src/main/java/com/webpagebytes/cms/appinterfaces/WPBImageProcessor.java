@@ -17,11 +17,27 @@
 package com.webpagebytes.cms.appinterfaces;
 import java.io.OutputStream;
 
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.exception.WPBException;
 
+/**
+ * <p>
+ * Interface to resize images stored in the WPBFileStorage
+ * </p>
+ * <p>
+ * An application that uses Webpagebytes CMS will have to use a concrete implementation of WPBImageProcessor in the application configuration file.
+ * </p>
+ */
 public interface WPBImageProcessor {
-
-    public boolean resizeImage(WPBCloudFileStorage cloudStorage, WPBCloudFile cloudFile, int desiredSize, String outputFormat, OutputStream os) throws WPBException;
+    /**
+     * Method that returns an image with a specified size as an OutputStream
+     * @param fileStorage File storage where the file to be resized is localed
+     * @param filepath Path of the file to be resized
+     * @param desiredSize Desired size of the new image
+     * @param outputFormat Output format of the image
+     * @param os OutpuStream that contains the resized image
+     * @return true if the image was resized, false otherwise
+     * @throws WPBException
+     */
+    public boolean resizeImage(WPBFileStorage fileStorage, WPBFilePath filepath, int desiredSize, String outputFormat, OutputStream os) throws WPBException;
     
 }

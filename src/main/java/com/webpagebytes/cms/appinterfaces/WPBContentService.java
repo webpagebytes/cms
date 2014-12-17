@@ -18,8 +18,34 @@ package com.webpagebytes.cms.appinterfaces;
 
 import com.webpagebytes.cms.exception.WPBException;
 
+/**
+ * WPBContentService is used in batch mode to create models to be used by WPBContentProvider to
+ * fetch content from the CMS.
+ * 
+ */
 public interface WPBContentService {
+    /**
+     * Creates a model for a specific locale mentioned by language and country. If this locale is not supported 
+     * the call will throw WPBLocaleException. <br>
+     * The caller can pass null for country if the locale requires only language parameter.
+     * @param language Locale language
+     * @param country Locale country (can be null)
+     * @return Return a WPBModel that can be used to fetch content with WPBContentProvider interface.
+     * @throws WPBException WPBLocaleException
+     */
 	public WPBModel createModel(String language, String country) throws WPBException;
+	
+	/**
+	 * Creates a model for the default project locale.
+	 * @return Return a WPBModel that can be used to fetch content with WPBContentProvider interface
+	 * @throws WPBException
+	 */
 	public WPBModel createModel() throws WPBException;
+	
+	/**
+	 * Returns an instance of WPBContentProvider that can be used to fetch content from the CMS.
+	 * @return Returns an instance of WPBContentProvider that can be used to fetch content from the CMS.
+	 * @throws WPBException
+	 */
 	public WPBContentProvider getContentProvider() throws WPBException;
 }

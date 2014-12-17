@@ -18,6 +18,8 @@ package com.webpagebytes.cms.appinterfaces;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.webpagebytes.cms.exception.WPBException;
 /**
  * Interface that defines a Site url controller.
  *
@@ -29,5 +31,5 @@ public interface WPBRequestHandler
 	public void handleRequest(HttpServletRequest request, 
 							  HttpServletResponse response, 
 							  WPBModel model,
-							  WPBForward forward);
+							  WPBForward forward) throws WPBException;
 }

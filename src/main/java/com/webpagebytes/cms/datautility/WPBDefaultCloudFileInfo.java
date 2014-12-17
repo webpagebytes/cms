@@ -19,11 +19,11 @@ package com.webpagebytes.cms.datautility;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 
-public class WPBDefaultCloudFileInfo implements WPBCloudFileInfo {
-	private WPBCloudFile cloudFile;
+public class WPBDefaultCloudFileInfo implements WPBFileInfo {
+	private WPBFilePath cloudFile;
 	private String contentType;
 	private Map<String, String> customProperties;
 	private long size;
@@ -31,7 +31,7 @@ public class WPBDefaultCloudFileInfo implements WPBCloudFileInfo {
 	private long crc32;
 	private long creationDate;
 	
-	public WPBDefaultCloudFileInfo(WPBCloudFile cloudFile, 
+	public WPBDefaultCloudFileInfo(WPBFilePath cloudFile, 
 							String contentType, 
 							boolean fileExists, 
 							long size,
@@ -47,7 +47,7 @@ public class WPBDefaultCloudFileInfo implements WPBCloudFileInfo {
 		customProperties = new HashMap<String, String>();
 	}
 	
-	public WPBCloudFile getCloudFile() {
+	public WPBFilePath getCloudFile() {
 		return cloudFile;
 	}
 

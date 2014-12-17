@@ -27,7 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
 import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
@@ -37,7 +38,6 @@ import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
@@ -55,7 +55,7 @@ import com.webpagebytes.cms.utility.HttpServletToolbox;
 public class CleanerController extends Controller implements WPBAdminDataStorageListener{
 	private WPBAdminDataStorage adminStorage;
 	private WPBCacheFactory cacheFactory;
-	private WPBCloudFileStorage cloudFileStorage;
+	private WPBFileStorage cloudFileStorage;
 	
 	public CleanerController()
 	{
@@ -124,12 +124,12 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 	{
 		if (file.getBlobKey() != null)
 		{
-			WPBCloudFile cloudFile = new WPBCloudFile(FileController.PUBLIC_BUCKET, file.getBlobKey());
+			WPBFilePath cloudFile = new WPBFilePath(FileController.PUBLIC_BUCKET, file.getBlobKey());
 			cloudFileStorage.deleteFile(cloudFile);
 		}
 		if (file.getThumbnailBlobKey() != null)
 		{
-			WPBCloudFile cloudThumbnailFile = new WPBCloudFile(FileController.PUBLIC_BUCKET, file.getThumbnailBlobKey());
+			WPBFilePath cloudThumbnailFile = new WPBFilePath(FileController.PUBLIC_BUCKET, file.getThumbnailBlobKey());
 			cloudFileStorage.deleteFile(cloudThumbnailFile);
 		}						
 	}

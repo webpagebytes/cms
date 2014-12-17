@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
@@ -43,13 +43,13 @@ import freemarker.template.utility.DeepUnwrap;
 class FreeMarkerImageDirective implements TemplateDirectiveModel {
 	private static final Logger log = Logger.getLogger(FreeMarkerModuleDirective.class.getName());
 	WPBCacheInstances cacheInstances;
-	WPBCloudFileStorage cloudFileStorage;
+	WPBFileStorage cloudFileStorage;
 	
 	public FreeMarkerImageDirective()
 	{
 		
 	}
-	public void initialize(WPBCloudFileStorage cloudFileStorage, WPBCacheInstances cacheInstances)
+	public void initialize(WPBFileStorage cloudFileStorage, WPBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
 		this.cloudFileStorage = cloudFileStorage;
@@ -87,7 +87,7 @@ class FreeMarkerImageDirective implements TemplateDirectiveModel {
         		log.log(Level.WARNING, "cannot find iamge with key" + externalKey);
         		return;
         	}
-        	WPBCloudFile cloudFile = new WPBCloudFile("public", image.getBlobKey());
+        	WPBFilePath cloudFile = new WPBFilePath("public", image.getBlobKey());
         	if (! embedded)
         	{
         		serveUrl = cloudFileStorage.getPublicFileUrl(cloudFile);        	

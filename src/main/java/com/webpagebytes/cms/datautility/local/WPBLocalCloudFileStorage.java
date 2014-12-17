@@ -38,16 +38,16 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.IOUtils;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
-import com.webpagebytes.cms.cmsdata.WPBCloudFile;
-import com.webpagebytes.cms.cmsdata.WPBCloudFileInfo;
+import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
+import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.datautility.WPBDefaultCloudFileInfo;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
-public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
+public class WPBLocalCloudFileStorage implements WPBFileStorage {
 	private static final String publicDataFolder = "public";
 	private static final String privateDataFolder = "private";
 	private static final String publicMetaFolder = "public_meta";
@@ -194,7 +194,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		return CmsBase64Utility.toBase64(path.getBytes(Charset.forName("UTF-8")));
 	}
 	
-	private String getLocalFullDataPath(WPBCloudFile file)
+	private String getLocalFullDataPath(WPBFilePath file)
 	{
 		if (file.getBucket().equals(publicDataFolder)) 
 		{
@@ -206,7 +206,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		}
 		return null;
 	}
-	private String getLocalFullMetaPath(WPBCloudFile file)
+	private String getLocalFullMetaPath(WPBFilePath file)
 	{
 		if (file.getBucket().equals(publicDataFolder)) 
 		{
@@ -256,7 +256,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		return new File(filePath).exists();
 	}
 	
-	public void storeFile(InputStream is, WPBCloudFile file) throws IOException
+	public void storeFile(InputStream is, WPBFilePath file) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
 		OutputStream fos = createStorageOutputStream(fullFilePath);
@@ -297,7 +297,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		
 	}
 	
-	public WPBCloudFileInfo getFileInfo(WPBCloudFile file) 
+	public WPBFileInfo getFileInfo(WPBFilePath file) 
 	{
 		String metaPath = getLocalFullMetaPath(file);
 		String dataPath = getLocalFullDataPath(file);
@@ -314,7 +314,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 			
 			
 			boolean fileExists = checkIfFileExists(dataPath);
-			WPBCloudFileInfo fileInfo = new WPBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
+			WPBFileInfo fileInfo = new WPBDefaultCloudFileInfo(file, contentType, fileExists, size, md5, crc32, creationTime);
 			props.remove("path");
 			props.remove("contentType");
 			props.remove("size");
@@ -336,7 +336,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		
 	}
 	
-	public boolean deleteFile(WPBCloudFile file) throws IOException
+	public boolean deleteFile(WPBFilePath file) throws IOException
 	{
 		String filePath = getLocalFullDataPath(file);
 		File dataFile = new File(filePath);
@@ -355,7 +355,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		return del1 && del2;
 		
 	}
-	public InputStream getFileContent(WPBCloudFile file) throws IOException
+	public InputStream getFileContent(WPBFilePath file) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
 		if (! checkIfFileExists(fullFilePath))
@@ -366,7 +366,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 	}
 	
 	
-	public void updateContentType(WPBCloudFile file, String contentType) throws IOException
+	public void updateContentType(WPBFilePath file, String contentType) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
 		if (! checkIfFileExists(fullFilePath))
@@ -382,7 +382,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 		storeFileProperties(props, metaPath);
 	}
 	
-	public void updateFileCustomProperties(WPBCloudFile file, Map<String, String> customProps) throws IOException
+	public void updateFileCustomProperties(WPBFilePath file, Map<String, String> customProps) throws IOException
 	{
 		String fullFilePath = getLocalFullDataPath(file);
 		if (! checkIfFileExists(fullFilePath))
@@ -406,7 +406,7 @@ public class WPBLocalCloudFileStorage implements WPBCloudFileStorage {
 	    storeFileProperties(props, metaPath);
 	}
 	
-	public String getPublicFileUrl(WPBCloudFile file)	
+	public String getPublicFileUrl(WPBFilePath file)	
 	{
 		String partialPath = file.getBucket() + "/" + sanitizeCloudFilePath(file.getPath());
 		return basePublicUrlPath + partialPath;

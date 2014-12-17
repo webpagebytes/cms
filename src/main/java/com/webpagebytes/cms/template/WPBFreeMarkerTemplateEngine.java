@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.appinterfaces.WPBCloudFileStorage;
+import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
@@ -48,7 +48,7 @@ public class WPBFreeMarkerTemplateEngine implements WPBTemplateEngine {
 	private Configuration configuration;
 	private FreeMarkerTemplateLoader templateLoader;
 	private WPBCacheInstances cacheInstances;
-	private WPBCloudFileStorage cloudFileStorage;
+	private WPBFileStorage cloudFileStorage;
 	
 	public WPBFreeMarkerTemplateEngine(WPBCacheInstances cacheInstances)
 	{
