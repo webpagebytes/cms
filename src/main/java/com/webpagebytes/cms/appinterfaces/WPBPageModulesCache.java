@@ -16,13 +16,24 @@
 
 package com.webpagebytes.cms.appinterfaces;
 
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.exception.WPBIOException;
 
+/**
+ * Cache interface to access CMS page modules.
+ *
+ */
 public interface WPBPageModulesCache extends WPBRefreshableCache {
 
-	public WPBWebPageModule getByExternalKey(String key) throws WPBIOException;
+    /**
+     * Gets a WPBPageModule from cache based on its externalKey
+     * @param externalKey externalKey that identifies the record.
+     * @return WPBPageModule instance or null if there is no page module with the provided externalKey. 
+     * @throws WPBIOException
+     */
+	public WPBPageModule getByExternalKey(String key) throws WPBIOException;
 	
-	public WPBWebPageModule get(String pageName) throws WPBIOException;
+	
+	public WPBPageModule get(String pageName) throws WPBIOException;
 
 }

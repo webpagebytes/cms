@@ -17,8 +17,8 @@
 package com.webpagebytes.cms.appinterfaces;
 
 /**
- * WPBModel interface represents the Webpagebytes CMS Model implementation from the MVC pattern.
- * @see WPBApplicationModel, WPBCmsModel 
+ * WPBModel interface represents the Webpagebytes CMS Model implementation of the MVC pattern.
+ * @see WPBApplicationModel WPBCmsModel 
  *
  */
 public interface WPBModel {
@@ -46,6 +46,15 @@ public interface WPBModel {
 	public static final String GLOBAL_CONTEXT_PATH = "WPB_GLOBAL_CONTEXT_PATH";
 	public static final String GLOBAL_BASE_URL = "WPB_GLOBAL_BASE_URL";
 	
+	/**
+	 * Provides access to the CMS specific Model that holds non application specific data.
+	 * @return Returns a WPBCmsModel instance.
+	 */
 	public WPBCmsModel getCmsModel();
+	
+	/**
+	 * Provides access to the CMS application specific Model that can be populated by the application with its specific data.
+	 * @return Returns a WPBApplicationModel instance.
+	 */
 	public WPBApplicationModel getCmsApplicationModel();
 }

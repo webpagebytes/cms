@@ -43,8 +43,8 @@ import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
@@ -79,12 +79,12 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 				WPBUrisCache urisCache = cacheFactory.getUrisCacheInstance();
 				urisCache.Refresh();
 			}
-			if (type.equals(WPBWebPage.class))
+			if (type.equals(WPBPage.class))
 			{
 				WPBWebPagesCache pagesCache = cacheFactory.getWebPagesCacheInstance();
 				pagesCache.Refresh();
 			}
-			if (type.equals(WPBWebPageModule.class))
+			if (type.equals(WPBPageModule.class))
 			{
 				WPBPageModulesCache modulesCache = cacheFactory.getPageModulesCacheInstance();
 				modulesCache.Refresh();
@@ -138,8 +138,8 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 		try
 		{
 			adminStorage.deleteAllRecords(WPBUri.class);
-			adminStorage.deleteAllRecords(WPBWebPage.class);
-			adminStorage.deleteAllRecords(WPBWebPageModule.class);
+			adminStorage.deleteAllRecords(WPBPage.class);
+			adminStorage.deleteAllRecords(WPBPageModule.class);
 			adminStorage.deleteAllRecords(WPBArticle.class);
 			adminStorage.deleteAllRecords(WPBMessage.class);
 			adminStorage.deleteAllRecords(WPBParameter.class);

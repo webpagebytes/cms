@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.webpagebytes.cms.cmsdata.WPBParameter;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.controllers.WPBErrors;
 import com.webpagebytes.cms.controllers.ParameterValidator;
 

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
 import com.webpagebytes.cms.template.WPBTemplateEngine;
@@ -51,7 +51,7 @@ class PageContentBuilder {
 			templateEngine.initialize();
 	}
 	
-	public WPBWebPage findWebPage(String pageExternalKey) throws WPBException
+	public WPBPage findWebPage(String pageExternalKey) throws WPBException
 	{
 		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
 	}
@@ -73,7 +73,7 @@ class PageContentBuilder {
 	}
 	
 	public String buildPageContent(HttpServletRequest request,
-			WPBWebPage wbWebPage, 
+			WPBPage wbWebPage, 
 			InternalModel model) throws WPBException
 	{
 
@@ -108,7 +108,7 @@ class PageContentBuilder {
 		String result = "";
 		try {
 			StringWriter out = new StringWriter();			
-			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
+			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getExternalKey(), rootModel, out);
 			result += out.toString();
 		} catch (WPBException e)
 		{
@@ -119,7 +119,7 @@ class PageContentBuilder {
 	}
 
 	public String buildPageContent(
-			WPBWebPage wbWebPage, 
+			WPBPage wbWebPage, 
 			InternalModel model) throws WPBException
 	{
 
@@ -154,7 +154,7 @@ class PageContentBuilder {
 		String result = "";
 		try {
 			StringWriter out = new StringWriter();			
-			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getName(), rootModel, out);
+			templateEngine.process(WPBTemplateEngine.WEBPAGES_PATH_PREFIX + wbWebPage.getExternalKey(), rootModel, out);
 			result += out.toString();
 		} catch (WPBException e)
 		{

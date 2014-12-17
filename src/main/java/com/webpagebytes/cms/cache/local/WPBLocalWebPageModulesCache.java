@@ -22,15 +22,15 @@ import java.util.Map;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
 	
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WPBWebPageModule> localCacheByID;
-	private Map<String, WPBWebPageModule> localCacheByName;
+	private Map<String, WPBPageModule> localCacheByID;
+	private Map<String, WPBPageModule> localCacheByName;
 	private static final Object lock = new Object();
 	public WPBLocalWebPageModulesCache()
 	{
@@ -46,7 +46,7 @@ public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
 			
 		}
 	}
-	public WPBWebPageModule getByExternalKey(String externalKey) throws WPBIOException
+	public WPBPageModule getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCacheByID != null)
 		{
@@ -58,11 +58,11 @@ public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WPBWebPageModule> tempMapByID = new HashMap<String, WPBWebPageModule>();
-			Map<String, WPBWebPageModule> tempMapByName = new HashMap<String, WPBWebPageModule>();
+			Map<String, WPBPageModule> tempMapByID = new HashMap<String, WPBPageModule>();
+			Map<String, WPBPageModule> tempMapByName = new HashMap<String, WPBPageModule>();
 			
-			List<WPBWebPageModule> recList = dataStorage.getAllRecords(WPBWebPageModule.class);
-			for(WPBWebPageModule item: recList)
+			List<WPBPageModule> recList = dataStorage.getAllRecords(WPBPageModule.class);
+			for(WPBPageModule item: recList)
 			{
 				tempMapByID.put(item.getExternalKey(), item);
 				tempMapByName.put(item.getName(), item);
@@ -74,7 +74,7 @@ public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
 	}
 
 		
-	public WPBWebPageModule get(String moduleName) throws WPBIOException
+	public WPBPageModule get(String moduleName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{

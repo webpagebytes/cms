@@ -33,7 +33,7 @@ import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
@@ -194,7 +194,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			{
 				if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 				{
-					List<WPBWebPage> pages = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBPage> pages = adminStorage.query(WPBPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("pages_links", arrayPages);
@@ -234,7 +234,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			{
 				if (wburi.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 				{
-					List<WPBWebPage> pages = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
+					List<WPBPage> pages = adminStorage.query(WPBPage.class, "externalKey", AdminQueryOperator.EQUAL, wburi.getResourceExternalKey());
 					org.json.JSONArray arrayPages = jsonObjectConverter.JSONArrayFromListObjects(pages);
 					org.json.JSONObject additionalData = new org.json.JSONObject();
 					additionalData.put("pages_links", arrayPages);

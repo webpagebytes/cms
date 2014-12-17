@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerTemplateObject.TemplateType;
 
@@ -46,14 +46,14 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		this.cacheInstances = wbCacheInstances; 
 	}
 	
-	private Object findTemplateWebPageSource(String name)
+	private Object findTemplatePageSource(String externalKey)
 	{
 		try
 		{
-			WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(name);
+			WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(externalKey);
 			if (null != wbWebPage)
 			{
-				return new FreeMarkerTemplateObject(name, FreeMarkerTemplateObject.TemplateType.TEMPLATE_PAGE, wbWebPage.getLastModified().getTime());
+				return new FreeMarkerTemplateObject(externalKey, FreeMarkerTemplateObject.TemplateType.TEMPLATE_PAGE, wbWebPage.getLastModified().getTime());
 			}
 		} catch (WPBIOException e)
 		{
@@ -61,14 +61,14 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		}
 		return null;
 	}
-	private Object findTemplateWebModuleSource(String name)
+	private Object findTemplateModuleSource(String externalKey)
 	{
 		try
 		{
-			WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(name);
+			WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
 			if (null != wbWebPageModule)
 			{
-				return new FreeMarkerTemplateObject(name, FreeMarkerTemplateObject.TemplateType.TEMPLATE_MODULE, wbWebPageModule.getLastModified().getTime());
+				return new FreeMarkerTemplateObject(externalKey, FreeMarkerTemplateObject.TemplateType.TEMPLATE_MODULE, wbWebPageModule.getLastModified().getTime());
 			}
 		} catch (WPBIOException e)
 		{
@@ -81,10 +81,10 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
     {
 		if (name.startsWith(webPagesPathPrefix))
 		{
-			return findTemplateWebPageSource(name.substring(webPagesPathPrefix.length()));
+			return findTemplatePageSource(name.substring(webPagesPathPrefix.length()));
 		} else
 		if (name.startsWith(webModulesPathPrefix)){
-			return findTemplateWebModuleSource(name.substring(webModulesPathPrefix.length()));
+			return findTemplateModuleSource(name.substring(webModulesPathPrefix.length()));
 		} else
 		return null;
     }
@@ -101,7 +101,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
+				WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPage)
 				{
 					return wbWebPage.getLastModified().getTime();
@@ -115,7 +115,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
+				WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPageModule)
 				{
 					return wbWebPageModule.getLastModified().getTime();
@@ -143,7 +143,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBWebPage wbWebPage = cacheInstances.getWBWebPageCache().get(templateObject.getName());
+				WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPage)
 				{
 					return new StringReader(wbWebPage.getHtmlSource());
@@ -157,7 +157,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBWebPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().get(templateObject.getName());
+				WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPageModule)
 				{
 					return new StringReader(wbWebPageModule.getHtmlSource());

@@ -36,7 +36,7 @@ import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
@@ -154,7 +154,7 @@ private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 	return urlMatcher;
 }
 	
-private void handleRequestTypeText(WPBWebPage webPage, HttpServletRequest req, HttpServletResponse resp, InternalModel model) throws WPBException, IOException
+private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, HttpServletResponse resp, InternalModel model) throws WPBException, IOException
 {
 	if (webPage == null)
 	{
@@ -273,7 +273,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			}
 			if (wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT || forward.isRequestForwarded())
 			{
-				WPBWebPage webPage = null;
+				WPBPage webPage = null;
 				if (forward.isRequestForwarded())
 				{
 					webPage = pageContentBuilder.findWebPage(forward.getForwardTo());

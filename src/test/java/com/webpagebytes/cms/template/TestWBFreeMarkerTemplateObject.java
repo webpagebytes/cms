@@ -20,7 +20,7 @@ public class TestWBFreeMarkerTemplateObject {
 public void testGettersTemplatePage()
 {
 	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("testpage", TemplateType.TEMPLATE_PAGE, 2L);
-	assertTrue(object.getName().equals("testpage"));
+	assertTrue(object.getExternalKey().equals("testpage"));
 	assertTrue(object.getType() == TemplateType.TEMPLATE_PAGE);
 	assertTrue(object.getLastModified() == 2L);
 }
@@ -29,7 +29,7 @@ public void testGettersTemplatePage()
 public void testGettersTemplateModulePage()
 {
 	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("testmodule", TemplateType.TEMPLATE_MODULE, 3L);
-	assertTrue(object.getName().equals("testmodule"));
+	assertTrue(object.getExternalKey().equals("testmodule"));
 	assertTrue(object.getType() == TemplateType.TEMPLATE_MODULE);
 	assertTrue(object.getLastModified() == 3L);
 }
@@ -38,10 +38,10 @@ public void testGettersTemplateModulePage()
 public void testSetters()
 {
 	FreeMarkerTemplateObject object = new FreeMarkerTemplateObject("test", TemplateType.TEMPLATE_PAGE, 1L);
-	object.setName("testset");
+	object.setExternalKey("testset");
 	object.setType(TemplateType.TEMPLATE_MODULE);
 	object.setLastModified(5L);
-	assertTrue(object.getName().equals("testset"));
+	assertTrue(object.getExternalKey().equals("testset"));
 	assertTrue(object.getType() == TemplateType.TEMPLATE_MODULE);
 	assertTrue(object.getLastModified() == 5L);
 }

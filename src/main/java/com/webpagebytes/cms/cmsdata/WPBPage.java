@@ -19,7 +19,7 @@ package com.webpagebytes.cms.cmsdata;
 import java.util.Date;
 import java.util.zip.CRC32;
 
-public class WPBWebPage {
+public class WPBPage {
 	@WPBAdminFieldKey
 	private Long privkey;
 

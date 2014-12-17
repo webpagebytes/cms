@@ -23,7 +23,7 @@ import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBProject;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
 import com.webpagebytes.cms.template.WPBTemplateEngine;
@@ -38,7 +38,7 @@ PageContentBuilder pageContentBuilder;
 ModelBuilder modelBuilderMock;
 WPBTemplateEngine templateEngineMock;
 HttpServletRequest requestMock;
-WPBWebPage pageMock;
+WPBPage pageMock;
 WPBProject projectMock;
 
 @Before
@@ -50,7 +50,7 @@ public void setUp()
 	pageContentBuilder = new PageContentBuilder(cacheInstancesMock, modelBuilderMock);
 	templateEngineMock = EasyMock.createMock(WPBTemplateEngine.class);
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
-	pageMock = EasyMock.createMock(WPBWebPage.class);
+	pageMock = EasyMock.createMock(WPBPage.class);
 	projectMock = EasyMock.createMock(WPBProject.class);
 	Whitebox.setInternalState(pageContentBuilder, "templateEngine", templateEngineMock);
 }
@@ -82,7 +82,7 @@ public void test_find_web_page()
 		EasyMock.expect(cacheInstancesMock.getWBWebPageCache()).andReturn(pagesCacheMock);
 		EasyMock.expect(pagesCacheMock.getByExternalKey(pageExternalKey)).andReturn(pageMock);		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock);	
-		WPBWebPage result = pageContentBuilder.findWebPage(pageExternalKey);
+		WPBPage result = pageContentBuilder.findWebPage(pageExternalKey);
 		assertTrue (result == pageMock);
 		
 	}catch (Exception e)
@@ -143,14 +143,14 @@ public void test_buildPageContent_zero_ok_nullController()
 	try
 	{
 		InternalModel model = new InternalModel();
-		String pageName = "index";
+		String externalKey = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
 		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(null);
-		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		EasyMock.expect(pageMock.getExternalKey()).andReturn(externalKey);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
@@ -177,7 +177,7 @@ public void test_buildPageContent_validController()
 		locale.put(WPBModel.LOCALE_LANGUAGE_KEY, "en");
 		model.getCmsModel().put(WPBModel.LOCALE_KEY, locale);
 		
-		String pageName = "index";
+		String externalKey = "index";
 		String controllerClass = "com.webpagebytes.cms.DummyPageModelProvider";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
@@ -186,7 +186,7 @@ public void test_buildPageContent_validController()
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(controllerClass);
 		
-		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		EasyMock.expect(pageMock.getExternalKey()).andReturn(externalKey);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
@@ -208,14 +208,14 @@ public void test_buildPageContent_zero_ok_emptyController()
 	try
 	{
 		InternalModel model = new InternalModel();
-		String pageName = "index";
+		String externalKey = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
 		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn("");
-		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		EasyMock.expect(pageMock.getExternalKey()).andReturn(externalKey);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		
@@ -237,14 +237,14 @@ public void test_buildPageContent_templateException()
 	try
 	{
 		InternalModel model = new InternalModel();
-		String pageName = "index";
+		String externalKey = "index";
 		
 		EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
 
 		modelBuilderMock.populateModelForWebPage(pageMock, model);
 		
 		EasyMock.expect(pageMock.getPageModelProvider()).andReturn(null);
-		EasyMock.expect(pageMock.getName()).andReturn(pageName);
+		EasyMock.expect(pageMock.getExternalKey()).andReturn(externalKey);
 		
 		templateEngineMock.process(EasyMock.anyObject(String.class), EasyMock.anyObject(Map.class), EasyMock.anyObject(Writer.class));
 		EasyMock.expectLastCall().andThrow(new WPBTemplateException(""));

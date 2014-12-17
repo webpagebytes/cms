@@ -30,8 +30,8 @@ import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
 import com.webpagebytes.cms.exception.WPBException;
@@ -119,10 +119,10 @@ public class Statistics extends Controller {
 							getRecordsStats(request, WPBUri.class, payloadJson, entity);
 							break;
 						case PAGES:
-							getRecordsStats(request, WPBWebPage.class, payloadJson, entity);
+							getRecordsStats(request, WPBPage.class, payloadJson, entity);
 							break;
 						case MODULES:
-							getRecordsStats(request, WPBWebPageModule.class, payloadJson, entity);
+							getRecordsStats(request, WPBPageModule.class, payloadJson, entity);
 							break;
 						case ARTICLES:
 							getRecordsStats(request, WPBArticle.class, payloadJson, entity);

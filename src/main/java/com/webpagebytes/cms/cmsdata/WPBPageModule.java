@@ -18,7 +18,7 @@ package com.webpagebytes.cms.cmsdata;
 
 import java.util.Date;
 
-public class WPBWebPageModule {
+public class WPBPageModule {
 	@WPBAdminFieldKey
 	private Long privkey;
 

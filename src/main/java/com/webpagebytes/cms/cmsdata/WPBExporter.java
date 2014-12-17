@@ -121,7 +121,7 @@ public class WPBExporter {
 			
 		}
 	
-	public void export(WPBWebPage page, Map<String, Object> properties)
+	public void export(WPBPage page, Map<String, Object> properties)
 	{
 		if (page.getExternalKey() != null)
 			properties.put("externalKey", page.getExternalKey());
@@ -214,7 +214,7 @@ public class WPBExporter {
 		
 	}
 
-	public void export(WPBWebPageModule module, Map<String, Object> properties)
+	public void export(WPBPageModule module, Map<String, Object> properties)
 	{
 		if (module.getExternalKey() != null)
 			properties.put("externalKey", module.getExternalKey());

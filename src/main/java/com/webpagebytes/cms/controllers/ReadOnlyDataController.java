@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 
@@ -51,7 +51,7 @@ public class ReadOnlyDataController  extends Controller {
 	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
-		List<WPBWebPage> pages = adminStorage.getAllRecords(WPBWebPage.class);
+		List<WPBPage> pages = adminStorage.getAllRecords(WPBPage.class);
 
 		
 		try 
@@ -68,7 +68,7 @@ public class ReadOnlyDataController  extends Controller {
 			returnJson.put(DATA_FILES, jsonFilesArray);
 			
 			org.json.JSONArray jsonPagesArray = new org.json.JSONArray(); 
-			for(WPBWebPage page : pages)
+			for(WPBPage page : pages)
 			{
 				JSONObject object = new JSONObject();
 				object.put("externalKey", page.getExternalKey());
@@ -100,7 +100,7 @@ public class ReadOnlyDataController  extends Controller {
 			{
 				if (entityName != null && entityName.equals("wbpage"))
 				{
-					allRecords = adminStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, property);
+					allRecords = adminStorage.query(WPBPage.class, "externalKey", AdminQueryOperator.EQUAL, property);
 				}
 				if (entityName != null && entityName.equals("wbfile"))
 				{
@@ -108,7 +108,7 @@ public class ReadOnlyDataController  extends Controller {
 				}				
 			} else
 			{
-				allRecords = new ArrayList<WPBWebPage>();
+				allRecords = new ArrayList<WPBPage>();
 			}
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();

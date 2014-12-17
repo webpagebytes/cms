@@ -18,6 +18,23 @@ package com.webpagebytes.cms.appinterfaces;
 
 import com.webpagebytes.cms.exception.WPBException;
 
+/**
+ * <p>
+ * Server side controller can is executed when a content is generated for a site page.
+ * </p>
+ * <p>
+ * The same server side controller can supply application specific data to multiple site pages. In this case 
+ * it is natural to reuse the same code. WPBPageModelProvider provides this posibility to populate the model
+ * for a site page.
+ * </p>
+ */
 public interface WPBPageModelProvider {
-	public void populatePageModel(WPBModel model) throws WPBException;
+
+    /**
+     * Method called when content is generated for a site page who's Source interpretation is 'Template text' and 
+     * the 'Page model provider' attribute is set. 
+     * @param model The request model that can be populated with application specific data.
+     * @throws WPBException
+     */
+    public void populatePageModel(WPBModel model) throws WPBException;
 }

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import com.webpagebytes.cms.appinterfaces.WPBContentProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class WPBDefaultContentProvider implements WPBContentProvider {
@@ -62,7 +62,7 @@ public class WPBDefaultContentProvider implements WPBContentProvider {
 	{
 		try
 		{
-			WPBWebPage wbWebPage = pageContentBuilder.findWebPage(externalKey);
+			WPBPage wbWebPage = pageContentBuilder.findWebPage(externalKey);
 			if (null == wbWebPage)
 			{
 				return false;

@@ -124,9 +124,9 @@ public class WPBImporter {
 		return uri;
 	}
 
-	public WPBWebPage buildWebPage(Map<Object, Object> properties)
+	public WPBPage buildWebPage(Map<Object, Object> properties)
 	{
-		WPBWebPage page = new WPBWebPage();
+		WPBPage page = new WPBPage();
 		if (properties.get("externalKey") != null)
 			page.setExternalKey(properties.get("externalKey").toString().trim());
 		else
@@ -160,7 +160,7 @@ public class WPBImporter {
 		{
 			page.setHtmlSource("");
 		}
-		page.setHash( WPBWebPage.crc32(page.getHtmlSource()));
+		page.setHash( WPBPage.crc32(page.getHtmlSource()));
 		
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;
@@ -230,9 +230,9 @@ public class WPBImporter {
 		return file;
 	}
 
-	public WPBWebPageModule buildWebPageModule(Map<Object, Object> properties)
+	public WPBPageModule buildWebPageModule(Map<Object, Object> properties)
 	{
-		WPBWebPageModule pageModule = new WPBWebPageModule();
+		WPBPageModule pageModule = new WPBPageModule();
 		if (properties.get("externalKey") != null)
 			pageModule.setExternalKey(properties.get("externalKey").toString().trim());
 		else

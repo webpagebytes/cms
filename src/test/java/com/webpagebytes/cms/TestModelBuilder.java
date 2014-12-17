@@ -33,7 +33,7 @@ import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
@@ -52,7 +52,7 @@ WPBUri uriMock;
 URLMatcherResult urlMatcherResultMock;
 InternalModel modelMock;
 WPBProjectCache projectCacheMock;
-WPBWebPage webPageMock;
+WPBPage webPageMock;
 CmsConfiguration configurationMock;
 Map<String, String> modelConfigs = new HashMap<String, String>();
 
@@ -68,7 +68,7 @@ public void setUp()
 	uriMock = EasyMock.createMock(WPBUri.class);
 	urlMatcherResultMock = EasyMock.createMock(URLMatcherResult.class);
 	modelMock = EasyMock.createMock(InternalModel.class);
-	webPageMock = EasyMock.createMock(WPBWebPage.class);
+	webPageMock = EasyMock.createMock(WPBPage.class);
 	projectCacheMock  = EasyMock.createMock(WPBProjectCache.class);
 }
 

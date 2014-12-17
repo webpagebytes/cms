@@ -51,8 +51,8 @@ import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.datautility.WPBImageProcessorFactory;
@@ -257,7 +257,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WPBWebPage webPage = importer.buildWebPage(props);
+			WPBPage webPage = importer.buildWebPage(props);
 			if (webPage != null)
 			{
 				dataStorage.add(webPage);
@@ -275,15 +275,15 @@ public class FlatStorageImporterExporter {
 			String[] parts = path.split("/");
 			String externalKey = parts.length == 3 ? parts[1] : "";
 			
-			List<WPBWebPage> pages = dataStorage.query(WPBWebPage.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBPage> pages = dataStorage.query(WPBPage.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (pages.size() == 1)
 			{
-				WPBWebPage page = pages.get(0);
+				WPBPage page = pages.get(0);
 				
 				byte[] content = getBytesFromInputStream(zis);
 				String pageContent = new String(content, "utf-8");
 				page.setHtmlSource(pageContent);
-				page.setHash(WPBWebPage.crc32(pageContent));
+				page.setHash(WPBPage.crc32(pageContent));
 				dataStorage.update(page);			
 			} else
 			{
@@ -302,10 +302,10 @@ public class FlatStorageImporterExporter {
 			String[] parts = path.split("/");
 			String externalKey = parts.length == 3 ? parts[1] : "";
 			
-			List<WPBWebPageModule> pageModules = dataStorage.query(WPBWebPageModule.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+			List<WPBPageModule> pageModules = dataStorage.query(WPBPageModule.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 			if (pageModules.size() == 1)
 			{
-				WPBWebPageModule pageModule = pageModules.get(0);
+				WPBPageModule pageModule = pageModules.get(0);
 				
 				byte[] content = getBytesFromInputStream(zis);
 				String pageContent = new String(content, "utf-8");
@@ -427,7 +427,7 @@ public class FlatStorageImporterExporter {
 		try 
 		{
 			Map<Object, Object> props = importFromXMLFormat(zis);
-			WPBWebPageModule webPageModule = importer.buildWebPageModule(props);
+			WPBPageModule webPageModule = importer.buildWebPageModule(props);
 			if (webPageModule != null)
 			{
 				dataStorage.add(webPageModule);
@@ -609,8 +609,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WPBWebPage> pages = dataStorage.getAllRecords(WPBWebPage.class);
-			for(WPBWebPage page: pages)
+			List<WPBPage> pages = dataStorage.getAllRecords(WPBPage.class);
+			for(WPBPage page: pages)
 			{
 				String pageXmlPath = path + page.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -675,8 +675,8 @@ public class FlatStorageImporterExporter {
 	{
 		try
 		{
-			List<WPBWebPageModule> modules = dataStorage.getAllRecords(WPBWebPageModule.class);
-			for(WPBWebPageModule module: modules)
+			List<WPBPageModule> modules = dataStorage.getAllRecords(WPBPageModule.class);
+			for(WPBPageModule module: modules)
 			{
 				String moduleXmlPath = path + module.getExternalKey() + "/" + "metadata.xml";
 				Map<String, Object> map = new HashMap<String, Object>();

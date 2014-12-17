@@ -31,7 +31,7 @@ import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.utility.Pair;
@@ -64,7 +64,7 @@ class ModelBuilder {
 		populateStaticParameters(request, model);
 	}
 
-	public void populateModelForWebPage(WPBWebPage page, InternalModel model) throws WPBException
+	public void populateModelForWebPage(WPBPage page, InternalModel model) throws WPBException
 	{
 		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
 		

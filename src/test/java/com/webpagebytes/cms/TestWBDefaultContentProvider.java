@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 import com.webpagebytes.cms.appinterfaces.WPBModel;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBException;
 
 @RunWith(PowerMockRunner.class)
@@ -108,7 +108,7 @@ public void test_writePageContent()
 		String content = "content";
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		OutputStream osMock  = EasyMock.createMock(OutputStream.class);
-		WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+		WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 		InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andReturn(content);
@@ -130,7 +130,7 @@ public void test_writePageContent_page_not_found()
 		String externalKey = "abc";
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		OutputStream osMock  = EasyMock.createMock(OutputStream.class);
-		WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+		WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 		WPBModel modelMock = EasyMock.createMock(WPBModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(null);
 		EasyMock.replay(fileContentBuilderMock, pageContentBuilderMock, pageMock, modelMock, osMock);
@@ -150,7 +150,7 @@ public void test_writePageContent_ioexception()
 		String externalKey = "abc";
 		String content = "content";
 		OutputStream osMock  = PowerMock.createMock(OutputStream.class);
-		WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+		WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 		InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andReturn(content);
@@ -175,7 +175,7 @@ public void test_writePageContent_wbexception()
 		String externalKey = "abc";
 		String content = "content";
 		OutputStream osMock  = PowerMock.createMock(OutputStream.class);
-		WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+		WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 		InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 		EasyMock.expect(pageContentBuilderMock.findWebPage(externalKey)).andReturn(pageMock);
 		EasyMock.expect(pageContentBuilderMock.buildPageContent(pageMock, modelMock)).andThrow(new WPBException(""));

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
 
@@ -66,14 +66,14 @@ public class FreeMarkerModuleDirective extends FreeMarkerDirectiveBase {
     	
         try
         {
-        	WPBWebPageModule pageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
+        	WPBPageModule pageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
         	if (pageModule == null)
         	{
         		throw new TemplateModelException("WBFreeMarkerModuleDirective directive name does not match any existing page module: " + externalKey);       
         	}
         	if (pageModule.getIsTemplateSource() == 1)
         	{
-        		String moduleName = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + pageModule.getName();
+        		String moduleName = WPBTemplateEngine.WEBMODULES_PATH_PREFIX + pageModule.getExternalKey();
         	    templateEngine.process(moduleName, params, env.getOut());        	 
         	} else
         	{

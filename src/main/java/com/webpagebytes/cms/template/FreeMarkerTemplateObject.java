@@ -22,13 +22,13 @@ public class FreeMarkerTemplateObject {
 		TEMPLATE_MODULE
 	};
 	private long lastModified = 0;
-	private String name;
+	private String externalKey;
 	private TemplateType type;
-	public FreeMarkerTemplateObject(String name, TemplateType type, long lastModified)
+	public FreeMarkerTemplateObject(String externalKey, TemplateType type, long lastModified)
 	{
 		setType(type);
 		setLastModified(lastModified);
-		setName(name);
+		setExternalKey(externalKey);
 	}
 	
 	public long getLastModified() {
@@ -37,11 +37,11 @@ public class FreeMarkerTemplateObject {
 	public void setLastModified(long lastModified) {
 		this.lastModified = lastModified;
 	}
-	public String getName() {
-		return name;
+	public String getExternalKey() {
+		return externalKey;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setExternalKey(String externalKey) {
+		this.externalKey = externalKey;
 	}
 	public TemplateType getType() {
 		return type;
@@ -57,16 +57,16 @@ public class FreeMarkerTemplateObject {
         if (other instanceof FreeMarkerTemplateObject) {
             FreeMarkerTemplateObject that = (FreeMarkerTemplateObject) other;
             result = (this.lastModified == that.lastModified 
-            		 && this.name.equals(that.name)
+            		 && this.externalKey.equals(that.externalKey)
             		 && this.type.equals(that.type));
         }
         return result;
 	 }
 	 @Override public int hashCode() 
 	 {
-		 	int nameHash = name != null ? name.hashCode() : 0;
+		 	int externalKeyHash = externalKey != null ? externalKey.hashCode() : 0;
 		 	int typeint = type == TemplateType.TEMPLATE_PAGE ? 1 : 2;
-		 	return 41*(41 * (41 + (int)lastModified) + typeint) + nameHash;
+		 	return 41*(41 * (41 + (int)lastModified) + typeint) + externalKeyHash;
 	 }
 	 
 	 

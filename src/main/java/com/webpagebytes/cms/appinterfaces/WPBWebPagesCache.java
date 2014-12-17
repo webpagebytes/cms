@@ -16,13 +16,13 @@
 
 package com.webpagebytes.cms.appinterfaces;
 
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public interface WPBWebPagesCache extends WPBRefreshableCache {
 
-	public WPBWebPage getByExternalKey(String key) throws WPBIOException;
+	public WPBPage getByExternalKey(String key) throws WPBIOException;
 	
-	public WPBWebPage get(String pageName) throws WPBIOException;
+	public WPBPage get(String pageName) throws WPBIOException;
 	
 }

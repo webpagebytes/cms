@@ -22,14 +22,14 @@ import java.util.Map;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WPBWebPage> localCacheByExternalId;
-	private Map<String, WPBWebPage> localCacheByName;	
+	private Map<String, WPBPage> localCacheByExternalId;
+	private Map<String, WPBPage> localCacheByName;	
 	private static final Object lock = new Object();
 	public WPBLocalWebPagesCache()
 	{
@@ -45,7 +45,7 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 			
 		}
 	}
-	public WPBWebPage getByExternalKey(String externalKey) throws WPBIOException
+	public WPBPage getByExternalKey(String externalKey) throws WPBIOException
 	{
 		if (localCacheByExternalId != null)
 		{
@@ -57,10 +57,10 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WPBWebPage> tempMapByID = new HashMap<String, WPBWebPage>();
-			Map<String, WPBWebPage> tempMapByName = new HashMap<String, WPBWebPage>();
-			List<WPBWebPage> recList = dataStorage.getAllRecords(WPBWebPage.class);
-			for(WPBWebPage item: recList)
+			Map<String, WPBPage> tempMapByID = new HashMap<String, WPBPage>();
+			Map<String, WPBPage> tempMapByName = new HashMap<String, WPBPage>();
+			List<WPBPage> recList = dataStorage.getAllRecords(WPBPage.class);
+			for(WPBPage item: recList)
 			{
 				tempMapByID.put(item.getExternalKey(), item);
 				tempMapByName.put(item.getName(), item);
@@ -71,7 +71,7 @@ public class WPBLocalWebPagesCache implements WPBWebPagesCache {
 		
 	}
 
-	public WPBWebPage get(String pageName) throws WPBIOException
+	public WPBPage get(String pageName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{

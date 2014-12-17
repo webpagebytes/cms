@@ -33,8 +33,8 @@ import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
-import com.webpagebytes.cms.cmsdata.WPBWebPageModule;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 
@@ -73,14 +73,14 @@ public class ResourcesController extends Controller {
 				WPBResource res = new WPBResource(uri.getExternalKey(), uri.getUri(), WPBResource.URI_TYPE);
 				adminStorage.addWithKey(res);
 			}
-			List<WPBWebPage> pages = adminStorage.getAllRecords(WPBWebPage.class);
-			for( WPBWebPage page: pages)
+			List<WPBPage> pages = adminStorage.getAllRecords(WPBPage.class);
+			for( WPBPage page: pages)
 			{
 				WPBResource res = new WPBResource(page.getExternalKey(), page.getName(), WPBResource.PAGE_TYPE);
 				adminStorage.addWithKey(res);
 			}
-			List<WPBWebPageModule> modules = adminStorage.getAllRecords(WPBWebPageModule.class);
-			for( WPBWebPageModule module: modules)
+			List<WPBPageModule> modules = adminStorage.getAllRecords(WPBPageModule.class);
+			for( WPBPageModule module: modules)
 			{
 				WPBResource res = new WPBResource(module.getExternalKey(), module.getName(), WPBResource.PAGE_MODULE_TYPE);
 				adminStorage.addWithKey(res);

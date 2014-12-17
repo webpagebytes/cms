@@ -16,7 +16,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.controllers.PageValidator;
 
 
@@ -25,14 +25,14 @@ import com.webpagebytes.cms.controllers.PageValidator;
 public class TestWBPageValidator {
 
 private PageValidator pageValidator;
-private WPBWebPage wbPage;
+private WPBPage wbPage;
 private Map<String,String> noErrors;
 
 @Before
 public void setup()
 {
 	pageValidator = new PageValidator();
-	wbPage = new WPBWebPage();
+	wbPage = new WPBPage();
 	noErrors = new HashMap<String,String>();
 }
 @Test

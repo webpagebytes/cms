@@ -33,7 +33,7 @@ import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
 import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
-import com.webpagebytes.cms.cmsdata.WPBWebPage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
@@ -235,7 +235,7 @@ public void test_handleRequestTypeText()
 {
 	try
 	{
-	WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+	WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 	InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
 	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
@@ -278,7 +278,7 @@ private void handleRequestTypeText_cache(Integer templateSource)
 {
 	try
 	{
-	WPBWebPage pageMock = EasyMock.createMock(WPBWebPage.class);
+	WPBPage pageMock = EasyMock.createMock(WPBPage.class);
 	InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 	PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
 	Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
@@ -319,7 +319,7 @@ public void test_handleRequestTypeText_no_page()
 	InternalModel modelMock = EasyMock.createMock(InternalModel.class);
 	responseMock.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	EasyMock.replay(requestMock, responseMock, modelMock);
-	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", (WPBWebPage)null, requestMock, responseMock, modelMock);
+	Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", (WPBPage)null, requestMock, responseMock, modelMock);
 
 	} catch (Exception e)
 	{

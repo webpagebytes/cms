@@ -22,9 +22,39 @@ import java.util.Set;
 
 import com.webpagebytes.cms.exception.WPBIOException;
 
+/**
+ * Cache interface to access CMS site messages.
+ *
+ */
 public interface WPBMessagesCache extends WPBRefreshableCache {
-	public Map<String, String> getAllMessages(Locale locale) throws WPBIOException;
+	/**
+	 * Gets all messages from cache that belongs to a locale. 
+	 * @param locale Locale identifier 
+	 * @return Returns a map with all messages that belong to a locale. 
+	 * @throws WPBIOException
+	 */
+    public Map<String, String> getAllMessages(Locale locale) throws WPBIOException;
+    
+    /**
+     * Gets all messages from cache that belongs to a locale specified by a string of type language_country. 
+     * For example en_GB or en in case country is not specified. 
+     * @param locale Locale identifier 
+     * @return Returns a map with all messages that belong to a locale. 
+     * @throws WPBIOException
+     */    
 	public Map<String, String> getAllMessages(String lcid) throws WPBIOException;
+	
+	/**
+	 * Returns all locales enabled in the project. The values are formated as language_country. 
+	 * @return A set of enabled project languages.
+	 */
 	public Set<String> getSupportedLocales();
+	
+	/**
+	 * Everytime the cache is refreshed it will generate a new fingerprint. A client that had a fingerprint
+	 * can check if in the meantime the cache was refreshed.
+	 * @param locale Locale identifier
+	 * @return The cache current fingerprint.
+	 */
 	public Long getFingerPrint(Locale locale);
 }
