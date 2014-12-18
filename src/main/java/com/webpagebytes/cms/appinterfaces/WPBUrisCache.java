@@ -125,6 +125,12 @@ public abstract class WPBUrisCache implements WPBRefreshableCache {
         }
         return -1;  
     }
+    
+    /**
+     * Utility method to convert an HTTP_XXX_INDEX to the corresponding string verb
+     * @param httpIndex HTTP_XXX_INDEX value
+     * @return Returns the HTTP string verb
+     */
     public String indexOperationToHttpVerb(int httpIndex)
     {
         if (httpIndex == WPBUrisCache.HTTP_GET_INDEX)

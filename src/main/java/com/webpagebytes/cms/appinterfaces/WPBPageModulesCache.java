@@ -31,9 +31,6 @@ public interface WPBPageModulesCache extends WPBRefreshableCache {
      * @return WPBPageModule instance or null if there is no page module with the provided externalKey. 
      * @throws WPBIOException
      */
-	public WPBPageModule getByExternalKey(String key) throws WPBIOException;
+	public WPBPageModule getByExternalKey(String externalKey) throws WPBIOException;
 	
-	
-	//public WPBPageModule get(String pageName) throws WPBIOException;
-
 }
