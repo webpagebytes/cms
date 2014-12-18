@@ -94,10 +94,13 @@
 				                    <label class="control-label" for="controllerClass"> Http operation</label>
 				                    <div class="controls">
 				                        <select name="controllerClass" id="wbehttpOperation">
-											<option>GET</option>
-											<option>POST</option>
-											<option>PUT</option>
-											<option>DELETE</option>
+		                                    <option>GET</option>
+		                                    <option>POST</option>
+		                                    <option>PUT</option>
+		                                    <option>DELETE</option>
+		                                    <option>HEAD</option>
+		                                    <option>OPTIONS</option>
+		                                    <option>PATCH</option>
 										</select>
 										<span id="errehttpOperation" class="help-inline error"></span>
 									</div>
@@ -132,7 +135,7 @@
 				                </div>
 							</fieldset>
 
-							<div class="control-group wbUrlController">
+							<div class="control-group">
 			                    <label class="control-label"> </label>
 			                    	<div class="controls">
 										<button class="btn btn-primary wbUriEditSaveBtnClass" type="submit">Save</button>

@@ -37,6 +37,9 @@ class UriValidator {
 		httpOperations.add("POST");
 		httpOperations.add("GET");
 		httpOperations.add("DELETE");
+		httpOperations.add("PATCH");
+		httpOperations.add("OPTIONS");
+		httpOperations.add("HEAD");
 	}
 	public Map<String, String> validateUpdate(WPBUri wbUri)
 	{

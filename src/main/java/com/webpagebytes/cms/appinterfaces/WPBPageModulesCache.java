@@ -34,6 +34,6 @@ public interface WPBPageModulesCache extends WPBRefreshableCache {
 	public WPBPageModule getByExternalKey(String key) throws WPBIOException;
 	
 	
-	public WPBPageModule get(String pageName) throws WPBIOException;
+	//public WPBPageModule get(String pageName) throws WPBIOException;
 
 }

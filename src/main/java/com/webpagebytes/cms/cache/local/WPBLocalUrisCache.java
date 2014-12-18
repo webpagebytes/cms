@@ -29,7 +29,7 @@ import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class WPBLocalUrisCache implements WPBUrisCache {
+public class WPBLocalUrisCache extends WPBUrisCache {
 
 	private static final Object lock = new Object();
 	private WPBAdminDataStorage dataStorage;
@@ -86,41 +86,6 @@ public class WPBLocalUrisCache implements WPBUrisCache {
 		return cacheFingerPrint;
 	}
 	
-	public int httpToOperationIndex(String httpOperation)
-	{
-		if (httpOperation.toUpperCase().equals("GET"))
-		{
-			return HTTP_GET_INDEX;
-		} else if (httpOperation.toUpperCase().equals("POST"))
-		{
-			return HTTP_POST_INDEX;
-		} else if (httpOperation.toUpperCase().equals("PUT"))
-		{
-			return HTTP_PUT_INDEX;
-		} else if (httpOperation.toUpperCase().equals("DELETE"))
-		{
-			return HTTP_DELETE_INDEX;
-		}
-		return -1;	
-	}
-	public String indexOperationToHttpVerb(int httpIndex)
-	{
-		if (httpIndex == WPBUrisCache.HTTP_GET_INDEX)
-		{
-			return "GET";
-		} else if (httpIndex == WPBUrisCache.HTTP_POST_INDEX)
-		{
-			return "POST";
-		} else if (httpIndex == WPBUrisCache.HTTP_PUT_INDEX)
-		{
-			return "PUT";
-		} else if (httpIndex == WPBUrisCache.HTTP_DELETE_INDEX)
-		{
-			return "DELETE";
-		}
-		return null;
-	}
-
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{

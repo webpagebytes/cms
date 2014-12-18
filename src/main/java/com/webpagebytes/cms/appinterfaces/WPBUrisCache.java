@@ -21,23 +21,136 @@ import java.util.Set;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public interface WPBUrisCache extends WPBRefreshableCache {
+/**
+ * Cache abstract class to access CMS site url records.
+ */
+public abstract class WPBUrisCache implements WPBRefreshableCache {
 
+    /**
+     * Numeric identifier for GET verb
+     */
 	public static final int HTTP_GET_INDEX = 0;
+	
+	/**
+	 * Numeric identifier for POST verb
+	 */
 	public static final int HTTP_POST_INDEX = 1;
+	
+	/**
+	 * Numeric identifier for PUT verb
+	 */
 	public static final int HTTP_PUT_INDEX = 2;
+	
+	/**
+	 * Numeric identifier for DELETE verb
+	 */
 	public static final int HTTP_DELETE_INDEX = 3;
-	
-	public WPBUri getByExternalKey(String key) throws WPBIOException;
-	
-	public WPBUri get(String uri, int httpIndex) throws WPBIOException;
 
-	public Set<String> getAllUris(int httpIndex) throws WPBIOException;	
+	/**
+     * Numeric identifier for HEAD verb
+     */
+    public static final int HTTP_HEAD_INDEX = 4;
+
+    /**
+     * Numeric identifier for OPTIONS verb
+     */
+    public static final int HTTP_OPTIONS_INDEX = 5;
+
+    /**
+     * Numeric identifier for PATCH verb
+     */
+    public static final int HTTP_PATCH_INDEX = 6;
+
 	
-	public Long getCacheFingerPrint();
+	/**
+	 * Gets a WPBUri from cache based on its externalKey
+	 * @param externalKey externalKey that identifies the record. 
+	 * @return WPBUri instance or null if there is no record with the provided externalKey. 
+	 * @throws WPBIOException
+	 */
+	public abstract WPBUri getByExternalKey(String externalKey) throws WPBIOException;
 	
-	public int httpToOperationIndex(String httpOperation);
-	public String indexOperationToHttpVerb(int index);
+	/**
+	 * Gets a WPBUri from cache based on uri path and HTTP verb index
+	 * @param uri Site uri path
+	 * @param httpIndex HTTP verb index
+	 * @return WPBUri instance or null if there is no record with the provided externalKey.
+	 * @throws WPBIOException
+	 */
+	public abstract WPBUri get(String uri, int httpIndex) throws WPBIOException;
+
+	/**
+	 * Returns all site url paths for a HTTP verb index
+	 * @param httpIndex HTTP verb index
+	 * @return A set of all sire urls paths for a HTTP verb index
+	 * @throws WPBIOException
+	 */
+	public abstract Set<String> getAllUris(int httpIndex) throws WPBIOException;	
 	
+    /**
+     * Everytime the cache is refreshed it will generate a new fingerprint. A client that had a fingerprint
+     * can check if in the meantime the cache was refreshed.
+     * @return The cache current fingerprint.
+     */
+	public abstract Long getCacheFingerPrint();
+	
+	/**
+	 * Utility method to convert a HTTP verb to the corresponsing index value
+	 * @param httpOperation HTTP verb operation
+	 * @return Returns the correspondent HTTP_XXX_INDEX value or -1 if the parameter provided is not supported
+	 */
+    public int httpToOperationIndex(String httpOperation)
+    {
+        if (httpOperation.toUpperCase().equals("GET"))
+        {
+            return HTTP_GET_INDEX;
+        } else if (httpOperation.toUpperCase().equals("POST"))
+        {
+            return HTTP_POST_INDEX;
+        } else if (httpOperation.toUpperCase().equals("PUT"))
+        {
+            return HTTP_PUT_INDEX;
+        } else if (httpOperation.toUpperCase().equals("DELETE"))
+        {
+            return HTTP_DELETE_INDEX;
+        } else if (httpOperation.toUpperCase().equals("HEAD"))
+        {
+            return HTTP_HEAD_INDEX;
+        } else if (httpOperation.toUpperCase().equals("OPTIONS"))
+        {
+            return HTTP_OPTIONS_INDEX;
+        } else if (httpOperation.toUpperCase().equals("PATCH"))
+        {
+            return HTTP_PATCH_INDEX;
+        }
+        return -1;  
+    }
+    public String indexOperationToHttpVerb(int httpIndex)
+    {
+        if (httpIndex == WPBUrisCache.HTTP_GET_INDEX)
+        {
+            return "GET";
+        } else if (httpIndex == WPBUrisCache.HTTP_POST_INDEX)
+        {
+            return "POST";
+        } else if (httpIndex == WPBUrisCache.HTTP_PUT_INDEX)
+        {
+            return "PUT";
+        } else if (httpIndex == WPBUrisCache.HTTP_DELETE_INDEX)
+        {
+            return "DELETE";
+        } else if (httpIndex == WPBUrisCache.HTTP_HEAD_INDEX)
+        {
+            return "HEAD";
+        } else if (httpIndex == WPBUrisCache.HTTP_OPTIONS_INDEX)
+        {
+            return "OPTIONS";
+        } else if (httpIndex == WPBUrisCache.HTTP_PATCH_INDEX)
+        {
+            return "PATCH";
+        }
+        return null;
+    }
+
 
 }

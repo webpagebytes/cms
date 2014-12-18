@@ -24,12 +24,12 @@ import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 
 public class WPBLocalCacheFactory implements WPBCacheFactory {
 	
 	private static WPBUrisCache uriCacheInstance;
-	private static WPBWebPagesCache pageCacheInstance;
+	private static WPBPagesCache pageCacheInstance;
 	private static WPBParametersCache parametersCacheInstance;
 	private static WPBPageModulesCache pageModulesCacheInstance;
 	private static WPBFilesCache filesCacheInstance;
@@ -45,7 +45,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return uriCacheInstance;
 	}
-	public WPBWebPagesCache getWebPagesCacheInstance()
+	public WPBPagesCache getWebPagesCacheInstance()
 	{
 		if (null == pageCacheInstance)
 		{

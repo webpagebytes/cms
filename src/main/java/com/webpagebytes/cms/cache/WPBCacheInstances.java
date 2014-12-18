@@ -24,11 +24,11 @@ import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 
 public class WPBCacheInstances {
 	private WPBUrisCache wbUriCache;
-	private WPBWebPagesCache wbWebPageCache;
+	private WPBPagesCache wbWebPageCache;
 	private WPBPageModulesCache wbWebPageModuleCache;
 	private WPBParametersCache wbParameterCache;
 	private WPBFilesCache wbFilesCache;
@@ -36,7 +36,7 @@ public class WPBCacheInstances {
 	private WPBMessagesCache wbMessageCache;
 	private WPBProjectCache wbProjectCache;
 	public WPBCacheInstances(WPBUrisCache uriCache,
-							WPBWebPagesCache webPageCache,
+							WPBPagesCache webPageCache,
 							WPBPageModulesCache webPageModuleCache,
 							WPBParametersCache parameterCache,
 							WPBFilesCache filesCache,
@@ -68,7 +68,7 @@ public class WPBCacheInstances {
 	{
 		return wbMessageCache;
 	}
-	public WPBWebPagesCache getWBWebPageCache()
+	public WPBPagesCache getWBWebPageCache()
 	{
 		return wbWebPageCache;
 	}

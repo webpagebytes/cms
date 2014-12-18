@@ -16,10 +16,18 @@
 
 package com.webpagebytes.cms.appinterfaces;
 
+/**
+ * Interface used to forward the request from a WPBRequestHandler controller to a particular site page.
+ *
+ */
 public class WPBForward {
 	String redirectToExternalKey = null;
 	boolean forwardRequest = false;
 	
+	/**
+	 * Specify the site page externalKey that the request will be forwarded.
+	 * @param externalKey The site page externalKey that will provide the content of the current HTTP request.
+	 */
 	public void setForwardTo(String externalKey)
 	{
 		redirectToExternalKey = externalKey;
@@ -29,10 +37,20 @@ public class WPBForward {
 			forwardRequest = true;
 		}
 	}
+	
+	/**
+	 * Returns the site page externalKey that was set to forward the request, or null otherwise.
+	 * @return Returns the site page externalKey that was set to forward the request, or null otherwise.
+	 */
 	public String getForwardTo()
 	{
 		return redirectToExternalKey;
 	}
+	
+	/**
+	 * Returns a boolean value that specifies if the current request was forwarded or not.
+	 * @return Returns a boolean value that specifies if the current request was forwarded or not.
+	 */
 	public boolean isRequestForwarded()
 	{
 		return forwardRequest;

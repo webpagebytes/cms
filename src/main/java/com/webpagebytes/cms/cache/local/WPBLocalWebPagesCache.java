@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class WPBLocalWebPagesCache implements WPBWebPagesCache {
+public class WPBLocalWebPagesCache implements WPBPagesCache {
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBPage> localCacheByExternalId;
 	private Map<String, WPBPage> localCacheByName;	

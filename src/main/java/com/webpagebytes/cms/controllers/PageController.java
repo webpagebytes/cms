@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
 import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
@@ -51,7 +51,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
 	private WPBAdminDataStorage adminStorage;
 	private PageValidator pageValidator;
-	private WPBWebPagesCache wbWebPageCache;
+	private WPBPagesCache wbWebPageCache;
 	
 	public PageController()
 	{
@@ -311,7 +311,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
-	public void setPageCache(WPBWebPagesCache pageCache)
+	public void setPageCache(WPBPagesCache pageCache)
 	{
 		this.wbWebPageCache = pageCache;
 	}

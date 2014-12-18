@@ -20,7 +20,7 @@ import com.webpagebytes.cms.ModelBuilder;
 import com.webpagebytes.cms.PageContentBuilder;
 import com.webpagebytes.cms.appinterfaces.WPBPageModelProvider;
 import com.webpagebytes.cms.appinterfaces.WPBModel;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBPage;
@@ -33,7 +33,7 @@ import com.webpagebytes.cms.template.WPBTemplateEngine;
 public class TestPageContentBuilder {
 
 WPBCacheInstances cacheInstancesMock;
-WPBWebPagesCache pagesCacheMock;
+WPBPagesCache pagesCacheMock;
 PageContentBuilder pageContentBuilder;
 ModelBuilder modelBuilderMock;
 WPBTemplateEngine templateEngineMock;
@@ -45,7 +45,7 @@ WPBProject projectMock;
 public void setUp()
 {
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
-	pagesCacheMock = EasyMock.createMock(WPBWebPagesCache.class);
+	pagesCacheMock = EasyMock.createMock(WPBPagesCache.class);
 	modelBuilderMock = EasyMock.createMock(ModelBuilder.class);
 	pageContentBuilder = new PageContentBuilder(cacheInstancesMock, modelBuilderMock);
 	templateEngineMock = EasyMock.createMock(WPBTemplateEngine.class);

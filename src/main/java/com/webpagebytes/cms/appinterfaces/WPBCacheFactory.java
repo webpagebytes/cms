@@ -33,7 +33,7 @@ public interface WPBCacheFactory {
 	 * Access to WPBWebPagesCache instance
 	 * @return Returns WPBWebPagesCache instance
 	 */
-	public WPBWebPagesCache getWebPagesCacheInstance();
+	public WPBPagesCache getWebPagesCacheInstance();
 	
 	/**
 	 * Access to WPBPageModulesCache instance

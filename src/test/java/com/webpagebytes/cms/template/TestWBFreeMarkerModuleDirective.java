@@ -265,7 +265,7 @@ public void test_execute_catch_exception()
 		
 		WPBPageModule pageModuleMock = PowerMock.createMock(WPBPageModule.class);		
 		WPBPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBPageModulesCache.class);
-		EasyMock.expect(pageModuleCacheMock.get(name)).andThrow(new WPBIOException(""));
+		EasyMock.expect(pageModuleCacheMock.getByExternalKey(name)).andThrow(new WPBIOException(""));
 		
 		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
 
@@ -301,7 +301,7 @@ public void test_execute_noPageModule()
 
 		WPBPageModule pageModuleMock = PowerMock.createMock(WPBPageModule.class);		
 		WPBPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBPageModulesCache.class);
-		EasyMock.expect(pageModuleCacheMock.get(name)).andReturn(null);
+		EasyMock.expect(pageModuleCacheMock.getByExternalKey(name)).andReturn(null);
 		
 		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
 

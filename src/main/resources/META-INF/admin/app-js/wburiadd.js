@@ -13,7 +13,7 @@ $().ready( function () {
 	var wbUriValidationRules = {
 								'uri': [ {rule:{startsWith: '/'}, error: 'ERROR_URI_START_CHAR'}, {rule:{customRegexp:{pattern:"^/([0-9a-zA-Z_~.-]*(\{[0-9a-zA-Z_.*-]+\})*[0-9a-zA-Z_~.-]*/?)*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}, { rule:{rangeLength: { 'min': 1, 'max': 250 } }, error:"ERROR_URI_LENGTH"} ],
 								'controllerClass': [{ rule:{ maxLength: 250 }, error: "ERROR_INVALID_VALUE"}, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.-]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}],
-								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE']}, error: "ERROR_INVALID_VALUE" }],
+								'httpOperation': [{ rule: { includedInto: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD']}, error: "ERROR_INVALID_VALUE" }],
 								'resourceType': [ { rule: { includedInto: [ '1', '2', '3' ] }, error:"ERROR_INVALID_VALUE" } ],
 								'resourceExternalKey': [ {rule:{customRegexp:{pattern:"^[\\s0-9a-zA-z-]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}],
 								'controllerClass': [{rule: { rangeLength: { 'min': 0, 'max': 255 } }, error: "ERROR_INVALID_VALUE" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_.]*$", modifiers:"gi"}}, error:"ERROR_INVALID_VALUE"}]

@@ -19,10 +19,18 @@ package com.webpagebytes.cms.appinterfaces;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public interface WPBWebPagesCache extends WPBRefreshableCache {
+/**
+ * Cache interface to access CMS site pages.
+ *
+ */
+public interface WPBPagesCache extends WPBRefreshableCache {
 
+    /**
+     * Gets a WPBPage from cache based on its externalKey
+     * @param externalKey externalKey that identifies the record.
+     * @return WPBPage instance or null if there is no record with the provided externalKey. 
+     * @throws WPBIOException
+     */
 	public WPBPage getByExternalKey(String key) throws WPBIOException;
-	
-	public WPBPage get(String pageName) throws WPBIOException;
 	
 }

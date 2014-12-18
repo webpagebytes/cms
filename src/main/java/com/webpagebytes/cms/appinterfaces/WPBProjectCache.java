@@ -22,9 +22,37 @@ import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.Pair;
 
+/**
+ * Cache interface to access CMS project related data.
+ *
+ */
 public interface WPBProjectCache extends WPBRefreshableCache {
+    
+    /**
+     * Returns the project default language in the format language_Country or just language if the Country not set. 
+     * @return Returns the project default language
+     * @throws WPBIOException
+     */
 	public String getDefaultLanguage() throws WPBIOException;
+	
+	/**
+	 * Returns the default locale as a Pair of String 
+	 * @return Returns the default locale as a Pair of String
+	 * @throws WPBIOException
+	 */
 	public Pair<String, String> getDefaultLocale() throws WPBIOException;
+	
+	/**
+	 * Returns the locales enabled in the project, the values are represented as language_Country 
+	 * @return Returns the locales enabled in the project, the values are represented as language_Country
+	 * @throws WPBIOException
+	 */
 	public Set<String> getSupportedLocales() throws WPBIOException;	
+	
+	/**
+	 * Returns the WPBProject instance
+	 * @return Returns the WPBProject instance
+	 * @throws WPBIOException
+	 */
 	public WPBProject getProject() throws WPBIOException;
 }

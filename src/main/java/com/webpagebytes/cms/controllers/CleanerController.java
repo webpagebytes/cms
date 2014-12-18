@@ -35,7 +35,7 @@ import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
 import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
 import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
 import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.appinterfaces.WPBWebPagesCache;
+import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
 import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
@@ -81,7 +81,7 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 			}
 			if (type.equals(WPBPage.class))
 			{
-				WPBWebPagesCache pagesCache = cacheFactory.getWebPagesCacheInstance();
+				WPBPagesCache pagesCache = cacheFactory.getWebPagesCacheInstance();
 				pagesCache.Refresh();
 			}
 			if (type.equals(WPBPageModule.class))
