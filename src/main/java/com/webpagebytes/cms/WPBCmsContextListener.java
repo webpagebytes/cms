@@ -18,7 +18,6 @@ package com.webpagebytes.cms;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;

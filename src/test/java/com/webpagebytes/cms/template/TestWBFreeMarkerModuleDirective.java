@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.WPBPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerModuleDirective;
 import com.webpagebytes.cms.template.WPBTemplateEngine;

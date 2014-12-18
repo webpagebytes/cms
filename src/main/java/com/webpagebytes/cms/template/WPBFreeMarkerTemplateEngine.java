@@ -24,10 +24,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
-import com.webpagebytes.cms.appinterfaces.WPBModel;
-import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.WPBFileStorage;
+import com.webpagebytes.cms.WPBModel;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBTemplateException;

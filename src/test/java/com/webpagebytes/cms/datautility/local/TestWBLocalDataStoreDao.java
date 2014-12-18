@@ -18,9 +18,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao;
-import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
-import com.webpagebytes.cms.datautility.local.WPBLocalDataStoreDao.WBLocalSortDirection;
+import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao;
+import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalQueryOperator;
+import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalSortDirection;
 
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.api.mockito.PowerMockito;

@@ -19,7 +19,7 @@ package com.webpagebytes.cms.datautility;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 
 public class WPBDefaultCloudFileInfo implements WPBFileInfo {

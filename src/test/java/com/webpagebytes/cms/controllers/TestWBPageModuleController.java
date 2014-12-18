@@ -1,6 +1,5 @@
 package com.webpagebytes.cms.controllers;
 import org.junit.runner.RunWith;
-
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
@@ -21,8 +20,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.controllers.PageModuleController;
 import com.webpagebytes.cms.controllers.PageModuleValidator;

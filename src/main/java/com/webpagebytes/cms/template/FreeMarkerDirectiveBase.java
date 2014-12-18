@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import com.webpagebytes.cms.appinterfaces.WPBModel;
+import com.webpagebytes.cms.WPBModel;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;

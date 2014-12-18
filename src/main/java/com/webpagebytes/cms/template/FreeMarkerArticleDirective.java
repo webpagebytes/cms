@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.webpagebytes.cms.cache.WPBCacheInstances;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 import freemarker.core.Environment;

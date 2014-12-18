@@ -1,18 +1,20 @@
 package com.webpagebytes.cms.datautility;
 import java.util.ArrayList;
-
 import java.util.Date;
+
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.Before;
+
 import static org.junit.Assert.*;
+
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import com.webpagebytes.cms.DummyClientS;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.engine.DummyClientS;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest (JSONToFromObjectConverter.class)

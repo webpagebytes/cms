@@ -1,7 +1,6 @@
 package com.webpagebytes.cms.template;
 
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Date;
@@ -16,17 +15,17 @@ import org.junit.Test;
 import org.junit.Before;
 import org.easymock.EasyMock;
 
-import com.webpagebytes.cms.appinterfaces.WPBArticlesCache;
-import com.webpagebytes.cms.appinterfaces.WPBFilesCache;
-import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
-import com.webpagebytes.cms.appinterfaces.WPBParametersCache;
-import com.webpagebytes.cms.appinterfaces.WPBProjectCache;
-import com.webpagebytes.cms.appinterfaces.WPBUrisCache;
-import com.webpagebytes.cms.appinterfaces.WPBPageModulesCache;
-import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
-import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.WPBArticlesCache;
+import com.webpagebytes.cms.WPBFilesCache;
+import com.webpagebytes.cms.WPBMessagesCache;
+import com.webpagebytes.cms.WPBPageModulesCache;
+import com.webpagebytes.cms.WPBPagesCache;
+import com.webpagebytes.cms.WPBParametersCache;
+import com.webpagebytes.cms.WPBProjectCache;
+import com.webpagebytes.cms.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.WPBFreeMarkerTemplateEngine;
 import com.webpagebytes.cms.template.FreeMarkerTemplateLoader;

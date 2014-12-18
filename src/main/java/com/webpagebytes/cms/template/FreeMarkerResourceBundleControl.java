@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.WPBMessagesCache;
 
 public class FreeMarkerResourceBundleControl extends ResourceBundle.Control {
 

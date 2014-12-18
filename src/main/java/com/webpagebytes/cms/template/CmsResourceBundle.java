@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
+import com.webpagebytes.cms.WPBMessagesCache;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class CmsResourceBundle extends ResourceBundle {

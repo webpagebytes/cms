@@ -16,7 +16,7 @@
 
 package com.webpagebytes.cms.datautility;
 
-import com.webpagebytes.cms.DefaultImageProcessor;
+import com.webpagebytes.cms.engine.DefaultImageProcessor;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;

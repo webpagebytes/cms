@@ -19,9 +19,10 @@ package com.webpagebytes.cms.template;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import com.webpagebytes.cms.cache.WPBCacheInstances;
+
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerTemplateObject.TemplateType;
 

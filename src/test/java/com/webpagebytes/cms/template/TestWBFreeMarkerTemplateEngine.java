@@ -23,12 +23,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBFileStorage;
-import com.webpagebytes.cms.appinterfaces.WPBMessagesCache;
-import com.webpagebytes.cms.appinterfaces.WPBModel;
-import com.webpagebytes.cms.cache.WPBCacheInstances;
+import com.webpagebytes.cms.WPBCacheFactory;
+import com.webpagebytes.cms.WPBFileStorage;
+import com.webpagebytes.cms.WPBMessagesCache;
+import com.webpagebytes.cms.WPBModel;
 import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBCacheInstances;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerArticleDirective;
 import com.webpagebytes.cms.template.FreeMarkerResourcesFactory;

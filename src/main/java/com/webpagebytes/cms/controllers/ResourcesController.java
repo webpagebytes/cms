@@ -25,8 +25,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBMessage;

@@ -28,12 +28,11 @@ import java.util.zip.CRC32;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBCacheFactory;
-import com.webpagebytes.cms.appinterfaces.WPBPagesCache;
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.cache.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBCacheFactory;
+import com.webpagebytes.cms.WPBPagesCache;
+import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cmsdata.WPBParameter;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
@@ -41,9 +40,10 @@ import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
-import com.webpagebytes.cms.datautility.local.WPBLocalAdminDataStorage;
+import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
+import com.webpagebytes.cms.localdatautility.WPBLocalAdminDataStorage;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class PageController extends Controller implements WPBAdminDataStorageListener {

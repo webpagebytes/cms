@@ -18,7 +18,7 @@ package com.webpagebytes.cms.cmsdata;
 
 import java.util.Map;
 
-import com.webpagebytes.cms.appinterfaces.WPBFilePath;
+import com.webpagebytes.cms.WPBFilePath;
 
 public interface WPBFileInfo {
 	

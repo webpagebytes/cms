@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;

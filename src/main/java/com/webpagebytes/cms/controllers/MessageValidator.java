@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage;
-import com.webpagebytes.cms.appinterfaces.WPBAdminDataStorage.AdminQueryOperator;
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.exception.WPBIOException;
 
