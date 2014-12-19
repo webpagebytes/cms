@@ -19,6 +19,7 @@ package com.webpagebytes.cms.controllers;
 import java.io.ByteArrayInputStream;
 
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,10 +45,10 @@ import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.WPBImageProcessor;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.engine.DefaultImageProcessor;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
@@ -65,7 +66,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	private WPBFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
-	private DefaultImageProcessor imageProcessor;
+	private WPBImageProcessor imageProcessor;
 	
 	public FileController()
 	{

@@ -16,6 +16,15 @@
 
 package com.webpagebytes.cms.engine;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+
+
+
+import com.webpagebytes.cms.DefaultImageProcessor;
+import com.webpagebytes.cms.WPBImageProcessor;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
@@ -24,10 +33,11 @@ public class WPBImageProcessorFactory {
 
 	private static DefaultImageProcessor instance;
 	private static final Object lock = new Object();
+	private static final Logger log = Logger.getLogger(WPBImageProcessorFactory.class.getName());
 
 	private WPBImageProcessorFactory() {};
 	
-	public static DefaultImageProcessor getInstance()
+	public static WPBImageProcessor getInstance()
 	{
 		if (instance == null) 
 		{
@@ -48,6 +58,7 @@ public class WPBImageProcessorFactory {
 					
 					catch (Exception e)
 					{
+					    log.log(Level.SEVERE, "Cannot create instance of WPBImageProcessor", e);
 						return null;
 					}
 				}
