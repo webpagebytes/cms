@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localcache;
+package com.webpagebytes.cms.local;
 
 import com.webpagebytes.cms.WPBArticlesCache;
 import com.webpagebytes.cms.WPBCacheFactory;

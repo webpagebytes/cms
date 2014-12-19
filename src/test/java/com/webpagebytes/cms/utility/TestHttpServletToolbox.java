@@ -1,7 +1,6 @@
 package com.webpagebytes.cms.utility;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -24,7 +23,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import com.webpagebytes.cms.datautility.JSONToFromObjectConverter;
+import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 @RunWith(PowerMockRunner.class)

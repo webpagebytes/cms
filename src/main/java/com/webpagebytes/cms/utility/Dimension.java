@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.utility;
 
 public class Dimension<T> {
     private T X; //first member of pair

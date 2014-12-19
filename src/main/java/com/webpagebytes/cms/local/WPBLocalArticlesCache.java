@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localcache;
+package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Map;
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBArticlesCache;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalArticlesCache implements WPBArticlesCache {

@@ -27,7 +27,6 @@ import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 

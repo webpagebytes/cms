@@ -14,24 +14,25 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localcache;
+package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
-import com.webpagebytes.cms.WPBPagesCache;
-import com.webpagebytes.cms.cmsdata.WPBPage;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.WPBPageModulesCache;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
-public class WPBLocalWebPagesCache implements WPBPagesCache {
+public class WPBLocalWebPageModulesCache implements WPBPageModulesCache {
+	
 	private WPBAdminDataStorage dataStorage;
-	private Map<String, WPBPage> localCacheByExternalId;
-	private Map<String, WPBPage> localCacheByName;	
+	private Map<String, WPBPageModule> localCacheByID;
+	private Map<String, WPBPageModule> localCacheByName;
 	private static final Object lock = new Object();
-	public WPBLocalWebPagesCache()
+	public WPBLocalWebPageModulesCache()
 	{
 		dataStorage = WPBAdminDataStorageFactory.getInstance();
 		try
@@ -45,11 +46,11 @@ public class WPBLocalWebPagesCache implements WPBPagesCache {
 			
 		}
 	}
-	public WPBPage getByExternalKey(String externalKey) throws WPBIOException
+	public WPBPageModule getByExternalKey(String externalKey) throws WPBIOException
 	{
-		if (localCacheByExternalId != null)
+		if (localCacheByID != null)
 		{
-			return localCacheByExternalId.get(externalKey);
+			return localCacheByID.get(externalKey);
 		}
 		return null;
 	}
@@ -57,27 +58,29 @@ public class WPBLocalWebPagesCache implements WPBPagesCache {
 	public void Refresh() throws WPBIOException {
 		synchronized (lock)
 		{
-			Map<String, WPBPage> tempMapByID = new HashMap<String, WPBPage>();
-			Map<String, WPBPage> tempMapByName = new HashMap<String, WPBPage>();
-			List<WPBPage> recList = dataStorage.getAllRecords(WPBPage.class);
-			for(WPBPage item: recList)
+			Map<String, WPBPageModule> tempMapByID = new HashMap<String, WPBPageModule>();
+			Map<String, WPBPageModule> tempMapByName = new HashMap<String, WPBPageModule>();
+			
+			List<WPBPageModule> recList = dataStorage.getAllRecords(WPBPageModule.class);
+			for(WPBPageModule item: recList)
 			{
 				tempMapByID.put(item.getExternalKey(), item);
 				tempMapByName.put(item.getName(), item);
 			}
-			localCacheByExternalId = tempMapByID;
+			localCacheByID = tempMapByID;
 			localCacheByName = tempMapByName;
 		}
 		
 	}
 
-	public WPBPage get(String pageName) throws WPBIOException
+		
+	public WPBPageModule get(String moduleName) throws WPBIOException
 	{
 		if (localCacheByName != null)
 		{
-			return localCacheByName.get(pageName);
+			return localCacheByName.get(moduleName);
 		}
 		return null;
 	}
-
+	
 }

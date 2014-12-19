@@ -52,10 +52,10 @@ import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
-import com.webpagebytes.cms.datautility.WPBImageProcessorFactory;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBImageProcessorFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 

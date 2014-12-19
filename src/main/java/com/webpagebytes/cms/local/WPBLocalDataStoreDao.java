@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localdatautility;
+package com.webpagebytes.cms.local;
 
 import java.beans.PropertyDescriptor;
 

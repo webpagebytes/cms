@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localcache;
+package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +26,7 @@ import java.util.Set;
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalUrisCache extends WPBUrisCache {

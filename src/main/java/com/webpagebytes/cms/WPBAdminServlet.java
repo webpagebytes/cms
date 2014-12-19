@@ -29,7 +29,9 @@ import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 public class WPBAdminServlet extends HttpServlet {
 
-	public static final String ADMIN_URI_PREFIX = "admin-uri-prefix";
+    private static final long serialVersionUID = 1L;
+    
+    public static final String ADMIN_URI_PREFIX = "admin-uri-prefix";
 	public static final String ADMIN_RESOURCE_FOLDER = "admin";
 	public static final String ADMIN_CONFIG_FOLDER = "config";
 	public static final String ADMIN_CONFIG_RESOURCES = "META-INF/config/resourceswhitelist.properties";

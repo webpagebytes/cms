@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localdatautility;
+package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
 
@@ -28,11 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.datautility.WPBAdminDataStorageListener.AdminDataStorageOperation;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageListener.AdminDataStorageOperation;
 import com.webpagebytes.cms.exception.WPBIOException;
-import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalQueryOperator;
-import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalSortDirection;
+import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
+import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalSortDirection;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;

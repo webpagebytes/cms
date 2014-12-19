@@ -14,17 +14,19 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms;
 
-public interface WPBAdminDataStorageListener {
+import com.webpagebytes.cms.engine.DefaultContentService;
 
-	enum AdminDataStorageOperation
+
+public class WPBContentServiceFactory {
+	private static WPBContentService instance;
+	public static WPBContentService getInstance()
 	{
-		CREATE_RECORD,
-		UPDATE_RECORD,
-		DELETE_RECORD,
-		DELETE_RECORDS
-		
+		if (instance == null)
+		{
+			instance = new DefaultContentService();
+		}
+		return instance;
 	}
-	public<T> void notify (T obj, AdminDataStorageOperation o, Class<? extends Object> type);
 }

@@ -1,4 +1,4 @@
-package com.webpagebytes.cms.datautility;
+package com.webpagebytes.cms.local;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +28,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.cmsdata.WPBFileInfo;
-import com.webpagebytes.cms.localdatautility.WPBLocalCloudFileStorage;
+import com.webpagebytes.cms.local.WPBLocalCloudFileStorage;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({WPBLocalCloudFileStorage.class})

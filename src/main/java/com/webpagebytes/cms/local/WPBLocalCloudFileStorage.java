@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-package com.webpagebytes.cms.localdatautility;
+package com.webpagebytes.cms.local;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +41,7 @@ import org.apache.commons.io.IOUtils;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.cmsdata.WPBFileInfo;
-import com.webpagebytes.cms.datautility.WPBDefaultCloudFileInfo;
+import com.webpagebytes.cms.engine.WPBDefaultCloudFileInfo;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;

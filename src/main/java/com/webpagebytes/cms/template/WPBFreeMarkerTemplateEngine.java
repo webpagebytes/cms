@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBModel;
-import com.webpagebytes.cms.datautility.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.engine.WPBCacheInstances;
+import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBTemplateException;

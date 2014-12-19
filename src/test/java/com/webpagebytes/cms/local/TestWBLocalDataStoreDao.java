@@ -1,4 +1,4 @@
-package com.webpagebytes.cms.datautility.local;
+package com.webpagebytes.cms.local;
 
 import static org.junit.Assert.*;
 
@@ -18,9 +18,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.cmsdata.WPBUri;
-import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao;
-import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalQueryOperator;
-import com.webpagebytes.cms.localdatautility.WPBLocalDataStoreDao.WBLocalSortDirection;
+import com.webpagebytes.cms.local.WPBLocalDataStoreDao;
+import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
+import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalSortDirection;
 
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.api.mockito.PowerMockito;
