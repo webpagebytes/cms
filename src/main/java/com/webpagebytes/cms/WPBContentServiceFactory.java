@@ -18,9 +18,25 @@ package com.webpagebytes.cms;
 
 import com.webpagebytes.cms.engine.DefaultContentService;
 
-
+/**
+ * <p>
+ * Factory class to create WPBContentService instances.
+ * </p>
+ * <p> 
+ * This can be used in batch mode. <br>
+ * WPBContentServiceFactory is implemented as a singleton.
+ * </p>
+ */
 public class WPBContentServiceFactory {
+    /**
+     * Static instance of WPBContentService to support singleton pattern.
+     */
 	private static WPBContentService instance;
+	
+	/**
+	 * Method to get instance of WPBContentService implemented as singleton.
+	 * @return Returns singleton instance of WPBContentService.
+	 */
 	public static WPBContentService getInstance()
 	{
 		if (instance == null)

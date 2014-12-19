@@ -16,9 +16,9 @@ import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
-import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.engine.LocalCloudFileContentBuilder;
 import com.webpagebytes.cms.exception.WPBIOException;
 

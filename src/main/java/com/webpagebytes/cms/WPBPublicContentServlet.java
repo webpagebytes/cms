@@ -49,6 +49,30 @@ import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
+/**
+ * <p>  
+ * Class the extends HttpServlet to deliver the public content of Webpagebytes CMS.
+ * </p>
+ * <p>
+ * A web application that integrates Webpagebytes CMS needs to define a servlet in the WEB-INF/web.xml 
+ * for the content managed by the CMS.
+ * </p>
+ * <p>
+ * An example of such web XML configuration fragment is the following <br>
+ * <pre>
+ * {@code
+ * <servlet>
+ *     <servlet-name>public</servlet-name>
+ *     <servlet-class>com.webpagebytes.cms.WPBPublicContentServlet</servlet-class>
+ * </servlet>  
+ * <servlet-mapping>
+ *    <servlet-name>public</servlet-name>
+ *    <url-pattern>/*</url-pattern>
+ * </servlet-mapping>
+ * }
+ * </pre>
+ * </p>
+ */
 public class WPBPublicContentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(WPBPublicContentServlet.class.getName());

@@ -26,8 +26,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
-import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.local.WPBLocalCloudFileStorage;
 
 @RunWith(PowerMockRunner.class)

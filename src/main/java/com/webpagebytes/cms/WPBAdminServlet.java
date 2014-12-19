@@ -27,6 +27,36 @@ import com.webpagebytes.cms.engine.WPBServletUtility;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
+/**
+ * 
+  * <p>  
+ * Class the extends HttpServlet to deliver the administration interface of Webpagebytes CMS.
+ * </p>
+ * <p>
+ * A web application that integrates Webpagebytes CMS needs to define a servlet in the WEB-INF/web.xml 
+ * for the administration interface of the CMS.
+ * </p>
+ * <p>
+ * An example of such web XML configuration fragment is the following <br>
+ * <pre>
+ * {@code
+ * <servlet>
+ *     <servlet-name>admin</servlet-name>
+ *     <servlet-class>com.webpagebytes.cms.WPBAdminServlet</servlet-class>
+ *     <init-param>
+ *         <param-name>admin-uri-prefix</param-name>
+ *         <param-value>/demo/myadmin</param-value>
+ *     </init-param>       
+ * </servlet>
+ *     <servlet-mapping>
+ *         <servlet-name>admin</servlet-name>
+ *         <url-pattern>/myadmin/*</url-pattern>
+ *     </servlet-mapping>
+ * </servlet>
+ * }
+ * </pre>
+ * </p>*
+ */
 public class WPBAdminServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

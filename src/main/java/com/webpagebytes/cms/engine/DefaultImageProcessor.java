@@ -26,10 +26,10 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 
+import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBImageProcessor;
-import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.Dimension;
 

@@ -19,8 +19,8 @@ package com.webpagebytes.cms.engine;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
-import com.webpagebytes.cms.cmsdata.WPBFileInfo;
 
 public class WPBDefaultCloudFileInfo implements WPBFileInfo {
 	private WPBFilePath cloudFile;
@@ -47,7 +47,7 @@ public class WPBDefaultCloudFileInfo implements WPBFileInfo {
 		customProperties = new HashMap<String, String>();
 	}
 	
-	public WPBFilePath getCloudFile() {
+	public WPBFilePath getFilePath() {
 		return cloudFile;
 	}
 

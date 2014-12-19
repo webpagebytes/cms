@@ -22,6 +22,15 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
+/**
+ * <p>
+ * Servlet context listener for Webpagebytes CMS. 
+ * </p>
+ * <p>
+ * This listener should be declared before any other listener that will use Webpagebytes CMS features.
+ * Declaring this listener before other listeners will allow Webpagebytes CMS initialization before it us used from other listeners.
+ * </p> 
+ */
 public class WPBCmsContextListener implements ServletContextListener {
 	public static final String CMS_CONFIG_KEY = "wpbConfigurationPath";
 

@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import com.webpagebytes.cms.cmsdata.WPBFileInfo;
-
 /**
  * <p>
  * WPBFileStorage offers an abstract interface to store and retrieve files used by the Webpagebytes CMS.
