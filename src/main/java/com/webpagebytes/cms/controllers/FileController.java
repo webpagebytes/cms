@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.IOUtils;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
@@ -47,6 +48,7 @@ import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.WPBImageProcessor;
 import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
@@ -100,9 +102,19 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			  ServletFileUpload upload = new ServletFileUpload();
 		      upload.setHeaderEncoding("UTF-8");
 		      FileItemIterator iterator = upload.getItemIterator(request);
+		      String inputName = "";
+		      String ownerExtKey = "";
 		      while (iterator.hasNext()) {
-		        FileItemStream item = iterator.next(); 
-		        if (!item.isFormField() && item.getFieldName().equals("file")) {
+		        FileItemStream item = iterator.next();
+		        if (item.isFormField() && item.getFieldName().equals("name"))
+		        {
+		            inputName = Streams.asString(item.openStream());
+		        } else
+                if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
+                {
+                    ownerExtKey = Streams.asString(item.openStream());
+                } else
+                if (!item.isFormField() && item.getFieldName().equals("file")) {
 		          InputStream stream = item.openStream();
 		          WPBFile wbFile = null;
 		          if (request.getAttribute("key") != null)
@@ -138,12 +150,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          wbFile.setBlobKey(cloudFile.getPath());
 		          wbFile.setHash(fileInfo.getCrc32());
 		          wbFile.setFileName(item.getName());
-		          wbFile.setName( request.getParameter("name") != null ? request.getParameter("name"): item.getName());
+		          wbFile.setName(inputName);
 		          wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 		          wbFile.setSize(fileInfo.getSize());
 		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
-		          wbFile.setShortType(ContentTypeDetector.contentTypeToShortType(wbFile.getContentType()));
+		          wbFile.setDirectoryFlag(0);
+		          wbFile.setOwnerExtKey(ownerExtKey);
 		          
 		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
 		          WPBFilePath thumbnailCloudFile = new WPBFilePath(PUBLIC_BUCKET, thumbnailfilePath);
@@ -193,15 +206,61 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		}
 	}
 
+	public void createDir(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
+	{
+	       try
+	        {
+	            String jsonRequest = httpServletToolbox.getBodyText(request);
+	            WPBFile wbFile = jsonObjectConverter.objectFromJSONString(jsonRequest, WPBFile.class);
+	            Map<String, String> errors = validator.validateCreate(wbFile);
+	            
+	            if (errors.size()>0)
+	            {
+	                httpServletToolbox.writeBodyResponseAsJson(response, "{}", errors);
+	                return;
+	            }
+	            wbFile.setAdjustedContentType(null);
+	            wbFile.setBlobKey(null);
+	            wbFile.setContentType(null);
+	            wbFile.setDirectoryFlag(1);
+	            wbFile.setHash(0L);
+	            wbFile.setPublicUrl(null);
+	            wbFile.setSize(0L);
+	            wbFile.setThumbnailBlobKey(null);
+	            wbFile.setThumbnailPublicUrl(null);
+	            wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+	            wbFile.setExternalKey(adminStorage.getUniqueId());
+	            WPBFile newFile = adminStorage.add(wbFile);
+	            
+	            WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getName(), WPBResource.FILE_TYPE);
+	            try
+	            {
+	                adminStorage.addWithKey(resource);
+	            } catch (Exception e)
+	            {
+	                // do not propagate further
+	            }
+	            org.json.JSONObject returnJson = new org.json.JSONObject();
+	            returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));           
+	            httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+
+	        } catch (Exception e)
+	        {
+	            Map<String, String> errors = new HashMap<String, String>();     
+	            errors.put("", WPBErrors.WB_CANT_CREATE_RECORD);
+	            httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);          
+	        }
+	}
+	
 	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			String jsonRequest = httpServletToolbox.getBodyText(request);
-			WPBFile wbimage = (WPBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBFile.class);
-			wbimage.setPrivkey(key);
-			Map<String, String> errors = validator.validateUpdate(wbimage);
+			WPBFile wbfile = (WPBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBFile.class);
+			wbfile.setPrivkey(key);
+			Map<String, String> errors = validator.validateUpdate(wbfile);
 			
 			if (errors.size()>0)
 			{
@@ -210,8 +269,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			}
 			WPBFile existingImage = adminStorage.get(key, WPBFile.class);
 			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			existingImage.setName(wbimage.getName());
-			existingImage.setAdjustedContentType(wbimage.getAdjustedContentType());
+			existingImage.setName(wbfile.getName());
+			existingImage.setAdjustedContentType(wbfile.getAdjustedContentType());
 			WPBFile newFile = adminStorage.update(existingImage);
 			
 			WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getName(), WPBResource.FILE_TYPE);
@@ -288,7 +347,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			String sortParamDir = request.getParameter(SORT_PARAMETER_DIRECTION);
 			String sortParamProp = request.getParameter(SORT_PARAMETER_PROPERTY);
 
-			String shortType = request.getParameter("type");
+			String ownerParam = "ownerExtKey";
+			String ownerValue = request.getParameter("parent");
+			if (ownerValue == null) ownerValue="";
+			
 			List<WPBFile> files = null;
 			
 			if (sortParamDir != null && sortParamProp != null)
@@ -297,49 +359,23 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_ASC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					if (null == shortType)
-					{
-						files = adminStorage.getAllRecords(WPBFile.class, sortParamProp, AdminSortOperator.ASCENDING);
-					} else
-					{
-						shortType = shortType.toLowerCase();
-						files = adminStorage.queryWithSort(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.ASCENDING);
-					}
+					
+					files = adminStorage.queryWithSort(WPBFile.class, ownerParam , AdminQueryOperator.EQUAL, ownerValue, sortParamProp, AdminSortOperator.ASCENDING);
 
 				} else if (sortParamDir.equals(SORT_PARAMETER_DIRECTION_DSC))
 				{
 					additionalInfo.put(SORT_PARAMETER_DIRECTION, SORT_PARAMETER_DIRECTION_DSC);
 					additionalInfo.put(SORT_PARAMETER_PROPERTY, sortParamProp);
-					if (null == shortType)
-					{
-						files = adminStorage.getAllRecords(WPBFile.class, sortParamProp, AdminSortOperator.DESCENDING);
-					} else
-					{
-						shortType = shortType.toLowerCase();
-						files = adminStorage.queryWithSort(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType, sortParamProp, AdminSortOperator.DESCENDING);
-					}
-
+					files = adminStorage.queryWithSort(WPBFile.class, ownerParam , AdminQueryOperator.EQUAL, ownerValue, sortParamProp, AdminSortOperator.DESCENDING);
+					
 				} else
 				{
-					if (null == shortType)
-					{
-						files = adminStorage.getAllRecords(WPBFile.class);
-					} else
-					{
-						shortType = shortType.toLowerCase();
-						files = adminStorage.query(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
-					}
+					
+					files = adminStorage.query(WPBFile.class, ownerParam, AdminQueryOperator.EQUAL, ownerValue);
 				}
 			} else
-			{
-				if (null == shortType)
-				{
-					files = adminStorage.getAllRecords(WPBFile.class);
-				} else
-				{
-					shortType = shortType.toLowerCase();
-					files = adminStorage.query(WPBFile.class, "shortType", AdminQueryOperator.EQUAL, shortType);
-				}
+			{				
+				files = adminStorage.query(WPBFile.class, ownerParam , AdminQueryOperator.EQUAL, ownerValue);
 			}
 
 			List<WPBFile> result = filterPagination(request, files, additionalInfo);
@@ -364,8 +400,11 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	private static void setPublicFilePath(WPBFile wbFile, WPBFileStorage cloudFileStorage)
 	{
-		wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
-		wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+	    if (wbFile.getDirectoryFlag() == null || wbFile.getDirectoryFlag() == 0)
+	    {
+	        wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
+	        wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+	    } 
 	}
 	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBFile wbFile) throws WPBException
 	{

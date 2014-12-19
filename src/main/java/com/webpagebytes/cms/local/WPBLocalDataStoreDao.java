@@ -21,6 +21,7 @@ import java.beans.PropertyDescriptor;
 
 
 
+
 import java.lang.reflect.Field;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -28,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,9 +39,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.dbcp.BasicDataSource;
-
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldKey;
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldStore;
 import com.webpagebytes.cms.cmsdata.WPBAdminFieldTextStore;
@@ -289,31 +289,60 @@ public class WPBLocalDataStoreDao {
 				if (field.getType() == Long.class)
 				{
 					Long valueLong = (Long) value;
-					preparedStatement.setLong(fieldIndex, valueLong);
+					if (valueLong != null)
+					{
+					    preparedStatement.setLong(fieldIndex, valueLong);
+					} else
+					{
+					    preparedStatement.setNull(fieldIndex, Types.BIGINT);
+					}
 				} else if (field.getType() == String.class)							
 				{
-					String valueString = (String)value;
-					if (field.getAnnotation(WPBAdminFieldStore.class) != null)
+	
+					String valueString = (String)value;					
+					if (field.getAnnotation(WPBAdminFieldStore.class) != null || field.getAnnotation(WPBAdminFieldKey.class) != null)
 					{
-						preparedStatement.setString(fieldIndex, valueString);
-					} else if (field.getAnnotation(WPBAdminFieldKey.class) != null)
+					    if (valueString != null)
+					    {
+					        preparedStatement.setString(fieldIndex, valueString);
+					    } else
+					    {
+					        preparedStatement.setNull(fieldIndex, Types.VARCHAR);
+					    }
+					}
+					else if (field.getAnnotation(WPBAdminFieldTextStore.class) != null)
 					{
-						preparedStatement.setString(fieldIndex, valueString);
-					} else 	if (field.getAnnotation(WPBAdminFieldTextStore.class) != null)
-					{
-						Clob clob = connection.createClob();
-						clob.setString(1, valueString);
-						preparedStatement.setClob(fieldIndex, clob);
+					    if (valueString != null)
+					    {
+					        Clob clob = connection.createClob();
+					        clob.setString(1, valueString);
+					        preparedStatement.setClob(fieldIndex, clob);
+					    } else
+					    {
+					        preparedStatement.setNull(fieldIndex, Types.CLOB);
+					    }
 					} 						
 				} else if (field.getType() == Integer.class)							
 				{
 					Integer valueInt = (Integer) value;
-					preparedStatement.setInt(fieldIndex, valueInt);
+					if (valueInt != null)
+					{
+					    preparedStatement.setInt(fieldIndex, valueInt);
+					} else
+					{
+					    preparedStatement.setNull(fieldIndex, Types.INTEGER);
+					}
 				}  else if (field.getType() == Date.class)							
 				{
 					Date date = (Date) value;
-					java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
-					preparedStatement.setTimestamp(fieldIndex, sqlDate);
+					if (date != null)
+					{
+					    java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
+					    preparedStatement.setTimestamp(fieldIndex, sqlDate);
+					} else
+					{
+					    preparedStatement.setNull(fieldIndex, Types.DATE);
+					}
 				}
 			 }
 		}

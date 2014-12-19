@@ -198,11 +198,6 @@ public class WPBImporter {
 			file.setAdjustedContentType(properties.get("adjustedContentType").toString().trim());
 		}
 
-		if (properties.get("shortType") != null)
-		{
-			file.setShortType(properties.get("shortType").toString().trim());
-		}
-
 		if (properties.get("fileName") != null)
 		{
 			file.setFileName(properties.get("fileName").toString().trim());
@@ -212,7 +207,21 @@ public class WPBImporter {
 		{
 			file.setName(properties.get("name").toString().trim());
 		}
-
+		if (properties.get("ownerExtKey") != null)
+		{
+		    file.setOwnerExtKey(properties.get("name").toString().trim());
+		} else
+		{
+		    file.setOwnerExtKey("");
+		}
+		if (properties.get("directoryFlag") != null)
+		{
+		    file.setDirectoryFlag(properties.get("directoryFlag").toString().trim().equals("1") ? 1 : 0 );
+		} else
+		{
+		    file.setDirectoryFlag(0);
+		}
+		
 		file.setSize(0L);
 		file.setBlobKey("");
 		file.setHash(0L);

@@ -180,12 +180,7 @@ public class WPBExporter {
 			properties.put("externalKey", file.getExternalKey());
 		else
 			properties.put("externalKey", "0");
-		
-		if (file.getContentType() != null)
-			properties.put("shortType", file.getShortType());
-		else
-			properties.put("shortType", "");
-		
+				
 		if (file.getContentType() != null)
 			properties.put("contentType", file.getContentType());
 		else

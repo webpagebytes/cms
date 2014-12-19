@@ -12,6 +12,18 @@ String.prototype.format = function() {
 	
 };
 
+if (!String.prototype.startsWith) {
+  Object.defineProperty(String.prototype, 'startsWith', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: function(searchString, position) {
+      position = position || 0;
+      return this.lastIndexOf(searchString, position) === position;
+    }
+  });
+};
+
 function getURLParameter(name, url) {
 	url = url || window.location.href;
 	var value = (url.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,undefined])[1];

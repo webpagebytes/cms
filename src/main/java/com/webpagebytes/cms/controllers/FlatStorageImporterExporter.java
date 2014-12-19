@@ -341,7 +341,7 @@ public class FlatStorageImporterExporter {
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
-		        if (file.getShortType().compareToIgnoreCase("image") == 0)
+		        if (file.getAdjustedContentType() != null && file.getAdjustedContentType().toLowerCase().startsWith("image"))
 		        {
 		        	// build the thumbnail for this image
 		        	try

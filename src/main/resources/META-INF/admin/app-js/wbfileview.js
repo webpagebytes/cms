@@ -57,27 +57,6 @@ $().ready( function () {
 	}
 	
 	var displayHandler = function (fieldId, record) {
-		if (fieldId == 'shortType') {
-			var shortType = record['shortType'];
-			if (shortType == 'video') {
-				$('#wbfileshortType').attr('href','./webfiles.html?type=video');
-				return "Files (Video)";
-			} else
-			if (shortType == 'image') {
-				$('#wbfileshortType').attr('href','./webfiles.html?type=image');
-				return "Files (Images)";
-			} else
-			if (shortType == 'audio') {
-				$('#wbfileshortType').attr('href','./webfiles.html?type=audio');
-				return "Files (Audio)";
-			} else
-			if (shortType == 'application') {
-				$('#wbfileshortType').attr('href','./webfiles.html?type=application');
-				return "Files (Applications)";
-			} else
-			$('#wbfileshortType').attr('href','./webfiles.html');
-			return "Files";
-		} else
 		if (fieldId == 'lastModified') {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else
@@ -128,29 +107,18 @@ $().ready( function () {
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['privkey'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 		$('#spinnerTable').WBSpinner().hide();
-		switch (data['shortType']) {
-			case "image":
-				var imgHtml = "<img src='{0}'>".format(data['publicUrl']);
-				$('.wbimagecontent').html(imgHtml);
-				break;
-			case 'video':
-				var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
-				$(".wbvideocontent").html(videoHtml);
-				var player = new MediaElementPlayer('#idvideocontent');
-				player.load();
-				break;
-			case 'audio':
-				var audioHtml = "<audio id='idaudiocontent' controls> <source type='{0}' src='./wbresource/{1}'> Your browser does not support the audio element. </audio> ".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
-				$('.wbaudiocontent').html(audioHtml);
-				var player = new MediaElementPlayer('#idaudiocontent');
-				player.load();
-				
-				break;
-			case 'application':
-				$('.wbapplicationcontent').html("");
-				break;
+		var contentType = data["adjustedContentType"] || "";
+		if (contentType.toLowerCase().startsWith("image")) {
+			var imgHtml = "<img src='{0}'>".format(data['publicUrl']);
+			$('.wbimagecontent').html(imgHtml);			
 		}
-		
+		if (contentType.toLowerCase().startsWith("video")) {
+			var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
+			$(".wbvideocontent").html(videoHtml);
+			var player = new MediaElementPlayer('#idvideocontent');
+			player.load();			
+		}
+				
 	}
 	var fErrorGetFile = function (errors, data) {
 		alert(data);

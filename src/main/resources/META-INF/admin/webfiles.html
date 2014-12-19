@@ -40,58 +40,6 @@
 		<div id="searchResultList" class="wbsearchresultcontainer"></div>		
 	</div>
 	
-	<ul class="nav nav-tabs nav-filled nav-wb-horizontal">
-		<li id="tabresimages"> <a href="./webfiles.html?type=image"> Images </a> </li>
-		<script type="text/javascript">
-			var url = document.location.href;
-			var patt = /(\?type=image|&type=image)/gi;
-			if (patt.test(url)) 
-				document.getElementById('tabresimages').className += ' active';
-			else
-				document.getElementById('tabresimages').className = '';
-		</script>
-		<li id="tabresmovies"> <a href="./webfiles.html?type=video"> Videos </a> </li>
-		<script type="text/javascript">
-			var url = document.location.href;
-			var patt = /(\?type=video|&type=video)/gi;
-			if (patt.test(url)) 
-				document.getElementById('tabresmovies').className += ' active';
-			else
-				document.getElementById('tabresmovies').className = '';
-		</script>
-
-		<li id="tabresapps"> <a href="./webfiles.html?type=application"> Application Specific </a> </li>
-		<script type="text/javascript">
-			var url = document.location.href;
-			var patt = /(\?type=application|&type=application)/gi;
-			if (patt.test(url)) 
-				document.getElementById('tabresapps').className += ' active';
-			else
-				document.getElementById('tabresapps').className = '';
-		</script>
-
-		<li id="tabressounds"> <a href="./webfiles.html?type=audio"> Audios </a> </li>
-		<script type="text/javascript">
-			var url = document.location.href;
-			var patt = /(\?type=audio|&type=audio)/gi;
-			if (patt.test(url)) 
-				document.getElementById('tabressounds').className += ' active';
-			else
-				document.getElementById('tabressounds').className = '';
-		</script>
-
-		<li id="tabresall" class="active"> <a href="./webfiles.html"> All Files </a> </li>
-		<script type="text/javascript">
-			var url = document.location.href;
-			var patt = /(\?type=|&type=)/gi;
-			if (!patt.test(url)) 
-				document.getElementById('tabresall').className += ' active';
-			else
-				document.getElementById('tabresall').className = '';
-		</script>
-		
-	</ul>
-
 	<div id="spinnerTable" class="spinner">
 		<img src="./${timestamp}/img/spinner.gif" > Loading...
 	</div>	
@@ -101,6 +49,7 @@
 			<div class="wbtitle-offset"> 
 				<span class="wbstats wbtitle-text wbfiles-table-stats"> </span>
 				<span class="wbtitle-button"> <i class="fa fa-upload"> </i> <a href="#" id="wbAddFileBtn"> Upload file </a> </span>
+                <span class="wbtitle-button"> <i class="fa fa-folder"> </i> <a href="#" id="wbAddFolderBtn"> Create folder </a> </span>
 			</div>
 		</div>
 		
@@ -130,7 +79,9 @@
 						<span id="errgeneral" class="help-inline"></span>
 					</div>										
 				</div>
-				
+				<input type="hidden" id="wbdirectoryFlag" name="directoryFlag" value="0" />
+                <input type="hidden" id="wbownerExtKey" name="ownerExtKey" value="" />
+                
 				<div class="control-group">
 					<label class="control-label" for="wbname">Name</label>
 					<div class="controls">
@@ -155,6 +106,39 @@
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>
+    </div>
+
+    <div class="modal hide" id="wbAddFolderModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3> Create folder </h3>
+        </div>
+        <form class="form-inline" id="wfAddFolderForm">
+        
+        <div class="modal-body">
+            <fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <span id="errgeneral" class="help-inline"></span>
+                    </div>                                      
+                </div>
+                <input type="hidden" id="wfdirectoryFlag" name="directoryFlag" value="1" />
+                <input type="hidden" id="wfownerExtKey" name="ownerExtKey" value="" />
+                <div class="control-group">
+                    <label class="control-label" for="wfname">Name</label>
+                    <div class="controls">
+                        <input id="wfname" name="name" class="input-xlarge" type="text" />
+                        <span id="errname" class="help-inline"></span>
+                    </div>                                      
+                </div>  
+            </fieldset>
+        
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-primary wbSaveAddFolderBtnClass" type="submit">Create</button>
+                <button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+        </div>
+        </form>
     </div>
 
 	<div class="modal hide" id="wbDeleteFileModal">

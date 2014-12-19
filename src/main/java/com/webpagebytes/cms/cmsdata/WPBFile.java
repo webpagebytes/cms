@@ -42,9 +42,6 @@ public class WPBFile {
 	private String adjustedContentType;
 	
 	@WPBAdminFieldStore
-	private String shortType;	
-
-	@WPBAdminFieldStore
 	private Long size;
 	
 	@WPBAdminFieldStore
@@ -62,7 +59,11 @@ public class WPBFile {
 	@WPBAdminFieldStore
 	private String thumbnailBlobKey;
 
+	@WPBAdminFieldStore
+	private Integer directoryFlag;
 	
+	@WPBAdminFieldStore
+	private String ownerExtKey;
 	
 	public Long getPrivkey() {
 		return privkey;
@@ -127,7 +128,7 @@ public class WPBFile {
 	public void setSize(Long size) {
 		this.size = size;
 	}
-
+/*
 	public String getShortType() {
 		return shortType;
 	}
@@ -135,7 +136,7 @@ public class WPBFile {
 	public void setShortType(String shortType) {
 		this.shortType = shortType;
 	}
-
+*/
 	public String getAdjustedContentType() {
 		return adjustedContentType;
 	}
@@ -176,5 +177,22 @@ public class WPBFile {
 		this.thumbnailBlobKey = thumbnailBlobKey;
 	}
 
+    public Integer getDirectoryFlag() {
+        return directoryFlag;
+    }
+
+    public void setDirectoryFlag(Integer directoryFlag) {
+        this.directoryFlag = directoryFlag;
+    }
+
+    public String getOwnerExtKey() {
+        return ownerExtKey;
+    }
+
+    public void setOwnerExtKey(String ownerExtKey) {
+        this.ownerExtKey = ownerExtKey;
+    }
+
+	
 
 }

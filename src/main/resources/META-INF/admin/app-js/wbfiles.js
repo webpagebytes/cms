@@ -5,23 +5,37 @@
 var errorsGeneral = {
 	'ERROR_FILE_NAME_LENGTH': 'File name length must be between 1 and 250 characters',
 	'ERROR_FILE_FILENAME_LENGTH': 'File file path cannot be empty',
-	'ERROR_FILE_ENABLED_BAD_FORMAT': 'Invalid file live value'
+	'ERROR_FILE_INVALID': 'Invalid file data'
 };
 
 $().ready( function () {
 	var wbFileValidations = { 
 			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
 			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
-			enabled: [{rule: { includedInto: ['0', '1']}, error: "ERROR_FILE_ENABLED_BAD_FORMAT" }]
+			directoryFlag: [{rule: { includedInto: ['0']}, error: "ERROR_FILE_INVALID" }]
 	};
+	var wbFolderValidations = { 
+			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
+			directoryFlag: [{rule: { includedInto: ['1']}, error: "ERROR_FILE_INVALID" }]
+	};
+
 	$('#wbAddFileForm').wbObjectManager( { fieldsPrefix:'wb',
 									  errorLabelsPrefix: 'err',
 									  errorGeneral:"errgeneral",
 									  errorLabelClassName: 'errorvalidationlabel',
 									  errorInputClassName: 'errorvalidationinput',
-									  fieldsDefaults: { enabled: 0 },
+									  fieldsDefaults: { directoryFlag: 0 },
 									  validationRules: wbFileValidations
 									});
+	$('#wfAddFolderForm').wbObjectManager( { fieldsPrefix:'wf',
+		  errorLabelsPrefix: 'err',
+		  errorGeneral:"errgeneral",
+		  errorLabelClassName: 'errorvalidationlabel',
+		  errorInputClassName: 'errorvalidationinput',
+		  fieldsDefaults: { directoryFlag: 1 },
+		  validationRules: wbFolderValidations
+		});
+
 	$('#wbDeleteFileForm').wbObjectManager( { fieldsPrefix: 'wbd',
 									 errorGeneral:"errdgeneral",
 									 errorLabelsPrefix: 'errd',
@@ -31,13 +45,19 @@ $().ready( function () {
 	var itemsOnPage = 20;	
 
 	var displayHandler = function (fieldId, record) {
+		if (fieldId=="_folder" && record["directoryFlag"] == '1') {
+			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"><i class="fa fa-folder"></i></a>';
+		} else
+		if (fieldId=="_folder" && record["directoryFlag"] != '1') {
+			return "";
+		} else
 		if (fieldId=="_operations") {
 			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else
-		if (fieldId=="size") {
+		if (fieldId=="size" && record["directoryFlag"] != '1') {
 			var size = parseInt(record['size']);
 			if (size < 1024) {
 				return size + ' bytes';
@@ -52,11 +72,20 @@ $().ready( function () {
 			
 			return size;
 		} else
+	    if (fieldId=="size" && record["directoryFlag"] == '1') {
+	    	return "";
+	    } else
+		if (fieldId == "contentType" && record["directoryFlag"] == '1') {
+			return "";
+		} else
+		if (fieldId == "contentType" && record["directoryFlag"] != '1') {
+			return escapehtml(record[fieldId]);
+		} else
 		if (fieldId=="blobKey"){
-			switch (record["shortType"]) {
-				case "image":
+			var contentType = record["adjustedContentType"] || "";
+			if (contentType.toLowerCase().startsWith("image")) {
 					return '<img src="{0}">'.format( encodeURI(record['thumbnailPublicUrl']) );
-				default:
+			} else {
 					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['privkey']),escapehtml(record['fileName']));				
 			}
 		}
@@ -70,9 +99,9 @@ $().ready( function () {
 		window.document.location.href = newUrl;		
 	}
 
-	$('#wbFilesTable').wbSimpleTable( { columns: [ {display: "External key", fieldId: "externalKey", isHtmlDisplay:true},
+	$('#wbFilesTable').wbSimpleTable( { columns: [ {display: "", fieldId:"_folder", customHandler: displayHandler},
 	                                               {display: "Name", fieldId: "name", isHtmlDisplay:true},
-	                                               {display:"Content type", fieldId:"contentType", isHtmlDisplay:true},
+	                                               {display:"Content type", fieldId:"contentType", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Size", fieldId:"size", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"File", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
@@ -88,7 +117,8 @@ $().ready( function () {
 
 	$('#wbAddFileForm').wbCommunicationManager();
 	$('#wbDeleteFileForm').wbCommunicationManager();
-
+	$('#wfAddFolderForm').wbCommunicationManager();
+	
 	$('#wbAddFileBtn').click( function (e) {
 		e.preventDefault();
 		$('#wbAddFileForm').wbObjectManager().resetFields();
@@ -96,8 +126,16 @@ $().ready( function () {
 
 	});
 
+	$('#wbAddFolderBtn').click( function (e) {
+		e.preventDefault();
+		$('#wfAddFolderForm').wbObjectManager().resetFields();
+		$('#wbAddFolderModal').modal('show');			
+
+	});
+
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddFileModal').modal('hide');
+		$('#wbAddFolderModal').modal('hide');
 		populateFiles();			
 	}
 	var fErrorAdd = function (data) {
@@ -112,6 +150,26 @@ $().ready( function () {
 		if (! $.isEmptyObject(errors)) {
 			e.preventDefault();
 		}
+		var parent = getURLParameter('parent') || "";
+		$("#wbownerExtKey").val(parent);
+	});
+
+	$('.wbSaveAddFolderBtnClass').click( function (e) {
+		e.preventDefault();
+		var errors = $('#wfAddFolderForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if ($.isEmptyObject(errors)) {
+			var obj = $('#wfAddFolderForm').wbObjectManager().getObjectFromFields();
+			var parent = getURLParameter('parent') || "";
+			obj["ownerExtKey"] = parent;
+			var jsonText = JSON.stringify(obj);
+			$('#wfAddFolderForm').wbCommunicationManager().ajax ( { url: "./wbfile",
+															 httpOperation:"POST", 
+															 payloadData:jsonText,
+															 functionSuccess: fSuccessAdd,
+															 functionError: fErrorAdd
+															 } );
+		}
+
 	});
 
 	$(document).on ("click", '.wbDeleteFileClass', function (e) {
@@ -157,19 +215,15 @@ $().ready( function () {
 		}
 		
 		var page = getURLParameter('page') || 1;
+		var parent = getURLParameter('parent') || "";
 		if (page <= 0) page = 1;
 		var index_start = (page-1)*itemsOnPage;
 		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "dsc");
 		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");	
 		$('#wbFilesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
 		
-		var files_url = "./wbfile?sort_dir={0}&sort_field={1}&index_start={2}&count={3}".format(sort_dir, sort_field, index_start, itemsOnPage); 
+		var files_url = "./wbfile?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&parent={4}".format(sort_dir, sort_field, index_start, itemsOnPage, encodeURIComponent(parent)); 
 		
-		var shortType = getURLParameter('type');
-		if (shortType && shortType.length) {
-			files_url = replaceURLParameter(files_url,"type", shortType);
-		}
-	
 		
 		$('#wbAddFileForm').wbCommunicationManager().ajax ( { url: files_url,
 														 httpOperation:"GET", 
