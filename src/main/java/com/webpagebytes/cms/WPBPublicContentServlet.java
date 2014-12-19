@@ -382,6 +382,20 @@ throws ServletException,
 		handleRequest(req, resp);
        }
 
+public void doOptions(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException,
+        java.io.IOException
+        {
+         handleRequest(req, resp);
+        }
+
+public void doHead(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException,
+        java.io.IOException
+        {
+         handleRequest(req, resp);
+        }
+
 public void setServletUtility(WPBServletUtility servletUtility) {
 	this.servletUtility = servletUtility;
 }
