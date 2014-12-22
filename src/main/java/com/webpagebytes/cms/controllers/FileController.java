@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 
 
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,7 +49,6 @@ import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.WPBImageProcessor;
 import com.webpagebytes.cms.cmsdata.WPBFile;
-import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
@@ -349,7 +349,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 			String ownerParam = "ownerExtKey";
 			String ownerValue = request.getParameter("parent");
-			if (ownerValue == null) ownerValue="";
+			if (ownerValue == null) 
+			    ownerValue="";
+			else
+			    ownerValue = ownerValue.trim();
 			
 			List<WPBFile> files = null;
 			
@@ -383,11 +386,22 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			{
 				setPublicFilePath(wbFile, cloudFileStorage);
 			}
+			WPBFile ownerFile = null;
+			if (ownerValue.length()>0)
+			{
+			    // get the owner parent info
+			    List<WPBFile> queryRes = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, ownerValue);
+			    if (queryRes.size() == 1)
+			    {
+			        ownerFile =  queryRes.get(0);
+			    }
+			} 
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
-			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
-			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			org.json.JSONObject additionalDataJson = jsonObjectConverter.JSONObjectFromMap(additionalInfo);
+			additionalDataJson.put("owner", jsonObjectConverter.JSONFromObject(ownerFile));
+			returnJson.put(ADDTIONAL_DATA, additionalDataJson);
+		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
 		{

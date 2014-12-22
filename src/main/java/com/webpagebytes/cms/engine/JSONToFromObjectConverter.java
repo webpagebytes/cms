@@ -154,8 +154,9 @@ public class JSONToFromObjectConverter {
 	
 	public org.json.JSONObject JSONFromObject(Object object) 
 	{
-		org.json.JSONObject json = new org.json.JSONObject(); 
-		Class<? extends Object> objClass = object.getClass();
+	    org.json.JSONObject json = new org.json.JSONObject(); 
+	    if (null == object) return json;    
+	    Class<? extends Object> objClass = object.getClass();
 		Field[] fields = objClass.getDeclaredFields();
 		for(Field field: fields)
 		{

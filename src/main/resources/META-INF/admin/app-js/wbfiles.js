@@ -44,11 +44,8 @@ $().ready( function () {
 
 	var itemsOnPage = 20;	
 
-	var displayHandler = function (fieldId, record) {
-		if (fieldId=="_folder" && record["directoryFlag"] == '1') {
-			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"><i class="fa fa-folder"></i></a>';
-		} else
-		if (fieldId=="_folder" && record["directoryFlag"] != '1') {
+	var displayHandlerFile = function(fieldId, record) {
+		if (fieldId=="_folder") {
 			return "";
 		} else
 		if (fieldId=="_operations") {
@@ -57,7 +54,7 @@ $().ready( function () {
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else
-		if (fieldId=="size" && record["directoryFlag"] != '1') {
+		if (fieldId=="size") {
 			var size = parseInt(record['size']);
 			if (size < 1024) {
 				return size + ' bytes';
@@ -72,13 +69,7 @@ $().ready( function () {
 			
 			return size;
 		} else
-	    if (fieldId=="size" && record["directoryFlag"] == '1') {
-	    	return "";
-	    } else
-		if (fieldId == "contentType" && record["directoryFlag"] == '1') {
-			return "";
-		} else
-		if (fieldId == "contentType" && record["directoryFlag"] != '1') {
+	    if (fieldId=="contentType" || fieldId=="name") {
 			return escapehtml(record[fieldId]);
 		} else
 		if (fieldId=="blobKey"){
@@ -88,19 +79,52 @@ $().ready( function () {
 			} else {
 					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['privkey']),escapehtml(record['fileName']));				
 			}
+		}		
+	};
+	var displayHandlerFolder = function (fieldId, record) {
+		if (fieldId=="_folder") {
+			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"><i class="fa fa-folder fa-lg"></i> &nbsp; </a>';
+		} else
+		if (fieldId=="_operations") {
+			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'; 
+		} else
+		if (fieldId=="lastModified") {
+			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
+		} else
+		if (fieldId=="name") {
+			return escapehtml(record[fieldId]);
+		} else		    
+		if (fieldId=="size" || fieldId == "contentType" || fieldId=="blobKey") {
+	    	return "";
+	    } 
+	};
+	var displayLevelUp = function (fieldId, record) {
+		if (fieldId=="name") {
+			var ownerOfOwner = ((record['owner']['ownerExtKey'] || "").length > 0) ? record['owner']['ownerExtKey'] : "";
+			return '<a href="./webfiles.html?parent=' + encodeURIComponent(ownerOfOwner) + '"><i class="fa fa-level-up fa-flip-horizontal fa-lg"></i>..</a>';
+		} else
+	    return "";	   
+	};
+	var displayHandler = function (fieldId, record) {
+		if (record['level-up']) {
+			return displayLevelUp(fieldId, record);
+		} else
+		if (record['directoryFlag'] == 1) {
+			return displayHandlerFolder(fieldId, record); 
+		} else {
+			return displayHandlerFile(fieldId, record);
 		}
-		
-	}
+	};
 				
 	var columnClick = function (table, fieldId, dir) {	
 		var newUrl = window.document.location.href;
 		newUrl = replaceURLParameter(newUrl, "sort_field", fieldId);
 		newUrl = replaceURLParameter(newUrl, "sort_dir", dir);				
 		window.document.location.href = newUrl;		
-	}
+	};
 
 	$('#wbFilesTable').wbSimpleTable( { columns: [ {display: "", fieldId:"_folder", customHandler: displayHandler},
-	                                               {display: "Name", fieldId: "name", isHtmlDisplay:true},
+	                                               {display: "Name", fieldId: "name", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Content type", fieldId:"contentType", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Size", fieldId:"size", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true},
@@ -202,8 +226,20 @@ $().ready( function () {
 	});
 
 	var populateFiles = function() {
+
+		var page = getURLParameter('page') || 1;
+		var parent = (getURLParameter('parent') || "").trim();
+		if (page <= 0) page = 1;
+		var index_start = (page-1)*itemsOnPage;
+		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "dsc");
+		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");	
+	
 		var fSuccessGetAll = function (data) {
 			$('#wbFilesTable').wbSimpleTable().setRows(data.data);
+			if (parent.length > 0 && !$.isEmptyObject(data['additional_data']['owner'])){
+				$('#wbFilesTable').wbSimpleTable().insertRow({'level-up':1, 'owner': data['additional_data']['owner']}, 0);
+				
+			}
 			$('#wbFilesTable').wbSimpleTable().setPagination( document.location.href, data['additional_data']['total_count'], itemsOnPage, "page");
 			textItems = { "0":"", "empty":"", "1":"(1 item)", "greater_than_1": "({0} items)"};		
 			$(".wbfiles-table-stats").html(escapehtml(getTextForItems(data['additional_data']['total_count'], textItems)));
@@ -214,12 +250,6 @@ $().ready( function () {
 			$('#spinnerTable').WBSpinner().hide();
 		}
 		
-		var page = getURLParameter('page') || 1;
-		var parent = getURLParameter('parent') || "";
-		if (page <= 0) page = 1;
-		var index_start = (page-1)*itemsOnPage;
-		var sort_dir = encodeURIComponent(getURLParameter('sort_dir') || "dsc");
-		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");	
 		$('#wbFilesTable').wbSimpleTable().addSortIconToColumnHeader(sort_field, sort_dir);
 		
 		var files_url = "./wbfile?sort_dir={0}&sort_field={1}&index_start={2}&count={3}&parent={4}".format(sort_dir, sort_field, index_start, itemsOnPage, encodeURIComponent(parent)); 

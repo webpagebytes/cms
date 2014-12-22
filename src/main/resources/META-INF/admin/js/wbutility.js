@@ -2,14 +2,22 @@
 * Copyright 2014 Webpagebytes
 * http://www.apache.org/licenses/LICENSE-2.0.txt
 */
-String.prototype.format = function() {
-    var formatted = this;
-    for (var i = 0; i < arguments.length; i++) {
-        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
-        formatted = formatted.replace(regexp, arguments[i]);
-    }
-    return formatted;
-	
+
+if (!String.prototype.format) {
+	String.prototype.format = function() {
+	    var formatted = this;
+	    for (var i = 0; i < arguments.length; i++) {
+	        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+	        formatted = formatted.replace(regexp, arguments[i]);
+	    }
+	    return formatted;	
+	};
+};
+
+if (!String.prototype.trim) {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/gm,'');
+	}
 };
 
 if (!String.prototype.startsWith) {
