@@ -200,6 +200,16 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        file.setOwnerExtKey(parentdirectory.getExternalKey());
 	    }
 	    file = adminStorage.add(file);
+	    
+        WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
+        try
+        {
+            adminStorage.addWithKey(resource);
+        } catch (WPBException e)
+        {
+            // do not propagate further
+        }
+
 	    return file;
 	}
 	
@@ -226,7 +236,29 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
              file.setOwnerExtKey("");
          }
          
-         adminStorage.add(file);
+         WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
+
+         if (file.getPrivkey() != null)
+         {
+               adminStorage.update(file);                   
+               try
+               {
+                   adminStorage.update(resource);
+               } catch (WPBException e)
+               {
+                   // do not propage further
+               }
+         } else
+         {
+               adminStorage.add(file);
+               try
+               {
+                   adminStorage.addWithKey(resource);
+               } catch (WPBException e)
+               {
+                   // do not propagate further
+               }
+         }
 	}
 	
 	/**
@@ -337,95 +369,64 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        }
 	    }
 
-	public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
+   public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
+   {
+	try
 	{
-		try
-		{
-			  ServletFileUpload upload = new ServletFileUpload();
-		      upload.setHeaderEncoding("UTF-8");
-		      FileItemIterator iterator = upload.getItemIterator(request);
-		      String ownerExtKey = "";
-		      while (iterator.hasNext()) {
-		        FileItemStream item = iterator.next();
-		        if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
-                {
-                    ownerExtKey = Streams.asString(item.openStream());
-                } else
-                if (!item.isFormField() && item.getFieldName().equals("file")) {
-		          InputStream stream = item.openStream();
-		          WPBFile wbFile = null;
-		          if (request.getAttribute("key") != null)
-		          {
-		        	  // this is an upload as update for an existing file
-		        	  Long key = Long.valueOf((String)request.getAttribute("key"));
-		        	  wbFile = adminStorage.get(key, WPBFile.class);
-		        	  
-		        	  //old file need to be deleted from cloud
-		              String oldFilePath = wbFile.getBlobKey();
-			          WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
-			          cloudFileStorage.deleteFile(oldCloudFile);
-			          
-		          } else
-		          {
-		        	  // this is a new upload
-		        	  wbFile = new WPBFile();
-		        	  wbFile.setExternalKey(adminStorage.getUniqueId());    			        
-		          }
-		          String uniqueId = adminStorage.getUniqueId();
-		          String filePath = uniqueId + "/" + item.getName();
-		          WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
-		          cloudFileStorage.storeFile(stream, cloudFile);
-		          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(item.getName()));
-		          
-		          WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
-		          wbFile.setBlobKey(cloudFile.getPath());
-		          wbFile.setHash(fileInfo.getCrc32());
-		          wbFile.setFileName(item.getName());
-		          wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-		          wbFile.setSize(fileInfo.getSize());
-		          wbFile.setContentType(fileInfo.getContentType());
-		          wbFile.setAdjustedContentType(wbFile.getContentType());
-		          wbFile.setDirectoryFlag(0);
-		          wbFile.setOwnerExtKey(ownerExtKey);
-		          		          
-		  		WPBResource resource = new WPBResource(wbFile.getExternalKey(), wbFile.getFileName(), WPBResource.FILE_TYPE);
-
-		          if (wbFile.getPrivkey() != null)
-		          {
-		        	  wbFile = adminStorage.update(wbFile);		        	  
-						try
-						{
-							adminStorage.update(resource);
-						} catch (Exception e)
-						{
-							// do not propagate further
-						}
-
-		          } else
-		          {
-		        	  wbFile = adminStorage.add(wbFile);
-						try
-						{
-							adminStorage.addWithKey(resource);
-						} catch (Exception e)
-						{
-							// do not propagate further
-						}
-
-		          }
-		          
-				org.json.JSONObject returnJson = new org.json.JSONObject();
-				returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));			
-				httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
-		        }
-		      }		
-		} catch (Exception e)
-		{
-			Map<String, String> errors = new HashMap<String, String>();		
-			errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
-		}
+	    ServletFileUpload upload = new ServletFileUpload();
+	    upload.setHeaderEncoding("UTF-8");
+	    FileItemIterator iterator = upload.getItemIterator(request);
+	    WPBFile ownerFile = null;
+  
+	    while (iterator.hasNext()) {
+	        FileItemStream item = iterator.next();
+	        if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
+	        {
+	            String ownerExtKey = Streams.asString(item.openStream());
+	            ownerFile = getDirectory(ownerExtKey);              
+	        } else
+	        if (!item.isFormField() && item.getFieldName().equals("file")) {
+	            InputStream stream = item.openStream();
+	            WPBFile wbFile = null;
+  
+	            String fileName = getFileNameFromLongName(item.getName());
+  
+	            if (request.getAttribute("key") != null)
+	            {
+	                // this is an upload as update for an existing file
+	                Long key = Long.valueOf((String)request.getAttribute("key"));
+	                wbFile = adminStorage.get(key, WPBFile.class);
+	                
+	                ownerFile = getDirectory(wbFile.getOwnerExtKey());
+  
+	                //old file need to be deleted from cloud
+	                String oldFilePath = wbFile.getBlobKey();
+	                WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
+	                cloudFileStorage.deleteFile(oldCloudFile);
+	            } else
+	            {
+	                // this is a new upload
+	                wbFile = new WPBFile();
+	                wbFile.setExternalKey(adminStorage.getUniqueId());	            
+	            }
+	            
+                wbFile.setFileName(fileName);                       
+	            wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+	            wbFile.setDirectoryFlag(0);
+	            addFileToDirectory(ownerFile, wbFile, stream);
+          		          
+	        }
+	    }	
+	    org.json.JSONObject returnJson = new org.json.JSONObject();
+	    returnJson.put(DATA, jsonObjectConverter.JSONFromObject(null));           
+	    httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	} catch (Exception e)
+	{
+	Map<String, String> errors = new HashMap<String, String>();		
+	errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
+	httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
 	}
+   }
 
 	public void createDir(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
