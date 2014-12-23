@@ -22,12 +22,16 @@ import java.io.ByteArrayInputStream;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +74,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	private WPBFilesCache filesCache;
 	private WPBImageProcessor imageProcessor;
 	
+	private static final int MAX_DIR_DEPTH = 25;
+	
 	public FileController()
 	{
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
@@ -94,6 +100,260 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			// TBD
 		}
 	}
+
+	private WPBFile getDirectory(String externalKey) throws WPBException
+	{
+	    List<WPBFile> result = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
+	    if (result.size() == 1)
+	    {
+	        WPBFile file = result.get(0); 
+	        if (file.getDirectoryFlag() != null && file.getDirectoryFlag() == 1)
+	        {
+	            return file;
+	        }
+	    }
+	    return null;
+	}
+	
+	private String getDirectoryFromLongName(String longName)
+	{
+	    int index = longName.lastIndexOf('/');
+	    if (index>0)
+	    {
+	        return longName.substring(0, index);
+	    }
+	    return null;
+	}
+	private String getFileNameFromLongName(String longName)
+	{
+        int index = longName.lastIndexOf('/');
+        if (index>0)
+        {
+            return longName.substring(index+1);
+        }
+        return longName;
+	    
+	}
+	private List<WPBFile> getFilesFromDirectory(WPBFile directory) throws WPBException
+	{
+	    if (null == directory || directory.getDirectoryFlag() != 1)
+	    {
+	        return new ArrayList<WPBFile>();
+	    }
+
+        String ownerExtKey = directory.getExternalKey();
+        return adminStorage.query(WPBFile.class, "ownerExtKey", AdminQueryOperator.EQUAL, ownerExtKey);       
+   }
+	
+	private WPBFile getFileFromDirectory(WPBFile directory, String fileName) throws WPBException
+	{
+	    String ownerExtKey = "";
+	    if (null != directory)
+	    {
+	        ownerExtKey = directory.getExternalKey();
+	    }
+	    Set<String> propertyNames = new HashSet<String>();
+	    propertyNames.add("ownerExtKey");
+	    propertyNames.add("fileName");
+	    HashMap<String, AdminQueryOperator> operators = new HashMap<String, AdminQueryOperator>();
+	    operators.put("ownerExtKey", AdminQueryOperator.EQUAL);
+	    operators.put("fileName", AdminQueryOperator.EQUAL);
+	    
+	    HashMap<String, Object> values = new HashMap<String, Object>();
+        values.put("ownerExtKey", ownerExtKey);
+        values.put("fileName", fileName);
+        
+	    List<WPBFile> result = adminStorage.queryEx(WPBFile.class, propertyNames, operators, values);
+	    if (result.size() == 1)
+	    {
+	        return result.get(0);
+	    }
+	    return null;
+	}
+	
+   private void deleteFile(WPBFile file, int level) throws WPBException, IOException
+    {
+        //we need to protect from infinite loops
+       if (level > MAX_DIR_DEPTH) return;
+       
+     
+        if (file.getDirectoryFlag()!= null && file.getDirectoryFlag() == 1)
+        {
+            List<WPBFile> files = getFilesFromDirectory(file);
+            for(WPBFile afile: files)
+            {
+                deleteFile(afile, level+1);
+            }
+        } 
+        if (file.getThumbnailBlobKey() != null)
+        {
+            WPBFilePath thumbnailFile = new WPBFilePath(PUBLIC_BUCKET, file.getThumbnailBlobKey());
+            
+            cloudFileStorage.deleteFile(thumbnailFile);
+        }
+        if (file.getBlobKey() != null)
+        {
+            WPBFilePath contentFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
+            
+            cloudFileStorage.deleteFile(contentFile);             
+        }
+        adminStorage.delete(file.getPrivkey(), WPBFile.class);
+    }
+
+	private WPBFile createDirectory(WPBFile parentdirectory, String dirName) throws WPBException
+	{
+	    WPBFile file = new WPBFile();
+	    file.setDirectoryFlag(1);
+	    file.setName(dirName);
+	    file.setFileName(dirName);
+	    file.setSize(0L);
+	    file.setExternalKey(adminStorage.getUniqueId());
+	    file.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+	    if (parentdirectory == null)
+	    {
+	        file.setOwnerExtKey("");
+	    } else
+	    {
+	        file.setOwnerExtKey(parentdirectory.getExternalKey());
+	    }
+	    file = adminStorage.add(file);
+	    return file;
+	}
+	
+	private void addFileToDirectory(WPBFile parentDirectory, WPBFile file, InputStream is) throws WPBException, IOException
+	{
+	     String uniqueId = adminStorage.getUniqueId();
+         String filePath = uniqueId + "/" + file.getName();
+         WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
+         cloudFileStorage.storeFile(is, cloudFile);
+         cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(file.getName()));
+    
+         WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
+         file.setBlobKey(cloudFile.getPath());
+         file.setHash(fileInfo.getCrc32());
+         file.setSize(fileInfo.getSize());
+         file.setContentType(fileInfo.getContentType());
+         file.setAdjustedContentType(file.getContentType());
+         file.setDirectoryFlag(0);
+         if (parentDirectory != null)
+         {
+             file.setOwnerExtKey(parentDirectory.getExternalKey());
+         } else
+         {
+             file.setOwnerExtKey("");
+         }
+         
+         adminStorage.add(file);
+	}
+	
+	/**
+	 * Checks and creates subdirectories from a path relative to the owner
+	 * @param subDirectory path that is relative to the owner directory
+	 * @param owner The owner directory, or null if the owner is the root
+	 * @return
+	 */
+	
+	private Map<String, WPBFile> checkAndCreateSubDirectory(String fullDirectory, WPBFile owner) throws WPBException
+	{
+	    Map<String, WPBFile> subfolderFiles = new HashMap<String, WPBFile>();
+	    
+	    WPBFile currentDirectory = owner;
+	    String advancePath = "";
+	    while (fullDirectory.length()>0)
+	    {
+	        int index = fullDirectory.indexOf('/');
+	        if (index == 0)
+	        {
+	            fullDirectory = fullDirectory.substring(1);
+	            index = fullDirectory.indexOf('/');
+	        }
+	        String subDir = fullDirectory;
+	        if (index > 0)
+	        {
+	            subDir = fullDirectory.substring(0, index);
+	            fullDirectory = fullDirectory.substring(index+1);
+	        } else
+	        {
+	            fullDirectory = "";
+	        }
+	        if (subDir.length()>0)
+	        {
+	            WPBFile subDirFile = getFileFromDirectory(currentDirectory, subDir);
+	            if (null == subDirFile)
+	            {
+	                subDirFile = createDirectory(currentDirectory, subDir);
+	            }
+	            if (advancePath.length() == 0)
+	            {
+	                advancePath = subDir;
+	            } else
+	            {
+	                advancePath = advancePath + "/" + subDir;
+	            }
+	            subfolderFiles.put(advancePath, subDirFile);
+	            currentDirectory = subDirFile;
+	        }
+	    }
+	    
+	    return subfolderFiles;
+	}
+	   public void uploadFolder(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
+	    {
+	        try
+	        {
+	              ServletFileUpload upload = new ServletFileUpload();
+	              upload.setHeaderEncoding("UTF-8");
+	              FileItemIterator iterator = upload.getItemIterator(request);
+	              WPBFile ownerFile = null;
+	              Map<String, WPBFile> subfolderFiles = new HashMap<String, WPBFile>();
+	              
+	              while (iterator.hasNext()) {
+	                FileItemStream item = iterator.next();
+	               
+	                if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
+	                {
+	                    String ownerExtKey = Streams.asString(item.openStream());
+	                    ownerFile = getDirectory(ownerExtKey);	            
+	                } else
+	                if (!item.isFormField() && item.getFieldName().equals("file")) {
+	                  
+	                  String fullName = item.getName();
+	                  String directoryPath = getDirectoryFromLongName(fullName);
+	                  String fileName = getFileNameFromLongName(fullName);
+	                  
+	                  Map<String, WPBFile> tempSubFolders = checkAndCreateSubDirectory(directoryPath, ownerFile);
+	                  subfolderFiles.putAll(tempSubFolders);
+	                  
+	                  // delete the existing file
+	                  WPBFile existingFile = getFileFromDirectory(subfolderFiles.get(directoryPath) , fileName);
+	                  if (existingFile != null)
+	                  {
+	                      deleteFile(existingFile, 0);
+	                  }
+	                  
+	                  // create the file
+	                  WPBFile file = new WPBFile();
+	                  file.setExternalKey(adminStorage.getUniqueId());
+	                  file.setFileName(fileName);
+	                  file.setName(fileName);
+	                  file.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+	                  file.setDirectoryFlag(0);
+	                  
+	                  addFileToDirectory(subfolderFiles.get(directoryPath), file, item.openStream());
+	                  
+	                }
+	              } 
+	              
+	              org.json.JSONObject returnJson = new org.json.JSONObject();
+                  returnJson.put(DATA, jsonObjectConverter.JSONFromObject(null));           
+                  httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	        } catch (Exception e)
+	        {
+	            Map<String, String> errors = new HashMap<String, String>();     
+	            errors.put("", WPBErrors.WB_CANT_UPDATE_RECORD);
+	            httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);          
+	        }
+	    }
 
 	public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
@@ -300,29 +560,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WPBFile tempFile = adminStorage.get(key, WPBFile.class);
-			if (tempFile != null)
-			{
-				if (tempFile.getBlobKey() != null)
-				{
-					WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, tempFile.getBlobKey());
-					cloudFileStorage.deleteFile(cloudFile);
-				}
-				if (tempFile.getThumbnailBlobKey() != null)
-				{
-					WPBFilePath cloudThumbnailFile = new WPBFilePath(PUBLIC_BUCKET, tempFile.getThumbnailBlobKey());
-					cloudFileStorage.deleteFile(cloudThumbnailFile);
-				}
-				
-				try
-				{
-					adminStorage.delete(tempFile.getExternalKey(), WPBResource.class);
-				} catch (Exception e)
-				{
-					// do not propagate further
-				}
 
-			}
-			adminStorage.delete(key, WPBFile.class);
+			deleteFile(tempFile, 0);
 			
 			WPBFile param = new WPBFile();
 			param.setPrivkey(key);
@@ -416,8 +655,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 	    if (wbFile.getDirectoryFlag() == null || wbFile.getDirectoryFlag() == 0)
 	    {
-	        wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
-	        wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+	        if (wbFile.getBlobKey() !=  null)
+	        {
+	            wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
+	        }
+	        if (wbFile.getThumbnailBlobKey() != null)
+	        {
+	            wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
+	        }
 	    } 
 	}
 	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBFile wbFile) throws WPBException

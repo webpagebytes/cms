@@ -50,6 +50,8 @@
 				<span class="wbstats wbtitle-text wbfiles-table-stats"> </span>
 				<span class="wbtitle-button"> <i class="fa fa-upload"> </i> <a href="#" id="wbAddFileBtn"> Upload file </a> </span>
                 <span class="wbtitle-button"> <i class="fa fa-folder"> </i> <a href="#" id="wbAddFolderBtn"> Create folder </a> </span>
+                <span class="wbtitle-button"> <i class="fa fa-folder"> </i> <a href="#" id="wbUploadFolderBtn"> Upload folder </a> </span>
+            
 			</div>
 		</div>
 		
@@ -79,21 +81,12 @@
 						<span id="errgeneral" class="help-inline"></span>
 					</div>										
 				</div>
-				<input type="hidden" id="wbdirectoryFlag" name="directoryFlag" value="0" />
-                <input type="hidden" id="wbownerExtKey" name="ownerExtKey" value="" />
+				<input type="hidden" id="wbownerExtKey" name="ownerExtKey" value="" />
                 
-				<div class="control-group">
-					<label class="control-label" for="wbname">Name</label>
-					<div class="controls">
-						<input id="wbname" name="name" class="input-xlarge" type="text" />
-						<span id="errname" class="help-inline"></span>
-					</div>										
-				</div>
-
 				<div class="control-group">
 					<label class="control-label" for="wbfilename">File path</label>
 					<div class="controls">
-						<input id="wbfilename" name="file" class="input-xlarge" type="file" />
+						<input id="wbfilename" name="file" class="input-xlarge" type="file"  multiple="" />
 						<span id="errfilename" class="help-inline"></span>
 					</div>										
 				</div>
@@ -106,6 +99,40 @@
 				<button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
 		</div>
 		</form>
+    </div>
+
+    <div class="modal hide" id="wufUploadFolderModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3> Upload folder </h3>
+        </div>
+        <form class="form-inline" id="wufUploadFolderForm" enctype="multipart/form-data" action="./wbfolderupload" method="POST">
+        
+        <div class="modal-body">
+            <fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <span id="errgeneral" class="help-inline"></span>
+                    </div>                                      
+                </div>
+                <input type="hidden" id="wufownerExtKey" name="ownerExtKey" value="" />
+                
+                <div class="control-group">
+                    <label class="control-label" for="wuffilename">Folder path</label>
+                    <div class="controls">
+                        <input id="wuffilename" name="file" class="input-xlarge" type="file"  multiple="" directory="" webkitdirectory="" mozdirectory="" />
+                        <span id="errfilename" class="help-inline"></span>
+                    </div>                                      
+                </div>
+                
+            </fieldset>
+        
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-primary wbSaveUploadFolderBtnClass" type="submit">Upload</button>
+                <button class="btn wbCancelBtnClass" data-dismiss="modal">Cancel</button>
+        </div>
+        </form>
     </div>
 
     <div class="modal hide" id="wbAddFolderModal">

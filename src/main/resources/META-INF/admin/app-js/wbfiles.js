@@ -11,8 +11,7 @@ var errorsGeneral = {
 $().ready( function () {
 	var wbFileValidations = { 
 			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
-			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
-			directoryFlag: [{rule: { includedInto: ['0']}, error: "ERROR_FILE_INVALID" }]
+			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }]
 	};
 	var wbFolderValidations = { 
 			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
@@ -33,6 +32,14 @@ $().ready( function () {
 		  errorLabelClassName: 'errorvalidationlabel',
 		  errorInputClassName: 'errorvalidationinput',
 		  fieldsDefaults: { directoryFlag: 1 },
+		  validationRules: wbFolderValidations
+		});
+
+	$('#wufUploadFolderForm').wbObjectManager( { fieldsPrefix:'wuf',
+		  errorLabelsPrefix: 'err',
+		  errorGeneral:"errgeneral",
+		  errorLabelClassName: 'errorvalidationlabel',
+		  errorInputClassName: 'errorvalidationinput',
 		  validationRules: wbFolderValidations
 		});
 
@@ -83,7 +90,7 @@ $().ready( function () {
 	};
 	var displayHandlerFolder = function (fieldId, record) {
 		if (fieldId=="_folder") {
-			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"><i class="fa fa-folder fa-lg"></i> &nbsp; </a>';
+			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"> &nbsp; <i class="fa fa-folder fa-lg"></i> &nbsp; </a>';
 		} else
 		if (fieldId=="_operations") {
 			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'; 
@@ -142,11 +149,19 @@ $().ready( function () {
 	$('#wbAddFileForm').wbCommunicationManager();
 	$('#wbDeleteFileForm').wbCommunicationManager();
 	$('#wfAddFolderForm').wbCommunicationManager();
+	$('#wufUploadFolderForm').wbCommunicationManager();
 	
 	$('#wbAddFileBtn').click( function (e) {
 		e.preventDefault();
 		$('#wbAddFileForm').wbObjectManager().resetFields();
 		$('#wbAddFileModal').modal('show');			
+
+	});
+
+	$('#wbUploadFolderBtn').click( function (e) {
+		e.preventDefault();
+		$('#wufUploadFolderForm').wbObjectManager().resetFields();
+		$('#wufUploadFolderModal').modal('show');			
 
 	});
 
@@ -160,6 +175,8 @@ $().ready( function () {
 	var fSuccessAdd = function ( data ) {
 		$('#wbAddFileModal').modal('hide');
 		$('#wbAddFolderModal').modal('hide');
+		$('#wufUploadFolderModal').modal('hide');
+		
 		populateFiles();			
 	}
 	var fErrorAdd = function (data) {
@@ -176,6 +193,16 @@ $().ready( function () {
 		}
 		var parent = getURLParameter('parent') || "";
 		$("#wbownerExtKey").val(parent);
+	});
+
+	$('#wufUploadFolderForm').ajaxForm({ success: fSuccessAdd, error: fErrorAdd });
+	$('.wbSaveUploadFolderBtnClass').click( function (e) {
+		var errors = $('#wufUploadFolderForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
+		if (! $.isEmptyObject(errors)) {
+			e.preventDefault();
+		}
+		var parent = getURLParameter('parent') || "";
+		$("#wufownerExtKey").val(parent);
 	});
 
 	$('.wbSaveAddFolderBtnClass').click( function (e) {
