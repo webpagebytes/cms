@@ -10,11 +10,10 @@ var errorsGeneral = {
 
 $().ready( function () {
 	var wbFileValidations = { 
-			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
-			filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }]
+			fileName: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }]
 	};
 	var wbFolderValidations = { 
-			name: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
+			fileName: [{rule: { rangeLength: { 'min': 0, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
 			directoryFlag: [{rule: { includedInto: ['1']}, error: "ERROR_FILE_INVALID" }]
 	};
 
@@ -76,17 +75,9 @@ $().ready( function () {
 			
 			return size;
 		} else
-	    if (fieldId=="contentType" || fieldId=="name") {
+	    if (fieldId=="contentType" || fieldId=="fileName") {
 			return escapehtml(record[fieldId]);
-		} else
-		if (fieldId=="blobKey"){
-			var contentType = record["adjustedContentType"] || "";
-			if (contentType.toLowerCase().startsWith("image")) {
-					return '<img src="{0}">'.format( encodeURI(record['thumbnailPublicUrl']) );
-			} else {
-					return '<a href="./wbdownload/{0}">{1}</a>'.format(encodeURIComponent(record['privkey']),escapehtml(record['fileName']));				
-			}
-		}		
+		}	
 	};
 	var displayHandlerFolder = function (fieldId, record) {
 		if (fieldId=="_folder") {
@@ -98,15 +89,15 @@ $().ready( function () {
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} else
-		if (fieldId=="name") {
+		if (fieldId=="fileName") {
 			return escapehtml(record[fieldId]);
 		} else		    
-		if (fieldId=="size" || fieldId == "contentType" || fieldId=="blobKey") {
+		if (fieldId=="size" || fieldId == "contentType") {
 	    	return "";
 	    } 
 	};
 	var displayLevelUp = function (fieldId, record) {
-		if (fieldId=="name") {
+		if (fieldId=="fileName") {
 			var ownerOfOwner = ((record['owner']['ownerExtKey'] || "").length > 0) ? record['owner']['ownerExtKey'] : "";
 			return '<a href="./webfiles.html?parent=' + encodeURIComponent(ownerOfOwner) + '"><i class="fa fa-level-up fa-flip-horizontal fa-lg"></i>..</a>';
 		} else
@@ -131,11 +122,10 @@ $().ready( function () {
 	};
 
 	$('#wbFilesTable').wbSimpleTable( { columns: [ {display: "", fieldId:"_folder", customHandler: displayHandler},
-	                                               {display: "Name", fieldId: "name", customHandler: displayHandler, isHtmlDisplay:true},
+	                                               {display: "File name", fieldId: "fileName", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Content type", fieldId:"contentType", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Size", fieldId:"size", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true},
-	                                               {display:"File", fieldId:"blobKey", customHandling: true, customHandler: displayHandler},
 	                                               {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
 	                                    keyName: "privkey",
 	                                    tableBaseClass: "table table-condensed table-color-header",

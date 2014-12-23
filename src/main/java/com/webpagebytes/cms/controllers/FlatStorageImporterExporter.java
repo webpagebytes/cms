@@ -341,29 +341,7 @@ public class FlatStorageImporterExporter {
 		        file.setBlobKey(cloudFile.getPath());
 		        file.setHash(fileInfo.getCrc32());
 		        file.setSize(fileInfo.getSize());     
-		        if (file.getAdjustedContentType() != null && file.getAdjustedContentType().toLowerCase().startsWith("image"))
-		        {
-		        	// build the thumbnail for this image
-		        	try
-		        	{
-		        		String thumbnailPath = uniqueId + "/thumnail/" + uniqueId + ".jpg";
-		        		WPBFilePath cloudThumbnailFile = new WPBFilePath(PUBLIC_BUCKET, thumbnailPath);
-		        		
-		        		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				        imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
-				        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());   
-						cloudFileStorage.storeFile(bis, cloudThumbnailFile);
-						file.setThumbnailBlobKey(cloudThumbnailFile.getPath());
-						cloudFileStorage.updateContentType(cloudThumbnailFile, "image/jpg");
-				          
-						bos.close();
-						bis.close();
-					} catch (WPBException e)
-		        	{
-		        		// do nothing as thumbnail fail might because by an unsupported image type
-		        		
-		        	}
-		        }
+		     
 				dataStorage.update(file);
 			} else
 			{

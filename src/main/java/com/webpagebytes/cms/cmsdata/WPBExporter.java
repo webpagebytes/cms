@@ -190,11 +190,6 @@ public class WPBExporter {
 			properties.put("adjustedContentType", file.getAdjustedContentType());
 		else
 			properties.put("adjustedContentType", "");
-
-		if (file.getName() != null)
-			properties.put("name", file.getName());
-		else
-			properties.put("name", "");
 				
 		if (file.getLastModified() != null)
 			properties.put("lastModified", new Long(file.getLastModified().getTime()).toString());
@@ -205,7 +200,16 @@ public class WPBExporter {
 			properties.put("fileName", file.getFileName());
 		else
 			properties.put("fileName", "");
-			
+		
+		if (file.getDirectoryFlag() != null)
+		    properties.put("directoryFlag", file.getDirectoryFlag().toString());
+		else
+		    properties.put("directoryFlag", "0");
+		
+		if (file.getOwnerExtKey() != null)
+		    properties.put("ownerExtKey", file.getOwnerExtKey().toString());
+		else
+		    properties.put("ownerExtKey", "");
 		
 	}
 

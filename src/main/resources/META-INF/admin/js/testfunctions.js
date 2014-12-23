@@ -100,3 +100,29 @@ test ("test functions - remove query parameter", function () {
 	equal(x, "http://www.foo.com?");
 	
 });
+
+test ("test functions - getURLParameter", function () {
+	var x = getURLParameter("parent", "http://example.com?parent=abc");
+	equal(x, "abc");
+
+	x = getURLParameter("parent", "http://example.com?x=1&parent=abc");
+	equal(x, "abc");
+
+	x = getURLParameter("parent", "http://example.com?parent=abc&x=1");
+	equal(x, "abc");
+
+	x = getURLParameter("parent", "http://example.com?Parent=abc");
+	equal(x, undefined);
+
+	x = getURLParameter("parent", "http://example.com?parent=abc&parent=123");
+	equal(x, "abc");
+	
+	x = getURLParameter("parent", "http://example.com?parent=&x=1234");
+	equal(x, "");
+	
+	var x = getURLParameter("parent", "http://example.com?x=1&&parent=&&t=1");
+	equal(x, "");
+
+
+
+});

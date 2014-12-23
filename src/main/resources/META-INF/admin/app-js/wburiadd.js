@@ -75,7 +75,7 @@ $().ready( function () {
 				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
 			} else if ($('input[name="resourceType"]:checked').val() == "2") {
 				var file = result[0];
-				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));			
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['fileName']));			
 			} 			
 		}
 		$('#wbresourcelink').html(html);			
@@ -179,7 +179,7 @@ $().ready( function () {
 		$('input[name="resourceType"]').val(["1"]);
 		qParam = true;
 	} 
-	var qValue = getURLParameter("qkey") || ""
+	var qValue = getURLParameter("qprivkey") || ""
 	qParam = qParam && (qValue.length > 0);
 	if (qParam) {
 		$("#wbaresourceExternalKey").val(qValue);

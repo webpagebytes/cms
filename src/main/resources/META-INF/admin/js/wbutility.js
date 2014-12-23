@@ -34,7 +34,7 @@ if (!String.prototype.startsWith) {
 
 function getURLParameter(name, url) {
 	url = url || window.location.href;
-	var value = (url.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,undefined])[1];
+	var value = (url.match(RegExp("[?|&]"+name+'=(.*?)(&|$)'))||[,undefined])[1];
 	if (value != undefined) {
 		return decodeURIComponent(value);
     } 

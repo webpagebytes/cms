@@ -11,8 +11,7 @@ var errorsGeneral = {
 
 $().ready( function () {
 	var wbFileValidations = { 
-		name: [{rule: { rangeLength: { 'min': 1, 'max': 250 } }, error: "ERROR_FILE_NAME_LENGTH" }],
-		filename: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
+		fileName: [{rule: { rangeLength: { 'min': 1, 'max': 1024 } }, error: "ERROR_FILE_FILENAME_LENGTH" }],
 		adjustedContentType: [{rule: { rangeLength: { 'min': 1, 'max': 30 } }, error: "ERROR_ADJUSTED_CONTENT_TYPE_LENGTH" }, {rule:{customRegexp:{pattern:"^[0-9a-zA-Z_//.-]*$", modifiers:"gi"}}, error:"ERROR_ADJUSTED_CONTENT_TYPE_BAD_FORMAT"}],
 	
 	};
@@ -50,8 +49,8 @@ $().ready( function () {
 		if (fieldId == 'lastModified') {
 			return escapehtml( Date.toFormatString(record['lastModified'], "today|dd/mm/yyyy hh:mm"));
 		};
-		if (fieldId == 'name') {
-			return record[fieldId];
+		if (fieldId == 'fileName') {
+			return escapehtml(record[fieldId]);
 		}
 		return escapehtml(record[fieldId]);	
 	}

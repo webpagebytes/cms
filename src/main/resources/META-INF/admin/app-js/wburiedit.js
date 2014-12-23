@@ -155,7 +155,7 @@ $().ready( function () {
 		} else if ('files_links' in data.additional_data) {
 			if (data.additional_data.files_links.length >= 1) {
 				var file = data.additional_data.files_links[0];
-				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['fileName']));
 			}
 			$('#wbresourcelink').html(html);
 		} else {

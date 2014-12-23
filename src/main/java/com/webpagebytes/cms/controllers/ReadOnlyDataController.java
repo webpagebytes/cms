@@ -61,7 +61,7 @@ public class ReadOnlyDataController  extends Controller {
 			{
 				JSONObject object = new JSONObject();
 				object.put("externalKey", file.getExternalKey());
-				object.put("name", file.getName());
+				object.put("name", file.getFileName());
 				jsonFilesArray.put(object);
 			}
 			returnJson.put(DATA_FILES, jsonFilesArray);

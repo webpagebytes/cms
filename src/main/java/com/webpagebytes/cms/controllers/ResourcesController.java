@@ -96,7 +96,7 @@ public class ResourcesController extends Controller {
 			List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
 			for( WPBFile file: files)
 			{
-				WPBResource res = new WPBResource(file.getExternalKey(), file.getName(), WPBResource.FILE_TYPE);
+				WPBResource res = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
 				adminStorage.addWithKey(res);
 			}
 			

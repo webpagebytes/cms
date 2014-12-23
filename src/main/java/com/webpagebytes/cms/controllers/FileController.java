@@ -16,12 +16,6 @@
 
 package com.webpagebytes.cms.controllers;
 
-import java.io.ByteArrayInputStream;
-
-
-
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,7 +45,6 @@ import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
-import com.webpagebytes.cms.WPBImageProcessor;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
@@ -59,7 +52,6 @@ import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
-import com.webpagebytes.cms.engine.WPBImageProcessorFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
@@ -72,7 +64,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	private WPBFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
-	private WPBImageProcessor imageProcessor;
 	
 	private static final int MAX_DIR_DEPTH = 25;
 	
@@ -84,7 +75,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.getFilesCacheInstance();	
 		adminStorage.addStorageListener(this);
-		imageProcessor = WPBImageProcessorFactory.getInstance();
 	}
 	
 	public<T> void notify (T t, AdminDataStorageOperation o, Class<? extends Object> type)
@@ -185,12 +175,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
                 deleteFile(afile, level+1);
             }
         } 
-        if (file.getThumbnailBlobKey() != null)
-        {
-            WPBFilePath thumbnailFile = new WPBFilePath(PUBLIC_BUCKET, file.getThumbnailBlobKey());
-            
-            cloudFileStorage.deleteFile(thumbnailFile);
-        }
         if (file.getBlobKey() != null)
         {
             WPBFilePath contentFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
@@ -204,7 +188,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 	    WPBFile file = new WPBFile();
 	    file.setDirectoryFlag(1);
-	    file.setName(dirName);
 	    file.setFileName(dirName);
 	    file.setSize(0L);
 	    file.setExternalKey(adminStorage.getUniqueId());
@@ -223,10 +206,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	private void addFileToDirectory(WPBFile parentDirectory, WPBFile file, InputStream is) throws WPBException, IOException
 	{
 	     String uniqueId = adminStorage.getUniqueId();
-         String filePath = uniqueId + "/" + file.getName();
+         String filePath = uniqueId + "/" + file.getFileName();
          WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
          cloudFileStorage.storeFile(is, cloudFile);
-         cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(file.getName()));
+         cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(file.getFileName()));
     
          WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
          file.setBlobKey(cloudFile.getPath());
@@ -335,7 +318,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	                  WPBFile file = new WPBFile();
 	                  file.setExternalKey(adminStorage.getUniqueId());
 	                  file.setFileName(fileName);
-	                  file.setName(fileName);
 	                  file.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 	                  file.setDirectoryFlag(0);
 	                  
@@ -362,15 +344,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			  ServletFileUpload upload = new ServletFileUpload();
 		      upload.setHeaderEncoding("UTF-8");
 		      FileItemIterator iterator = upload.getItemIterator(request);
-		      String inputName = "";
 		      String ownerExtKey = "";
 		      while (iterator.hasNext()) {
 		        FileItemStream item = iterator.next();
-		        if (item.isFormField() && item.getFieldName().equals("name"))
-		        {
-		            inputName = Streams.asString(item.openStream());
-		        } else
-                if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
+		        if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
                 {
                     ownerExtKey = Streams.asString(item.openStream());
                 } else
@@ -388,12 +365,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			          WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
 			          cloudFileStorage.deleteFile(oldCloudFile);
 			          
-			          // if there is a thumbnail then that needs to be deleted too
-			          if (wbFile.getThumbnailBlobKey() != null)
-			          {
-			        	  WPBFilePath oldThumbnail = new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey());
-			        	  cloudFileStorage.deleteFile(oldThumbnail);
-			          }
 		          } else
 		          {
 		        	  // this is a new upload
@@ -410,24 +381,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		          wbFile.setBlobKey(cloudFile.getPath());
 		          wbFile.setHash(fileInfo.getCrc32());
 		          wbFile.setFileName(item.getName());
-		          wbFile.setName(inputName);
 		          wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 		          wbFile.setSize(fileInfo.getSize());
 		          wbFile.setContentType(fileInfo.getContentType());
 		          wbFile.setAdjustedContentType(wbFile.getContentType());
 		          wbFile.setDirectoryFlag(0);
 		          wbFile.setOwnerExtKey(ownerExtKey);
-		          
-		          String thumbnailfilePath = uniqueId + "/thumbnail/" + uniqueId + ".jpg";
-		          WPBFilePath thumbnailCloudFile = new WPBFilePath(PUBLIC_BUCKET, thumbnailfilePath);
-		          ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		          imageProcessor.resizeImage(cloudFileStorage, cloudFile, 60, "jpg", bos);
-		          ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-		          cloudFileStorage.storeFile(bis, thumbnailCloudFile);
-		          cloudFileStorage.updateContentType(thumbnailCloudFile, "image/jpg");
-		          wbFile.setThumbnailBlobKey(thumbnailCloudFile.getPath());
-		          
-		  		WPBResource resource = new WPBResource(wbFile.getExternalKey(), wbFile.getName(), WPBResource.FILE_TYPE);
+		          		          
+		  		WPBResource resource = new WPBResource(wbFile.getExternalKey(), wbFile.getFileName(), WPBResource.FILE_TYPE);
 
 		          if (wbFile.getPrivkey() != null)
 		          {
@@ -486,13 +447,11 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	            wbFile.setHash(0L);
 	            wbFile.setPublicUrl(null);
 	            wbFile.setSize(0L);
-	            wbFile.setThumbnailBlobKey(null);
-	            wbFile.setThumbnailPublicUrl(null);
 	            wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 	            wbFile.setExternalKey(adminStorage.getUniqueId());
 	            WPBFile newFile = adminStorage.add(wbFile);
 	            
-	            WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getName(), WPBResource.FILE_TYPE);
+	            WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getFileName(), WPBResource.FILE_TYPE);
 	            try
 	            {
 	                adminStorage.addWithKey(resource);
@@ -529,19 +488,9 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			}
 			WPBFile existingImage = adminStorage.get(key, WPBFile.class);
 			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			existingImage.setName(wbfile.getName());
 			existingImage.setAdjustedContentType(wbfile.getAdjustedContentType());
 			WPBFile newFile = adminStorage.update(existingImage);
-			
-			WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getName(), WPBResource.FILE_TYPE);
-			try
-			{
-				adminStorage.update(resource);
-			} catch (Exception e)
-			{
-				// do nothing
-			}
-			
+				
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -658,10 +607,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        if (wbFile.getBlobKey() !=  null)
 	        {
 	            wbFile.setPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getBlobKey())));
-	        }
-	        if (wbFile.getThumbnailBlobKey() != null)
-	        {
-	            wbFile.setThumbnailPublicUrl(cloudFileStorage.getPublicFileUrl(new WPBFilePath(PUBLIC_BUCKET, wbFile.getThumbnailBlobKey())));
 	        }
 	    } 
 	}

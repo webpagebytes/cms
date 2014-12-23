@@ -24,9 +24,6 @@ public class WPBFile {
 	private Long privkey;
 
 	@WPBAdminFieldStore
-	private String name;
-
-	@WPBAdminFieldStore
 	private String externalKey;
 	
 	@WPBAdminFieldStore
@@ -53,12 +50,6 @@ public class WPBFile {
 	@WPBAdminField
 	private String publicUrl;
 
-	@WPBAdminField
-	private String thumbnailPublicUrl;
-
-	@WPBAdminFieldStore
-	private String thumbnailBlobKey;
-
 	@WPBAdminFieldStore
 	private Integer directoryFlag;
 	
@@ -71,14 +62,6 @@ public class WPBFile {
 
 	public void setPrivkey(Long key) {
 		this.privkey = key;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getExternalKey() {
@@ -159,22 +142,6 @@ public class WPBFile {
 
 	public void setPublicUrl(String publicUrl) {
 		this.publicUrl = publicUrl;
-	}
-
-	public String getThumbnailPublicUrl() {
-		return thumbnailPublicUrl;
-	}
-
-	public void setThumbnailPublicUrl(String thumbnailPublicUrl) {
-		this.thumbnailPublicUrl = thumbnailPublicUrl;
-	}
-
-	public String getThumbnailBlobKey() {
-		return thumbnailBlobKey;
-	}
-
-	public void setThumbnailBlobKey(String thumbnailBlobKey) {
-		this.thumbnailBlobKey = thumbnailBlobKey;
 	}
 
     public Integer getDirectoryFlag() {
