@@ -205,7 +205,7 @@ public class WPBImporter {
 
 		if (properties.get("ownerExtKey") != null)
 		{
-		    file.setOwnerExtKey(properties.get("name").toString().trim());
+		    file.setOwnerExtKey(properties.get("ownerExtKey").toString().trim());
 		} else
 		{
 		    file.setOwnerExtKey("");
