@@ -37,6 +37,9 @@ public void setUp()
 	patterns.add("/test_{keywords}_{key}");
 	patterns.add("/test_{keywords}/all-{key}");
 	patterns.add("/test_{keywords}-{key}/rest-{action}_{param}");
+	patterns.add("/files/img/{**}");
+	patterns.add("/files/{**}");
+    
 	urlMarcher.initialize(patterns, 9L);
 }
 
@@ -352,4 +355,42 @@ public void test_matchUrlToPattern_mixed_level1_and_two()
 	assertTrue (result.getPatternParams().equals(params));	
 	
 }
+@Test
+public void test_matchAll_ok()
+{
+    URLMatcherResult result = urlMarcher.matchUrlToPattern("/files/abc/image.png");
+    Map<String, String> expectParams = new HashMap<String, String>();
+    expectParams.put("**", "abc/image.png");  
+    assertTrue(result.getPatternParams().equals(expectParams));
+    assertTrue(result.getUrlPattern().equals("/files/{**}"));
+}
+
+@Test
+public void test_matchAll_two()
+{
+    URLMatcherResult result = urlMarcher.matchUrlToPattern("/files/img/image/x.png");
+    Map<String, String> expectParams = new HashMap<String, String>();
+    expectParams.put("**", "image/x.png");  
+    assertTrue(result.getPatternParams().equals(expectParams));
+    assertTrue(result.getUrlPattern().equals("/files/img/{**}"));
+}
+
+@Test
+public void test_matchAll_empty()
+{
+    URLMatcherResult result = urlMarcher.matchUrlToPattern("/files/img/");
+    Map<String, String> expectParams = new HashMap<String, String>();
+    expectParams.put("**", "");  
+    assertTrue(result.getPatternParams().equals(expectParams));
+    assertTrue(result.getUrlPattern().equals("/files/img/{**}"));
+}
+
+@Test
+public void test_matchAll_empty2()
+{
+    URLMatcherResult result = urlMarcher.matchUrlToPattern("/files");
+    
+    assertTrue(result == null);
+}
+
 }

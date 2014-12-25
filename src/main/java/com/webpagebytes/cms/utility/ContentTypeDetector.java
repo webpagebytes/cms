@@ -29,15 +29,23 @@ public class ContentTypeDetector {
 	public static final String APP_CONTENT_NAME   = "application";
 
 	static {
-		mapTypes.put(".txt", "text/csv");
-		mapTypes.put(".csv", "text/plain");
+		mapTypes.put(".txt", "text/plain");
+		mapTypes.put(".csv", "text/csv");
 		mapTypes.put(".css", "text/css");
 		mapTypes.put(".htm", "text/html");
 		mapTypes.put(".html", "text/html");
+        
+		mapTypes.put(".rtf", "text/rtf");
+		mapTypes.put(".xml", "text/xml");
+        
 		mapTypes.put(".js", "application/javascript");
 		mapTypes.put(".png", "image/png");
 		mapTypes.put(".bmp", "image/bmp");
 		mapTypes.put(".jpg", "image/jpeg");
+		mapTypes.put(".gif", "image/gif");
+		mapTypes.put(".tif", "image/tif");
+		mapTypes.put(".tiff", "image/tif");
+        
 		mapTypes.put(".exe", "application/octet-stream");
 		mapTypes.put(".bin", "application/octet-stream");
 		mapTypes.put(".zip", "application/zip");
@@ -45,12 +53,16 @@ public class ContentTypeDetector {
 		mapTypes.put(".swf", "application/x-shockwave-flash");
 		mapTypes.put(".7z", "application/x-7z-compressed");
 		mapTypes.put(".apk", "application/vnd.android.package-archive");
-		mapTypes.put(".avi", "video/x-msvideo");
 		mapTypes.put(".bz", "application/x-bzip");
 		mapTypes.put(".cer", "application/pkix-cert");
 		mapTypes.put(".cab", "application/vnd.ms-cab-compressed");	
+		
 		mapTypes.put(".wmv", "video/x-ms-wmv");
 		mapTypes.put(".mp4", "video/mp4");
+		mapTypes.put(".avi", "video/avi");
+		mapTypes.put(".mpeg", "video/mpeg");
+        
+        
 	};
 	
 	public static String contentTypeToShortType(String contentType)

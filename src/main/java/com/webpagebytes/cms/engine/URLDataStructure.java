@@ -28,7 +28,7 @@ private ArrayList<String> subUrls;
 private boolean hasParams;
 private Map<Integer, String> clearSubUrl; // subUrls that have no params
 private Map<Integer, String> dirtySubUrl; // subUrls with params
-
+private boolean allMatch;
 
 public URLDataStructure(String url)
 {
@@ -63,6 +63,7 @@ public URLDataStructure(String url)
 		subUrls.add("");
 		clearSubUrl.put(position, "");
 	}
+	allMatch = url.endsWith("/{**}");
 	this.deep = subUrls.size();
 }
 
@@ -85,6 +86,14 @@ public Map<Integer, String> getClearSubUrl() {
 
 public Map<Integer, String> getDirtySubUrl() {
 	return dirtySubUrl;
+}
+
+public boolean isAllMatch() {
+    return allMatch;
+}
+
+public void setAllMatch(boolean allMatch) {
+    this.allMatch = allMatch;
 }
 
 

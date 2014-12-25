@@ -31,6 +31,7 @@ private Set<String> patterns;
 private Set<String> simplePatterns; // patterns with no parameters
 private Map<String, URLDataStructure> patternsWithParams; // the patterns with parameters
 private Map<Integer, Set<String>> deepToPatternUrls; // fast lookup to get all patterns with a certain deep value
+private Map<String, URLDataStructure> patternsWithAllMatch; // the patterns with all match params (these are patterns that ends with {**}
 
 public URLMatcher()
 {
@@ -39,10 +40,17 @@ public URLMatcher()
 public void initialize(Set<String> patterns, Long fingerPrint)
 {
 	Set<String> newPatters = new HashSet<String>(patterns);
+	
+	// newSimplePatterns are all the patterns that do not contain any parameter
 	HashSet<String> newSimplePatterns = new HashSet<String>();
+	
+	// newPatternsWithParams is a map between patterns with params and their URLDataStructure
 	HashMap<String, URLDataStructure> newPatternsWithParams = new HashMap<String, URLDataStructure>();
+	
+	// newDeepToPatternUrls is a map between deep url levels and their patterns ( /home/test has deed 2, /home has deep 1) 
 	HashMap<Integer, Set<String>> newDeepToPatternUrls = new HashMap<Integer, Set<String>>();
-
+	// newPatternsAllMatch are patterns that ends with /{**}
+	HashMap<String, URLDataStructure> newPatternsAllMatch = new HashMap<String, URLDataStructure>();
 	
 	for (String pattern : patterns)
 	{
@@ -58,39 +66,22 @@ public void initialize(Set<String> patterns, Long fingerPrint)
 		{
 			newSimplePatterns.add(pattern);
 		}
+		if (aUrlStructure.isAllMatch())
+		{
+		    newPatternsAllMatch.put(pattern, aUrlStructure);
+		}
 	}
 	
 	this.patterns = newPatters;
 	this.simplePatterns = newSimplePatterns;
 	this.patternsWithParams = newPatternsWithParams;
 	this.deepToPatternUrls = newDeepToPatternUrls;
+	this.patternsWithAllMatch = newPatternsAllMatch;
 	
 	setFingerPrint(fingerPrint);
 }
 
-private void buildInternalData()
-{
-	/*
-	 * Each pattern has:
-	 * 1) a path deep (/test is deep 1, /test/abc is deep 2, /test/abc/xyz is deep 3, /abc/ is deep 2
-	 * 2) an order of sub paths /test/{id}/value has /test/, /{id}/, /value
-	 */
-	for (String pattern : patterns)
-	{
-		URLDataStructure aUrlStructure = new URLDataStructure(pattern);
-		if (aUrlStructure.hasParams()) {
-			patternsWithParams.put(pattern, aUrlStructure);
-			if (deepToPatternUrls.containsKey(aUrlStructure.getDeep()) == false)
-			{
-				deepToPatternUrls.put(aUrlStructure.getDeep(), new HashSet<String>());
-			}
-			deepToPatternUrls.get(aUrlStructure.getDeep()).add(pattern);
-		} else
-		{
-			simplePatterns.add(pattern);
-		}
-	}
-}
+
 /*
  * possible matching
  * 
@@ -116,90 +107,117 @@ public URLMatcherResult matchUrlToPattern(String url)
 	
 	URLDataStructure urlDataStructure = new URLDataStructure(url);
 	Map<Integer, String> urlClearSubUrls = urlDataStructure.getClearSubUrl();
+    Map<String, String> mapParams = new HashMap<String, String>();
 
-	// get all the patters with the same url deep
+	// get all the patterns with the same url deep
 	Set<String> toSearchLevel1 = this.deepToPatternUrls.get(urlDataStructure.getDeep());
-	if (null == toSearchLevel1)
+	if (null != toSearchLevel1)
 	{
-		return null;
+    	// toSearchLevel2 will contain all patterns that have the same clear sub urls and the same deep as the url
+    	// the key is the number of clear suburls that match. as greater as possible is to have a match.
+    	Map<String, Integer> toSearchLevel2 = new HashMap<String, Integer>(); 
+    	for (String pattern: toSearchLevel1)
+    	{
+    		Map<Integer, String> patternClearSubUrl = this.patternsWithParams.get(pattern).getClearSubUrl();
+    		if (isMapIncluded(patternClearSubUrl, urlClearSubUrls))
+    		{
+    			toSearchLevel2.put(pattern, patternClearSubUrl.size());
+    		}
+    	} 
+    	
+    	//the search was narrowed enough, we match against patterns with the same deep and common clear suburls 
+    	// the match begins with the most probable patterns, the ones that have the most common clear suburls
+    	String urlPatternMatched = "";
+    	ArrayList<Integer> searchLevel2Order = new ArrayList<Integer>(toSearchLevel2.values());
+    	Collections.sort(searchLevel2Order);
+    	ArrayList<String> orderedPatterns = new ArrayList<String>();
+    	for(int i= searchLevel2Order.size()-1; i >=0; i--)
+    	{
+    		Set<String> keySet = toSearchLevel2.keySet();
+    		for( String s : keySet)
+    		{
+    			if (toSearchLevel2.get(s).compareTo(searchLevel2Order.get(i)) == 0)
+    			{
+    				orderedPatterns.add(s);
+    				toSearchLevel2.remove(s);
+    				break;
+    			}
+    		}
+    	}
+    	// orderedPatterns now contain candidates ordered by their probability to match our request 
+    	for (String pattern: orderedPatterns)
+    	{
+    		//search though each narrowed pattern
+    		URLDataStructure aDataStructure = patternsWithParams.get(pattern);
+    		Map<Integer, String> aDirtySubUrls = aDataStructure.getDirtySubUrl();
+    		boolean found = true;
+    		
+    		urlPatternMatched = pattern; //keep track of the last pattern checked
+    		Set<Integer> keySet = aDirtySubUrls.keySet();
+    		// each pattern has a set of sub urls with params (called dirty sub urls)
+    		// each such sub pattern is matched against the corresponding index from the url
+    		for(Integer key : keySet)
+    		{
+    			String subPattern = aDirtySubUrls.get(key);
+    			if (urlClearSubUrls.containsKey(key))
+    			{
+    				String subUrl = urlClearSubUrls.get(key);
+    				Map<String, String> tempMap = null;
+    				if ((tempMap = matchSubUrls(subPattern, subUrl))!= null)
+    				{
+    					mapParams.putAll(tempMap);
+    				} else
+    				{
+    					// one of the sub urls does not match
+    					found = false;
+    					break;
+    				}
+    			} else
+    			{
+    				found = false;
+    				break;
+    			}
+    		}
+    		
+    		if (found)
+    		{
+    			result.setPatternParams(mapParams);
+    			result.setUrlPattern(urlPatternMatched);
+    			return result;
+    		} else
+    		{
+    			// current pattern did not match,clear the params for next pattern
+    			mapParams.clear();
+    		}		
+    	}
 	}
-	// toSearchLevel2 will contain all patterns that have the same clear sub urls and the same deep as the url
-	// the key is the number of clear suburls that match. as greater as possible is to have a match.
-	Map<String, Integer> toSearchLevel2 = new HashMap<String, Integer>(); 
-	for (String pattern: toSearchLevel1)
-	{
-		Map<Integer, String> patternClearSubUrl = this.patternsWithParams.get(pattern).getClearSubUrl();
-		if (isMapIncluded(patternClearSubUrl, urlClearSubUrls))
-		{
-			toSearchLevel2.put(pattern, patternClearSubUrl.size());
-		}
-	} 
 	
-	//the search was narrowed enough, we match against patterns with the same deep and common clear suburls 
-	// the match begins with the most probable patterns, the ones that have the most common clear suburls
-	Map<String, String> mapParams = new HashMap<String, String>();
-	String urlPatternMatched = "";
-	ArrayList<Integer> searchLevel2Order = new ArrayList<Integer>(toSearchLevel2.values());
-	Collections.sort(searchLevel2Order);
-	ArrayList<String> orderedPatterns = new ArrayList<String>();
-	for(int i= searchLevel2Order.size()-1; i >=0; i--)
+	// match for /{**} match all
+	if (this.patternsWithAllMatch.size()>0)
 	{
-		Set<String> keySet = toSearchLevel2.keySet();
-		for( String s : keySet)
-		{
-			if (toSearchLevel2.get(s).compareTo(searchLevel2Order.get(i)) == 0)
-			{
-				orderedPatterns.add(s);
-				toSearchLevel2.remove(s);
-				break;
-			}
-		}
-	}
-	// orderedPatterns now contain candidates with the  
-	for (String pattern: orderedPatterns)
-	{
-		//search though each narrowed pattern
-		URLDataStructure aDataStructure = patternsWithParams.get(pattern);
-		Map<Integer, String> aDirtySubUrls = aDataStructure.getDirtySubUrl();
-		boolean found = true;
-		
-		urlPatternMatched = pattern; //keep track of the last pattern checked
-		Set<Integer> keySet = aDirtySubUrls.keySet();
-		// each pattern has a set of sub urls with params (called dirty sub urls)
-		// each such sub pattern is matched against the corresponding index from the url
-		for(Integer key : keySet)
-		{
-			String subPattern = aDirtySubUrls.get(key);
-			if (urlClearSubUrls.containsKey(key))
-			{
-				String subUrl = urlClearSubUrls.get(key);
-				Map<String, String> tempMap = null;
-				if ((tempMap = matchSubUrls(subPattern, subUrl))!= null)
-				{
-					mapParams.putAll(tempMap);
-				} else
-				{
-					// one of the sub urls does not match
-					found = false;
-					break;
-				}
-			} else
-			{
-				found = false;
-				break;
-			}
-		}
-		
-		if (found)
-		{
-			result.setPatternParams(mapParams);
-			result.setUrlPattern(urlPatternMatched);
-			return result;
-		} else
-		{
-			// current pattern did not match,clear the params for next pattern
-			mapParams.clear();
-		}		
+	    String bestPatternMarch = "";
+	    for(String pattern: patternsWithAllMatch.keySet())
+	    {
+	        // length of '/{**} is 5 but we will test also the ending /
+	        String baseUrl = pattern.substring(0, pattern.length()-4);
+	        if (url.startsWith(baseUrl))
+	        {
+	            if (bestPatternMarch.length() < pattern.length())
+	            {
+	                bestPatternMarch = pattern;
+	            }
+	        }
+	    }
+	    if (bestPatternMarch.length() > 0)
+	    {
+	        result.setUrlPattern(bestPatternMarch);
+	        String baseUrl = bestPatternMarch.substring(0, bestPatternMarch.length()-5);
+	        String paramValue = url.substring(baseUrl.length()+1);
+	        mapParams.put("**", paramValue);
+	        result.setPatternParams(mapParams);
+	        return result;
+	    }
+	    
 	}
 	return null;
 }

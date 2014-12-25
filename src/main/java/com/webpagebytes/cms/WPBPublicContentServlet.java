@@ -211,7 +211,7 @@ private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, Http
 	os.write(content.getBytes("UTF-8"));
 }
 
-private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest req, HttpServletResponse resp) throws WPBException, IOException
+private void handleRequestTypeFile(String fileExternalKey, URLMatcherResult urlMatcherResult, HttpServletRequest req, HttpServletResponse resp) throws WPBException, IOException
 {
 	WPBFile wbFile = fileContentBuilder.find(fileExternalKey);
 	if (wbFile == null)
@@ -219,6 +219,32 @@ private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest re
 		resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		return;						
 	}
+	WPBFilesCache fileCache = cacheFactory.getFilesCacheInstance();
+	WPBFile fileResponse = wbFile;
+	if (wbFile.getDirectoryFlag() != null && wbFile.getDirectoryFlag() == 1)
+	{
+	    // this is a diretory match
+	    // get the file path coresponding to the linked directory
+	    String relativeFilePath = urlMatcherResult.getPatternParams().get("**");	    
+	    String dirPath = fileCache.getFullFilePath(wbFile);
+	    String sanitizedDirPath = "";
+	    
+	    if (relativeFilePath.startsWith("/")) relativeFilePath = relativeFilePath.substring(1);
+	    if (dirPath != null && dirPath.length() > 0)
+	    {
+	        if (dirPath.endsWith("/")) sanitizedDirPath = dirPath.substring(0, dirPath.length()-1); 
+	    }
+	        
+	    String fullFilePath = sanitizedDirPath + "/" + relativeFilePath;
+	    
+	    fileResponse = fileCache.geByPath(fullFilePath);
+	    if (fileResponse == null)
+	    {
+	        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	        return;                     
+	    }	    	    
+	}
+	
 	String cqp = req.getParameter(CACHE_QUERY_PARAM);
 	if (cqp != null && cqp.equals(wbFile.getHash().toString()))
 	{
@@ -226,8 +252,8 @@ private void handleRequestTypeFile(String fileExternalKey, HttpServletRequest re
 		resp.addHeader("cache-control", "max-age=86400");
 	}
 	ServletOutputStream os = resp.getOutputStream();
-	resp.setContentType(wbFile.getAdjustedContentType());													
-	fileContentBuilder.writeFileContent(wbFile, os);
+	resp.setContentType(fileResponse.getAdjustedContentType());													
+	fileContentBuilder.writeFileContent(fileResponse, os);
 }
 
 private boolean localFileContentHandler(HttpServletRequest req, HttpServletResponse resp, String uri) throws WPBIOException
@@ -315,7 +341,7 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			} else
 			if (wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
 			{
-				handleRequestTypeFile(wbUri.getResourceExternalKey(), req, resp);
+				handleRequestTypeFile(wbUri.getResourceExternalKey(), urlMatcherResult, req, resp);
 			} else
 			{
 				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
