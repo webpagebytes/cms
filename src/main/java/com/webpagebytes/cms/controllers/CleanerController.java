@@ -125,7 +125,11 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 		if (file.getBlobKey() != null)
 		{
 			WPBFilePath cloudFile = new WPBFilePath(FileController.PUBLIC_BUCKET, file.getBlobKey());
-			cloudFileStorage.deleteFile(cloudFile);
+			if (file.getBlobKey() != null && file.getBlobKey().length()>0)
+			{
+			    // make sure the file is deleted only if there is a blob key
+			    cloudFileStorage.deleteFile(cloudFile);
+			}
 		}
 	}
 	public void deleteAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException

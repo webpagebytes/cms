@@ -185,7 +185,10 @@ public class FlatStorageImporterExporter {
 				} else
 				if (name.indexOf(PATH_MESSAGES) >= 0)
 				{
-					importMessage(zis);
+				    if (name.indexOf("metadata.xml")>=0)
+				    {
+				        importMessage(zis);
+				    }
 				} else
 				if (name.indexOf(PATH_FILES) >= 0)
 				{
@@ -200,7 +203,10 @@ public class FlatStorageImporterExporter {
 				} else
 				if (name.indexOf(PATH_LOCALES)>=0)
 				{
-					importProject(zis);
+				    if (name.indexOf("metadata.xml")>=0)
+				    {
+				        importProject(zis);
+				    }
 				}
 				zis.closeEntry();
 			}

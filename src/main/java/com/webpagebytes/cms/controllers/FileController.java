@@ -175,7 +175,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
                 deleteFile(afile, level+1);
             }
         } 
-        if (file.getBlobKey() != null)
+        if (file.getBlobKey() != null && file.getBlobKey().length()>0)
         {
             WPBFilePath contentFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
             
@@ -401,8 +401,12 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
   
 	                //old file need to be deleted from cloud
 	                String oldFilePath = wbFile.getBlobKey();
-	                WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
-	                cloudFileStorage.deleteFile(oldCloudFile);
+	                if (oldFilePath != null && oldFilePath.length()>0)
+	                {
+	                    // delete only if the blob key is set
+	                    WPBFilePath oldCloudFile = new WPBFilePath(PUBLIC_BUCKET, oldFilePath);
+	                    cloudFileStorage.deleteFile(oldCloudFile);
+	                }
 	            } else
 	            {
 	                // this is a new upload
