@@ -62,6 +62,15 @@ public class ContentTypeDetector {
 		mapTypes.put(".avi", "video/avi");
 		mapTypes.put(".mpeg", "video/mpeg");
         
+		mapTypes.put(".otf", "application/font-sfnt");
+		mapTypes.put(".woff", "application/font-woff");
+		mapTypes.put(".ttf", "application/font-sfnt");
+		mapTypes.put(".ttc", "application/font-sfnt");
+		mapTypes.put(".eot", "application/vnd.ms-fontobject");
+		
+		mapTypes.put(".svg", "image/svg+xml");
+        
+		
         
 	};
 	
