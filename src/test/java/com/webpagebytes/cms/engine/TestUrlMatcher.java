@@ -26,10 +26,12 @@ public void setUp()
 	urlMarcher = new URLMatcher();
 	Set<String> patterns = new HashSet<String>();
 	patterns.add("/");
+	patterns.add("/{id}");
 	patterns.add("/test");
 	patterns.add("/xyz/abc");
 	patterns.add("/111/222/333/");
 	patterns.add("/test/");
+	patterns.add("/{id}/");
 	patterns.add("/test-{id}");
 	patterns.add("/news-{id}");
 	patterns.add("/culture-{*}-{id}");
@@ -332,6 +334,25 @@ public void test_matchUrlToPattern_ok_zerolevel()
 @Test
 public void test_matchUrlToPattern_fail_onelevel()
 {
+    urlMarcher = new URLMatcher();
+    Set<String> patterns = new HashSet<String>();
+    patterns.add("/");
+    patterns.add("/test");
+    patterns.add("/xyz/abc");
+    patterns.add("/111/222/333/");
+    patterns.add("/test/");
+    patterns.add("/{id}/");
+    patterns.add("/test-{id}");
+    patterns.add("/news-{id}");
+    patterns.add("/culture-{*}-{id}");
+    patterns.add("/articles/{id}");
+    patterns.add("/test_{keywords}_{key}");
+    patterns.add("/test_{keywords}/all-{key}");
+    patterns.add("/test_{keywords}-{key}/rest-{action}_{param}");
+    patterns.add("/files/img/{**}");
+    patterns.add("/files/{**}");
+    
+    urlMarcher.initialize(patterns, 9L);
 	URLMatcherResult result = urlMarcher.matchUrlToPattern("/mysite");	
 	assertTrue (result == null);
 }
@@ -388,6 +409,25 @@ public void test_matchAll_empty()
 @Test
 public void test_matchAll_empty2()
 {
+    urlMarcher = new URLMatcher();
+    Set<String> patterns = new HashSet<String>();
+    patterns.add("/");
+    patterns.add("/test");
+    patterns.add("/xyz/abc");
+    patterns.add("/111/222/333/");
+    patterns.add("/test/");
+    patterns.add("/{id}/");
+    patterns.add("/test-{id}");
+    patterns.add("/news-{id}");
+    patterns.add("/culture-{*}-{id}");
+    patterns.add("/articles/{id}");
+    patterns.add("/test_{keywords}_{key}");
+    patterns.add("/test_{keywords}/all-{key}");
+    patterns.add("/test_{keywords}-{key}/rest-{action}_{param}");
+    patterns.add("/files/img/{**}");
+    patterns.add("/files/{**}");
+    
+    urlMarcher.initialize(patterns, 9L);
     URLMatcherResult result = urlMarcher.matchUrlToPattern("/files");
     
     assertTrue(result == null);

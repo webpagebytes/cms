@@ -114,14 +114,35 @@ public URLMatcherResult matchUrlToPattern(String url)
 	if (null != toSearchLevel1)
 	{
     	// toSearchLevel2 will contain all patterns that have the same clear sub urls and the same deep as the url
-    	// the key is the number of clear suburls that match. as greater as possible is to have a match.
+    	// the key is the pattern and the value a weight that measures the possibility to have a match, as greater the value as greater the posibility.
     	Map<String, Integer> toSearchLevel2 = new HashMap<String, Integer>(); 
     	for (String pattern: toSearchLevel1)
     	{
     		Map<Integer, String> patternClearSubUrl = this.patternsWithParams.get(pattern).getClearSubUrl();
     		if (isMapIncluded(patternClearSubUrl, urlClearSubUrls))
     		{
-    			toSearchLevel2.put(pattern, patternClearSubUrl.size());
+    			toSearchLevel2.put(pattern, patternClearSubUrl.size()*1000);
+    			
+    			Map<Integer, String> patternDirtySubUrl = this.patternsWithParams.get(pattern).getDirtySubUrl();
+    			for(int i: patternDirtySubUrl.keySet())
+    			{
+    			    // increase the weight with the common number of characters in each dirty suburl 
+    			    String patternSubUrl = patternDirtySubUrl.get(i);
+    			    String inputSubUrl = urlClearSubUrls.get(i);
+    			    int weight = toSearchLevel2.get(pattern);
+    			    int lengthP = patternSubUrl.length();
+    			    int lengthI = inputSubUrl.length();
+    			    if (lengthP > lengthI) lengthP = lengthI;
+    			    for(int x = 0; x< lengthP; x++)
+    			    {
+    			        if (patternSubUrl.charAt(x) == inputSubUrl.charAt(x))
+    			        {
+    			            weight = weight + 1;
+    			        } else
+    			            break;
+    			    }
+    			    toSearchLevel2.put(pattern, weight);
+    			}
     		}
     	} 
     	

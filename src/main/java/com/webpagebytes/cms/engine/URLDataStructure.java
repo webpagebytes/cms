@@ -42,6 +42,7 @@ public URLDataStructure(String url)
 	
 	String lastToken = "url"; 
 	int position = 0;
+	int size = 0;
 	while (tokenizer.hasMoreElements())
 	{
 		lastToken = tokenizer.nextToken();
@@ -56,7 +57,10 @@ public URLDataStructure(String url)
 				clearSubUrl.put(position, lastToken);
 			}
 			position +=1;
-		}		
+		} else
+		{
+		    size += 1;
+		}
 	}
 	if (lastToken.equals("/"))
 	{
@@ -64,7 +68,7 @@ public URLDataStructure(String url)
 		clearSubUrl.put(position, "");
 	}
 	allMatch = url.endsWith("/{**}");
-	this.deep = subUrls.size();
+	this.deep = size;
 }
 
 public boolean hasParams()
