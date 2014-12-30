@@ -335,6 +335,7 @@ public class FlatStorageImporterExporter {
 			{
 				// just take the first file, normally there should be a single file
 				WPBFile file = files.get(0);
+				
 				String uniqueId = dataStorage.getUniqueId();
 				String cloudPath = uniqueId + "/" + file.getFileName();
 				WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, cloudPath);
@@ -739,23 +740,26 @@ public class FlatStorageImporterExporter {
 				zos.putNextEntry(contentZe);
 				zos.closeEntry();
 				
-				try
+				if (file.getDirectoryFlag() == null || file.getDirectoryFlag() != 1)
 				{
-					String filePath = contentPath + file.getFileName();
-					WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
-					InputStream is = cloudFileStorage.getFileContent(cloudFile);
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					IOUtils.copy(is, bos);
-					bos.flush();
-					byte[] content = bos.toByteArray();
-					ZipEntry fileZe = new ZipEntry(filePath);
-					zos.putNextEntry(fileZe);
-					zos.write(content);
-					zos.closeEntry();
-				} catch (Exception e)
-				{
-					log.log(Level.SEVERE, " Exporting file :" + file.getExternalKey(), e);
-					// do nothing, we do not abort the export because of a failure, but we need to log this as warning
+    				try
+    				{
+    					String filePath = contentPath + file.getFileName();
+    					WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, file.getBlobKey());
+    					InputStream is = cloudFileStorage.getFileContent(cloudFile);
+    					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    					IOUtils.copy(is, bos);
+    					bos.flush();
+    					byte[] content = bos.toByteArray();
+    					ZipEntry fileZe = new ZipEntry(filePath);
+    					zos.putNextEntry(fileZe);
+    					zos.write(content);
+    					zos.closeEntry();
+    				} catch (Exception e)
+    				{
+    					log.log(Level.SEVERE, " Exporting file :" + file.getExternalKey(), e);
+    					// do nothing, we do not abort the export because of a failure, but we need to log this as warning
+    				}
 				}
 			}
 		}
