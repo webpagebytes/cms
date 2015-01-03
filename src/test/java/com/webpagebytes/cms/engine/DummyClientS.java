@@ -20,9 +20,9 @@ public class DummyClientS {
 	@WPBAdminFieldStore
 	private Boolean isBoolean;
 	@WPBAdminFieldStore
-	private int width;
+	private Integer width;
 	@WPBAdminFieldStore
-	private long height;
+	private Long height;
 	
 	
 	public String getId() {

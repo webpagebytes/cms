@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.easymock.EasyMock;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -218,8 +220,22 @@ public class TestWBJSONToFromObjectConverter {
 		
 		list.add(s1);
 		list.add(s2);
-		String json = wbObjectfromJson.JSONStringFromListObjects(list);
-		String expectedJson = "[{\"balance\":\"12\",\"height\":\"0\",\"width\":\"0\",\"age\":\"1\"},{\"summary\":\"test\",\"id\":\"123\",\"height\":\"0\",\"width\":\"0\"}]";
-		assertTrue (json.compareTo(expectedJson) == 0);
+		String jsonStr = wbObjectfromJson.JSONStringFromListObjects(list);
+		try
+		{
+    		org.json.JSONArray jsonArray = new org.json.JSONArray(jsonStr);
+    		assertTrue (jsonArray.length() == 2);
+    		org.json.JSONObject obj1 = jsonArray.getJSONObject(0);
+    		assertTrue (obj1.getInt("age") == 1);
+    		assertTrue (obj1.getLong("balance") == 12L);
+
+            org.json.JSONObject obj2 = jsonArray.getJSONObject(1);
+            assertTrue (obj2.getString("id").equals("123"));
+            assertTrue (obj2.getString("summary").equals("test"));
+
+    	} catch (JSONException e)
+		{
+		    assertTrue(false);
+		}
 	}
 }
