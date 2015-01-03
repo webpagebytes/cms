@@ -10,9 +10,9 @@
 			<param name="y" value="2" />
 		</params>
 	</wpbadmindatastorage>
-	<wpbcloudfilestorage>
+	<wpbfilestorage>
 		<factoryclass>com.xyz.abc</factoryclass>
-	</wpbcloudfilestorage>
+	</wpbfilestorage>
 	<wpbmodel>
 		<params>
 			<param name="baseModelUrlPath" value="http://example.com:8080/test/" />

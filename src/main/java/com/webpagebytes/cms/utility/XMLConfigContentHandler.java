@@ -38,7 +38,7 @@ public class XMLConfigContentHandler extends DefaultHandler {
 			currentSection = CmsConfiguration.WPBSECTION.SECTION_CACHE;
 		} else if (qName.equals("wpbadmindatastorage")) {
 			currentSection = CmsConfiguration.WPBSECTION.SECTION_DATASTORAGE;
-		} else if (qName.equals("wpbcloudfilestorage")) {
+		} else if (qName.equals("wpbfilestorage")) {
 			currentSection = CmsConfiguration.WPBSECTION.SECTION_FILESTORAGE;
 		} else if (qName.equals("wpbimageprocessor")) {
 			currentSection = CmsConfiguration.WPBSECTION.SECTION_IMAGEPROCESSOR;

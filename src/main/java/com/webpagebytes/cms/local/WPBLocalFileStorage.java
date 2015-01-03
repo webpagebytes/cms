@@ -47,7 +47,7 @@ import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
-public class WPBLocalCloudFileStorage implements WPBFileStorage {
+public class WPBLocalFileStorage implements WPBFileStorage {
 	private static final String publicDataFolder = "public";
 	private static final String privateDataFolder = "private";
 	private static final String publicMetaFolder = "public_meta";
@@ -55,9 +55,9 @@ public class WPBLocalCloudFileStorage implements WPBFileStorage {
 	private String dataDirectory;
 	private String basePublicUrlPath;
 	private boolean isInitialized;
-	private static final Logger log = Logger.getLogger(WPBLocalCloudFileStorage.class.getName());
+	private static final Logger log = Logger.getLogger(WPBLocalFileStorage.class.getName());
 	
-	public WPBLocalCloudFileStorage()
+	public WPBLocalFileStorage()
 	{
 		try
 		{
@@ -68,7 +68,7 @@ public class WPBLocalCloudFileStorage implements WPBFileStorage {
 		}
 	}
 	
-	public WPBLocalCloudFileStorage(String dataDirectory, String basePublicUrlPath)	
+	public WPBLocalFileStorage(String dataDirectory, String basePublicUrlPath)	
 	{
 		
 		this.dataDirectory = dataDirectory;

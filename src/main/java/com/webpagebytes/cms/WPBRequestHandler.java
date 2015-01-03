@@ -37,7 +37,8 @@ public interface WPBRequestHandler
      * Method that initializes the controller
      * @param contentProvider Interface that can be used to fetch content from CMS engine.
      */
-	public void initialize(WPBContentProvider contentProvider);
+	public void initialize(
+	        WPBContentProvider contentProvider);
 	
 	/**
 	 * Method that is called on each HTTP request for a site url that has the <i>Resource type</i> value as <i> Url controller </i> 
@@ -47,8 +48,9 @@ public interface WPBRequestHandler
 	 * @param forward Interface to forward the current request to use a particular site page.
 	 * @throws WPBException
 	 */
-	public void handleRequest(HttpServletRequest request, 
-							  HttpServletResponse response, 
-							  WPBModel model,
-							  WPBForward forward) throws WPBException;
+	public void handleRequest(
+	        HttpServletRequest request, 
+			HttpServletResponse response, 
+			WPBModel model,
+			WPBForward forward) throws WPBException;
 }

@@ -10,13 +10,13 @@
 			<param name="dbpath" value="~/test" />
 		</params>
 	</wpbadmindatastorage>
-	<wpbcloudfilestorage>
-		<factoryclass>com.webpagebytes.cms.local.WPBLocalCloudFileStorage</factoryclass>
+	<wpbfilestorage>
+		<factoryclass>com.webpagebytes.cms.local.WPBLocalFileStorage</factoryclass>
 		<params>
 			<param name="dataDirectory" value="D:\Tree"/>
 			<param name="basePublicUrlPath" value=""/> 
 		</params>
-	</wpbcloudfilestorage>
+	</wpbfilestorage>
 	<wpbimageprocessor>
 		<factoryclass>com.webpagebytes.cms.datautility.DefaultImageProcessor</factoryclass>
 	</wpbimageprocessor>
@@ -32,13 +32,13 @@
 			<param name="dbpath" value="~/test" />
 		</params>
 	</wpbadmindatastorage>
-	<wpbcloudfilestorage>
-		<factoryclass>com.webpagebytes.cms.local.WPBLocalCloudFileStorage</factoryclass>
+	<wpbfilestorage>
+		<factoryclass>com.webpagebytes.cms.local.WPBLocalFileStorage</factoryclass>
 		<params>
 			<param name="dataDirectory" value="D:\Tree"/>
 			<param name="basePublicUrlPath" value=""/> 
 		</params>
-	</wpbcloudfilestorage>
+	</wpbfilestorage>
 	<wpbimageprocessor>
 		<factoryclass>com.webpagebytes.cms.datautility.DefaultImageProcessor</factoryclass>
 	</wpbimageprocessor>
