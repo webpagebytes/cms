@@ -3,14 +3,14 @@
 
   <groupId>com.webpagebytes.cms</groupId>
   <artifactId>webpagebytes-cms</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>webpagebytes-cms</name>
   
   <scm>
   	<developerConnection>scm:git:ssh://git@github.com/webpagebytes/cms.git</developerConnection>
-    <tag>webpagebytes-cms-1.4</tag>
+    <tag>HEAD</tag>
   </scm>
   
   <properties>
