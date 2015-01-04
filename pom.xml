@@ -9,7 +9,7 @@
   <name>webpagebytes-cms</name>
   
   <scm>
-  	<developerConnection>scm:git:https://github.com/webpagebytes/cms.git</developerConnection>
+  	<developerConnection>scm:git:ssh://git@github.com/webpagebytes/cms.git</developerConnection>
   </scm>
   
   <properties>
