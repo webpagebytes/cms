@@ -2,6 +2,7 @@ package com.webpagebytes.cms.engine;
 
 import static org.junit.Assert.*;
 
+
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
@@ -25,7 +26,6 @@ import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBCmsContextListener;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.WPBMessagesCache;
-import com.webpagebytes.cms.WPBModel;
 import com.webpagebytes.cms.WPBPageModulesCache;
 import com.webpagebytes.cms.WPBPagesCache;
 import com.webpagebytes.cms.WPBParametersCache;
@@ -64,6 +64,9 @@ Logger loggerMock;
 @Before
 public void setUp()
 {
+WPBCacheFactory cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class); 
+Whitebox.setInternalState(DefaultWPBCacheFactory.class, "instance", cacheFactoryMock);
+    
 publicServlet = new WPBPublicContentServlet();
 
 loggerMock = EasyMock.createMock(Logger.class);
@@ -93,6 +96,7 @@ public void tearDown()
 {
 	Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", (Object) null);
 	Whitebox.setInternalState(CmsConfigurationFactory.class, "configPath", (Object) null);	
+	Whitebox.setInternalState(DefaultWPBCacheFactory.class, "instance", (WPBCacheFactory)null);
 }
 
 @Test
