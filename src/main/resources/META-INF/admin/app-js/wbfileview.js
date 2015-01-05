@@ -102,6 +102,7 @@ $().ready( function () {
 		fileKey = data["privkey"];
 		$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));		
 		$('#wbFileView').wbDisplayObject().display(data);
+		$('#wbFileOwnerDir').html('<a href="{0}">{1}/</a>'.format('./webfiles.html?parent='+encodeURIComponent(data['ownerExtKey']), escapehtml(payload.additional_data.ownerFullDirectoryPath)));
 		$('#collapseFileDetails').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['privkey'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);

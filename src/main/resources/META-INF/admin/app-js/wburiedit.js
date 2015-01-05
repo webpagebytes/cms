@@ -149,7 +149,7 @@ $().ready( function () {
 		if ('pages_links' in data.additional_data) {
 			if (data.additional_data.pages_links.length >= 1) {
 				var page = data.additional_data.pages_links[0];
-				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), escapehtml(page['name']));
 			}
 			$('#wbresourcelink').html(html);
 		} else if ('files_links' in data.additional_data) {
@@ -180,10 +180,10 @@ $().ready( function () {
 		if (result.length == 1) {
 			if ($('input[name="resourceType"]:checked').val() == "1") {
 				var page = result[0];
-				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), encodeURIComponent(page['name']));
+				html = '<a href="./webpage.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(page['externalKey']), escapehtml(page['name']));
 			} else if ($('input[name="resourceType"]:checked').val() == "2") {
 				var file = result[0];
-				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['name']));			
+				html = '<a href="./webfile.html?extKey={0}"> {1} </a>'.format(encodeURIComponent(file['externalKey']), escapehtml(file['fileName']));			
 			} 			
 		}
 		$('#wbresourcelink').html(html);			

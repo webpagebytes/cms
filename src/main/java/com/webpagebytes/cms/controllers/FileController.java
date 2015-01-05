@@ -91,6 +91,46 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		}
 	}
 
+	private String getDirectoryFullPath(String externalKey) throws WPBException 
+	{
+	    if (externalKey == null || externalKey.length() == 0)
+	    {
+	        return "";
+	    }
+	    String result = "";
+	    String parentExtKey = externalKey;
+	    boolean completed = false;
+	    for(int i = 0; i< MAX_DIR_DEPTH; i++)
+	    {
+	        if (parentExtKey != null && parentExtKey.length()>0)
+	        {
+	            WPBFile parent = getDirectory(parentExtKey);
+	            if (parent != null)
+	            {
+	                result = parent.getFileName() + "/" + result;
+	                parentExtKey = parent.getOwnerExtKey();
+	            } else
+	            {
+	                throw new WPBException("WPBFile should not be null");
+	            }
+	        } else
+	        {
+	            completed = true;
+	            break;
+	        }
+	    }
+	    if (completed)
+	    {
+	        if (result.startsWith("/")) result = result.substring(1);
+	        if (result.endsWith("/")) result = result.substring(0, result.length()-1);
+	        
+	        return result;
+	    } else
+	    {
+	        throw new WPBException("Cannot calculate full dir path");
+	    }
+	}
+	
 	private WPBFile getDirectory(String externalKey) throws WPBException
 	{
 	    List<WPBFile> result = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
@@ -615,23 +655,27 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        }
 	    } 
 	}
-	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBFile wbFile) throws WPBException
+	private org.json.JSONObject get(HttpServletRequest request, WPBFile wbFile) throws WPBException
 	{
 		try
 		{
 			setPublicFilePath(wbFile, cloudFileStorage);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbFile));	
-			
+
+            org.json.JSONObject additionalData = new org.json.JSONObject();
+
+            String dirPath = getDirectoryFullPath(wbFile.getOwnerExtKey());
+            additionalData.put("ownerFullDirectoryPath", dirPath);
+            
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
 			{
 				List<WPBUri> uris = adminStorage.query(WPBUri.class, "resourceExternalKey", AdminQueryOperator.EQUAL, wbFile.getExternalKey());
 				org.json.JSONArray arrayUris = jsonObjectConverter.JSONArrayFromListObjects(uris);
-				org.json.JSONObject additionalData = new org.json.JSONObject();
 				additionalData.put("uri_links", arrayUris);
-				returnJson.put(ADDTIONAL_DATA, additionalData);			
 			}
+            returnJson.put(ADDTIONAL_DATA, additionalData);         
 			return returnJson;
 		} catch (Exception e)
 		{
@@ -644,7 +688,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WPBFile wbFile = adminStorage.get(key, WPBFile.class);			
-			org.json.JSONObject returnJson = get(request, response, wbFile);
+			org.json.JSONObject returnJson = get(request, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
 		} catch (Exception e)		
@@ -662,7 +706,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			String extKey = (String)request.getAttribute("key");
 			List<WPBFile> wbFiles = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
 			WPBFile wbFile = (wbFiles.size()>0) ? wbFiles.get(0) : null; 
-			org.json.JSONObject returnJson = get(request, response, wbFile);
+			org.json.JSONObject returnJson = get(request, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 		} catch (Exception e)		
 		{

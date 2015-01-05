@@ -48,7 +48,7 @@
 			<div id="searchResultList" class="wbsearchresultcontainer"></div>		
 		</div>	
 		<div class="wbtitle" id="wbFileView">
-			<h1 class="wbtitle-text"> <span class="wbtitle-offset"><a href="./webfiles.html">Files</a>/</span><span id="wbfilefileName"></span> </h1>
+			<h1 class="wbtitle-text"> <span id="wbFileOwnerDir" class="wbtitle-offset"></span><span id="wbfilefileName"></span> </h1>
 			<div class="wbtitle-offset"> 
 				<span class="badge badge-info" id="wbfilelastModified"> </span>
 			</div>
@@ -59,78 +59,67 @@
 					<form class="form-inline">
 						<div class="control-group">
 							<div class="controls">
-								<button class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit file data </button>
-								<button class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
-								<a href="#" class="btn btn-primary wbDownloadFileDataBtnClass"> <i class="icon-download icon-white"> </i> Download file</a>
+								<button id="wbUpdateFileDataBtn" class="btn btn-primary wbUpdateFileDataBtnClass" type="submit"> <i class="icon-pencil icon-white"> </i> Edit file data </button>
+								<button id="wbUpdateUploadFileBtn" class="btn btn-primary wbUpdateUploadFileBtnClass" type="submit"> <i class="icon-upload icon-white"> </i> Replace file</button>
+								<a id="wbDownloadFileDataBtn" href="#" class="btn btn-primary wbDownloadFileDataBtnClass"> <i class="icon-download icon-white"> </i> Download file</a>
 							</div>
-						</div>
+						 </div>
 					</form>
 					
-						<div class="accordion" id="accordionFileDetails">
-								<div class="accordion-group">
- 									<div class="accordion-heading">
-   										<a class="accordion-toggle" data-toggle="collapse" data-parent="accordionFileDetails" href="#collapseFileDetails">
-     										File details...
-   										</a>
-									</div>
- 									<div id="collapseFileDetails" class="accordion-body collapse">
-   										<div class="accordion-inner">
-			     							<form class="form-horizontal">
+ 									<div id="collapseFileDetails">
+   											<form class="form-horizontal">
 												<div class="control-group">
 													<label for="externalKey" class="control-label wblabel-left">External Key</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="externalKey" id="wbfileexternalKey" readonly>
+														<span id="wbfileexternalKey"></span>
 														<span data-clipboard-target="wbfileexternalKey" class="wbbtnclipboard btn-clipboard" ></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="fileName" class="control-label wblabel-left">File Name</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="fileName" id="wbfilefileName" readonly>
+														<span id="wbfilefileName"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="size" class="control-label wblabel-left">Size (bytes)</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="size" id="wbfilesize" readonly>
+														<span id="wbfilesize"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="hash" class="control-label wblabel-left">CRC32 hash</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilehash" readonly>
+														<span id="wbfilehash"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="contentType" class="control-label wblabel-left">Content type</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="contentType" id="wbfilecontentType" readonly>
+														<span id="wbfilecontentType"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="adjustedContentType" class="control-label wblabel-left">Adjusted content type</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfileadjustedContentType" readonly>
+														<span id="wbfileadjustedContentType"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="blobKey" class="control-label wblabel-left">Blob key</label>
 													<div class="controls">
-														<textarea class="wb-input-xlarge" type="text" name="blobKey" id="wbfileblobKey" readonly> </textarea>
+														<span id="wbfileblobKey"></span>
 													</div>
 												</div>
 												<div class="control-group">
 													<label for="lastModified" class="control-label wblabel-left">Last modified</label>
 													<div class="controls">
-														<input class="wb-input-xlarge" type="text" name="hash" id="wbfilelastModified" readonly>
+														<span id="wbfilelastModified"></span>
 													</div>
 												</div>												
 											</form>
 										</div>
- 									</div>
-								</div>
-						</div>
-				</div>
+ 				</div>
 				<div class="span5">
 					<div class="well">
 						<button class="btn btn-primary" id="wbAddUrlBtn"><i class="icon-plus icon-white"> </i> New url to this file </button> <br></br>
