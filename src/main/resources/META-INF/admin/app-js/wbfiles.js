@@ -252,6 +252,10 @@ $().ready( function () {
 		var sort_field = encodeURIComponent(getURLParameter('sort_field') || "lastModified");	
 	
 		var fSuccessGetAll = function (data) {
+		    if (data.additional_data.owner)
+		    {
+		      $('#wbFileOwnerDir').html('<a href="{0}">{1}</a>/{2}'.format('./webfiles.html?parent='+encodeURIComponent(data.additional_data.owner.ownerExtKey), escapehtml(data.additional_data.ownerFullDirectoryPath), escapehtml(data.additional_data.owner.fileName)));
+			}
 			$('#wbFilesTable').wbSimpleTable().setRows(data.data);
 			if (parent.length > 0 && !$.isEmptyObject(data['additional_data']['owner'])){
 				$('#wbFilesTable').wbSimpleTable().insertRow({'level-up':1, 'owner': data['additional_data']['owner']}, 0);

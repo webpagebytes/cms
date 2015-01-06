@@ -633,6 +633,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			org.json.JSONObject additionalDataJson = jsonObjectConverter.JSONObjectFromMap(additionalInfo);
 			additionalDataJson.put("owner", jsonObjectConverter.JSONFromObject(ownerFile));
+			String ownerOfOwner = "";
+			if (ownerFile != null)
+			{
+			    ownerOfOwner = ownerFile.getOwnerExtKey();
+			}
+            String dirPath = getDirectoryFullPath(ownerOfOwner);
+            additionalDataJson.put("ownerFullDirectoryPath", dirPath);
+
 			returnJson.put(ADDTIONAL_DATA, additionalDataJson);
 		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
 			
