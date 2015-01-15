@@ -81,13 +81,13 @@ class FreeMarkerImageDirective implements TemplateDirectiveModel {
         try
         {
         	String serveUrl = "";
-        	WPBFile image = cacheInstances.getWBFilesCache().getByExternalKey(externalKey);
-        	if (image == null)
+        	WPBFile file = cacheInstances.getFilesCache().getByExternalKey(externalKey);
+        	if (file == null)
         	{
         		log.log(Level.WARNING, "cannot find iamge with key" + externalKey);
         		return;
         	}
-        	WPBFilePath cloudFile = new WPBFilePath("public", image.getBlobKey());
+        	WPBFilePath cloudFile = new WPBFilePath("public", file.getBlobKey());
         	if (! embedded)
         	{
         		serveUrl = cloudFileStorage.getPublicFileUrl(cloudFile);        	
@@ -103,7 +103,7 @@ class FreeMarkerImageDirective implements TemplateDirectiveModel {
 	        		baos = new ByteArrayOutputStream(4046);
 	        		IOUtils.copy(is, baos);
 	        		String base64 = CmsBase64Utility.toBase64(baos.toByteArray());
-	        		String htmlImage = String.format("data:%s;base64,%s", image.getAdjustedContentType(), base64);
+	        		String htmlImage = String.format("data:%s;base64,%s", file.getAdjustedContentType(), base64);
 	        		env.getOut().write(htmlImage);
         		} catch (IOException e)
         		{

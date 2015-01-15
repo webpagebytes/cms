@@ -356,7 +356,7 @@ public class WPBLocalDataStoreDao {
 		PreparedStatement statement = null;
 		try
 		{
-			String table = kind.getSimpleName().toUpperCase();
+			String table = kind.getSimpleName();
 			statement = con.prepareStatement(String.format(QUERY_RECORD, table, keyFieldName));
 			setPrepareStatementParameter(statement, 1, keyValue);
 			
@@ -614,7 +614,7 @@ public class WPBLocalDataStoreDao {
 		List<T> objects = new ArrayList<T>();
 		try
 		{
-			String table = kind.getSimpleName().toUpperCase();
+			String table = kind.getSimpleName();
 			statement = con.prepareStatement(String.format(QUERY_ALL_RECORDS, table));
 			
 			ResultSet resultSet = statement.executeQuery();

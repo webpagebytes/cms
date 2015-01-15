@@ -96,7 +96,7 @@ public void test_getRecord()
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
 		
 		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
-		String sqlStatement = "SELECT * FROM WPBURI WHERE key=?";
+		String sqlStatement = "SELECT * FROM WPBUri WHERE key=?";
 		EasyMock.expect(connectionMock.prepareStatement(sqlStatement)).andReturn(statementMock);
 		PowerMockito.doNothing().when(dao, "setPrepareStatementParameter", any(PreparedStatement.class), any(int.class), any(Object.class));
 		

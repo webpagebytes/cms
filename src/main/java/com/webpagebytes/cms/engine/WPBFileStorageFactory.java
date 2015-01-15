@@ -24,11 +24,11 @@ import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
-public class WPBCloudFileStorageFactory {
+public class WPBFileStorageFactory {
 	static WPBFileStorage instance = null;
-	private WPBCloudFileStorageFactory() {}
+	private WPBFileStorageFactory() {}
 	private static final Object lock = new Object();
-	private static final Logger log = Logger.getLogger(WPBCloudFileStorageFactory.class.getName());
+	private static final Logger log = Logger.getLogger(WPBFileStorageFactory.class.getName());
 
 	public static WPBFileStorage getInstance()
 	{

@@ -35,8 +35,8 @@ public class FileContentBuilder {
 	private WPBFilesCache filesCache;
 	public FileContentBuilder(WPBCacheInstances cacheInstances)
 	{
-		filesCache = cacheInstances.getWBFilesCache();
-		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+		filesCache = cacheInstances.getFilesCache();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
 	}
 	public void initialize()
 	{

@@ -54,7 +54,7 @@ import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
-import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class FlatStorageImporterExporter {
@@ -79,7 +79,7 @@ public class FlatStorageImporterExporter {
 	private WPBImporter importer = new WPBImporter();
 	
 	private WPBAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
-	private WPBFileStorage cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+	private WPBFileStorage cloudFileStorage = WPBFileStorageFactory.getInstance();
 	
 	private UriValidator uriValidator = new UriValidator();
 	

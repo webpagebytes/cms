@@ -37,7 +37,7 @@ public class LocalCloudFileContentBuilder {
 	private WPBFileStorage cloudFileStorage;
 	public LocalCloudFileContentBuilder()
 	{
-		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
 	}
 	public void serveFile(HttpServletRequest request, HttpServletResponse response, String uri) throws WPBIOException
 	{

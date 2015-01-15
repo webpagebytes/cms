@@ -90,7 +90,7 @@ public void copyParams(Environment env, Map params) throws TemplateModelExceptio
 	{
 		params.put(WPBModel.APPLICATION_CONTROLLER_MODEL_KEY, appModel);
 	}
-
+	
 }
 
 }

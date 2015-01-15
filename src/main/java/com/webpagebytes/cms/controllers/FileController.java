@@ -51,7 +51,7 @@ import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
@@ -71,7 +71,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new FileValidator();
-		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.getFilesCacheInstance();	
 		adminStorage.addStorageListener(this);

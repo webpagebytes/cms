@@ -27,73 +27,73 @@ import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.WPBUrisCache;
 
 public class WPBCacheInstances {
-	private WPBUrisCache wbUriCache;
-	private WPBPagesCache wbWebPageCache;
-	private WPBPageModulesCache wbWebPageModuleCache;
-	private WPBParametersCache wbParameterCache;
-	private WPBFilesCache wbFilesCache;
-	private WPBArticlesCache wbArticleCache;
-	private WPBMessagesCache wbMessageCache;
-	private WPBProjectCache wbProjectCache;
+	private WPBUrisCache wpbUriCache;
+	private WPBPagesCache wpbPageCache;
+	private WPBPageModulesCache wpbPageModuleCache;
+	private WPBParametersCache wpbParameterCache;
+	private WPBFilesCache wpbFilesCache;
+	private WPBArticlesCache wpbArticleCache;
+	private WPBMessagesCache wpbMessageCache;
+	private WPBProjectCache wpbProjectCache;
 	public WPBCacheInstances(WPBUrisCache uriCache,
-							WPBPagesCache webPageCache,
-							WPBPageModulesCache webPageModuleCache,
+							WPBPagesCache pageCache,
+							WPBPageModulesCache pageModuleCache,
 							WPBParametersCache parameterCache,
 							WPBFilesCache filesCache,
 							WPBArticlesCache articleCache,
 							WPBMessagesCache messageCache,
 							WPBProjectCache projectCache)
 	{
-		wbArticleCache = articleCache;
-		wbUriCache = uriCache;
-		wbWebPageCache = webPageCache;
-		wbWebPageModuleCache = webPageModuleCache;
-		wbParameterCache = parameterCache;
-		wbFilesCache = filesCache;
-		wbMessageCache = messageCache;
-		wbProjectCache = projectCache;
+		wpbArticleCache = articleCache;
+		wpbUriCache = uriCache;
+		wpbPageCache = pageCache;
+		wpbPageModuleCache = pageModuleCache;
+		wpbParameterCache = parameterCache;
+		wpbFilesCache = filesCache;
+		wpbMessageCache = messageCache;
+		wpbProjectCache = projectCache;
 	}
 	public WPBCacheInstances(WPBCacheFactory cacheFactory)
 	{
-		wbUriCache = cacheFactory.getUrisCacheInstance();
-		wbWebPageCache = cacheFactory.getWebPagesCacheInstance();
-		wbWebPageModuleCache = cacheFactory.getPageModulesCacheInstance();
-		wbParameterCache = cacheFactory.getParametersCacheInstance();
-		wbFilesCache = cacheFactory.getFilesCacheInstance();
-		wbArticleCache = cacheFactory.getArticlesCacheInstance();
-		wbMessageCache = cacheFactory.getMessagesCacheInstance();
-		wbProjectCache = cacheFactory.getProjectCacheInstance();
+		wpbUriCache = cacheFactory.getUrisCacheInstance();
+		wpbPageCache = cacheFactory.getWebPagesCacheInstance();
+		wpbPageModuleCache = cacheFactory.getPageModulesCacheInstance();
+		wpbParameterCache = cacheFactory.getParametersCacheInstance();
+		wpbFilesCache = cacheFactory.getFilesCacheInstance();
+		wpbArticleCache = cacheFactory.getArticlesCacheInstance();
+		wpbMessageCache = cacheFactory.getMessagesCacheInstance();
+		wpbProjectCache = cacheFactory.getProjectCacheInstance();
 	}
-	public WPBMessagesCache getWBMessageCache()
+	public WPBMessagesCache getMessageCache()
 	{
-		return wbMessageCache;
+		return wpbMessageCache;
 	}
-	public WPBPagesCache getWBWebPageCache()
+	public WPBPagesCache getPageCache()
 	{
-		return wbWebPageCache;
+		return wpbPageCache;
 	}
-	public WPBPageModulesCache getWBWebPageModuleCache()
+	public WPBPageModulesCache getPageModuleCache()
 	{
-		return wbWebPageModuleCache;
+		return wpbPageModuleCache;
 	}
-	public WPBFilesCache getWBFilesCache()
+	public WPBFilesCache getFilesCache()
 	{
-		return wbFilesCache;
+		return wpbFilesCache;
 	}
-	public WPBUrisCache getWBUriCache()
+	public WPBUrisCache getUriCache()
 	{
-		return wbUriCache;
+		return wpbUriCache;
 	}
-	public WPBArticlesCache getWBArticleCache()
+	public WPBArticlesCache getArticleCache()
 	{
-		return wbArticleCache;
+		return wpbArticleCache;
 	}
-	public WPBParametersCache getWBParameterCache()
+	public WPBParametersCache getParameterCache()
 	{
-		return wbParameterCache;
+		return wpbParameterCache;
 	}
 	public WPBProjectCache getProjectCache()
 	{
-		return wbProjectCache;
+		return wpbProjectCache;
 	}
 }

@@ -53,4 +53,8 @@ class FreeMarkerResourcesFactory {
 		return new FreeMarkerArticleDirective();
 	}
 
+	public FreeMarkerUriDirective createFreeMarkerUriDirective()
+	{
+	    return new FreeMarkerUriDirective();
+	}
 }

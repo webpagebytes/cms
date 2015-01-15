@@ -41,16 +41,16 @@ private WPBFileStorage cloudFileStorageMock;
 public void setUp()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBFileStorage.class);
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", cloudFileStorageMock);
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
 	filesCacheMock = EasyMock.createMock(WPBFilesCache.class);
-	EasyMock.expect(cacheInstancesMock.getWBFilesCache()).andReturn(filesCacheMock);
+	EasyMock.expect(cacheInstancesMock.getFilesCache()).andReturn(filesCacheMock);
 }
 
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBFileStorage)null);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", (WPBFileStorage)null);
 }
 
 @Test

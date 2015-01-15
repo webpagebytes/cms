@@ -31,13 +31,13 @@ private WPBFileStorage cloudFileStorageMock;
 public void before()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBFileStorage.class);
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", cloudFileStorageMock);
 }
 
 @After
 public void after()
 {
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBFileStorage)null);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", (WPBFileStorage)null);
 }
 
 @Test

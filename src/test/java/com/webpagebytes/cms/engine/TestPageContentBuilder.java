@@ -79,7 +79,7 @@ public void test_find_web_page()
 	try
 	{
 		String pageExternalKey = "123";
-		EasyMock.expect(cacheInstancesMock.getWBWebPageCache()).andReturn(pagesCacheMock);
+		EasyMock.expect(cacheInstancesMock.getPageCache()).andReturn(pagesCacheMock);
 		EasyMock.expect(pagesCacheMock.getByExternalKey(pageExternalKey)).andReturn(pageMock);		
 		EasyMock.replay(cacheInstancesMock, pagesCacheMock, modelBuilderMock, templateEngineMock, pageMock);	
 		WPBPage result = pageContentBuilder.findWebPage(pageExternalKey);

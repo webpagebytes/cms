@@ -171,7 +171,7 @@ public void test_execute_plainhtml()
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
 		EasyMock.expect(pageModuleMock.getIsTemplateSource()).andReturn(0);
 		EasyMock.expect(pageModuleMock.getHtmlSource()).andReturn(htmlSource);
-		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
+		EasyMock.expect(cacheInstancesMock.getPageModuleCache()).andReturn(pageModuleCacheMock);
 		
 		StringWriter outWriter = new StringWriter();
 		EasyMock.expect(envMock.getOut()).andReturn(outWriter);
@@ -218,7 +218,7 @@ public void test_execute_templatehtml()
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(key)).andReturn(pageModuleMock);
 		EasyMock.expect(pageModuleMock.getIsTemplateSource()).andReturn(1);
 
-		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
+		EasyMock.expect(cacheInstancesMock.getPageModuleCache()).andReturn(pageModuleCacheMock);
 
 		StringWriter outWriter = new StringWriter();
 		EasyMock.expect(envMock.getOut()).andReturn(outWriter);
@@ -267,7 +267,7 @@ public void test_execute_catch_exception()
 		WPBPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(name)).andThrow(new WPBIOException(""));
 		
-		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
+		EasyMock.expect(cacheInstancesMock.getPageModuleCache()).andReturn(pageModuleCacheMock);
 
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		
@@ -303,7 +303,7 @@ public void test_execute_noPageModule()
 		WPBPageModulesCache pageModuleCacheMock = PowerMock.createMock(WPBPageModulesCache.class);
 		EasyMock.expect(pageModuleCacheMock.getByExternalKey(name)).andReturn(null);
 		
-		EasyMock.expect(cacheInstancesMock.getWBWebPageModuleCache()).andReturn(pageModuleCacheMock);
+		EasyMock.expect(cacheInstancesMock.getPageModuleCache()).andReturn(pageModuleCacheMock);
 
 		EasyMock.replay(cacheInstancesMock, templateEngineMock, envMock, pageModuleMock, pageModuleCacheMock);
 		

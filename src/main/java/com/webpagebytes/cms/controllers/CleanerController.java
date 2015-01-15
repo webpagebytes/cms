@@ -48,7 +48,7 @@ import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
@@ -59,7 +59,7 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 	
 	public CleanerController()
 	{
-		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
 
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new JSONToFromObjectConverter();

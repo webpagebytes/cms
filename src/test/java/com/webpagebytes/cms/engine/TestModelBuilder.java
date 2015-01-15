@@ -119,7 +119,7 @@ public void test_populateModelForWebPage()
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);		
 		EasyMock.expect(webPageMock.getExternalKey()).andReturn(pageExternalKey);		
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(paramsCacheMock.getAllForOwner("abc")).andReturn(pageParams);
 		
 		EasyMock.replay(requestMock, webPageMock, cacheInstancesMock, paramsCacheMock, configurationMock);
@@ -170,7 +170,7 @@ public void test_populateUriParameters_OK_language_and_country()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -235,7 +235,7 @@ public void test_populateUriParameters_OK_only_language()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -299,7 +299,7 @@ public void test_populateUriParameters_empty_urlmatcher()
 		pageParams.add(parameter1);		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -371,7 +371,7 @@ public void test_populateUriParameters_language_not_supported()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -453,7 +453,7 @@ public void test_populateUriParameters_no_language_param()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -533,7 +533,7 @@ public void test_populateUriParameters_no_country_param()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);				
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(cacheInstancesMock.getProjectCache()).andReturn(projectCacheMock);
 		
 		Pair<String, String> defaultLocale = new Pair<String, String>("en", "");
@@ -621,7 +621,7 @@ public void test_populateGlobalParameters()
 		
 		
 		WPBParametersCache paramsCacheMock = EasyMock.createMock(WPBParametersCache.class);		
-		EasyMock.expect(cacheInstancesMock.getWBParameterCache()).andReturn(paramsCacheMock);
+		EasyMock.expect(cacheInstancesMock.getParameterCache()).andReturn(paramsCacheMock);
 		EasyMock.expect(paramsCacheMock.getAllForOwner("")).andReturn(globalParams);
 		
 		EasyMock.replay(cacheInstancesMock, paramsCacheMock);

@@ -28,7 +28,7 @@ import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBMessagesCache;
 import com.webpagebytes.cms.WPBModel;
 import com.webpagebytes.cms.engine.WPBCacheInstances;
-import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.template.FreeMarkerArticleDirective;
 import com.webpagebytes.cms.template.FreeMarkerResourcesFactory;
@@ -52,6 +52,7 @@ private FreeMarkerTemplateLoader templateLoaderMock;
 private FreeMarkerModuleDirective moduleDirectiveMock;
 private FreeMarkerImageDirective imageDirectiveMock;
 private FreeMarkerArticleDirective articleDirectiveMock;
+private FreeMarkerUriDirective uriDirectiveMock;
 private WPBMessagesCache messageCacheMock;
 private WPBCacheInstances cacheInstancesMock;
 private WPBFileStorage cloudStorageMock;
@@ -61,7 +62,7 @@ private WPBFileStorage cloudFileStorageMock;
 public void setUp()
 {
 	cloudFileStorageMock = EasyMock.createMock(WPBFileStorage.class);
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", cloudFileStorageMock);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", cloudFileStorageMock);
 
 	cacheFactoryMock = PowerMock.createMock(WPBCacheFactory.class);
 	freeMarkerFactoryMock = PowerMock.createMock(FreeMarkerResourcesFactory.class);
@@ -73,7 +74,7 @@ public void setUp()
 	cloudStorageMock = PowerMock.createMock(WPBFileStorage.class);
 	messageCacheMock = PowerMock.createMock(WPBMessagesCache.class);
 	cacheInstancesMock = PowerMock.createMock(WPBCacheInstances.class);
-	
+	uriDirectiveMock = PowerMock.createMock(FreeMarkerUriDirective.class);
 	Logger loggerMock = PowerMock.createMock(Logger.class);
 	Whitebox.setInternalState(WPBFreeMarkerTemplateEngine.class, loggerMock);
 }
@@ -81,7 +82,7 @@ public void setUp()
 @After
 public void tearDown()
 {
-	Whitebox.setInternalState(WPBCloudFileStorageFactory.class, "instance", (WPBFileStorage)null);
+	Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", (WPBFileStorage)null);
 }
 
 
@@ -97,7 +98,7 @@ public void test_initialize()
 	EasyMock.expect(freeMarkerFactoryMock.createWBFreeMarkerTemplateLoader(cacheInstancesMock)).andReturn(templateLoaderMock);
 	EasyMock.expect(freeMarkerFactoryMock.createWBFreeMarkerImageDirective()).andReturn(imageDirectiveMock);
 	EasyMock.expect(freeMarkerFactoryMock.createWBFreeMarkerArticleDirective()).andReturn(articleDirectiveMock);
-	
+	EasyMock.expect(freeMarkerFactoryMock.createFreeMarkerUriDirective()).andReturn(uriDirectiveMock);
 	configurationMock.setLocalizedLookup(false);
 	configurationMock.setTemplateLoader(templateLoaderMock);
 	moduleDirectiveMock.initialize(templateEngine, cacheInstancesMock);
@@ -105,7 +106,8 @@ public void test_initialize()
 	configurationMock.setSharedVariable(WPBModel.MODULE_DIRECTIVE, moduleDirectiveMock);
 	configurationMock.setSharedVariable(WPBModel.IMAGE_DIRECTIVE, imageDirectiveMock);
 	configurationMock.setSharedVariable(WPBModel.ARTICLE_DIRECTIVE, articleDirectiveMock);
-	
+	configurationMock.setSharedVariable(WPBModel.URI_DIRECTIVE, uriDirectiveMock);
+
 	Capture<String> captureDefaultEncoding = new Capture<String>();
 	Capture<String> captureOutputEncoding = new Capture<String>();	
 	configurationMock.setDefaultEncoding(EasyMock.capture(captureDefaultEncoding));

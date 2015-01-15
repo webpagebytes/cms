@@ -63,7 +63,7 @@ class FreeMarkerArticleDirective implements TemplateDirectiveModel {
     	
         try
         {
-        	WPBArticle article = cacheInstances.getWBArticleCache().getByExternalKey(articleKeyStr);
+        	WPBArticle article = cacheInstances.getArticleCache().getByExternalKey(articleKeyStr);
         	if (article == null)
         	{
         		throw new TemplateModelException("WBFreeMarkerArticleDirective externalKey does not match an existing Article : " + articleKeyStr);       

@@ -66,7 +66,7 @@ public class FreeMarkerModuleDirective extends FreeMarkerDirectiveBase {
     	
         try
         {
-        	WPBPageModule pageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
+        	WPBPageModule pageModule = cacheInstances.getPageModuleCache().getByExternalKey(externalKey);
         	if (pageModule == null)
         	{
         		throw new TemplateModelException("WBFreeMarkerModuleDirective directive name does not match any existing page module: " + externalKey);       

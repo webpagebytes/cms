@@ -66,7 +66,7 @@ public class ModelBuilder {
 
 	public void populateModelForWebPage(WPBPage page, InternalModel model) throws WPBException
 	{
-		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
+		WPBParametersCache parametersCache = cacheInstances.getParameterCache();
 		
 		List<WPBParameter> wbPageParams = parametersCache.getAllForOwner(page.getExternalKey());
 		Map<String, String> pageParams = new HashMap<String, String>();
@@ -83,7 +83,7 @@ public class ModelBuilder {
 										URLMatcherResult urlMatcherResult, InternalModel model) throws WPBException
 	{
 		WPBProjectCache projectCache = cacheInstances.getProjectCache();
-		WPBParametersCache parametersCache = cacheInstances.getWBParameterCache();
+		WPBParametersCache parametersCache = cacheInstances.getParameterCache();
 	
 		// populate the URL_REQUEST_PARAMETERS_KEY
 		Pair<String, String> defaultLocale = projectCache.getDefaultLocale();
@@ -159,7 +159,7 @@ public class ModelBuilder {
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();
-		List<WPBParameter> wbGlobalParams = cacheInstances.getWBParameterCache().getAllForOwner("");
+		List<WPBParameter> wbGlobalParams = cacheInstances.getParameterCache().getAllForOwner("");
 		for(WPBParameter param: wbGlobalParams)
 		{
 			globalParams.put(param.getName(), param.getValue());

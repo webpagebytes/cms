@@ -37,7 +37,7 @@ public interface WPBModel {
 	public static final String MODULE_DIRECTIVE = "wpbModule";
 	public static final String IMAGE_DIRECTIVE = "wpbImage";
 	public static final String ARTICLE_DIRECTIVE = "wpbArticle";
-	public static final String TEXT_FORMAT_DIRECTIVE = "wpbFormatText";
+	public static final String URI_DIRECTIVE = "wpbUri";
 	public static final String FORMAT_TEXT_METHOD = "wpbFormatText";
 	
 	

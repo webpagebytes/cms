@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.template;
 
 import java.io.IOException;
+
 import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBModel;
 import com.webpagebytes.cms.engine.WPBCacheInstances;
-import com.webpagebytes.cms.engine.WPBCloudFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
@@ -65,9 +66,7 @@ public class WPBFreeMarkerTemplateEngine implements WPBTemplateEngine {
 		configuration.setOutputEncoding("UTF-8");
 		templateLoader = wbFreeMarkerFactory.createWBFreeMarkerTemplateLoader(cacheInstances);
  
-		// TBD
-		//blobHandler = new WBGaeBlobHandler();
-		cloudFileStorage = WPBCloudFileStorageFactory.getInstance();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
 		
 		configuration.setLocalizedLookup(false);
 		configuration.setTemplateLoader( templateLoader );	
@@ -83,7 +82,10 @@ public class WPBFreeMarkerTemplateEngine implements WPBTemplateEngine {
 		FreeMarkerArticleDirective articleDirective = wbFreeMarkerFactory.createWBFreeMarkerArticleDirective();
 		articleDirective.initialize(this, cacheInstances);
 		configuration.setSharedVariable(WPBModel.ARTICLE_DIRECTIVE, articleDirective);
-				
+	
+		FreeMarkerUriDirective uriDirective = wbFreeMarkerFactory.createFreeMarkerUriDirective();
+		uriDirective.initialize(this, cacheInstances);
+		configuration.setSharedVariable(WPBModel.URI_DIRECTIVE, uriDirective);
 	}
 	public void process(String templateName, Map<String, Object> rootMap, Writer out) throws WPBException
 	{
@@ -113,12 +115,12 @@ public class WPBFreeMarkerTemplateEngine implements WPBTemplateEngine {
 					locale = new Locale(localeLanguage);
 				}
 				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process create resource bundle for " + locale.toString());	
-				CmsResourceBundle r = wbFreeMarkerFactory.createResourceBundle(cacheInstances.getWBMessageCache(), locale);
+				CmsResourceBundle r = wbFreeMarkerFactory.createResourceBundle(cacheInstances.getMessageCache(), locale);
 				ResourceBundleModel fmBundle = new ResourceBundleModel(r, new DefaultObjectWrapper()); 
 				rootMap.put(WPBModel.LOCALE_MESSAGES, fmBundle);
 			} else
 			{
-				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process found wbmessages in root " + templateName);	
+				log.log(Level.INFO, "WBFreeMarkerTemplateEngine process found wpbmessages in root " + templateName);	
 			}
 			
 			Set<String> rootKeys = rootMap.keySet();

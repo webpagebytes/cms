@@ -19,6 +19,7 @@ package com.webpagebytes.cms;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.exception.WPBLocaleException;
 import com.webpagebytes.cms.exception.WPBTemplateException;
+import com.webpagebytes.cms.utility.CmsConfiguration;
+import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 
 /**
@@ -91,6 +94,7 @@ public class WPBPublicContentServlet extends HttpServlet {
 	WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 	private WPBCacheInstances cacheInstances;
 	private ModelBuilder modelBuilder;
+	private String cache_query_param = CACHE_QUERY_PARAM;
 	
 public WPBPublicContentServlet()
 {
@@ -101,9 +105,9 @@ public void initUrls() throws WPBIOException
 {
 	for(int i=0; i<4; i++)
 	{
-		Set<String> uris = cacheInstances.getWBUriCache().getAllUris(i);
+		Set<String> uris = cacheInstances.getUriCache().getAllUris(i);
 		this.urlMatcherArray[i] = new URLMatcher();
-		this.urlMatcherArray[i].initialize(uris, cacheInstances.getWBUriCache().getCacheFingerPrint());
+		this.urlMatcherArray[i].initialize(uris, cacheInstances.getUriCache().getCacheFingerPrint());
 	}	
 }
 
@@ -149,6 +153,12 @@ public void init() throws ServletException
 			cacheFactory.getMessagesCacheInstance(),
 			cacheFactory.getProjectCacheInstance());
 
+	CmsConfiguration configuration = CmsConfigurationFactory.getConfiguration();
+	Map<String, String> generalParams = configuration.getSectionParams(WPBSECTION.SECTION_GENERAL);
+	if ((generalParams != null) && generalParams.containsKey("cache_query_param"))
+	{
+	    cache_query_param = generalParams.get("cache_query_param");
+	}
 	String initUriPrefix = servletUtility.getContextPath(this);
 	if (initUriPrefix.length() > 0)
 	{
@@ -173,13 +183,13 @@ public void init() throws ServletException
 	
 private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 {
-	int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
+	int currentHttpIndex = cacheInstances.getUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 	URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
 	//reinitialize the matchurlToPattern if needed
-	if (cacheInstances.getWBUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
+	if (cacheInstances.getUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
 	{
-		Set<String> allUris = cacheInstances.getWBUriCache().getAllUris(currentHttpIndex);
-		urlMatcher.initialize(allUris, cacheInstances.getWBUriCache().getCacheFingerPrint());
+		Set<String> allUris = cacheInstances.getUriCache().getAllUris(currentHttpIndex);
+		urlMatcher.initialize(allUris, cacheInstances.getUriCache().getCacheFingerPrint());
 	}
 	return urlMatcher;
 }
@@ -196,8 +206,8 @@ private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, Http
 	Integer isTemplateSource = webPage.getIsTemplateSource();
 	if (isTemplateSource != 1)
 	{
-		String cqp = req.getParameter(CACHE_QUERY_PARAM);
-		if (cqp != null && cqp.equals(webPage.getHash().toString()))
+		String cqp = req.getParameter(cache_query_param);
+		if (cqp != null)
 		{
 			// this is a request that can be cached, to do customize the cache time
 			resp.addHeader("cache-control", "max-age=86400");
@@ -245,8 +255,8 @@ private void handleRequestTypeFile(String fileExternalKey, URLMatcherResult urlM
 	    }	    	    
 	}
 	
-	String cqp = req.getParameter(CACHE_QUERY_PARAM);
-	if (cqp != null && cqp.equals(wbFile.getHash().toString()))
+	String cqp = req.getParameter(cache_query_param);
+	if (cqp != null)
 	{
 		// there is a request that can be cached
 		resp.addHeader("cache-control", "max-age=86400");
@@ -304,8 +314,8 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 			}
 		} else
 		{
-			int currentHttpIndex = cacheInstances.getWBUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
-			WPBUri wbUri = cacheInstances.getWBUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
+			int currentHttpIndex = cacheInstances.getUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
+			WPBUri wbUri = cacheInstances.getUriCache().get(urlMatcherResult.getUrlPattern(), currentHttpIndex);
 			
 			if ((null == wbUri) || (wbUri.getEnabled() == null) || (wbUri.getEnabled() == 0))
 			{

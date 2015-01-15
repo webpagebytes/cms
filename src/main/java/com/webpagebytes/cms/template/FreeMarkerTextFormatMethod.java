@@ -17,16 +17,16 @@
 package com.webpagebytes.cms.template;
 
 import java.text.MessageFormat;
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class FreeMarkerTextFormatMethod implements TemplateMethodModel {
+public class FreeMarkerTextFormatMethod implements TemplateMethodModelEx {
 
 	public Object exec(java.util.List arguments) throws TemplateModelException
     {
 		if (arguments.size() == 0) return "";
 		
-		String pattern = (String) arguments.get(0);
+		String pattern = arguments.get(0).toString();
 		arguments.remove(0);
 		return (new MessageFormat(pattern)).format(arguments.toArray(), new StringBuffer(), null).toString();
     }

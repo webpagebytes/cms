@@ -51,7 +51,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 	{
 		try
 		{
-			WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(externalKey);
+			WPBPage wbWebPage = cacheInstances.getPageCache().getByExternalKey(externalKey);
 			if (null != wbWebPage)
 			{
 				return new FreeMarkerTemplateObject(externalKey, FreeMarkerTemplateObject.TemplateType.TEMPLATE_PAGE, wbWebPage.getLastModified().getTime());
@@ -66,7 +66,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 	{
 		try
 		{
-			WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(externalKey);
+			WPBPageModule wbWebPageModule = cacheInstances.getPageModuleCache().getByExternalKey(externalKey);
 			if (null != wbWebPageModule)
 			{
 				return new FreeMarkerTemplateObject(externalKey, FreeMarkerTemplateObject.TemplateType.TEMPLATE_MODULE, wbWebPageModule.getLastModified().getTime());
@@ -102,7 +102,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(templateObject.getExternalKey());
+				WPBPage wbWebPage = cacheInstances.getPageCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPage)
 				{
 					return wbWebPage.getLastModified().getTime();
@@ -116,7 +116,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(templateObject.getExternalKey());
+				WPBPageModule wbWebPageModule = cacheInstances.getPageModuleCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPageModule)
 				{
 					return wbWebPageModule.getLastModified().getTime();
@@ -144,7 +144,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBPage wbWebPage = cacheInstances.getWBWebPageCache().getByExternalKey(templateObject.getExternalKey());
+				WPBPage wbWebPage = cacheInstances.getPageCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPage)
 				{
 					return new StringReader(wbWebPage.getHtmlSource());
@@ -158,7 +158,7 @@ public class FreeMarkerTemplateLoader implements TemplateLoader {
 		{
 			try
 			{
-				WPBPageModule wbWebPageModule = cacheInstances.getWBWebPageModuleCache().getByExternalKey(templateObject.getExternalKey());
+				WPBPageModule wbWebPageModule = cacheInstances.getPageModuleCache().getByExternalKey(templateObject.getExternalKey());
 				if (null != wbWebPageModule)
 				{
 					return new StringReader(wbWebPageModule.getHtmlSource());

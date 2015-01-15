@@ -53,7 +53,7 @@ public class PageContentBuilder {
 	
 	public WPBPage findWebPage(String pageExternalKey) throws WPBException
 	{
-		return cacheInstances.getWBWebPageCache().getByExternalKey(pageExternalKey);		
+		return cacheInstances.getPageCache().getByExternalKey(pageExternalKey);		
 	}
 		
 	private WPBPageModelProvider getPageModelProvider(String controllerClassName) throws WPBException
