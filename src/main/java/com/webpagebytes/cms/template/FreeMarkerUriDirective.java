@@ -74,10 +74,10 @@ public class FreeMarkerUriDirective implements TemplateDirectiveModel {
             uri = strWriter.toString().trim();
         }
         
-        String fileUri = "";
-        if (params.containsKey("fileUri"))
+        String uriFile = "";
+        if (params.containsKey("uriFile"))
         {
-            fileUri = (String) DeepUnwrap.unwrap((TemplateModel) params.get("fileUri"));
+            uriFile = (String) DeepUnwrap.unwrap((TemplateModel) params.get("uriFile"));
         }
         
         
@@ -106,7 +106,7 @@ public class FreeMarkerUriDirective implements TemplateDirectiveModel {
 
             if (wpbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
             {
-                WPBFile file = cacheInstances.getFilesCache().geByPath(fileUri);
+                WPBFile file = cacheInstances.getFilesCache().geByPath(uriFile);
                 if (file != null && (file.getDirectoryFlag()!=1))
                 {
                     if (uri.indexOf("&")>0)
