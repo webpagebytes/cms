@@ -16,8 +16,10 @@
 
 package com.webpagebytes.cms.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ExportImportController extends Controller {
@@ -40,6 +44,7 @@ public class ExportImportController extends Controller {
 
 	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+	    File tempFile = null;
 		try
 		{
 			  ServletFileUpload upload = new ServletFileUpload();
@@ -49,8 +54,22 @@ public class ExportImportController extends Controller {
 		        FileItemStream item = iterator.next(); 
 		        if (!item.isFormField() && item.getFieldName().equals("file")) {
 		          InputStream is = item.openStream();
-		          storageExporter.importFromZip(is);		  		
+		          tempFile = File.createTempFile("wpbImport", null);
+		          FileOutputStream fos = new FileOutputStream(tempFile);
+		          IOUtils.copy(is, fos);
+		          fos.close();
 		          
+		          // because the zip file entries cannot be predicted we needto import in two step1
+		          // step 1 when we create the resource records
+		          // step 2 when we import the files, pages, modules and articles content
+		          InputStream is1 = new FileInputStream(tempFile);
+		          storageExporter.importFromZipStep1(is1);
+		          is1.close();
+
+                  InputStream is2 = new FileInputStream(tempFile);
+                  storageExporter.importFromZipStep2(is2);
+                  is2.close();
+
 		         org.json.JSONObject returnJson = new org.json.JSONObject();
 		          returnJson.put(DATA, "");			
 		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -61,6 +80,16 @@ public class ExportImportController extends Controller {
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WPBErrors.WB_CANNOT_IMPORT_PROJECT);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+		}
+		finally
+		{
+		    if (tempFile != null)
+		    {
+		        if (! tempFile.delete())
+		        {
+		            tempFile.deleteOnExit();
+		        }
+		    }
 		}
 	}
 

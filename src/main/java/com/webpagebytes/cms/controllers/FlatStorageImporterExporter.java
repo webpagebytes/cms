@@ -116,7 +116,7 @@ public class FlatStorageImporterExporter {
         
 	}
 
-	public void importFromZip(InputStream is) throws WPBIOException
+	public void importFromZipStep1(InputStream is) throws WPBIOException
 	{
 		ZipInputStream zis = new ZipInputStream(is);
 		// we need to stop the notifications during import
@@ -150,11 +150,7 @@ public class FlatStorageImporterExporter {
 					if (name.indexOf("/parameters/")>=0 && name.indexOf("metadata.xml")>=0)
 					{
 						importParameter(zis);
-					} else
-					if (name.indexOf("pageSource.txt")>=0)
-					{
-						importWebPageSource(zis, ze.getName());
-					}
+					} 
 					else
 					if (name.indexOf("metadata.xml")>=0)
 					{
@@ -163,10 +159,6 @@ public class FlatStorageImporterExporter {
 				} else
 				if (name.indexOf(PATH_SITE_PAGES_MODULES) >= 0)
 				{
-					if (name.indexOf("moduleSource.txt")>=0)
-					{
-						importWebPageModuleSource(zis, ze.getName());
-					} else
 					if (name.indexOf("metadata.xml")>=0)
 					{						
 						importPageModule(zis);
@@ -174,10 +166,6 @@ public class FlatStorageImporterExporter {
 				} else				
 				if (name.indexOf(PATH_ARTICLES) >= 0)
 				{
-					if (name.indexOf("articleSource.txt")>=0)
-					{
-						importArticleSource(zis, ze.getName());
-					} else
 					if (name.indexOf("metadata.xml")>=0)
 					{						
 						importArticle(zis);
@@ -195,10 +183,6 @@ public class FlatStorageImporterExporter {
 					if (name.indexOf("metadata.xml")>=0)
 					{
 						importFile(zis);
-					} else
-					if (name.indexOf("/content/")>=0 && !name.endsWith("/"))
-					{
-						importFileContent(zis, ze.getName());
 					}
 				} else
 				if (name.indexOf(PATH_LOCALES)>=0)
@@ -213,15 +197,63 @@ public class FlatStorageImporterExporter {
 		} catch (Exception e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
-			throw new WPBIOException("cannot import from  zip", e);
+			throw new WPBIOException("cannot import from  zip step 1", e);
 		}
-		finally
-		{
-		    dataStorage.startNotifications();
-		}
-		resetCache();
 	}
-	
+
+   public void importFromZipStep2(InputStream is) throws WPBIOException
+    {
+        ZipInputStream zis = new ZipInputStream(is);
+        // we need to stop the notifications during import
+        dataStorage.stopNotifications();
+        try
+        {
+            ZipEntry ze = null;
+            while ((ze = zis.getNextEntry()) != null)
+            {
+                String name = ze.getName();
+                if (name.indexOf(PATH_SITE_PAGES)>=0)
+                {
+                    if (name.indexOf("pageSource.txt")>=0)
+                    {
+                        importWebPageSource(zis, ze.getName());
+                    }
+                } else
+                if (name.indexOf(PATH_SITE_PAGES_MODULES) >= 0)
+                {
+                    if (name.indexOf("moduleSource.txt")>=0)
+                    {
+                        importWebPageModuleSource(zis, ze.getName());
+                    }
+                } else              
+                if (name.indexOf(PATH_ARTICLES) >= 0)
+                {
+                    if (name.indexOf("articleSource.txt")>=0)
+                    {
+                        importArticleSource(zis, ze.getName());
+                    }
+                } else
+                if (name.indexOf(PATH_FILES) >= 0)
+                {
+                    if (name.indexOf("/content/")>=0 && !name.endsWith("/"))
+                    {
+                        importFileContent(zis, ze.getName());
+                    }
+                }
+                zis.closeEntry();
+            }
+        } catch (Exception e)
+        {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new WPBIOException("cannot import from  zip step 2", e);
+        }
+        finally
+        {
+            dataStorage.startNotifications();
+        }
+        resetCache();
+    }
+
 	private byte[] getBytesFromInputStream(InputStream is) throws IOException
 	{
 		byte buffer[] = new byte[4096];
