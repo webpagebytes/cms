@@ -749,22 +749,27 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+	    InputStream is = null;
+	    OutputStream os = null;
 		try
 		{
 			Long key = Long.valueOf((String)request.getAttribute("key"));
 			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
 			WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, wbfile.getBlobKey());
-			InputStream is = cloudFileStorage.getFileContent(cloudFile);
-			response.setContentType(wbfile.getContentType());
+			is = cloudFileStorage.getFileContent(cloudFile);
+			response.setContentType(wbfile.getAdjustedContentType());
 			response.setContentLength(wbfile.getSize().intValue());
-			OutputStream os = response.getOutputStream();
+			os = response.getOutputStream();
 			IOUtils.copy(is, os);
 			os.flush();
-			IOUtils.closeQuietly(is);
-			IOUtils.closeQuietly(os);
 		} catch (Exception e)		
 		{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		finally
+		{
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(os);		    
 		}
 	}
 

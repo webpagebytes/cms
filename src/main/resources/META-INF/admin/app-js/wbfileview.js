@@ -92,6 +92,16 @@ $().ready( function () {
 		alert(data);
 	}
 	
+	var displayFolderView = function(file){
+	   // for a folder hide some UI elements
+	   $("#wbUpdateFileDataBtn").hide();
+	   $("#wbUpdateUploadFileBtn").hide();
+	   $("#wbDownloadFileDataBtn").hide();
+	   $("#group-size").hide();
+	   $("#group-crc").hide();
+	   $("#group-type").hide();
+	   $("#group-adjust-type").hide();
+	}
 	$('#wbuFileUploadUpdateForm').ajaxForm({ success: fSuccessUploadFile, error: fErrorUploadFile });
 
 	var fileKey = getURLParameter('privkey'); 
@@ -106,10 +116,13 @@ $().ready( function () {
 		$('#collapseFileDetails').wbDisplayObject().display(data);
 		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['privkey'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
+		if (data["directoryFlag"] == "1") {
+		  displayFolderView(data);
+		}
 		$('#spinnerTable').WBSpinner().hide();
 		var contentType = data["adjustedContentType"] || "";
 		if (contentType.toLowerCase().startsWith("image")) {
-			var imgHtml = "<img src='{0}'>".format(data['publicUrl']);
+			var imgHtml = "<img src='./wbresource/{0}'>".format(encodeURIComponent(data['privkey']));
 			$('.wbimagecontent').html(imgHtml);			
 		}
 		if (contentType.toLowerCase().startsWith("video")) {
