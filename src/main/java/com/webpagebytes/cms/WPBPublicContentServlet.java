@@ -80,7 +80,8 @@ public class WPBPublicContentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(WPBPublicContentServlet.class.getName());
 	public static final String CACHE_QUERY_PARAM = "cqp";
-	public static final String CONTEXT_PATH = "wb-context-path";
+	public static final String CACHE_MAX_AGE = "31536000"; // it's one year in seconds
+	public static final String CONTEXT_PATH = "wpb-context-path";
 
 	private WPBServletUtility servletUtility = null;
 	
@@ -95,6 +96,7 @@ public class WPBPublicContentServlet extends HttpServlet {
 	private WPBCacheInstances cacheInstances;
 	private ModelBuilder modelBuilder;
 	private String cache_query_param = CACHE_QUERY_PARAM;
+	private String cache_max_age = CACHE_MAX_AGE;
 	
 public WPBPublicContentServlet()
 {
@@ -159,6 +161,18 @@ public void init() throws ServletException
 	{
 	    cache_query_param = generalParams.get("cache_query_param");
 	}
+    if ((generalParams != null) && generalParams.containsKey("cache_max_age"))
+    {
+        try
+        {
+            cache_max_age = generalParams.get("cache_max_age");
+            Integer.valueOf(cache_max_age);
+        } catch (NumberFormatException e)
+        {
+            cache_max_age = CACHE_MAX_AGE;
+        }
+    }
+	
 	String initUriPrefix = servletUtility.getContextPath(this);
 	if (initUriPrefix.length() > 0)
 	{
@@ -210,7 +224,7 @@ private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, Http
 		if (cqp != null)
 		{
 			// this is a request that can be cached, to do customize the cache time
-			resp.addHeader("cache-control", "max-age=86400");
+			resp.addHeader("cache-control", "max-age=".concat(cache_max_age));
 		}
 	} else
 	{
@@ -259,23 +273,13 @@ private void handleRequestTypeFile(String fileExternalKey, URLMatcherResult urlM
 	if (cqp != null)
 	{
 		// there is a request that can be cached
-		resp.addHeader("cache-control", "max-age=86400");
+		resp.addHeader("cache-control", "max-age=".concat(cache_max_age));
 	}
 	ServletOutputStream os = resp.getOutputStream();
 	resp.setContentType(fileResponse.getAdjustedContentType());													
 	fileContentBuilder.writeFileContent(fileResponse, os);
 }
 
-private boolean localFileContentHandler(HttpServletRequest req, HttpServletResponse resp, String uri) throws WPBIOException
-{
-	if (uri.startsWith(LocalCloudFileContentBuilder.LOCAL_FILE_SERVE_URL))
-	{
-		localFileContentBuilder.serveFile(req, resp, uri);
-		return true;
-	}
-	return false;
-	
-}
 private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 	throws ServletException,
 	java.io.IOException
@@ -305,13 +309,8 @@ private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
 		URLMatcherResult urlMatcherResult = urlMatcher.matchUrlToPattern(uri);
 		if (urlMatcherResult == null)
 		{
-			// no url association found, try to see if the request matches the magic LocalCloudFileContentBuilder.LOCAL_FILE_SERVE_URL
-			boolean localFileOperation = localFileContentHandler(req, resp, uri);
-			if (!localFileOperation)
-			{
-				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-				return;
-			}
+			resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
 		} else
 		{
 			int currentHttpIndex = cacheInstances.getUriCache().httpToOperationIndex(req.getMethod().toUpperCase());

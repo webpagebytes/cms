@@ -297,7 +297,7 @@ private void handleRequestTypeText_cache(Integer templateSource)
 	EasyMock.expect(requestMock.getParameter(WPBPublicContentServlet.CACHE_QUERY_PARAM)).andReturn(hash.toString());
 	EasyMock.expect(pageMock.getHash()).andReturn(hash);
 	
-	responseMock.addHeader("cache-control", "max-age=86400");
+	responseMock.addHeader("cache-control", "max-age=31536000");
 	String contentType="plain/text";
 	EasyMock.expect(pageMock.getContentType()).andReturn(contentType);	
 	responseMock.setContentType(contentType);
