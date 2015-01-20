@@ -91,7 +91,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 		}
 	}
 
-	private String getDirectoryFullPath(String externalKey) throws WPBException 
+	public static String getDirectoryFullPath(String externalKey, WPBAdminDataStorage adminStorage) throws WPBException 
 	{
 	    if (externalKey == null || externalKey.length() == 0)
 	    {
@@ -104,7 +104,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	    {
 	        if (parentExtKey != null && parentExtKey.length()>0)
 	        {
-	            WPBFile parent = getDirectory(parentExtKey);
+	            WPBFile parent = getDirectory(parentExtKey, adminStorage);
 	            if (parent != null)
 	            {
 	                result = parent.getFileName() + "/" + result;
@@ -131,7 +131,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	    }
 	}
 	
-	private WPBFile getDirectory(String externalKey) throws WPBException
+	public static WPBFile getDirectory(String externalKey, WPBAdminDataStorage adminStorage) throws WPBException
 	{
 	    List<WPBFile> result = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);
 	    if (result.size() == 1)
@@ -255,8 +255,20 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	
 	private void addFileToDirectory(WPBFile parentDirectory, WPBFile file, InputStream is) throws WPBException, IOException
 	{
-	     String uniqueId = adminStorage.getUniqueId();
-         String filePath = uniqueId + "/" + file.getFileName();
+	    String dirPath = "";
+	    String filePath  = null;
+	    if (parentDirectory != null)
+	    {
+	        dirPath = getDirectoryFullPath(parentDirectory.getExternalKey(), adminStorage);
+	    }
+	    if (dirPath.length()>0)
+	    {
+	        filePath = dirPath + "/" + file.getFileName();
+	    } else
+	    {
+	        filePath = file.getFileName();
+	    }
+	     
          WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
          cloudFileStorage.storeFile(is, cloudFile);
          cloudFileStorage.updateContentType(cloudFile, ContentTypeDetector.fileNameToContentType(file.getFileName()));
@@ -368,7 +380,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	                if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
 	                {
 	                    String ownerExtKey = Streams.asString(item.openStream());
-	                    ownerFile = getDirectory(ownerExtKey);	            
+	                    ownerFile = getDirectory(ownerExtKey, adminStorage);	            
 	                } else
 	                if (!item.isFormField() && item.getFieldName().equals("file")) {
 	                  
@@ -423,7 +435,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        if (item.isFormField() && item.getFieldName().equals("ownerExtKey"))
 	        {
 	            String ownerExtKey = Streams.asString(item.openStream());
-	            ownerFile = getDirectory(ownerExtKey);              
+	            ownerFile = getDirectory(ownerExtKey, adminStorage);              
 	        } else
 	        if (!item.isFormField() && item.getFieldName().equals("file")) {
 	            InputStream stream = item.openStream();
@@ -437,7 +449,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	                Long key = Long.valueOf((String)request.getAttribute("key"));
 	                wbFile = adminStorage.get(key, WPBFile.class);
 	                
-	                ownerFile = getDirectory(wbFile.getOwnerExtKey());
+	                ownerFile = getDirectory(wbFile.getOwnerExtKey(), adminStorage);
   
 	                //old file need to be deleted from cloud
 	                String oldFilePath = wbFile.getBlobKey();
@@ -531,10 +543,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 				httpServletToolbox.writeBodyResponseAsJson(response, "", errors);
 				return;
 			}
-			WPBFile existingImage = adminStorage.get(key, WPBFile.class);
-			existingImage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-			existingImage.setAdjustedContentType(wbfile.getAdjustedContentType());
-			WPBFile newFile = adminStorage.update(existingImage);
+			WPBFile existingFile = adminStorage.get(key, WPBFile.class);
+			existingFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+			existingFile.setAdjustedContentType(wbfile.getAdjustedContentType());
+			WPBFile newFile = adminStorage.update(existingFile);
 				
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));			
@@ -638,7 +650,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			{
 			    ownerOfOwner = ownerFile.getOwnerExtKey();
 			}
-            String dirPath = getDirectoryFullPath(ownerOfOwner);
+            String dirPath = getDirectoryFullPath(ownerOfOwner, adminStorage);
             additionalDataJson.put("ownerFullDirectoryPath", dirPath);
 
 			returnJson.put(ADDTIONAL_DATA, additionalDataJson);
@@ -673,7 +685,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
             org.json.JSONObject additionalData = new org.json.JSONObject();
 
-            String dirPath = getDirectoryFullPath(wbFile.getOwnerExtKey());
+            String dirPath = getDirectoryFullPath(wbFile.getOwnerExtKey(), adminStorage);
             additionalData.put("ownerFullDirectoryPath", dirPath);
             
 			String includeLinks = request.getParameter("include_links");

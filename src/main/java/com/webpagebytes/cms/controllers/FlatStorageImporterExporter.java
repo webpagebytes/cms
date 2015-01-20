@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +54,7 @@ import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class FlatStorageImporterExporter {
@@ -356,7 +356,7 @@ public class FlatStorageImporterExporter {
 		}
 	}
 
-	public void importFileContent(ZipInputStream zis, String path) throws WPBIOException
+	public void importFileContent(ZipInputStream zis, String path) throws WPBException
 	{
 		try
 		{
@@ -367,10 +367,16 @@ public class FlatStorageImporterExporter {
 			{
 				// just take the first file, normally there should be a single file
 				WPBFile file = files.get(0);
-				
-				String uniqueId = dataStorage.getUniqueId();
-				String cloudPath = uniqueId + "/" + file.getFileName();
-				WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, cloudPath);
+				String filePath = "";
+				String dirPath = FileController.getDirectoryFullPath(file.getOwnerExtKey(), dataStorage);
+				if (dirPath.length()>0)
+				{
+				    filePath = dirPath + "/" + file.getFileName();
+				} else
+				{
+				    filePath = file.getFileName();
+				}
+				WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, filePath);
 				cloudFileStorage.storeFile(zis, cloudFile);
 				cloudFileStorage.updateContentType(cloudFile, file.getAdjustedContentType());
 			    WPBFileInfo fileInfo = cloudFileStorage.getFileInfo(cloudFile);
