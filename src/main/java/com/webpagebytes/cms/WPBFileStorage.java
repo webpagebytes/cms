@@ -36,7 +36,7 @@ public interface WPBFileStorage {
      * Stores a file in the storage
      * @param is InputStream with the file content
      * @param file Represents a file location
-     * @throws IOException
+     * @throws IOException Exception 
      */
 	public void storeFile(InputStream is, WPBFilePath file) throws IOException;
 	
@@ -44,7 +44,7 @@ public interface WPBFileStorage {
 	 * Provides access to file metadata
 	 * @param file Represents a file location
 	 * @return Returns an instance of WPBFileInfo
-	 * @throws IOException
+	 * @throws IOException Exception
 	 */
 	public WPBFileInfo getFileInfo(WPBFilePath file) throws IOException;
 	
@@ -52,7 +52,7 @@ public interface WPBFileStorage {
 	 * Deletes a file from the storage
 	 * @param file Represents a file location
 	 * @return true if the file was deleted, false otherwise
-	 * @throws IOException
+	 * @throws IOException Exception 
 	 */
 	public boolean deleteFile(WPBFilePath file) throws IOException;
 	
@@ -60,7 +60,7 @@ public interface WPBFileStorage {
 	 * Provides access to a stored file content
 	 * @param file Represents a file location
 	 * @return Returns an InputStream with the file content 
-	 * @throws IOException
+	 * @throws IOException Exception 
 	 */
 	public InputStream getFileContent(WPBFilePath file) throws IOException;
 	
@@ -68,7 +68,7 @@ public interface WPBFileStorage {
 	 * Method to update a file custom properties
 	 * @param file Represents a file location
 	 * @param customProps Map with strings key-values that represent custom properties
-	 * @throws IOException
+	 * @throws IOException Exception
 	 */
 	public void updateFileCustomProperties(WPBFilePath file, Map<String, String> customProps) throws IOException;
 	
@@ -76,7 +76,7 @@ public interface WPBFileStorage {
 	 * Method to update the file content type
 	 * @param file Represents a file location
 	 * @param contentType Content type value
-	 * @throws IOException
+	 * @throws IOException Exception
 	 */
 	public void updateContentType(WPBFilePath file, String contentType) throws IOException;	
 	

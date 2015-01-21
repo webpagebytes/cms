@@ -31,21 +31,21 @@ public interface WPBContentService {
      * @param language Locale language
      * @param country Locale country (can be null)
      * @return Return a WPBModel that can be used to fetch content with WPBContentProvider interface.
-     * @throws WPBException WPBLocaleException
+     * @throws WPBException WPBLocaleException Exception
      */
 	public WPBModel createModel(String language, String country) throws WPBException;
 	
 	/**
 	 * Creates a model for the default project locale.
 	 * @return Return a WPBModel that can be used to fetch content with WPBContentProvider interface
-	 * @throws WPBException
+	 * @throws WPBException Exception
 	 */
 	public WPBModel createModel() throws WPBException;
 	
 	/**
 	 * Returns an instance of WPBContentProvider that can be used to fetch content from the CMS.
 	 * @return Returns an instance of WPBContentProvider that can be used to fetch content from the CMS.
-	 * @throws WPBException
+	 * @throws WPBException Exception
 	 */
 	public WPBContentProvider getContentProvider() throws WPBException;
 }

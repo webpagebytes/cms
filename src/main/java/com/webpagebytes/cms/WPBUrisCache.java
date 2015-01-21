@@ -66,7 +66,7 @@ public abstract class WPBUrisCache implements WPBRefreshableCache {
 	 * Gets a WPBUri from cache based on its externalKey
 	 * @param externalKey externalKey that identifies the record. 
 	 * @return WPBUri instance or null if there is no record with the provided externalKey. 
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception 
 	 */
 	public abstract WPBUri getByExternalKey(String externalKey) throws WPBIOException;
 	
@@ -75,7 +75,7 @@ public abstract class WPBUrisCache implements WPBRefreshableCache {
 	 * @param uri Site uri path
 	 * @param httpIndex HTTP verb index
 	 * @return WPBUri instance or null if there is no record with the provided externalKey.
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception
 	 */
 	public abstract WPBUri get(String uri, int httpIndex) throws WPBIOException;
 
@@ -83,7 +83,7 @@ public abstract class WPBUrisCache implements WPBRefreshableCache {
 	 * Returns all site url paths for a HTTP verb index
 	 * @param httpIndex HTTP verb index
 	 * @return A set of all sire urls paths for a HTTP verb index
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception
 	 */
 	public abstract Set<String> getAllUris(int httpIndex) throws WPBIOException;	
 	

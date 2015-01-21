@@ -34,7 +34,7 @@ public interface WPBPageModelProvider {
      * Method called when content is generated for a site page who's Source interpretation is 'Template text' and 
      * the 'Page model provider' attribute is set. 
      * @param model The request model that can be populated with application specific data.
-     * @throws WPBException
+     * @throws WPBException Exception
      */
     public void populatePageModel(WPBModel model) throws WPBException;
 }

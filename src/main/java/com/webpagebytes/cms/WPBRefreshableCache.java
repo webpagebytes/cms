@@ -25,7 +25,7 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public interface WPBRefreshableCache {
     /**
      * Refresh the cache content.
-     * @throws WPBIOException
+     * @throws WPBIOException Exception
      */
 	public void Refresh() throws WPBIOException;
 

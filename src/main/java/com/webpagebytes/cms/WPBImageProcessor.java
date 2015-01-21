@@ -36,7 +36,7 @@ public interface WPBImageProcessor {
      * @param outputFormat Output format of the image
      * @param os OutpuStream that contains the resized image
      * @return true if the image was resized, false otherwise
-     * @throws WPBException
+     * @throws WPBException Exception
      */
     public boolean resizeImage(WPBFileStorage fileStorage, WPBFilePath filepath, int desiredSize, String outputFormat, OutputStream os) throws WPBException;
     

@@ -29,7 +29,7 @@ public interface WPBPagesCache extends WPBRefreshableCache {
      * Gets a WPBPage from cache based on its externalKey
      * @param externalKey externalKey that identifies the record.
      * @return WPBPage instance or null if there is no record with the provided externalKey. 
-     * @throws WPBIOException
+     * @throws WPBIOException Exception 
      */
 	public WPBPage getByExternalKey(String externalKey) throws WPBIOException;
 	

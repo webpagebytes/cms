@@ -46,7 +46,7 @@ public interface WPBRequestHandler
 	 * @param response The servlet HttpServletResponse instance of the current request
 	 * @param model The corrent request Model. It can be used to obtain CMS specific information or the application specific model can be populated. 
 	 * @param forward Interface to forward the current request to use a particular site page.
-	 * @throws WPBException
+	 * @throws WPBException Exception
 	 */
 	public void handleRequest(
 	        HttpServletRequest request, 

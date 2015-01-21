@@ -31,7 +31,7 @@ public interface WPBMessagesCache extends WPBRefreshableCache {
 	 * Gets all messages from cache that belongs to a locale. 
 	 * @param locale Locale identifier 
 	 * @return Returns a map with all messages that belong to a locale. 
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception
 	 */
     public Map<String, String> getAllMessages(Locale locale) throws WPBIOException;
     
@@ -40,7 +40,7 @@ public interface WPBMessagesCache extends WPBRefreshableCache {
      * For example en_GB or en in case country is not specified. 
      * @param lcid Locale identifier 
      * @return Returns a map with all messages that belong to a locale. 
-     * @throws WPBIOException
+     * @throws WPBIOException Exception
      */    
 	public Map<String, String> getAllMessages(String lcid) throws WPBIOException;
 	

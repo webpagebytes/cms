@@ -74,7 +74,6 @@ import com.webpagebytes.cms.utility.CmsConfigurationFactory;
  * </servlet-mapping>
  * }
  * </pre>
- * </p>
  */
 public class WPBPublicContentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

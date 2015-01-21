@@ -55,7 +55,6 @@ import com.webpagebytes.cms.utility.CmsConfigurationFactory;
  * </servlet>
  * }
  * </pre>
- * </p>*
  */
 public class WPBAdminServlet extends HttpServlet {
 

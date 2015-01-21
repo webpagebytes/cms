@@ -56,7 +56,7 @@ public interface WPBFileInfo {
 	
 	/**
 	 * Sets the file custom properties
-	 * @param customProperties
+	 * @param customProperties Custom properties for the file
 	 */
 	public void setCustomProperties(Map<String, String> customProperties);
 	

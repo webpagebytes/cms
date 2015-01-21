@@ -28,7 +28,7 @@ public interface WPBFilesCache extends WPBRefreshableCache {
      * Gets a WPBFile from cache based on its externalKey
      * @param externalKey externalKey that identifies the record.
      * @return WPBFile instance or null if there is no record with the provided externalKey. 
-     * @throws WPBIOException
+     * @throws WPBIOException Exception
      */
 	public WPBFile getByExternalKey(String externalKey)throws WPBIOException;
 	
@@ -36,7 +36,7 @@ public interface WPBFilesCache extends WPBRefreshableCache {
 	 * Gets the WPBFile from cache that corresponds to a mentioned file path
 	 * @param filePath File path where directories and files are separated by / character 
 	 * @return WPBFile instance or null if there is no record with the provided file path. 
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception
 	 */
 	public WPBFile geByPath(String filePath) throws WPBIOException;
     
@@ -44,7 +44,7 @@ public interface WPBFilesCache extends WPBRefreshableCache {
      * Given a WPBFile the method returns the full file path.
      * @param file Instance of WPBFile that can represent a file or a directory.
      * @return Returns the full file path. For the files located in root the method returns their file name.
-     * @throws WPBIOException
+     * @throws WPBIOException Exception
      */
     public String getFullFilePath(WPBFile file) throws WPBIOException;
 	 

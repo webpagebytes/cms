@@ -27,7 +27,7 @@ public interface WPBArticlesCache extends WPBRefreshableCache {
      * Gets a WPBArticle from cache based on its externalKey
      * @param externalKey externalKey that identifies the record.
      * @return WPBArticle instance or null if there is no article with the provided externalKey. 
-     * @throws WPBIOException
+     * @throws WPBIOException Exception
      */
 	public WPBArticle getByExternalKey(String externalKey) throws WPBIOException;
 	

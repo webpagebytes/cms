@@ -29,9 +29,9 @@ public interface WPBParametersCache extends WPBRefreshableCache {
 
     /**
      * Gets a WPBParameter from cache based on its externalKey
-     * @param externalKey
+     * @param externalKey externalKey that identifies the record.
      * @return WPBParameter instance or null if there is no parameter with the provided externalKey. 
-     * @throws WPBIOException
+     * @throws WPBIOException Exception 
      */
 	public WPBParameter getByExternalKey(String externalKey) throws WPBIOException;
 	
@@ -39,7 +39,7 @@ public interface WPBParametersCache extends WPBRefreshableCache {
 	 * Gets a list of parameters for a specific owner 
 	 * @param ownerExternalKey The owner externalKey 
 	 * @return A list of WPBParameter instances for the provided owner, or empty list if the owner does not have any parameters. 
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception 
 	 */
 	public List<WPBParameter> getAllForOwner(String ownerExternalKey) throws WPBIOException;
 

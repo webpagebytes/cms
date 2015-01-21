@@ -31,28 +31,28 @@ public interface WPBProjectCache extends WPBRefreshableCache {
     /**
      * Returns the project default language in the format language_Country or just language if the Country not set. 
      * @return Returns the project default language
-     * @throws WPBIOException
+     * @throws WPBIOException Exception 
      */
 	public String getDefaultLanguage() throws WPBIOException;
 	
 	/**
 	 * Returns the default locale as a Pair of String 
 	 * @return Returns the default locale as a Pair of String
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception 
 	 */
 	public Pair<String, String> getDefaultLocale() throws WPBIOException;
 	
 	/**
 	 * Returns the locales enabled in the project, the values are represented as language_Country 
 	 * @return Returns the locales enabled in the project, the values are represented as language_Country
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception 
 	 */
 	public Set<String> getSupportedLocales() throws WPBIOException;	
 	
 	/**
 	 * Returns the WPBProject instance
 	 * @return Returns the WPBProject instance
-	 * @throws WPBIOException
+	 * @throws WPBIOException Exception 
 	 */
 	public WPBProject getProject() throws WPBIOException;
 }
