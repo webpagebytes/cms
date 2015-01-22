@@ -16,15 +16,33 @@
 
 package com.webpagebytes.cms.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBFilePath;
+import com.webpagebytes.cms.WPBFileStorage;
+import com.webpagebytes.cms.cmsdata.WPBArticle;
+import com.webpagebytes.cms.cmsdata.WPBFile;
+import com.webpagebytes.cms.cmsdata.WPBMessage;
+import com.webpagebytes.cms.cmsdata.WPBPage;
+import com.webpagebytes.cms.cmsdata.WPBPageModule;
+import com.webpagebytes.cms.cmsdata.WPBParameter;
+import com.webpagebytes.cms.cmsdata.WPBProject;
+import com.webpagebytes.cms.cmsdata.WPBResource;
+import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
+import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.engine.WPBFileStorageFactory;
+import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class Controller {
@@ -142,7 +160,9 @@ public class Controller {
 
 	
 	private String adminUriPart;
-
+	protected WPBAdminDataStorage adminStorage;
+	protected WPBFileStorage cloudFileStorage;
+    
 	protected HttpServletToolbox httpServletToolbox;
 	protected JSONToFromObjectConverter jsonObjectConverter;
 
@@ -157,6 +177,40 @@ public class Controller {
 	public Controller() {
 		httpServletToolbox = new HttpServletToolbox();
 		jsonObjectConverter = new JSONToFromObjectConverter();
+		cloudFileStorage = WPBFileStorageFactory.getInstance();
+		adminStorage = WPBAdminDataStorageFactory.getInstance();
 	}
 	
+   protected void deleteFile(WPBFile file) throws IOException
+    {
+        if (file.getBlobKey() != null)
+        {
+            WPBFilePath cloudFile = new WPBFilePath(FileController.PUBLIC_BUCKET, file.getBlobKey());
+            if (file.getBlobKey() != null && file.getBlobKey().length()>0)
+            {
+                // make sure the file is deleted only if there is a blob key
+                cloudFileStorage.deleteFile(cloudFile);
+            }
+        }
+    }
+    protected void deleteAll() throws WPBException, IOException
+    {
+
+        adminStorage.deleteAllRecords(WPBUri.class);
+        adminStorage.deleteAllRecords(WPBPage.class);
+        adminStorage.deleteAllRecords(WPBPageModule.class);
+        adminStorage.deleteAllRecords(WPBArticle.class);
+        adminStorage.deleteAllRecords(WPBMessage.class);
+        adminStorage.deleteAllRecords(WPBParameter.class);
+        adminStorage.deleteAllRecords(WPBProject.class);
+        List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
+        for(WPBFile file: files)
+        {
+            deleteFile(file);
+        }
+        adminStorage.deleteAllRecords(WPBFile.class);
+        adminStorage.deleteAllRecords(WPBResource.class);
+   
+    }
+
 }

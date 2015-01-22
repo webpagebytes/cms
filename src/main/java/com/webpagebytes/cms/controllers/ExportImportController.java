@@ -59,6 +59,9 @@ public class ExportImportController extends Controller {
 		          IOUtils.copy(is, fos);
 		          fos.close();
 		          
+		          adminStorage.stopNotifications();
+		          deleteAll();
+		          
 		          // because the zip file entries cannot be predicted we needto import in two step1
 		          // step 1 when we create the resource records
 		          // step 2 when we import the files, pages, modules and articles content
@@ -90,6 +93,8 @@ public class ExportImportController extends Controller {
 		            tempFile.deleteOnExit();
 		        }
 		    }
+		    
+		    adminStorage.startNotifications();
 		}
 	}
 

@@ -16,19 +16,14 @@
 
 package com.webpagebytes.cms.controllers;
 
-import java.io.IOException;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.webpagebytes.cms.WPBAdminDataStorage;
+
 import com.webpagebytes.cms.WPBArticlesCache;
 import com.webpagebytes.cms.WPBCacheFactory;
-import com.webpagebytes.cms.WPBFilePath;
-import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.WPBMessagesCache;
 import com.webpagebytes.cms.WPBPageModulesCache;
@@ -45,25 +40,15 @@ import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
-import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class CleanerController extends Controller implements WPBAdminDataStorageListener{
-	private WPBAdminDataStorage adminStorage;
+	
 	private WPBCacheFactory cacheFactory;
-	private WPBFileStorage cloudFileStorage;
 	
 	public CleanerController()
 	{
-		cloudFileStorage = WPBFileStorageFactory.getInstance();
-
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new JSONToFromObjectConverter();
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		cacheFactory = DefaultWPBCacheFactory.getInstance();
 		adminStorage.addStorageListener(this);
 	}
@@ -120,36 +105,13 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 			// do nothing
 		}
 	}
-	private void deleteFile(WPBFile file) throws IOException
-	{
-		if (file.getBlobKey() != null)
-		{
-			WPBFilePath cloudFile = new WPBFilePath(FileController.PUBLIC_BUCKET, file.getBlobKey());
-			if (file.getBlobKey() != null && file.getBlobKey().length()>0)
-			{
-			    // make sure the file is deleted only if there is a blob key
-			    cloudFileStorage.deleteFile(cloudFile);
-			}
-		}
-	}
+	
 	public void deleteAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		try
 		{
-			adminStorage.deleteAllRecords(WPBUri.class);
-			adminStorage.deleteAllRecords(WPBPage.class);
-			adminStorage.deleteAllRecords(WPBPageModule.class);
-			adminStorage.deleteAllRecords(WPBArticle.class);
-			adminStorage.deleteAllRecords(WPBMessage.class);
-			adminStorage.deleteAllRecords(WPBParameter.class);
-			adminStorage.deleteAllRecords(WPBProject.class);
-			List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
-			for(WPBFile file: files)
-			{
-				deleteFile(file);
-			}
-			adminStorage.deleteAllRecords(WPBFile.class);
-
+			deleteAll();
+			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, "{}");			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
