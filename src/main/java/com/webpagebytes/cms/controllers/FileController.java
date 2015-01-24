@@ -50,9 +50,7 @@ import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.ContentTypeDetector;
@@ -61,8 +59,6 @@ import com.webpagebytes.cms.utility.ContentTypeDetector;
 public class FileController extends Controller implements WPBAdminDataStorageListener{
 	public static final String PUBLIC_BUCKET = "public";
 	
-	private WPBAdminDataStorage adminStorage;
-	private WPBFileStorage cloudFileStorage;
 	private FileValidator validator;
 	private WPBFilesCache filesCache;
 	
@@ -70,9 +66,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	
 	public FileController()
 	{
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new FileValidator();
-		cloudFileStorage = WPBFileStorageFactory.getInstance();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		filesCache = wbCacheFactory.getFilesCacheInstance();	
 		adminStorage.addStorageListener(this);

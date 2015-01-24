@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,17 +29,13 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBProject;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.LanguageLocaleManager;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
@@ -46,7 +43,6 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public class LanguagesController extends Controller implements WPBAdminDataStorageListener {
 
 	private LanguageLocaleManager localeManager;
-	private WPBAdminDataStorage adminStorage;
 	private ArrayList<String> sortedLanguages;
 	private Map<String, Locale> allLocales;
 	private WPBProjectCache projectCache;
@@ -82,7 +78,6 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 
 	public LanguagesController()
 	{
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		localeManager = LanguageLocaleManager.getInstance();
 		sortedLanguages = new ArrayList<String>();
 		

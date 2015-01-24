@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
@@ -35,14 +35,11 @@ import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ResourcesController extends Controller {
-	private WPBAdminDataStorage adminStorage;
 	
 	public ResourcesController() {
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 	}
 	
 	public void getAllResources(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException

@@ -1,5 +1,7 @@
 package com.webpagebytes.cms.engine;
 
+import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.engine.AdminServletOperationsReader;
 import com.webpagebytes.cms.engine.AjaxRequestProcessor;
 import com.webpagebytes.cms.exception.*;
@@ -7,6 +9,7 @@ import com.webpagebytes.cms.utility.Pair;
 
 import javax.servlet.http.*;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import org.easymock.EasyMock;
@@ -16,6 +19,7 @@ import static org.junit.Assert.*;
 
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 public class TestAjaxRequestProcessor {
@@ -24,12 +28,28 @@ public class TestAjaxRequestProcessor {
 	private HttpServletResponse response;
 	private AjaxRequestProcessor ajaxProcessor;
 	
+	WPBFileStorage fileStorageMock;
+	WPBAdminDataStorage adminDataStorageMock;
 	@Before
 	public void setUp()
 	{
 		ajaxProcessor = new AjaxRequestProcessor();		
 		request = EasyMock.createMock(HttpServletRequest.class);
 		response = EasyMock.createMock(HttpServletResponse.class);
+		
+		fileStorageMock = EasyMock.createMock(WPBFileStorage.class);
+		adminDataStorageMock = EasyMock.createMock(WPBAdminDataStorage.class);
+		
+		Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", fileStorageMock);
+		Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", adminDataStorageMock);
+        
+	}
+
+	@After
+	public void tearDown()
+	{
+	    Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", (WPBFileStorage)null);
+        Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", (WPBAdminDataStorage)null);    
 	}
 /*
 	@Test

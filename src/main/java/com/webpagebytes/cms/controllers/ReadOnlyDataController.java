@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBPage;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ReadOnlyDataController  extends Controller {
@@ -39,12 +38,9 @@ public class ReadOnlyDataController  extends Controller {
 	public static final String DATA_FILES = "data_files";
 	public static final String DATA_PAGES = "data_pages";
 	
-	private WPBAdminDataStorage adminStorage;
-
 
 	public ReadOnlyDataController() 
 	{
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 	}
 	
 	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException

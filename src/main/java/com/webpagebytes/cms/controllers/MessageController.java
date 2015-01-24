@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBMessagesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -39,19 +39,16 @@ import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
 import com.webpagebytes.cms.cmsdata.WPBMessage;
 import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class MessageController extends Controller implements WPBAdminDataStorageListener {
-	private WPBAdminDataStorage adminStorage;
 	private MessageValidator validator;
 	private WPBMessagesCache wbMessageCache;
 
 	public MessageController()
 	{
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new MessageValidator();
 		validator.setAdminStorage(adminStorage);
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();

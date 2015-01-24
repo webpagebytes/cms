@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,19 +35,16 @@ import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
-import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class PageModuleController extends Controller implements WPBAdminDataStorageListener{
-	private WPBAdminDataStorage adminStorage;
 	private PageModuleValidator validator;
 	private WPBPageModulesCache wbPageModuleCache;
 	public PageModuleController()
 	{
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new PageModuleValidator();
 		
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();

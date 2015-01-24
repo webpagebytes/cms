@@ -50,13 +50,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UriController extends Controller implements WPBAdminDataStorageListener {
-	private WPBAdminDataStorage adminStorage;
 	private UriValidator uriValidator;
 	private WPBUrisCache wbUriCache;
 	private static final Logger log = Logger.getLogger(UriController.class.getName());
 	
 	public UriController() {
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		uriValidator = new UriValidator();
 		WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbUriCache = cacheFactory.getUrisCacheInstance();	

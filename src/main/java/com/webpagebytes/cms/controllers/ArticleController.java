@@ -41,14 +41,10 @@ import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class ArticleController extends Controller implements WPBAdminDataStorageListener{
-	private WPBAdminDataStorage adminStorage;
 	private ArticleValidator validator;
 	private WPBArticlesCache wbArticleCache;
 	public ArticleController()
 	{
-		httpServletToolbox = new HttpServletToolbox();
-		jsonObjectConverter = new JSONToFromObjectConverter();
-		adminStorage = WPBAdminDataStorageFactory.getInstance();
 		validator = new ArticleValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
 		wbArticleCache = wbCacheFactory.getArticlesCacheInstance();

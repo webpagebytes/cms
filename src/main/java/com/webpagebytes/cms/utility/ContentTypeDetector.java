@@ -45,6 +45,7 @@ public class ContentTypeDetector {
 		mapTypes.put(".gif", "image/gif");
 		mapTypes.put(".tif", "image/tif");
 		mapTypes.put(".tiff", "image/tif");
+		mapTypes.put(".ico", "image/x-icon");
         
 		mapTypes.put(".exe", "application/octet-stream");
 		mapTypes.put(".bin", "application/octet-stream");

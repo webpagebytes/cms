@@ -64,7 +64,7 @@ public class FlatStorageImporterExporter {
 	public static final String PATH_URI_PARAMETERS = "siteuris/%s/parameters/";
 	public static final String PATH_SITE_PAGES = "sitepages/";
 	public static final String PATH_SITE_PAGES_PARAMETERS = "sitepages/%s/parameters/";
-	public static final String PATH_SITE_PAGES_MODULES = "sitepagesmodules/";
+	public static final String PATH_SITE_PAGES_MODULES = "sitepagemodules/";
 	public static final String PATH_MESSAGES = "messages/";
 	public static final String PATH_FILES = "files/";
 	public static final String PATH_FILE_CONTENT = "files/%s/content/";
@@ -431,7 +431,8 @@ public class FlatStorageImporterExporter {
 			WPBProject tempProject = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			if (tempProject == null)
 			{
-				dataStorage.add(project);
+			    project.setPrivkey(WPBProject.PROJECT_KEY);
+				dataStorage.addWithKey(project);
 			} else
 			{
 				dataStorage.update(project);				
