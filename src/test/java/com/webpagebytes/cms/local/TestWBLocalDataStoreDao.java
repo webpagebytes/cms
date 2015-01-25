@@ -2,6 +2,7 @@ package com.webpagebytes.cms.local;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +43,7 @@ public void before()
 {
     // just put a anexisting class for the driver
     dbProps.put("driverClass", "java.lang.String");
-    }
+}
 @Test
 public void test_addRecord()
 {
