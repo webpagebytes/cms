@@ -70,56 +70,44 @@ public class FreeMarkerUriDirective implements TemplateDirectiveModel {
         {
             StringWriter strWriter = new StringWriter();
             body.render(strWriter);
-            bodyStr = strWriter.toString();
+            bodyStr = strWriter.toString().trim();
         }
         String uriPattern = null;
         if (params.containsKey("uriPattern"))
         {
             uriPattern = (String) DeepUnwrap.unwrap((TemplateModel) params.get("uriPattern"));
-        } else
-        {
-            throw new TemplateModelException("FreeMarkerUriDirective does not have the uriPattern parameter set");
-        }
-        
-        String uri = uriPattern;
-        if (body != null)
-        {
-            StringWriter strWriter = new StringWriter();
-            body.render(strWriter);
-            uri = strWriter.toString().trim();
-        }
-        
-        String uriFile = "";
+        } 
+                
+        String uriFile = null;
         if (params.containsKey("uriFile"))
         {
             uriFile = (String) DeepUnwrap.unwrap((TemplateModel) params.get("uriFile"));
+            if (uriFile.startsWith("/"))
+            {
+                uriFile = uriFile.substring(1);
+            }
         }
         
+        if (uriFile == null && uriPattern == null)
+        {
+            throw new TemplateModelException("FreeMarkerUriDirective does not have the uriPattern or uriFile parameter set");
+        }
+        // decide a priority for considering the uri. Low priority is the uriFile, medium is the uriPattern
+        // higher is the bodyStr
+        String uri = uriFile;
+        if (uriPattern != null)
+        {
+            uri = uriPattern; 
+        }
+        if (body != null)
+        {         
+            uri = bodyStr;
+        }
+
         
         try
         {
-            WPBUri wpbUri = cacheInstances.getUriCache().get(uriPattern, WPBUrisCache.HTTP_GET_INDEX);
-            if (wpbUri == null)
-            {
-                log.log(Level.WARNING, "FreeMarkerUriDirective could not found WPBUri for " + uriPattern);      
-            }
-            if (wpbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT)
-            {
-                WPBPage page = cacheInstances.getPageCache().getByExternalKey(wpbUri.getResourceExternalKey());
-                if (page != null && (page.getIsTemplateSource() == null || page.getIsTemplateSource() == 0))
-                {
-                    if (uri.indexOf("&")>0)
-                    {
-                        uri = uri.concat("&");
-                    } else
-                    {
-                        uri = uri.concat("?");
-                    }
-                    uri = uri.concat(cache_query_param).concat("=").concat(page.getHash().toString());
-                }
-            }
-
-            if (wpbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE)
+            if (uriFile != null)
             {
                 WPBFile file = cacheInstances.getFilesCache().geByPath(uriFile);
                 if (file != null && (file.getDirectoryFlag()!=1))
@@ -132,6 +120,28 @@ public class FreeMarkerUriDirective implements TemplateDirectiveModel {
                         uri = uri.concat("?");
                     }
                     uri = uri.concat(cache_query_param).concat("=").concat(file.getHash().toString());
+                }
+            } else
+            {
+                WPBUri wpbUri = cacheInstances.getUriCache().get(uriPattern, WPBUrisCache.HTTP_GET_INDEX);
+                if (wpbUri == null)
+                {
+                    log.log(Level.WARNING, "FreeMarkerUriDirective could not found WPBUri for " + uriPattern);      
+                }
+                if (wpbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT)
+                {
+                    WPBPage page = cacheInstances.getPageCache().getByExternalKey(wpbUri.getResourceExternalKey());
+                    if (page != null && (page.getIsTemplateSource() == null || page.getIsTemplateSource() == 0))
+                    {
+                        if (uri.indexOf("&")>0)
+                        {
+                            uri = uri.concat("&");
+                        } else
+                        {
+                            uri = uri.concat("?");
+                        }
+                        uri = uri.concat(cache_query_param).concat("=").concat(page.getHash().toString());
+                    }
                 }
             }
 
