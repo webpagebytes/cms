@@ -82,12 +82,18 @@ public class WPBPublicContentServlet extends HttpServlet {
 	public static final String CACHE_MAX_AGE = "31536000"; // it's one year in seconds
 	public static final String CONTEXT_PATH = "wpb-context-path";
 
+	public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
+	public static final String HEADER_CACHE_CONTROL = "Cache-Control";
+	public static final String HEADER_ETAG = "ETag";
+	public static final String HEADER_CONTENT_LENGTH = "Content-Length";
+    
+    
+    
 	private WPBServletUtility servletUtility = null;
 	
 	private String uriCommonPrefix = ""; 
 	
 	private URLMatcher urlMatcherArray[] = new URLMatcher[4];
-	private LocalCloudFileContentBuilder localFileContentBuilder;
 	private PageContentBuilder pageContentBuilder;
 	private FileContentBuilder fileContentBuilder;
 	private UriContentBuilder uriContentBuilder;
@@ -126,10 +132,6 @@ public void initBuilders() throws WPBException
 	uriContentBuilder.initialize();	
 }
 
-public void initLocalFileContentBuilder()
-{
-	localFileContentBuilder = new LocalCloudFileContentBuilder();	
-}
 
 public void init() throws ServletException
 {
@@ -185,7 +187,6 @@ public void init() throws ServletException
 	try
 	{
 		initUrls();
-		initLocalFileContentBuilder();
 		initBuilders();		
 	} catch (Exception e)
 	{
@@ -214,21 +215,29 @@ private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, Http
 		resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		return;
 	}
-	String content = pageContentBuilder.buildPageContent(req, webPage, model);
 	resp.setCharacterEncoding("UTF-8");
 	Integer isTemplateSource = webPage.getIsTemplateSource();
 	if (isTemplateSource != 1)
 	{
+	    String ifNoneMatch = req.getHeader(HEADER_IF_NONE_MATCH);
+	    if (ifNoneMatch != null && ifNoneMatch.equals(webPage.getHash().toString()))
+	    {
+	        resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+	        return;
+	    }
+	    resp.addHeader(HEADER_ETAG, webPage.getHash().toString());
 		String cqp = req.getParameter(cache_query_param);
 		if (cqp != null)
 		{
 			// this is a request that can be cached, to do customize the cache time
-			resp.addHeader("cache-control", "max-age=".concat(cache_max_age));
+			resp.addHeader(HEADER_CACHE_CONTROL, "max-age=".concat(cache_max_age));
 		}
 	} else
 	{
-		resp.addHeader("cache-control", "no-cache;no-store;");
+		resp.addHeader(HEADER_CACHE_CONTROL, "no-cache;no-store;");
 	}
+	String content = pageContentBuilder.buildPageContent(req, webPage, model);
+	resp.addHeader(HEADER_CONTENT_LENGTH, Integer.toString(content.length()));
 	resp.setContentType(webPage.getContentType());			
 	ServletOutputStream os = resp.getOutputStream();
 	os.write(content.getBytes("UTF-8"));
@@ -268,12 +277,20 @@ private void handleRequestTypeFile(String fileExternalKey, URLMatcherResult urlM
 	    }	    	    
 	}
 	
+    String ifNoneMatch = req.getHeader(HEADER_IF_NONE_MATCH);
+    if (ifNoneMatch != null && ifNoneMatch.equals(fileResponse.getHash().toString()))
+    {
+        resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+        return;
+    }
+    resp.addHeader(HEADER_ETAG, fileResponse.getHash().toString());
 	String cqp = req.getParameter(cache_query_param);
 	if (cqp != null)
 	{
 		// there is a request that can be cached
-		resp.addHeader("cache-control", "max-age=".concat(cache_max_age));
+		resp.addHeader(HEADER_CACHE_CONTROL, "max-age=".concat(cache_max_age));
 	}
+	resp.addHeader(HEADER_CONTENT_LENGTH, fileResponse.getSize().toString());
 	ServletOutputStream os = resp.getOutputStream();
 	resp.setContentType(fileResponse.getAdjustedContentType());													
 	fileContentBuilder.writeFileContent(fileResponse, os);

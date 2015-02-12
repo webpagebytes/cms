@@ -159,7 +159,6 @@ public void test_doDelete()
 public void test_init_exception()
 {
 	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
-	suppress(method(WPBPublicContentServlet.class, "initLocalFileContentBuilder"));
 
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(urisCacheMock);
@@ -201,7 +200,6 @@ public void test_init()
 {
 	suppress(method(WPBPublicContentServlet.class, "initUrls"));
 	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
-	suppress(method(WPBPublicContentServlet.class, "initLocalFileContentBuilder"));
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getWebPagesCacheInstance()).andReturn(null);
@@ -249,13 +247,14 @@ public void test_handleRequestTypeText()
 	EasyMock.expect(pageBuilderMock.buildPageContent(requestMock, pageMock, modelMock)).andReturn(content);
 	responseMock.setCharacterEncoding("UTF-8");
 	EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(1);
-	responseMock.addHeader("cache-control", "no-cache;no-store;");
+	responseMock.addHeader("Cache-Control", "no-cache;no-store;");
 	String contentType="plain/text";
 	EasyMock.expect(pageMock.getContentType()).andReturn(contentType);	
 	responseMock.setContentType(contentType);
 	ServletOutputStream sos_ = EasyMock.createMock(ServletOutputStream.class);
 	CacheServletOutputStream cacheOutputStream = new CacheServletOutputStream(sos_);
 	EasyMock.expect(responseMock.getOutputStream()).andReturn(cacheOutputStream);
+	responseMock.addHeader("Content-Length", Integer.toString(content.length()));
 	Capture<byte[]> capture = new Capture<byte[]>();
 	sos_.write(EasyMock.capture(capture));
 	EasyMock.replay(requestMock, responseMock, pageMock, modelMock, sos_, pageBuilderMock);
@@ -293,14 +292,16 @@ private void handleRequestTypeText_cache(Integer templateSource)
 	responseMock.setCharacterEncoding("UTF-8");
 	EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
 	
+	EasyMock.expect(requestMock.getHeader(WPBPublicContentServlet.HEADER_IF_NONE_MATCH)).andReturn(null);
 	Long hash = 123L;
 	EasyMock.expect(requestMock.getParameter(WPBPublicContentServlet.CACHE_QUERY_PARAM)).andReturn(hash.toString());
 	EasyMock.expect(pageMock.getHash()).andReturn(hash);
-	
-	responseMock.addHeader("cache-control", "max-age=31536000");
+	responseMock.addHeader(WPBPublicContentServlet.HEADER_ETAG, hash.toString());
+	responseMock.addHeader(WPBPublicContentServlet.HEADER_CACHE_CONTROL, "max-age=31536000");
 	String contentType="plain/text";
 	EasyMock.expect(pageMock.getContentType()).andReturn(contentType);	
 	responseMock.setContentType(contentType);
+	responseMock.addHeader(WPBPublicContentServlet.HEADER_CONTENT_LENGTH, Integer.toString(content.length()));
 	ServletOutputStream sos_ = EasyMock.createMock(ServletOutputStream.class);
 	CacheServletOutputStream cacheOutputStream = new CacheServletOutputStream(sos_);
 	EasyMock.expect(responseMock.getOutputStream()).andReturn(cacheOutputStream);
@@ -316,6 +317,40 @@ private void handleRequestTypeText_cache(Integer templateSource)
 	}
 }
 
+
+private void handleRequestTypeText_etag(Integer templateSource)
+{
+    try
+    {
+    WPBPage pageMock = EasyMock.createMock(WPBPage.class);
+    InternalModel modelMock = EasyMock.createMock(InternalModel.class);
+    PageContentBuilder pageBuilderMock = EasyMock.createMock(PageContentBuilder.class);
+    Whitebox.setInternalState(publicServlet, "pageContentBuilder", pageBuilderMock);
+    
+    responseMock.setCharacterEncoding("UTF-8");
+    EasyMock.expect(pageMock.getIsTemplateSource()).andReturn(0);
+    Long hash = 123L;
+    
+    EasyMock.expect(requestMock.getHeader("If-None-Match")).andReturn(hash.toString());
+    EasyMock.expect(pageMock.getHash()).andReturn(hash);
+    
+    responseMock.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+    
+    EasyMock.replay(requestMock, responseMock, pageMock, modelMock, pageBuilderMock);
+    Whitebox.invokeMethod(publicServlet, "handleRequestTypeText", pageMock, requestMock, responseMock, modelMock);
+    
+   
+    } catch (Exception e)
+    {
+        assertTrue(false);
+    }
+}
+
+@Test 
+public void handleRequestTypeText_notModified_304()
+{
+    handleRequestTypeText_etag(0);
+}
 
 @Test
 public void test_handleRequestTypeText_no_page()
