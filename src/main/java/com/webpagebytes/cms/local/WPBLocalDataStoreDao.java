@@ -82,6 +82,17 @@ public class WPBLocalDataStoreDao {
 		dataSource.setUrl(dbProps.get("connectionUrl"));
 		dataSource.setUsername(dbProps.get("userName"));
 		dataSource.setPassword(dbProps.get("password"));
+		
+		String testOnBorrow = dbProps.get("testOnBorrow");
+		if (testOnBorrow != null && testOnBorrow.trim().toLowerCase().equals("true"))
+		{
+		    dataSource.setTestOnBorrow(true);	        
+		}
+		String validationQuery = dbProps.get("validationQuery");
+		if (validationQuery != null)
+		{
+		    dataSource.setValidationQuery(validationQuery);
+		}
 	}
 	
 	private Connection getConnection() throws SQLException
