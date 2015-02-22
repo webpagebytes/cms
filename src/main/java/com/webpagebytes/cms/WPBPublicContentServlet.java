@@ -236,11 +236,14 @@ private void handleRequestTypeText(WPBPage webPage, HttpServletRequest req, Http
 	{
 		resp.addHeader(HEADER_CACHE_CONTROL, "no-cache;no-store;");
 	}
-	String content = pageContentBuilder.buildPageContent(req, webPage, model);
-	resp.addHeader(HEADER_CONTENT_LENGTH, Integer.toString(content.length()));
+	byte[] content = pageContentBuilder.buildPageContent(req, webPage, model).getBytes("UTF-8");
+	        
+	        
+	        
+	resp.addHeader(HEADER_CONTENT_LENGTH, Integer.toString(content.length));
 	resp.setContentType(webPage.getContentType());			
 	ServletOutputStream os = resp.getOutputStream();
-	os.write(content.getBytes("UTF-8"));
+	os.write(content);
 }
 
 private void handleRequestTypeFile(String fileExternalKey, URLMatcherResult urlMatcherResult, HttpServletRequest req, HttpServletResponse resp) throws WPBException, IOException
