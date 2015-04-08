@@ -173,7 +173,7 @@ public void test_writeFileContent_exception()
 		OutputStream osMock = EasyMock.createMock(OutputStream.class);
 		stub(method(FileContentBuilder.class, "getFileContent")).andReturn(isMock);
 		EasyMock.expect(isMock.read(EasyMock.anyObject(byte[].class))).andThrow(new IOException());
-		
+		isMock.close();
 		EasyMock.replay(cloudFileStorageMock, isMock);
 		fileContentBuilder = new FileContentBuilder(cacheInstancesMock);
 		fileContentBuilder.writeFileContent(fileMock, osMock);

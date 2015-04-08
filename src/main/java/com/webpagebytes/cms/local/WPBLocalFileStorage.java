@@ -238,8 +238,17 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 	private void storeFileProperties(Properties props, String filePath) throws IOException 
 	{
 		FileOutputStream os = new FileOutputStream(filePath);
-		props.storeToXML(os, "", "UTF-8");
-		IOUtils.closeQuietly(os);
+		try
+		{
+			props.storeToXML(os, "", "UTF-8");
+		} catch (IOException e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			IOUtils.closeQuietly(os);
+		}
 	}
 	
 	private Properties getFileProperties(String filePath) throws IOException
@@ -247,7 +256,18 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 		Properties props = new Properties();
 		FileInputStream fis = null;
 		fis = new FileInputStream(filePath);
-		props.loadFromXML(fis);
+		try
+		{
+			props.loadFromXML(fis);
+		} catch (IOException e)
+		{
+			throw e;
+		}
+		finally 
+		{
+			IOUtils.closeQuietly(fis);
+		}
+		
 		return props;
 	}
 	
@@ -271,6 +291,7 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 			IOUtils.closeQuietly(fos);
 			throw new IOException("Cannot calculate md5 to store the file", e);
 		}
+	
 
 		int count = 0;
 		int size = 0;

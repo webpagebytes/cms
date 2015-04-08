@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.WPBFilesCache;
@@ -59,17 +61,19 @@ public class FileContentBuilder {
 	}
 	public void writeFileContent(WPBFile wbFile, OutputStream os) throws WPBException 
 	{
-		InputStream is = getFileContent(wbFile);
-		byte[] buffer = new byte[4096];
-		int len;
+		
+		InputStream is = getFileContent(wbFile);				
 		try 
 		{
-			while ((len = is.read(buffer)) != -1) {
-			    os.write(buffer, 0, len);
-			}
+			IOUtils.copy(is, os);
+			
 		} catch (IOException e)
 		{
 			throw new WPBIOException(e.getMessage(), e);
+		}
+		finally
+		{
+			IOUtils.closeQuietly(is);
 		}
 	}
 }
