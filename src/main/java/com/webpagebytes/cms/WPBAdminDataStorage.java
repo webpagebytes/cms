@@ -76,6 +76,12 @@ public interface WPBAdminDataStorage {
 	};
 
 	/**
+	 * Initializes the data storage with parameters from the CMS configuration xml file that corresponds to wpbadmindatastorage section.
+	 * @param params Map of keys and values representing configuration parameters
+	 * @throws WPBIOException Exception
+	 */
+	public void initialize(Map<String, String> params) throws WPBIOException;
+	/**
 	 * Deletes a record with the provided record id and the resource class identifier.
 	 * @param recordid Resource record id as String
 	 * @param dataClass Resource class identifier (for example WPBUri.class, WPBWebPage.class)

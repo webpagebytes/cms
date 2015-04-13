@@ -47,11 +47,13 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	
 	public WPBLocalAdminDataStorage()
 	{
-		CmsConfiguration config = CmsConfigurationFactory.getConfiguration();
-		Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE);
-		localDataStorageDao = new WPBLocalDataStoreDao(params);
+		
 	}
 
+	public void initialize(Map<String, String> params) throws WPBIOException
+	{
+		localDataStorageDao = new WPBLocalDataStoreDao(params);
+	}
 	private WPBLocalDataStoreDao.WBLocalQueryOperator adminOperatorToLocalOperator(AdminQueryOperator adminOperator)
 	{
 		switch (adminOperator)

@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.engine;
 
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import com.webpagebytes.cms.WPBFileStorage;
@@ -43,6 +44,7 @@ public class WPBFileStorageFactory {
 					try
 					{
 						instance = (WPBFileStorage) Class.forName(factoryClass).newInstance();
+						instance.initialize(config.getSectionParams(WPBSECTION.SECTION_FILESTORAGE));
 						return instance;
 					} 
 					

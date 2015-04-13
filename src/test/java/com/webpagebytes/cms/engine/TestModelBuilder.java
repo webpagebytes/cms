@@ -55,6 +55,7 @@ WPBProjectCache projectCacheMock;
 WPBPage webPageMock;
 CmsConfiguration configurationMock;
 Map<String, String> modelConfigs = new HashMap<String, String>();
+Map<String, String> globalConfigs = new HashMap<String, String>();
 
 @Before
 public void setUp()
@@ -62,6 +63,7 @@ public void setUp()
 	configurationMock = EasyMock.createMock(CmsConfiguration.class);
 	Whitebox.setInternalState(CmsConfigurationFactory.class, "configuration", configurationMock);
 	EasyMock.expect(configurationMock.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR)).andReturn(modelConfigs);
+	EasyMock.expect(configurationMock.getSectionParams(WPBSECTION.SECTION_GLOBALS)).andReturn(globalConfigs);
 	
 	requestMock = EasyMock.createMock(HttpServletRequest.class);
 	cacheInstancesMock = EasyMock.createMock(WPBCacheInstances.class);
@@ -582,6 +584,8 @@ public void test_populateUriParameters_no_country_param()
 @Test
 public void test_populateLocale()
 {
+	EasyMock.replay(cacheInstancesMock, configurationMock);
+	
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	
 	Map<String, String> mapLocale = new HashMap<String, String>();
@@ -605,6 +609,7 @@ public void test_populateGlobalParameters()
 {
 	try
 	{
+		EasyMock.replay(configurationMock);
 		modelBuilder = new ModelBuilder(cacheInstancesMock);
 		
 		List<WPBParameter> globalParams = new ArrayList<WPBParameter>();
@@ -646,6 +651,7 @@ public void test_populateGlobalParameters()
 @Test
 public void test_populateStaticParametersFromHeader_http()
 {
+	EasyMock.replay(configurationMock);
 	modelBuilder = new ModelBuilder(cacheInstancesMock);
 	
 	String url = "http://www.example.com/test/";

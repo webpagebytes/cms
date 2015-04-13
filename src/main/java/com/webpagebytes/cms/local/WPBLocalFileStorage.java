@@ -42,6 +42,7 @@ import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.engine.WPBDefaultCloudFileInfo;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
 import com.webpagebytes.cms.utility.CmsConfiguration;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
@@ -59,15 +60,31 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 	
 	public WPBLocalFileStorage()
 	{
+
+	}
+	
+	public void initialize(Map<String, String> params) throws WPBIOException
+	{
 		try
 		{
-			initialize(true);
+			dataDirectory = params.get("dataDirectory");
+			basePublicUrlPath = params.get("basePublicUrlPath");
+		
+			if (!basePublicUrlPath.endsWith("/"))
+			{
+				basePublicUrlPath = basePublicUrlPath + "/";
+			}
+			
+			log.log(Level.INFO, "Initialize for WBLocalCloudFileStorage with dir: " + dataDirectory);
+			
+			initializeFileStorage(dataDirectory);
 		} catch (Exception e)
 		{
 			log.log(Level.SEVERE, "Cannot initialize WBLocalCloudFileStorage for " + dataDirectory, e);
-		}
+			throw new WPBIOException("Cannot initialize WBLocalCloudFileStorage", e);
+		}	
 	}
-	
+	/*
 	public WPBLocalFileStorage(String dataDirectory, String basePublicUrlPath)	
 	{
 		
@@ -86,7 +103,7 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 			// log the exception here
 			log.log(Level.SEVERE, "Cannot initialize WBLocalCloudFileStorage for " + dataDirectory, e);
 		}	
-	}
+	} */
 
 	public String getDataDir()
 	{
@@ -164,27 +181,7 @@ public class WPBLocalFileStorage implements WPBFileStorage {
 		isInitialized = true;
 
 	}
-	
-	private void initialize(boolean paramsFromConfig) throws IOException, FileNotFoundException
-	{
-		if (paramsFromConfig)
-		{
-			CmsConfiguration config = CmsConfigurationFactory.getConfiguration();
-			Map<String, String> params = config.getSectionParams(WPBSECTION.SECTION_FILESTORAGE);
-		
-			dataDirectory = params.get("dataDirectory");
-			basePublicUrlPath = params.get("basePublicUrlPath");
-		
-			if (!basePublicUrlPath.endsWith("/"))
-			{
-				basePublicUrlPath = basePublicUrlPath + "/";
-			}
-		}
-		
-		log.log(Level.INFO, "Initialize for WBLocalCloudFileStorage with dir: " + dataDirectory);
-		
-		initializeFileStorage(dataDirectory);
-	}
+
 	/*
 	 * sanitizeCloudFilePath will return a safe path that can be part of a file name
 	 * The path will be converted to base64  

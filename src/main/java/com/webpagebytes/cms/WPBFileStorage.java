@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import com.webpagebytes.cms.exception.WPBIOException;
+
 /**
  * <p>
  * WPBFileStorage offers an abstract interface to store and retrieve files used by the Webpagebytes CMS.
@@ -32,6 +34,13 @@ import java.util.Map;
  * 
  */
 public interface WPBFileStorage {
+	
+	/**
+	 * Initializes the file storage with parameters from the CMS configuration xml file that corresponds to wpbfilestorage section.
+	 * @param params Map of keys and values representing configuration parameters
+	 * @throws WPBIOException Exception
+	 */
+	public void initialize(Map<String, String> params) throws WPBIOException;
     /**
      * Stores a file in the storage
      * @param is InputStream with the file content

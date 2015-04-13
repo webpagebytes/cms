@@ -32,11 +32,14 @@ public class TestWBLocalCloudFileStorage {
 
 WPBLocalFileStorage storage;
 String dataDirectory;
-
+Map<String, String> params;
 @Before
 public void setup() throws IOException
 {
 	dataDirectory = "some path";
+	params = new HashMap<String, String>();
+	params.put("dataDirectory", dataDirectory);
+	params.put("basePublicUrlPath", "");
 }
 
 
@@ -47,8 +50,9 @@ public void test_storeFile()
 	{
 		Properties expectedProps = new Properties();
 		
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
 
 		WPBFilePath file = new WPBFilePath("public", "test.txt");
 		String content = "this is string A";
@@ -84,9 +88,9 @@ public void test_getFileInfo()
 	try
 	{
 		
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
-
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
 		
 		String crc32 = "123456";
 		String creationTime = "567890";
@@ -132,9 +136,10 @@ public void test_UpdateFileCustomProperties()
 {
 	try
 	{
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
-	
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
+		
 		WPBFilePath file = new WPBFilePath("public", "test.txt");		
 		PowerMockito.doReturn(true).when(storage, "checkIfFileExists", Matchers.any(String.class));		
 		
@@ -169,9 +174,10 @@ public void test_updateContentType()
 {
 	try
 	{
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
-	
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
+		
 		WPBFilePath file = new WPBFilePath("public", "test.txt");		
 		PowerMockito.doReturn(true).when(storage, "checkIfFileExists", Matchers.any(String.class));		
 		
@@ -197,9 +203,10 @@ public void test_getFileContent()
 {
 	try
 	{
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
-	
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
+		
 		WPBFilePath file = new WPBFilePath("public", "test.txt");		
 		PowerMockito.doReturn(true).when(storage, "checkIfFileExists", Matchers.any(String.class));		
 		
@@ -221,9 +228,10 @@ public void test_getFileContent_file_not_exists()
 {
 	try
 	{
-		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", boolean.class));
-		storage = PowerMockito.spy(new WPBLocalFileStorage(dataDirectory, ""));
-	
+		PowerMock.suppress(PowerMock.method(WPBLocalFileStorage.class, "initialize", Map.class));
+		storage = PowerMockito.spy(new WPBLocalFileStorage());
+		storage.initialize(params);
+		
 		WPBFilePath file = new WPBFilePath("public", "test.txt");		
 		PowerMockito.doReturn(false).when(storage, "checkIfFileExists", Matchers.any(String.class));		
 		

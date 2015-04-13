@@ -43,6 +43,7 @@ public class WPBAdminDataStorageFactory {
 				try
 				{
 					instance = (WPBAdminDataStorage) Class.forName(factoryClass).newInstance();
+					instance.initialize(config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE));
 					return instance;
 				} 
 				

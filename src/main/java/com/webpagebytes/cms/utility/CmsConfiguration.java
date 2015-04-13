@@ -26,7 +26,8 @@ public interface CmsConfiguration {
 		SECTION_FILESTORAGE,
 		SECTION_IMAGEPROCESSOR,
 		SECTION_MODEL_CONFIGURATOR,
-		SECTION_GENERAL
+		SECTION_GENERAL,
+		SECTION_GLOBALS
 	};
 
 	public String getSectionClassFactory(WPBSECTION section);

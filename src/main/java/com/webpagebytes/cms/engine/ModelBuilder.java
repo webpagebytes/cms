@@ -45,12 +45,15 @@ public class ModelBuilder {
 	private WPBCacheInstances cacheInstances;
 	private CmsConfiguration configuration;
 	private String baseModelUrlPath;
+	Map<String, String> setupGlobalParams;
 	public static final String BASE_MODEL_URL_PATH_HEADER = "X-BaseModelUrlPath";
 	public ModelBuilder(WPBCacheInstances cacheInstances)
 	{
 		this.cacheInstances = cacheInstances;
 		configuration = CmsConfigurationFactory.getConfiguration();
 		Map<String, String> sectionParams = configuration.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR);
+		setupGlobalParams = configuration.getSectionParams(WPBSECTION.SECTION_GLOBALS);
+		
 		if (sectionParams != null)
 		{
 			baseModelUrlPath = sectionParams.get("baseModelUrlPath");
@@ -159,6 +162,8 @@ public class ModelBuilder {
 	{
 		// populate the GLOBALS_KEY
 		Map<String, String> globalParams = new HashMap<String, String>();
+		globalParams.putAll(setupGlobalParams);
+		
 		List<WPBParameter> wbGlobalParams = cacheInstances.getParameterCache().getAllForOwner("");
 		for(WPBParameter param: wbGlobalParams)
 		{
