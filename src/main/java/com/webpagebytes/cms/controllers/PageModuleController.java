@@ -72,7 +72,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBPageModule wbmodule = adminStorage.get(key, WPBPageModule.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbmodule));			
@@ -156,10 +156,10 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBPageModule wbmodule = (WPBPageModule)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBPageModule.class);
-			wbmodule.setPrivkey(key);
+			wbmodule.setExternalKey(key);
 			Map<String, String> errors = validator.validateUpdate(wbmodule);
 			
 			if (errors.size()>0)
@@ -195,7 +195,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBPageModule pageModule = adminStorage.get(key, WPBPageModule.class);
 			
 			adminStorage.delete(key, WPBPageModule.class);
@@ -211,7 +211,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 			}
 			
 			WPBPageModule param = new WPBPageModule();
-			param.setPrivkey(key);
+			param.setExternalKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(returnJson));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -239,7 +239,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbmodule.setExternalKey(adminStorage.getUniqueId());
-			WPBPageModule newModule = adminStorage.add(wbmodule);
+			WPBPageModule newModule = adminStorage.addWithKey(wbmodule);
 			
 			WPBResource resource = new WPBResource(newModule.getExternalKey(), newModule.getName(), WPBResource.PAGE_MODULE_TYPE);
 			try

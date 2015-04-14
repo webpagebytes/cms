@@ -53,7 +53,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 		if (null == project)
 		{
 			project = new WPBProject();
-			project.setPrivkey("wbprojectid");
+			project.setExternalKey("wbprojectid");
 			project.setDefaultLanguage("en");
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			project.setSupportedLanguages("en");

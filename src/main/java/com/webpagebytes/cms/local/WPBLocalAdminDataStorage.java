@@ -39,7 +39,7 @@ import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
-	private static final String KEY_FILED_NAME = "privkey";
+	private static final String KEY_FILED_NAME = "externalKey";
 	private Vector<WPBAdminDataStorageListener> storageListeners = new Vector<WPBAdminDataStorageListener>();
 	
 	private WPBLocalDataStoreDao localDataStorageDao;

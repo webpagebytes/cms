@@ -172,7 +172,7 @@ public void test_updateRecord()
 		connectionMock.setAutoCommit(true);
 		PowerMockito.doReturn(connectionMock).when(dao, "getConnection");
 		
-		String sqlStatement = "UPDATE WPBUri SET ENABLED=?,URI=?,LASTMODIFIED=?,HTTPOPERATION=?,CONTROLLERCLASS=?,RESOURCETYPE=?,RESOURCEEXTERNALKEY=?,EXTERNALKEY=? WHERE key=?";
+		String sqlStatement = "UPDATE WPBUri SET ENABLED=?,URI=?,LASTMODIFIED=?,HTTPOPERATION=?,CONTROLLERCLASS=?,RESOURCETYPE=?,RESOURCEEXTERNALKEY=? WHERE EXTERNALKEY=?";
 		PowerMockito.doReturn(sqlStatement).when(dao, "getSQLStringForInsert", any(Object.class), any(Set.class));
 		
 		PreparedStatement statementMock = PowerMock.createMock(PreparedStatement.class);
@@ -187,7 +187,7 @@ public void test_updateRecord()
 		statementMock.close();
 		connectionMock.close();
 		PowerMock.replay(connectionMock, statementMock);
-		dao.updateRecord(uri, "key");		
+		dao.updateRecord(uri, "externalKey");		
 		PowerMock.verify(connectionMock, statementMock);
 		
 	} catch (Exception e)

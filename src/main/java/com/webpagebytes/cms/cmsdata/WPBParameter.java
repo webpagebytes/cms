@@ -22,9 +22,6 @@ public class WPBParameter {
 	public static final int PARAMETER_NO_TYPE = 0;
 	public static final int PARAMETER_LOCALE_LANGUAGE = 1;
 	public static final int PARAMETER_LOCALE_COUNTRY = 2;
-	
-	@WPBAdminFieldKey
-	private Long privkey;
 
 	@WPBAdminFieldStore
 	private String name;
@@ -44,16 +41,8 @@ public class WPBParameter {
 	@WPBAdminFieldStore
 	private Integer localeType;
 	
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
-	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public String getName() {
 		return name;

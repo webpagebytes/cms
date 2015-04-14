@@ -20,13 +20,10 @@ import java.util.Date;
 
 public class WPBMessage {
 
-	@WPBAdminFieldKey
-	private Long privkey;
-
 	@WPBAdminFieldStore
 	private String name;
 
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
 
 	@WPBAdminFieldTextStore
@@ -41,14 +38,6 @@ public class WPBMessage {
 	@WPBAdminFieldStore
 	private Date lastModified;
 	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
-
 	public String getName() {
 		return name;
 	}

@@ -37,10 +37,7 @@ class PageValidator {
 		{
 			errors.put("name", WPBErrors.ERROR_PAGENAME_LENGTH);
 		} 
-		if (webPage.getPrivkey() != null)
-		{
-			errors.put("key", WPBErrors.ERROR_CANT_SPECIFY_KEY);
-		}
+		
 		if (webPage.getHash() != null)
 		{
 			errors.put("hash", WPBErrors.ERROR_CANT_SPECIFY_HASH);
@@ -76,9 +73,9 @@ class PageValidator {
 		{
 			errors.put("name", WPBErrors.ERROR_PAGENAME_LENGTH);
 		}
-		if (webPage.getPrivkey() == null)
+		if (webPage.getExternalKey() == null)
 		{
-			errors.put("key", WPBErrors.ERROR_NO_KEY);
+			errors.put("externalKey", WPBErrors.ERROR_NO_KEY);
 		}
 		if (webPage.getLastModified() != null)
 		{

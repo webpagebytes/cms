@@ -71,7 +71,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBParameter wbparameter = adminStorage.get(key, WPBParameter.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbparameter));			
@@ -161,10 +161,10 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBParameter wbParameter = (WPBParameter)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBParameter.class);
-			wbParameter.setPrivkey(key);
+			wbParameter.setExternalKey(key);
 			Map<String, String> errors = parameterValidator.validateUpdate(wbParameter);
 			
 			if (errors.size()>0)
@@ -202,7 +202,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBParameter param = adminStorage.get(key, WPBParameter.class);
 			
 			adminStorage.delete(key, WPBParameter.class);
@@ -247,7 +247,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbParameter.setExternalKey(adminStorage.getUniqueId());
-			WPBParameter newParameter = adminStorage.add(wbParameter);
+			WPBParameter newParameter = adminStorage.addWithKey(wbParameter);
 			
 			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
 			{
@@ -295,11 +295,10 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			for(WPBParameter parameter: ownerParams)
 			{
 				parameter.setOwnerExternalKey(ownerExternalKey);
-				parameter.setPrivkey(null);
 				parameter.setExternalKey(adminStorage.getUniqueId());
 				parameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 				
-				WPBParameter newParam = adminStorage.add(parameter);
+				WPBParameter newParam = adminStorage.addWithKey(parameter);
 				newParams.add(newParam);
 			}
 			

@@ -69,7 +69,7 @@ public class WPBLocalProjectCache implements WPBProjectCache {
 	private WPBProject createDefaultProject() throws WPBIOException
 	{
 		WPBProject project = new WPBProject();
-		project.setPrivkey(WPBProject.PROJECT_KEY);
+		project.setExternalKey(WPBProject.PROJECT_KEY);
 		project.setDefaultLanguage("en");
 		project.setSupportedLanguages("en");
 		project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());	

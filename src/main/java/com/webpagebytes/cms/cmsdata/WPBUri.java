@@ -23,10 +23,6 @@ public class WPBUri {
 	public final static int RESOURCE_TYPE_FILE = 2;
 	public final static int RESOURCE_TYPE_URL_CONTROLLER = 3;
 	
-
-	@WPBAdminFieldKey
-	private Long privkey;
-
 	@WPBAdminFieldStore
 	private Integer enabled;
 
@@ -48,16 +44,8 @@ public class WPBUri {
 	@WPBAdminFieldStore
 	private String resourceExternalKey;
 			
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
-	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public Integer getEnabled() {
 		return enabled;

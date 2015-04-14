@@ -37,10 +37,7 @@ public class PageModuleValidator {
 		{
 			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
-		if (webPageModule.getPrivkey() != null)
-		{
-			errors.put("key", WPBErrors.ERROR_CANT_SPECIFY_KEY);
-		}
+		
 		if (webPageModule.getLastModified() != null)
 		{
 			errors.put("lastModified", WPBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
@@ -61,9 +58,9 @@ public class PageModuleValidator {
 		{
 			errors.put("name", WPBErrors.ERROR_PAGE_MODULENAME_LENGTH);
 		}
-		if (webPageModule.getPrivkey() == null)
+		if (webPageModule.getExternalKey() == null)
 		{
-			errors.put("key", WPBErrors.ERROR_NO_KEY);
+			errors.put("externalKey", WPBErrors.ERROR_NO_KEY);
 		}
 		if (webPageModule.getLastModified() != null)
 		{

@@ -301,7 +301,7 @@ public class WPBImporter {
 		}
 		project.setLastModified(new Date(lastModified));
 
-		project.setPrivkey(WPBProject.PROJECT_KEY);
+		project.setExternalKey(WPBProject.PROJECT_KEY);
 		return project;
 	}
 

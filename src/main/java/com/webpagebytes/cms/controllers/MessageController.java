@@ -87,7 +87,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			record.setLcid(record.getLcid().trim());
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
-			WPBMessage newRecord = adminStorage.add(record);
+			WPBMessage newRecord = adminStorage.addWithKey(record);
 			WPBResource resource = new WPBResource(newRecord.getName(), newRecord.getName(), WPBResource.MESSAGE_TYPE);
 			try
 			{
@@ -174,7 +174,6 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 		json.put("name", message.getName());
 		json.put("value", message.getValue());
 		json.put("isTranslated", message.getIsTranslated());
-		json.put("privkey", message.getPrivkey());
 		json.put("externalKey", message.getExternalKey());
 		json.put("lcid", message.getLcid());
 		json.put("lastModified", message.getLastModified().getTime());
@@ -283,7 +282,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBMessage record = adminStorage.get(key, WPBMessage.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
@@ -300,7 +299,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBMessage record = adminStorage.get(key, WPBMessage.class);
 			
 			adminStorage.delete(key, WPBMessage.class);
@@ -331,10 +330,10 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBMessage record = (WPBMessage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBMessage.class);
-			record.setPrivkey(key);
+			record.setExternalKey(key);
 			Map<String, String> errors = validator.validateUpdate(record);
 			
 			if (errors.size()>0)

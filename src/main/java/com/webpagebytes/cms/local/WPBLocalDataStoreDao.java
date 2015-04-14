@@ -258,7 +258,7 @@ public class WPBLocalDataStoreDao {
 		{
 			listColumns = listColumns.substring(0, listColumns.length()-1);
 		}
-		return String.format(sqlTemplate, tableName, listColumns, keyFieldName) ;
+		return String.format(sqlTemplate, tableName, listColumns, keyFieldName.toUpperCase()) ;
 	}
 
 	private<T> String getSQLStringForDelete(Class<T> kind, String keyFieldName) throws WPBSerializerException

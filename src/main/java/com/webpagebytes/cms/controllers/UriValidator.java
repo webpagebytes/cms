@@ -75,10 +75,6 @@ class UriValidator {
 			errors.put("controllerClass", WPBErrors.ERROR_INVALID_VALUE);
 		}
 		
-		if ((wbUri.getPrivkey() == null) || (wbUri.getPrivkey() == 0))
-		{
-			errors.put("key", WPBErrors.ERROR_NO_KEY);
-		}
 		if (wbUri.getLastModified() != null)
 		{
 			errors.put("lastModified", WPBErrors.ERROR_CANT_SPECIFY_LAST_MODIFIED);
@@ -91,7 +87,7 @@ class UriValidator {
 			
 		if (null == wbUri.getExternalKey() || 0 == wbUri.getExternalKey().length() || (wbUri.getExternalKey().length() > MAX_EXTERNAL_KEY))
 		{
-			errors.put("externalKey", WPBErrors.ERROR_INVALID_VALUE);
+			errors.put("externalKey", WPBErrors.ERROR_NO_KEY);
 		}
 		if (null != wbUri.getResourceExternalKey() && (wbUri.getResourceExternalKey().length() > MAX_EXTERNAL_KEY))
 		{
@@ -150,10 +146,6 @@ class UriValidator {
 				errors.put("controllerClass", WPBErrors.ERROR_INVALID_VALUE);
 			}
 		}
-		if (wbUri.getPrivkey() != null)
-		{
-			errors.put("key", WPBErrors.ERROR_CANT_SPECIFY_KEY);
-		}
 		
 		if (null == wbUri.getResourceType() || (!(wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_FILE || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_TEXT || wbUri.getResourceType() == WPBUri.RESOURCE_TYPE_URL_CONTROLLER)))
 		{
@@ -167,6 +159,7 @@ class UriValidator {
 		{
 			errors.put("enabled", WPBErrors.ERROR_INVALID_VALUE);
 		}	
+				
 		return errors;
 	}
 	

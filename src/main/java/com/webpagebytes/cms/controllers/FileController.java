@@ -216,7 +216,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
             
             cloudFileStorage.deleteFile(contentFile);             
         }
-        adminStorage.delete(file.getPrivkey(), WPBFile.class);
+        adminStorage.delete(file.getExternalKey(), WPBFile.class);
     }
 
 	private WPBFile createDirectory(WPBFile parentdirectory, String dirName) throws WPBException
@@ -234,7 +234,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	    {
 	        file.setOwnerExtKey(parentdirectory.getExternalKey());
 	    }
-	    file = adminStorage.add(file);
+	    file = adminStorage.addWithKey(file);
 	    
         WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
         try
@@ -285,7 +285,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
          
          WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
 
-         if (file.getPrivkey() != null)
+         if (file.getExternalKey() != null)
          {
                adminStorage.update(file);                   
                try
@@ -297,7 +297,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
                }
          } else
          {
-               adminStorage.add(file);
+               adminStorage.addWithKey(file);
                try
                {
                    adminStorage.addWithKey(resource);
@@ -441,7 +441,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	            if (request.getAttribute("key") != null)
 	            {
 	                // this is an upload as update for an existing file
-	                Long key = Long.valueOf((String)request.getAttribute("key"));
+	                String key = (String)request.getAttribute("key");
 	                wbFile = adminStorage.get(key, WPBFile.class);
 	                
 	                ownerFile = getDirectory(wbFile.getOwnerExtKey(), adminStorage);
@@ -501,7 +501,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	            wbFile.setSize(0L);
 	            wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 	            wbFile.setExternalKey(adminStorage.getUniqueId());
-	            WPBFile newFile = adminStorage.add(wbFile);
+	            WPBFile newFile = adminStorage.addWithKey(wbFile);
 	            
 	            WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getFileName(), WPBResource.FILE_TYPE);
 	            try
@@ -527,10 +527,10 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBFile wbfile = (WPBFile)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBFile.class);
-			wbfile.setPrivkey(key);
+			wbfile.setExternalKey(key);
 			Map<String, String> errors = validator.validateUpdate(wbfile);
 			
 			if (errors.size()>0)
@@ -559,13 +559,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBFile tempFile = adminStorage.get(key, WPBFile.class);
 
 			deleteFile(tempFile, 0);
 			
 			WPBFile param = new WPBFile();
-			param.setPrivkey(key);
+			param.setExternalKey(key);
 			
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
@@ -701,7 +701,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBFile wbFile = adminStorage.get(key, WPBFile.class);			
 			org.json.JSONObject returnJson = get(request, wbFile);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -735,7 +735,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
 			WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, wbfile.getBlobKey());
 			InputStream is = cloudFileStorage.getFileContent(cloudFile);
@@ -760,7 +760,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	    OutputStream os = null;
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBFile wbfile = adminStorage.get(key, WPBFile.class);
 			WPBFilePath cloudFile = new WPBFilePath(PUBLIC_BUCKET, wbfile.getBlobKey());
 			is = cloudFileStorage.getFileContent(cloudFile);

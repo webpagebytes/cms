@@ -21,9 +21,6 @@ import java.util.Date;
 public class WPBFile {
 
 	@WPBAdminFieldKey
-	private Long privkey;
-
-	@WPBAdminFieldStore
 	private String externalKey;
 	
 	@WPBAdminFieldStore
@@ -56,13 +53,6 @@ public class WPBFile {
 	@WPBAdminFieldStore
 	private String ownerExtKey;
 	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public String getExternalKey() {
 		return externalKey;

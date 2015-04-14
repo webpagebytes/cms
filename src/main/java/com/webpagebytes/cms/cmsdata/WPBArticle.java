@@ -19,9 +19,7 @@ package com.webpagebytes.cms.cmsdata;
 import java.util.Date;
 
 public class WPBArticle {
-	@WPBAdminFieldKey
-	private Long privkey;
-	
+
 	@WPBAdminFieldStore
 	private Date lastModified;
 
@@ -31,16 +29,8 @@ public class WPBArticle {
 	@WPBAdminFieldTextStore
 	private String htmlSource;
 		
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
-
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public Date getLastModified() {
 		return lastModified;

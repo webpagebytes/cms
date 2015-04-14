@@ -86,7 +86,7 @@ public void test_create_ok()
 		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
 		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WPBPage newPage = new WPBPage();
-		newPage.setPrivkey(10L);
+		//newPage.setExternalKey("10");
 		
 		EasyMock.expect(adminStorageMock.add(objectForControllerMock)).andReturn(newPage);
 		
@@ -251,7 +251,7 @@ public void test_get_ok()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WPBPage.class)).andReturn(objectForControllerMock);
+		EasyMock.expect(adminStorageMock.get("123", WPBPage.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(objectForControllerMock, null)).andReturn(json);
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -280,7 +280,7 @@ public void test_get_exception()
 	{
 		String json = "{}";
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");		
-		EasyMock.expect(adminStorageMock.get(123L, WPBPage.class)).andThrow(new WPBIOException(""));
+		EasyMock.expect(adminStorageMock.get("123", WPBPage.class)).andThrow(new WPBIOException(""));
 
 		Capture<HttpServletResponse> captureHttpResponse = new Capture<HttpServletResponse>();
 		Capture<String> captureData = new Capture<String>();
@@ -340,15 +340,15 @@ public void test_update_ok()
 		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBPage.class)).andReturn(objectForControllerMock);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 		Capture<Date> captureDate = new Capture<Date>();
-		Capture<Long> captureKey = new Capture<Long>();
+		Capture<String> captureKey = new Capture<String>();
 		Capture<Long> captureHash = new Capture<Long>();
 		
 		objectForControllerMock.setLastModified(EasyMock.capture(captureDate));
-		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
+		objectForControllerMock.setExternalKey(EasyMock.capture(captureKey));
 		objectForControllerMock.setHash(EasyMock.captureLong(captureHash));
 		EasyMock.expect(objectForControllerMock.getHtmlSource()).andReturn("");
 		WPBPage newPage = new WPBPage();
-		newPage.setPrivkey(123L);
+		newPage.setExternalKey("123");
 		EasyMock.expect(adminStorageMock.update(objectForControllerMock)).andReturn(newPage);
 		
 		String returnJson = "{}"; //really doesn't matter
@@ -366,7 +366,7 @@ public void test_update_ok()
 		assertTrue (captureErrors.getValue() == errors);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);
-		assertTrue (captureKey.getValue().compareTo(123L) == 0);
+		assertTrue (captureKey.getValue().compareTo("123") == 0);
 		assertTrue (captureDate.getValue() != null);
 		assertTrue (captureHash.getValue().equals(0L));
 		
@@ -385,8 +385,8 @@ public void test_update_errors()
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		EasyMock.expect(httpServletToolboxMock.getBodyText(requestMock)).andReturn(json);
 		EasyMock.expect(jsonObjectConverterMock.objectFromJSONString(json, WPBPage.class)).andReturn(objectForControllerMock);
-		Capture<Long> captureKey = new Capture<Long>();
-		objectForControllerMock.setPrivkey(EasyMock.captureLong(captureKey));
+		Capture<String> captureKey = new Capture<String>();
+		objectForControllerMock.setExternalKey(EasyMock.capture(captureKey));
 		errors.put("uri", WPBErrors.ERROR_URI_LENGTH);
 		EasyMock.expect(validatorMock.validateUpdate(objectForControllerMock)).andReturn(errors);
 				
@@ -401,7 +401,7 @@ public void test_update_errors()
 		controllerForTest.update(requestMock, responseMock, "/abc");
 		EasyMock.verify(httpServletToolboxMock, requestMock, responseMock, jsonObjectConverterMock, validatorMock, adminStorageMock, objectForControllerMock);
 		
-		assertTrue (captureKey.getValue().compareTo(123L) == 0);
+		assertTrue (captureKey.getValue().compareTo("123") == 0);
 		assertTrue (captureErrors.getValue().get("uri").compareTo(WPBErrors.ERROR_URI_LENGTH) == 0);
 		assertTrue (captureErrors.getValue().size() == 1);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
@@ -446,9 +446,9 @@ public void test_delete_ok()
 	{
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		
-		Capture<Long> captureKey = new Capture<Long>();
+		Capture<String> captureKey = new Capture<String>();
 		Capture<Class> captureClass = new Capture<Class>();
-		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
+		adminStorageMock.delete(EasyMock.capture(captureKey), EasyMock.capture(captureClass));
 
 		String returnJson = "{}"; //really doesn't matter
 		EasyMock.expect(jsonObjectConverterMock.JSONStringFromObject(EasyMock.anyObject(WPBPage.class), EasyMock.anyObject(Map.class))).andReturn(returnJson);
@@ -464,7 +464,7 @@ public void test_delete_ok()
 		assertTrue (captureErrors.getValue() == null);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);	
-		assertTrue (captureKey.getValue().compareTo(123L) == 0);
+		assertTrue (captureKey.getValue().compareTo("123") == 0);
 	} catch (Exception e)
 	{
 		assertTrue(false);
@@ -478,9 +478,9 @@ public void test_delete_exception()
 	{
 		Object key = EasyMock.expect(requestMock.getAttribute("key")).andReturn("123");
 		
-		Capture<Long> captureKey = new Capture<Long>();
+		Capture<String> captureKey = new Capture<String>();
 		Capture<Class> captureClass = new Capture<Class>();
-		adminStorageMock.delete(EasyMock.captureLong(captureKey), EasyMock.capture(captureClass));
+		adminStorageMock.delete(EasyMock.capture(captureKey), EasyMock.capture(captureClass));
 		EasyMock.expectLastCall().andThrow(new WPBIOException(""));
 		
 		String returnJson = "{}"; //really doesn't matter
@@ -496,7 +496,7 @@ public void test_delete_exception()
 		assertTrue (captureErrors.getValue().get("").compareTo(WPBErrors.WB_CANT_DELETE_RECORD) == 0);
 		assertTrue (captureData.getValue().compareTo(returnJson) == 0);
 		assertTrue (captureHttpResponse.getValue() == responseMock);	
-		assertTrue (captureKey.getValue().compareTo(123L) == 0);
+		assertTrue (captureKey.getValue().compareTo("123") == 0);
 	} catch (Exception e)
 	{
 		assertTrue(false);

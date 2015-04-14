@@ -111,7 +111,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			}
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbUri.setExternalKey(adminStorage.getUniqueId());
-			WPBUri newUri = adminStorage.add(wbUri);
+			WPBUri newUri = adminStorage.addWithKey(wbUri);
 			
 			WPBResource resource = new WPBResource(newUri.getExternalKey(), newUri.getUri(), WPBResource.URI_TYPE);
 			try
@@ -183,7 +183,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBUri wburi = adminStorage.get(key, WPBUri.class);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));
@@ -279,7 +279,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBUri tempUri = adminStorage.get(key, WPBUri.class);
 			
 			adminStorage.delete(key, WPBUri.class);
@@ -296,7 +296,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			}
 
 			WPBUri wburi = new WPBUri();
-			wburi.setPrivkey(key);
+			wburi.setExternalKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));						
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -314,10 +314,10 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBUri wbUri = (WPBUri)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBUri.class);
-			wbUri.setPrivkey(key);
+			wbUri.setExternalKey(key);
 			Map<String, String> errors = uriValidator.validateUpdate(wbUri);
 			
 			if (errors.size()>0)

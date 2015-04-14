@@ -19,8 +19,6 @@ package com.webpagebytes.cms.cmsdata;
 import java.util.Date;
 
 public class WPBPageModule {
-	@WPBAdminFieldKey
-	private Long privkey;
 
 	@WPBAdminFieldStore
 	private String name;
@@ -34,16 +32,9 @@ public class WPBPageModule {
 	@WPBAdminFieldStore
 	private Integer isTemplateSource;
 
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
 	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public String getName() {
 		return name;

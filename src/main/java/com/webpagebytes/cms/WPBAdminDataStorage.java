@@ -89,15 +89,6 @@ public interface WPBAdminDataStorage {
 	 * @throws WPBIOException Exception
 	 */
 	public<T> void delete(String recordid, Class<T> dataClass) throws WPBIOException;
-
-	/**
-     * Deletes a record with the provided record id and the resource class identifier.
-     * @param recordid Resource record id as Long
-     * @param dataClass Resource class identifier (for example WPBUri.class, WPBWebPage.class)
-     * @param <T> Generic type of data (see com.webpagebytes.cms.cmsdata package)
-     * @throws WPBIOException Exception
-     */
-	public<T> void delete(Long recordid, Class<T> dataClass) throws WPBIOException;
 	
 	/**
      * Deletes a set of records that match a search criteria of type (property operator value)
@@ -150,16 +141,6 @@ public interface WPBAdminDataStorage {
 	 */
 	public<T> T addWithKey(T record) throws WPBIOException;
 	
-	/**
-	 * Returns a record from the storage based on record id and resource type.
-	 * @param recordid the record id
-	 * @param dataClass Resource class identifier (for example WPBUri.class, WPBWebPage.class) 
-	 * @param <T> Generic type of data (see com.webpagebytes.cms.cmsdata package)
-	 * @return Returns the record on which id and type was specified in the input parameters. Returns null if no record is found.
-	 * @throws WPBIOException Exception 
-	 */
-	public<T> T get(Long recordid, Class<T> dataClass) throws WPBIOException;
-
     /**
      * Returns a record from the storage based on record id and resource type.
      * @param recordid the record id

@@ -24,7 +24,7 @@ public class WPBProject {
 	public static final String PROJECT_KEY = "wbprojectid";
 	
 	@WPBAdminFieldKey
-	private String privkey;
+	private String externalKey;
 
 	@WPBAdminFieldStore
 	private Date lastModified;
@@ -35,12 +35,12 @@ public class WPBProject {
 	@WPBAdminFieldStore
 	private String defaultLanguage;
 	
-	public String getPrivkey() {
-		return privkey;
+	public String getExternalKey() {
+		return externalKey;
 	}
 
-	public void setPrivkey(String key) {
-		this.privkey = key;
+	public void setExternalKey(String key) {
+		this.externalKey = key;
 	}
 
 	public Date getLastModified() {

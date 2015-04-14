@@ -279,7 +279,7 @@ public class FlatStorageImporterExporter {
 					log.log(Level.SEVERE, String.format("uri validator failed for record ext key: '%s' and path: '%s'  ", uri.getExternalKey(), uri.getUri()));
 					throw new WPBIOException("Uri validator failed");
 				}
-				dataStorage.add(uri);
+				dataStorage.addWithKey(uri);
 			}
 		} catch (IOException e)
 		{
@@ -295,7 +295,7 @@ public class FlatStorageImporterExporter {
 			WPBPage webPage = importer.buildWebPage(props);
 			if (webPage != null)
 			{
-				dataStorage.add(webPage);
+				dataStorage.addWithKey(webPage);
 			}
 		} catch (IOException e)
 		{
@@ -431,7 +431,7 @@ public class FlatStorageImporterExporter {
 			WPBProject tempProject = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
 			if (tempProject == null)
 			{
-			    project.setPrivkey(WPBProject.PROJECT_KEY);
+			    project.setExternalKey(WPBProject.PROJECT_KEY);
 				dataStorage.addWithKey(project);
 			} else
 			{
@@ -451,7 +451,7 @@ public class FlatStorageImporterExporter {
 			WPBPageModule webPageModule = importer.buildWebPageModule(props);
 			if (webPageModule != null)
 			{
-				dataStorage.add(webPageModule);
+				dataStorage.addWithKey(webPageModule);
 			}
 		} catch (IOException e)
 		{
@@ -467,7 +467,7 @@ public class FlatStorageImporterExporter {
 			WPBArticle article = importer.buildArticle(props);
 			if (article != null)
 			{
-				dataStorage.add(article);
+				dataStorage.addWithKey(article);
 			}
 		} catch (IOException e)
 		{
@@ -483,7 +483,7 @@ public class FlatStorageImporterExporter {
 			WPBFile file = importer.buildFile(props);
 			if (file != null)
 			{
-				dataStorage.add(file);
+				dataStorage.addWithKey(file);
 			}
 		} catch (IOException e)
 		{
@@ -499,7 +499,7 @@ public class FlatStorageImporterExporter {
 			WPBMessage message = importer.buildMessage(props);
 			if (message != null)
 			{
-				dataStorage.add(message);
+				dataStorage.addWithKey(message);
 			}
 		} catch (IOException e)
 		{
@@ -515,7 +515,7 @@ public class FlatStorageImporterExporter {
 			WPBParameter parameter = importer.buildParameter(props);
 			if (parameter != null)
 			{
-				dataStorage.add(parameter);
+				dataStorage.addWithKey(parameter);
 			}
 		} catch (Exception e)
 		{

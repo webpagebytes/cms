@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.zip.CRC32;
 
 public class WPBPage {
-	@WPBAdminFieldKey
-	private Long privkey;
 
 	@WPBAdminFieldStore
 	private String name;
@@ -38,7 +36,7 @@ public class WPBPage {
 	@WPBAdminFieldStore
 	private String contentType;
 	
-	@WPBAdminFieldStore
+	@WPBAdminFieldKey
 	private String externalKey;
 	
 	@WPBAdminFieldStore
@@ -47,14 +45,6 @@ public class WPBPage {
 	@WPBAdminFieldStore
 	private String pageModelProvider;
 	
-	public Long getPrivkey() {
-		return privkey;
-	}
-
-	
-	public void setPrivkey(Long key) {
-		this.privkey = key;
-	}
 
 	public String getName() {
 		return name;

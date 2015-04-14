@@ -92,7 +92,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			webPage.setHash( WPBPage.crc32(webPage.getHtmlSource()));
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
-			WPBPage newWebPage = adminStorage.add(webPage);
+			WPBPage newWebPage = adminStorage.addWithKey(webPage);
 			
 			WPBResource resource = new WPBResource(newWebPage.getExternalKey(), newWebPage.getName(), WPBResource.PAGE_TYPE);
 			try
@@ -188,7 +188,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBPage webPage = adminStorage.get(key, WPBPage.class);
 			org.json.JSONObject returnJson = get(request, response, webPage);
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -223,7 +223,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			WPBPage tempPage = adminStorage.get(key, WPBPage.class);
 			adminStorage.delete(key, WPBPage.class);
 			
@@ -237,7 +237,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 				// do not propagate further
 			}
 			WPBPage page = new WPBPage();
-			page.setPrivkey(key);
+			page.setExternalKey(key);
 			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(page));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
@@ -254,10 +254,10 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	{
 		try
 		{
-			Long key = Long.valueOf((String)request.getAttribute("key"));
+			String key = (String)request.getAttribute("key");
 			String jsonRequest = httpServletToolbox.getBodyText(request);
 			WPBPage webPage = (WPBPage)jsonObjectConverter.objectFromJSONString(jsonRequest, WPBPage.class);
-			webPage.setPrivkey(key);
+			webPage.setExternalKey(key);
 			Map<String, String> errors = pageValidator.validateUpdate(webPage);
 			
 			if (errors.size()>0)
