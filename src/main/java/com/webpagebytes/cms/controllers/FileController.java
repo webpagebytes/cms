@@ -285,27 +285,19 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
          
          WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
 
-         if (file.getExternalKey() != null)
+       	 adminStorage.delete(file.getExternalKey(), WPBFile.class);
+    	 adminStorage.addWithKey(file);
+    	 
+         try
          {
-               adminStorage.update(file);                   
-               try
-               {
-                   adminStorage.update(resource);
-               } catch (WPBException e)
-               {
-                   // do not propage further
-               }
-         } else
+        	 adminStorage.delete(resource.getRkey(), WPBResource.class);
+        	 adminStorage.addWithKey(resource);
+        	 
+         } catch (WPBException e)
          {
-               adminStorage.addWithKey(file);
-               try
-               {
-                   adminStorage.addWithKey(resource);
-               } catch (WPBException e)
-               {
-                   // do not propagate further
-               }
+             // do not propagate further
          }
+         
 	}
 	
 	/**

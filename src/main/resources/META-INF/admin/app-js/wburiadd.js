@@ -179,7 +179,7 @@ $().ready( function () {
 		$('input[name="resourceType"]').val(["1"]);
 		qParam = true;
 	} 
-	var qValue = getURLParameter("qprivkey") || ""
+	var qValue = getURLParameter("qextKey") || ""
 	qParam = qParam && (qValue.length > 0);
 	if (qParam) {
 		$("#wbaresourceExternalKey").val(qValue);

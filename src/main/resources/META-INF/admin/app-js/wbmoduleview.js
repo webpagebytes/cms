@@ -51,9 +51,9 @@ $().ready( function () {
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	$('#wbPageModuleView').wbDisplayObject( { fieldsPrefix: 'wbPageModuleView', customHandler: pageModuleSourceHandler} );
 	
-	var pageModuleKey = getURLParameter('privkey'); 
+	var pageModuleKey = getURLParameter('extKey'); 
 	var fSuccessGetModule = function (data) {
-		pageModuleKey = data.data["privkey"];
+		pageModuleKey = data.data["externalKey"];
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleView').wbDisplayObject().display(data.data);
 		$('#spinnerTable').WBSpinner().hide();

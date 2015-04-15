@@ -50,9 +50,9 @@ $().ready( function () {
 	}
 	$('#wbPageSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
-	var pageKey = getURLParameter('privkey'); 
+	var pageKey = getURLParameter('extKey'); 
 	var fSuccessGetPage = function (data) {
-		pageKey =  data.data["privkey"];
+		pageKey =  data.data["externalKey"];
 		$('#wbPageSummary').wbDisplayObject().display(data.data);
 		$('#wbPageEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		if (data.data["isTemplateSource"] != '1') {

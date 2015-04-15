@@ -37,8 +37,8 @@ $().ready( function () {
 	var displayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
 			return '<a href="./webarticleedit.html?extKey=' + encodeURIComponent(record['externalKey'])+'"><i class="icon-pencil"></i> Edit </a>'
-			      +'| <a href="#" class="wbDeleteArticleClass" id="wbDeleteArticle_' + encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'
-				  +'| <a href="#" class="wbDuplicateArticleClass" id="wbDupArticle_' + encodeURIComponent(record['privkey']) + '"><i class="aicon-duplicate"></i> Duplicate </a>';				  
+			      +'| <a href="#" class="wbDeleteArticleClass" id="wbDeleteArticle_' + encodeURIComponent(record['externalKey']) + '"><i class="icon-trash"></i> Delete </a>'
+				  +'| <a href="#" class="wbDuplicateArticleClass" id="wbDupArticle_' + encodeURIComponent(record['externalKey']) + '"><i class="aicon-duplicate"></i> Duplicate </a>';				  
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -56,7 +56,7 @@ $().ready( function () {
 	                                                  {display: "Title", fieldId: "title", isHtmlDisplay:true}, 
 	                                                  {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true}, 
 	                                                  {display: "Operations", fieldId:"_operations", customHandler: displayHandler}],
-						 keyName: "privkey",
+						 keyName: "externalKey",
 						 tableBaseClass: "table table-condensed table-color-header",
 						 paginationBaseClass: "pagination",
 						 headerColumnBaseClass: "header-uri-table",
@@ -137,7 +137,6 @@ $().ready( function () {
 		var errors = $('#wbDuplicateArticleForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {	
 			var object = $('#wbDuplicateArticleForm').wbObjectManager().getObjectFromFields();
-			delete object['privkey'];
 			delete object['externalKey'];
 			var jsonText = JSON.stringify(object);
 			$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle",
@@ -153,7 +152,7 @@ $().ready( function () {
 	$('.wbSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeleteArticleForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(object['privkey']),
+		$('#wbDeleteArticleForm').wbCommunicationManager().ajax ( { url: "./wbarticle/" + encodeURIComponent(object['externalKey']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,

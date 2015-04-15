@@ -55,7 +55,7 @@ $().ready( function () {
 			return "";
 		} else
 		if (fieldId=="_operations") {
-			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['externalKey']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -84,7 +84,7 @@ $().ready( function () {
 			return '<a href="./webfiles.html?parent=' + encodeURIComponent(record['externalKey']) + '"> &nbsp; <i class="fa fa-folder fa-lg"></i> &nbsp; </a>';
 		} else
 		if (fieldId=="_operations") {
-			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['privkey']) + '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="./webfile.html?extKey=' + encodeURIComponent(record['externalKey']) + '"><i class="icon-eye-open"></i> View </a> | <a href="#" class="wbDeleteFileClass" id="wbDeleteFile_' +encodeURIComponent(record['externalKey']) + '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			return escapehtml(Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
@@ -127,7 +127,7 @@ $().ready( function () {
 	                                               {display:"Size", fieldId:"size", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display:"Last Modified", fieldId:"lastModified", customHandler: displayHandler, isHtmlDisplay:true},
 	                                               {display: "Operations", fieldId:"_operations", customHandling:true, customHandler: displayHandler}],
-	                                    keyName: "privkey",
+	                                    keyName: "externalKey",
 	                                    tableBaseClass: "table table-condensed table-color-header",
 	                                    paginationBaseClass: "pagination",
 	                                    headerColumnBaseClass: "header-uri-table",
@@ -233,7 +233,7 @@ $().ready( function () {
 	$('.webSaveDeleteBtnClass').click( function (e) {
 		e.preventDefault();
 		var object = $('#wbDeleteFileForm').wbObjectManager().getObjectFromFields();			
-		$('#wbDeleteFileForm').wbCommunicationManager().ajax ( { url: "./wbfile/" + encodeURIComponent(object['privkey']),
+		$('#wbDeleteFileForm').wbCommunicationManager().ajax ( { url: "./wbfile/" + encodeURIComponent(object['externalKey']),
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,

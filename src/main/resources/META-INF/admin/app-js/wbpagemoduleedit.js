@@ -31,7 +31,7 @@ $().ready( function () {
 			return escapehtml( "Last modified: " + Date.toFormatString(record[fieldId], "today|dd/mm/yyyy hh:mm"));
 		} 
 		if (fieldId == 'name') {
-			var innerHtml = '<a href="./webpagemodule.html?privkey=' + encodeURIComponent(record['privkey']) + '">' + escapehtml(record['name']) + '</a>';
+			var innerHtml = '<a href="./webpagemodule.html?extKey=' + encodeURIComponent(record['externalKey']) + '">' + escapehtml(record['name']) + '</a>';
 			return innerHtml;
 		}
 
@@ -39,10 +39,10 @@ $().ready( function () {
 	}
 	$('#wbPageModuleSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	
-	var pageModuleKey = getURLParameter('privkey'); 
+	var pageModuleKey = getURLParameter('externalKey'); 
 	
 	var fSuccessGetPage = function (data) {
-		pageModuleKey = data.data["privkey"];
+		pageModuleKey = data.data["externalKey"];
 		$('#wbPageModuleSummary').wbDisplayObject().display(data.data);
 		$('#wbPageModuleEditForm').wbObjectManager().populateFieldsFromObject(data.data);
 		$('#spinnerTable').WBSpinner().hide();

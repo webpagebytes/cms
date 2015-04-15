@@ -77,7 +77,7 @@ $().ready( function () {
 	}
 
 	$('#wbUrlsTable').wbSimpleTable( { columns: [{display: "Site urls linked to this file", fieldId:"uri", customHandler: filesDisplayHandler}],
-		 keyName: "privkey",
+		 keyName: "externalKey",
 		 tableBaseClass: "table table-stripped table-bordered table-color-header",
 		 paginationBaseClass: "pagination",
 		 noLinesContent: "<tr> <td colspan='1'>There are no site urls serving this file. </td></tr>"
@@ -104,17 +104,16 @@ $().ready( function () {
 	}
 	$('#wbuFileUploadUpdateForm').ajaxForm({ success: fSuccessUploadFile, error: fErrorUploadFile });
 
-	var fileKey = getURLParameter('privkey'); 
 	var fileExternalKey = getURLParameter('extKey');
 	
 	var fSuccessGetFile = function (payload) {
 		var data = payload.data;
-		fileKey = data["privkey"];
+		fileKey = data["externalKey"];
 		$("#wbuFileUploadUpdateForm").attr("action", "./wbfileupload/{0}".format(encodeURIComponent(fileKey)));		
 		$('#wbFileView').wbDisplayObject().display(data);
 		$('#wbFileOwnerDir').html('<a href="{0}">{1}/</a>'.format('./webfiles.html?parent='+encodeURIComponent(data['ownerExtKey']), escapehtml(payload.additional_data.ownerFullDirectoryPath)));
 		$('#collapseFileDetails').wbDisplayObject().display(data);
-		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['privkey'])));
+		$('.wbDownloadFileDataBtnClass').attr('href', './wbdownload/{0}'.format(encodeURIComponent(data['externalKey'])));
 		$('#wbUrlsTable').wbSimpleTable().setRows(payload.additional_data.uri_links);
 		if (data["directoryFlag"] == "1") {
 		  displayFolderView(data);
@@ -122,11 +121,11 @@ $().ready( function () {
 		$('#spinnerTable').WBSpinner().hide();
 		var contentType = data["adjustedContentType"] || "";
 		if (contentType.toLowerCase().startsWith("image")) {
-			var imgHtml = "<img src='./wbresource/{0}'>".format(encodeURIComponent(data['privkey']));
+			var imgHtml = "<img src='./wbresource/{0}'>".format(encodeURIComponent(data['externalKey']));
 			$('.wbimagecontent').html(imgHtml);			
 		}
 		if (contentType.toLowerCase().startsWith("video")) {
-			var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['privkey']));
+			var videoHtml = "<video id='idvideocontent'><source type='{0}' src='./wbresource/{1}' /></video>".format(escapehtml(data['contentType']), encodeURI(data['externalKey']));
 			$(".wbvideocontent").html(videoHtml);
 			var player = new MediaElementPlayer('#idvideocontent');
 			player.load();			
@@ -163,7 +162,7 @@ $().ready( function () {
 		if ($.isEmptyObject(errors)) {
 			var file = $('#wbuFileDataUpdateForm').wbObjectManager().getObjectFromFields();
 			var jsonText = JSON.stringify(file);
-			$('#wbFileView').wbCommunicationManager().ajax ( { url: "./wbfile/" + encodeURIComponent(fileKey),
+			$('#wbFileView').wbCommunicationManager().ajax ( { url: "./wbfile/" + encodeURIComponent(fileExternalKey),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbuFileDataUpdateForm').wbObjectManager(),
@@ -207,7 +206,7 @@ $().ready( function () {
 
 	$("#wbAddUrlBtn").click ( function (e) {
 		e.preventDefault();
-		window.location.href = "./weburiadd.html?qtype=file&qprivkey={0}".format(encodeURIComponent(fileExternalKey));
+		window.location.href = "./weburiadd.html?qtype=file&qextKey={0}".format(encodeURIComponent(fileExternalKey));
 	});
 	
 	

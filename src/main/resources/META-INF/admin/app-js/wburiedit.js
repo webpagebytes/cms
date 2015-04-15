@@ -64,7 +64,7 @@ $().ready( function () {
 
 	var tableDisplayHandler = function (fieldId, record) {
 		if (fieldId=="_operations") {
-			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['privkey']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['privkey'])+ '"><i class="icon-trash"></i> Delete </a>'; 
+			return '<a href="#" class="wbEditParameterClass" id="wbEditParam_' + encodeURIComponent(record['externalKey']) + '"><i class="icon-pencil"></i> Edit </a> | <a href="#" class="wbDeleteParameterClass" id="wbDelParam_' + encodeURIComponent(record['externalKey'])+ '"><i class="icon-trash"></i> Delete </a>'; 
 		} else
 		if (fieldId=="lastModified") {
 			var date = new Date();
@@ -74,7 +74,7 @@ $().ready( function () {
 
 	$('#wbUriParametersTable').wbSimpleTable( { columns: [ {display: "Name", fieldId: "name"}, {display: "Value", fieldId: "value"},
 	               								         {display: "Operations", fieldId:"_operations", customHandler: tableDisplayHandler}],
-	               						 keyName: "privkey",
+	               						 keyName: "externalKey",
 	               						 tableBaseClass: "table table-stripped table-bordered table-color-header",
 	               						 paginationBaseClass: "pagination",
 	               						 textLengthToCut:20,
@@ -135,9 +135,8 @@ $().ready( function () {
 	
 	$('#wbUriSummary').wbDisplayObject( { fieldsPrefix: 'wbsummary', customHandler: displayHandler} );
 	var oResourceExternalKey = "";
-	var uriExternalKey = getURLParameter('extKey');
 	var notFoundMessage = "RESOURCE NOT FOUND";
-	var uriKey = getURLParameter('privkey');
+	var uriKey = getURLParameter('extKey');
 	
 	var fSuccessGetUri = function (data) {
 		$('#wbUriSummary').wbDisplayObject().display(data.data);
@@ -163,9 +162,8 @@ $().ready( function () {
 		}	
 		
 		// now get the parameters
-		uriExternalKey = data.data['externalKey'];
-		uriKey = data.data['privkey']
-		$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(uriExternalKey),
+		uriKey = data.data['externalKey']
+		$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url:"./wbparameter?ownerExternalKey=" + encodeURIComponent(uriKey),
 			 httpOperation:"GET", 
 			 payloadData:"",
 			 functionSuccess: fSuccessGetParameters,
@@ -219,7 +217,7 @@ $().ready( function () {
 		var errors = $('#wbAddParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var parameter = $('#wbAddParameterForm').wbObjectManager().getObjectFromFields();
-			parameter['ownerExternalKey'] = uriExternalKey;
+			parameter['ownerExternalKey'] = uriKey;
 			var jsonText = JSON.stringify(parameter);
 			$('#wbAddParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter",
 															 httpOperation:"POST", 
@@ -233,7 +231,7 @@ $().ready( function () {
 
 	var fSuccessUpdate = function ( data ) {
 		$('#wbUpdateParameterModal').modal('hide');		
-		$('#wbUriParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["privkey"]);
+		$('#wbUriParametersTable').wbSimpleTable().updateRowWithKey(data.data,data.data["externalKey"]);
 	}
 	var fErrorUpdate = function (errors, data) {
 		$('#wbUpdateParameterForm').wbObjectManager().setErrors(errors);
@@ -244,9 +242,9 @@ $().ready( function () {
 		var errors = $('#wbUpdateParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbUpdateParameterForm').wbObjectManager().getObjectFromFields();
-			object['ownerExternalKey'] = uriExternalKey;
+			object['ownerExternalKey'] = uriKey;
 			var jsonText = JSON.stringify(object);
-			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
+			$('#wbUpdateParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['externalKey']),
 															 httpOperation:"PUT", 
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
@@ -258,7 +256,7 @@ $().ready( function () {
 
 	var fSuccessDelete = function ( data ) {
 		$('#wbDeleteParameterModal').modal('hide');		
-		$('#wbUriParametersTable').wbSimpleTable().deleteRowWithKey(data.data["privkey"]);
+		$('#wbUriParametersTable').wbSimpleTable().deleteRowWithKey(data.data["externalKey"]);
 	}
 	var fErrorDelete = function (errors, data) {
 		$('#wbDeleteParameterForm').wbObjectManager().setErrors(errors);
@@ -269,7 +267,7 @@ $().ready( function () {
 		var errors = $('#wbDeleteParameterForm').wbObjectManager().validateFieldsAndSetLabels( errorsGeneral );
 		if ($.isEmptyObject(errors)) {
 			var object = $('#wbDeleteParameterForm').wbObjectManager().getObjectFromFields();
-			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['privkey']),
+			$('#wbDeleteParameterForm').wbCommunicationManager().ajax ( { url: "./wbparameter/" + encodeURIComponent(object['externalKey']),
 															 httpOperation:"DELETE", 
 															 payloadData:"",
 															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),
@@ -310,8 +308,8 @@ $().ready( function () {
 	// end handle parameters
 	
 	var url_get = "./wburi/{0}?include_links=1".format(encodeURIComponent(uriKey));
-	if (uriExternalKey) {
-		url_get = "./wburi/ext/{0}?include_links=1".format(encodeURIComponent(uriExternalKey));
+	if (uriKey) {
+		url_get = "./wburi/ext/{0}?include_links=1".format(encodeURIComponent(uriKey));
 	}
 	
 	$('#wburiedit').wbCommunicationManager().ajax ( { url: url_get,
