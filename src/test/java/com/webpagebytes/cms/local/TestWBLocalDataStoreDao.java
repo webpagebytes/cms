@@ -44,6 +44,8 @@ public void before()
     // just put a anexisting class for the driver
     dbProps.put("driverClass", "java.lang.String");
 }
+
+
 @Test
 public void test_addRecord()
 {

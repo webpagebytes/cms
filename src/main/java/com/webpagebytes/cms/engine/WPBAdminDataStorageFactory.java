@@ -42,7 +42,8 @@ public class WPBAdminDataStorageFactory {
 				}
 				try
 				{
-					instance = (WPBAdminDataStorage) Class.forName(factoryClass).newInstance();
+					WPBAdminDataStorage tempInstance = (WPBAdminDataStorage) Class.forName(factoryClass).newInstance();
+					instance = new WPBAdminDataStorageDecorator(tempInstance);
 					instance.initialize(config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE));
 					return instance;
 				} 
