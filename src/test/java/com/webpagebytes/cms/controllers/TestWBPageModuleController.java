@@ -1,5 +1,6 @@
 package com.webpagebytes.cms.controllers;
 import org.junit.runner.RunWith;
+
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
@@ -20,13 +21,13 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBPageModulesCache;
 import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.controllers.PageModuleController;
 import com.webpagebytes.cms.controllers.PageModuleValidator;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
@@ -41,7 +42,7 @@ private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private JSONToFromObjectConverter jsonObjectConverterMock;
-private WPBAdminDataStorage adminStorageMock;
+private WPBInternalAdminDataStorage adminStorageMock;
 private PageModuleValidator validatorMock;
 private Map<String, String> errors;
 private WPBPageModulesCache pageModuleCacheMock;
@@ -55,7 +56,7 @@ public void setUp()
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(JSONToFromObjectConverter.class);
-	adminStorageMock = PowerMock.createMock(WPBAdminDataStorage.class);
+	adminStorageMock = PowerMock.createMock(WPBInternalAdminDataStorage.class);
 	validatorMock = PowerMock.createMock(PageModuleValidator.class);
 	errors = new HashMap<String, String>();
 	pageModuleCacheMock = PowerMock.createMock(WPBPageModulesCache.class);

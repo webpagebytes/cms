@@ -28,8 +28,6 @@ import java.util.zip.CRC32;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBPagesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -41,6 +39,7 @@ import com.webpagebytes.cms.cmsdata.WPBPage;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.local.WPBLocalAdminDataStorage;
@@ -306,7 +305,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 		this.jsonObjectConverter = jsonObjectConverter;
 	}
 
-	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
+	public void setAdminStorage(WPBInternalAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
 	public void setPageCache(WPBPagesCache pageCache)

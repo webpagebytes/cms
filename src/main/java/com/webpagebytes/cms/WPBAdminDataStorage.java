@@ -16,8 +16,6 @@
 
 package com.webpagebytes.cms;
 
-import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-
 import com.webpagebytes.cms.exception.*;
 
 import java.util.List;
@@ -197,34 +195,7 @@ public interface WPBAdminDataStorage {
 	 * @throws WPBIOException Exception
 	 */
 	public<T> List<T> queryWithSort(Class<T> dataClass, String property, AdminQueryOperator operator, Object parameter, String sortProperty, AdminSortOperator sortOperator) throws WPBIOException;
-	
-	/**
-	 * Registers a storage listener that must receive notifications on updates of the data storage.
-	 * @param listener Listener that will receive notifications
-	 */
-	public void addStorageListener(WPBAdminDataStorageListener listener);
-
-	/**
-	 * Removes a strage listener so that it will not receive motifications on updates of the data storage.  
-	 * @param listener Listener that will stop receive notifications
-	 */
-	public void removeStorageListener(WPBAdminDataStorageListener listener);
-	
-	/**
-	 * Stops all notifications to the registered listeners of the data storage.
-	 */
-	public void stopNotifications();
-	
-	/**
-	 * Turns on the notifications of the data storage.
-	 */
-	public void startNotifications();
-	
-	/**
-	 * @return Returns the notifications flag boolean value.
-	 */
-	public boolean isNotificationActive();
-	
+		
 	/**
 	 * Deletes all records for a particular resource type.
 	 * @param dataClass Resource class identifier (for example WPBUri.class, WPBWebPage.class) 
@@ -233,9 +204,4 @@ public interface WPBAdminDataStorage {
 	 */
 	public<T> void deleteAllRecords(Class<T> dataClass) throws WPBIOException;
 	
-	/**
-	 * Method to return a string that can act as a unique key in the data storage. This can return a guid.
-	 * @return A string that can act as a unique key in the data storage.
-	 */
-	public String getUniqueId();
 }

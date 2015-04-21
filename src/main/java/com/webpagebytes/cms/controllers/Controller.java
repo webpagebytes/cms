@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import org.json.JSONException;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
+import org.json.JSONException;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
@@ -40,6 +39,7 @@ import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
@@ -158,7 +158,7 @@ public class Controller {
 
 	
 	private String adminUriPart;
-	protected WPBAdminDataStorage adminStorage;
+	protected WPBInternalAdminDataStorage adminStorage;
 	protected WPBFileStorage cloudFileStorage;
     
 	protected HttpServletToolbox httpServletToolbox;

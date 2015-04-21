@@ -120,39 +120,12 @@ public class WPBAdminDataStorageDecorator implements WPBAdminDataStorage {
 		log.log(Level.INFO, String.format("WPBAdminDataStorage:queryWithSort(%s,%s,..,%s) took %d ms", dataClass.getSimpleName(), property, sortProperty, stopWatch.stop()));
 		return result;
 	}
-	
-	@Override
-	public void addStorageListener(WPBAdminDataStorageListener listener) {
-		instance.addStorageListener(listener);
-	}
-	@Override
-	public void removeStorageListener(WPBAdminDataStorageListener listener) {
-		instance.removeStorageListener(listener);
-	}
-	@Override
-	public void stopNotifications() {
-		instance.stopNotifications();
-	}
-	@Override
-	public void startNotifications() {
-		instance.startNotifications();
-	}
-	@Override
-	public boolean isNotificationActive() {
-		// TODO Auto-generated method stub
-		return instance.isNotificationActive();
-	}
+
 	@Override
 	public <T> void deleteAllRecords(Class<T> dataClass) throws WPBIOException {
 		WPBStopWatch stopWatch = WPBStopWatch.newInstance();
 		instance.deleteAllRecords(dataClass);
 		log.log(Level.INFO, String.format("WPBAdminDataStorage:deleteAllRecords(%s) took %d ms", dataClass.getSimpleName(), stopWatch.stop()));
-
-	}
-	@Override
-	public String getUniqueId() {
-		// TODO Auto-generated method stub
-		return instance.getUniqueId();
 	}
 
 }

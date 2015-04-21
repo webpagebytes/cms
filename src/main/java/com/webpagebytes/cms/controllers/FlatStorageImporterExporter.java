@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +35,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
-
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBFileInfo;
 import com.webpagebytes.cms.WPBFilePath;
@@ -54,6 +53,7 @@ import com.webpagebytes.cms.cmsdata.WPBPageModule;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.engine.WPBFileStorageFactory;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 
@@ -78,7 +78,7 @@ public class FlatStorageImporterExporter {
 	private WPBExporter exporter = new WPBExporter();
 	private WPBImporter importer = new WPBImporter();
 	
-	private WPBAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
+	private WPBInternalAdminDataStorage dataStorage = WPBAdminDataStorageFactory.getInstance();
 	private WPBFileStorage cloudFileStorage = WPBFileStorageFactory.getInstance();
 	
 	private UriValidator uriValidator = new UriValidator();

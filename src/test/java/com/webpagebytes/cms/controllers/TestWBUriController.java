@@ -2,10 +2,9 @@ package com.webpagebytes.cms.controllers;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBUrisCache;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.controllers.WPBErrors;
@@ -28,7 +26,7 @@ import com.webpagebytes.cms.controllers.UriController;
 import com.webpagebytes.cms.controllers.UriValidator;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
-import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
@@ -42,7 +40,7 @@ private HttpServletRequest requestMock;
 private HttpServletResponse responseMock;
 private HttpServletToolbox httpServletToolboxMock;
 private JSONToFromObjectConverter jsonObjectConverterMock;
-private WPBAdminDataStorage adminStorageMock;
+private WPBInternalAdminDataStorage adminStorageMock;
 private UriValidator validatorMock;
 private Map<String, String> errors;
 private WPBUrisCache cacheMock;
@@ -55,7 +53,7 @@ public void setUp()
 	responseMock = PowerMock.createMock(HttpServletResponse.class);
 	httpServletToolboxMock = PowerMock.createMock(HttpServletToolbox.class);
 	jsonObjectConverterMock = PowerMock.createMock(JSONToFromObjectConverter.class);
-	adminStorageMock = PowerMock.createMock(WPBAdminDataStorage.class);
+	adminStorageMock = PowerMock.createMock(WPBInternalAdminDataStorage.class);
 	validatorMock = PowerMock.createMock(UriValidator.class);
 	errors = new HashMap<String, String>();
 	cacheMock = PowerMock.createMock(WPBUrisCache.class);

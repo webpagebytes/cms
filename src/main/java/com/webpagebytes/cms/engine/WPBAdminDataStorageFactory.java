@@ -25,12 +25,12 @@ import com.webpagebytes.cms.utility.CmsConfigurationFactory;
 import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBAdminDataStorageFactory {
-	private static WPBAdminDataStorage instance;
+	private static WPBInternalAdminDataStorage instance;
 	private static final Logger log = Logger.getLogger(WPBAdminDataStorageFactory.class.getName());
 	private static final Object lock = new Object();
 	private WPBAdminDataStorageFactory() { };
 	
-	public static WPBAdminDataStorage getInstance()
+	public static WPBInternalAdminDataStorage getInstance()
 	{
 		if (instance == null) {
 			synchronized (lock) {
@@ -43,7 +43,7 @@ public class WPBAdminDataStorageFactory {
 				try
 				{
 					WPBAdminDataStorage tempInstance = (WPBAdminDataStorage) Class.forName(factoryClass).newInstance();
-					instance = new WPBAdminDataStorageDecorator(tempInstance);
+					instance = new WPBInternalAdminDataStorage (new WPBAdminDataStorageDecorator(tempInstance));
 					instance.initialize(config.getSectionParams(WPBSECTION.SECTION_DATASTORAGE));
 					return instance;
 				} 

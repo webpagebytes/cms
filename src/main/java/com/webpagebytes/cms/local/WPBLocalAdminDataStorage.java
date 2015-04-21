@@ -18,7 +18,6 @@ package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +32,12 @@ import com.webpagebytes.cms.engine.WPBAdminDataStorageListener.AdminDataStorageO
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalQueryOperator;
 import com.webpagebytes.cms.local.WPBLocalDataStoreDao.WBLocalSortDirection;
-import com.webpagebytes.cms.utility.CmsConfiguration;
-import com.webpagebytes.cms.utility.CmsConfigurationFactory;
-import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
 	private static final String KEY_FILED_NAME = "externalKey";
-	private Vector<WPBAdminDataStorageListener> storageListeners = new Vector<WPBAdminDataStorageListener>();
 	
 	private WPBLocalDataStoreDao localDataStorageDao;
-	private boolean notificationsFlag = true;
 	
 	public WPBLocalAdminDataStorage()
 	{
@@ -98,8 +92,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);			
 			T obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
-			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
-
 		} catch (Exception e)
 		{
 			throw new WPBIOException("Cannot delete record " + recordid, e);
@@ -114,7 +106,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 			localDataStorageDao.deleteRecord(dataClass, KEY_FILED_NAME, recordid);
 			T obj = dataClass.newInstance();
 			localDataStorageDao.setObjectProperty(obj, KEY_FILED_NAME, recordid);
-			notifyOperation(obj, AdminDataStorageOperation.DELETE_RECORD, dataClass);			
 		} catch (Exception e)
 		{
 			throw new WPBIOException("Cannot delete record " + recordid, e);
@@ -133,7 +124,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 			Map<String, Object> values = new HashMap<String, Object>();
 			values.put(property, parameter);
 			localDataStorageDao.deleteRecords(dataClass, properties, operators, values);
-			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
 		} catch (Exception e)
 		{
 			throw new WPBIOException("Cannot delete records ", e);
@@ -178,7 +168,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		{
 			log.log(Level.INFO, "add record for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecord(t, KEY_FILED_NAME);			
-			notifyOperation(t, AdminDataStorageOperation.CREATE_RECORD, t.getClass());			
 			return res;
 		} catch (Exception e)
 		{
@@ -192,7 +181,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		{
 			log.log(Level.INFO, "add record with key for class {0}", t.getClass().getSimpleName());			
 			T res = localDataStorageDao.addRecordWithKey(t, KEY_FILED_NAME);
-			notifyOperation(t, AdminDataStorageOperation.CREATE_RECORD, t.getClass());			
 			return res;
 		} catch (Exception e)
 		{
@@ -230,7 +218,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		{
 			log.log(Level.INFO, "update record for class {0}", t.getClass().getSimpleName());
 			localDataStorageDao.updateRecord(t, KEY_FILED_NAME);
-			notifyOperation(t, AdminDataStorageOperation.UPDATE_RECORD, t.getClass());			
 			return t;
 		} catch (Exception e)
 		{
@@ -294,43 +281,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 	}
 		
 
-	public void addStorageListener(WPBAdminDataStorageListener listener)
-	{
-		synchronized (storageListeners)
-		{
-			storageListeners.add(listener);
-		}
-	}
-	
-	public void removeStorageListener(WPBAdminDataStorageListener listener)
-	{
-		synchronized (storageListeners)
-		{
-			for(int i=0; i< storageListeners.size(); i++)
-			{
-				if (storageListeners.get(i) == listener)
-				{
-					storageListeners.remove(i);
-					return;
-				}
-			}
-		}
-	}
-	
-	protected<T> void notifyOperation(T obj, WPBAdminDataStorageListener.AdminDataStorageOperation operation, Class<? extends Object> type)
-	{
-	    if (notificationsFlag)
-	    {
-    		synchronized (storageListeners)
-    		{
-    			for(int i=0; i< storageListeners.size(); i++)
-    			{
-    				storageListeners.get(i).notify(obj, operation, type);
-    			}
-    		}
-	    }
-	}
-
 	
 	public String getUploadUrl(String returnUrl)
 	{
@@ -342,7 +292,6 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		try
 		{
 			localDataStorageDao.deleteRecords(dataClass);
-			notifyOperation(null, AdminDataStorageOperation.DELETE_RECORDS, dataClass);				
 		} catch (Exception e)
 		{
 			throw new WPBIOException("Cannot delete all records for class records " + dataClass.getSimpleName(), e);
@@ -354,17 +303,5 @@ public class WPBLocalAdminDataStorage implements WPBAdminDataStorage {
 		return java.util.UUID.randomUUID().toString();
 	}
 
-    public void stopNotifications() {
-        notificationsFlag = false;
-        
-    }
-
-    public void startNotifications() {
-        notificationsFlag = true;
-    }
-
-    public boolean isNotificationActive() {
-        return notificationsFlag;
-    }
 
 }

@@ -26,8 +26,6 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBParametersCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -37,6 +35,7 @@ import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.engine.DefaultWPBCacheFactory;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
+import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
@@ -337,7 +336,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		this.jsonObjectConverter = jsonObjectConverter;
 	}
 
-	public void setAdminStorage(WPBAdminDataStorage adminStorage) {
+	public void setAdminStorage(WPBInternalAdminDataStorage adminStorage) {
 		this.adminStorage = adminStorage;
 	}
 

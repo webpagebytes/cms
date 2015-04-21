@@ -1,18 +1,13 @@
 package com.webpagebytes.cms.controllers;
 
 import org.junit.runner.RunWith;
+
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import java.util.Map;
 import java.util.HashMap;
 

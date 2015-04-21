@@ -38,7 +38,7 @@ public class TestAjaxRequestProcessor {
 		response = EasyMock.createMock(HttpServletResponse.class);
 		
 		fileStorageMock = EasyMock.createMock(WPBFileStorage.class);
-		adminDataStorageMock = EasyMock.createMock(WPBAdminDataStorage.class);
+		adminDataStorageMock = EasyMock.createMock(WPBInternalAdminDataStorage.class);
 		
 		Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", fileStorageMock);
 		Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", adminDataStorageMock);
@@ -49,7 +49,7 @@ public class TestAjaxRequestProcessor {
 	public void tearDown()
 	{
 	    Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", (WPBFileStorage)null);
-        Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", (WPBAdminDataStorage)null);    
+        Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", (WPBInternalAdminDataStorage)null);    
 	}
 /*
 	@Test
