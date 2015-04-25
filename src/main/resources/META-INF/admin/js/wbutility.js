@@ -815,7 +815,7 @@ if (!Array.prototype.indexOf) {
 				ajaxArray.push(ajx);
 			}
 			if (allCompletionFunc || allErrorFunc) {
-				$.when.apply(ajaxArray).then( allCompletionFunc, allErrorFunc);
+				$.when.apply($, ajaxArray).then( allCompletionFunc, allErrorFunc);
 			}
 		},
 		ajax : function ( options ) {	

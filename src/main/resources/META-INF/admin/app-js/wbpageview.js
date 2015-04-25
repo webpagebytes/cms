@@ -122,6 +122,7 @@ $().ready( function () {
 		} else {
 			$('.wbModelProviderContainer').show();
 		}
+		console.log("fSuccessGetPage" + new Date());
 	}
 	
 	$('input[name="isTemplateSource"]').on("change", function() {
@@ -244,12 +245,14 @@ $().ready( function () {
 
 	var fSuccessGetParameters = function (data) {
 			$('#wbPageParametersTable').wbSimpleTable().setRows(data.data);
+			console.log("fSuccessGetParameters");
 	}
 	var fErrorGetParameters = function (errors, data) {
 	
 	}
 	
 	var allAjaxOK = function () {
+	    console.log("all ajax ok " + new Date());
 		$('#spinnerTable').WBSpinner().hide();
 	}
 	
