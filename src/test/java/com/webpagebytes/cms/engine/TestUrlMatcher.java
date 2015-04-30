@@ -42,7 +42,7 @@ public void setUp()
 	patterns.add("/files/img/{**}");
 	patterns.add("/files/{**}");
     
-	urlMarcher.initialize(patterns, 9L);
+	urlMarcher.initialize(patterns, "abc");
 }
 
 @Test 
@@ -352,7 +352,7 @@ public void test_matchUrlToPattern_fail_onelevel()
     patterns.add("/files/img/{**}");
     patterns.add("/files/{**}");
     
-    urlMarcher.initialize(patterns, 9L);
+    urlMarcher.initialize(patterns, "xyz");
 	URLMatcherResult result = urlMarcher.matchUrlToPattern("/mysite");	
 	assertTrue (result == null);
 }
@@ -366,7 +366,7 @@ public void test_matchUrlToPattern_mixed_level1_and_two()
 	patterns.add("/news/{*}-{key}");
 	patterns.add("/{language}/{keywords}-{key}");
 	patterns.add("/about-us");
-	urlMarcher.initialize(patterns, 10L);
+	urlMarcher.initialize(patterns, "xyz");
 	URLMatcherResult result = urlMarcher.matchUrlToPattern("/news/aaa-222");	
 	Map<String, String> params = new HashMap<String, String>();
 	params.put("key", "222");
@@ -427,7 +427,7 @@ public void test_matchAll_empty2()
     patterns.add("/files/img/{**}");
     patterns.add("/files/{**}");
     
-    urlMarcher.initialize(patterns, 9L);
+    urlMarcher.initialize(patterns, "xyz");
     URLMatcherResult result = urlMarcher.matchUrlToPattern("/files");
     
     assertTrue(result == null);

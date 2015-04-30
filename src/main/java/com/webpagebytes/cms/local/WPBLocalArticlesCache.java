@@ -19,6 +19,7 @@ package com.webpagebytes.cms.local;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBArticlesCache;
@@ -27,7 +28,7 @@ import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalArticlesCache implements WPBArticlesCache {
-	
+	private String fingerPrint;
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBArticle> localCache;
 	private static final Object lock = new Object();
@@ -68,7 +69,12 @@ public class WPBLocalArticlesCache implements WPBArticlesCache {
 				tempMap.put(item.getExternalKey(), item);
 			}
 			localCache = tempMap;
+			fingerPrint = UUID.randomUUID().toString();
 		}
 		
+	}
+	@Override
+	public String getFingerPrint() {
+		return fingerPrint;
 	}
 }

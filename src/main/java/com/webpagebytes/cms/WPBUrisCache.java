@@ -86,14 +86,7 @@ public abstract class WPBUrisCache implements WPBRefreshableCache {
 	 * @throws WPBIOException Exception
 	 */
 	public abstract Set<String> getAllUris(int httpIndex) throws WPBIOException;	
-	
-    /**
-     * Everytime the cache is refreshed it will generate a new fingerprint. A client that had a fingerprint
-     * can check if in the meantime the cache was refreshed.
-     * @return The cache current fingerprint.
-     */
-	public abstract Long getCacheFingerPrint();
-	
+		
 	/**
 	 * Utility method to convert a HTTP verb to the corresponsing index value
 	 * @param httpOperation HTTP verb operation

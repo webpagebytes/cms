@@ -27,7 +27,7 @@ import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.WPBUrisCache;
 
 public class WPBLocalCacheFactory implements WPBCacheFactory {
-	
+	private Object lock = new Object();
 	private static WPBUrisCache uriCacheInstance;
 	private static WPBPagesCache pageCacheInstance;
 	private static WPBParametersCache parametersCacheInstance;
@@ -39,66 +39,82 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	
 	public WPBUrisCache getUrisCacheInstance()
 	{
-		if (null == uriCacheInstance)
-		{
-			uriCacheInstance = new WPBLocalUrisCache();
+		synchronized (lock) {			
+			if (null == uriCacheInstance)
+			{
+				uriCacheInstance = new WPBLocalUrisCache();
+			}
 		}
 		return uriCacheInstance;
 	}
 	public WPBPagesCache getWebPagesCacheInstance()
 	{
-		if (null == pageCacheInstance)
-		{
-			pageCacheInstance = new WPBLocalWebPagesCache();
+		synchronized (lock) {		
+			if (null == pageCacheInstance)
+			{
+				pageCacheInstance = new WPBLocalPagesCache();
+			}
 		}
 		return pageCacheInstance;
 	}
 	public WPBParametersCache getParametersCacheInstance()
 	{
-		if (parametersCacheInstance == null)
-		{
-			parametersCacheInstance = new WPBLocalParametersCache();
+		synchronized (lock) {
+			if (parametersCacheInstance == null)
+			{
+				parametersCacheInstance = new WPBLocalParametersCache();
+			}
 		}
 		return parametersCacheInstance;
 	}
 	
 	public WPBPageModulesCache getPageModulesCacheInstance()
 	{
-		if (pageModulesCacheInstance == null)
-		{
-			pageModulesCacheInstance = new WPBLocalWebPageModulesCache();
+		synchronized (lock) {
+			if (pageModulesCacheInstance == null)
+			{
+				pageModulesCacheInstance = new WPBLocalPageModulesCache();
+			}
 		}
 		return pageModulesCacheInstance;
 	}
 	public WPBFilesCache getFilesCacheInstance()
 	{
-		if (filesCacheInstance == null)
-		{
-			filesCacheInstance = new WPBLocalFilesCache();
+		synchronized (lock) {
+			if (filesCacheInstance == null)
+			{
+				filesCacheInstance = new WPBLocalFilesCache();
+			}
 		}
 		return filesCacheInstance;
 	}
 	public WPBArticlesCache getArticlesCacheInstance()
 	{
-		if (articlesCacheInstance == null)
-		{
-			articlesCacheInstance = new WPBLocalArticlesCache();
+		synchronized (lock) {
+			if (articlesCacheInstance == null)
+			{
+				articlesCacheInstance = new WPBLocalArticlesCache();
+			}
 		}
 		return articlesCacheInstance;
 	}
 	public WPBMessagesCache getMessagesCacheInstance()
 	{
-		if (messagesCacheInstance == null)
-		{
-			messagesCacheInstance = new WPBLocalMessagesCache(); 
+		synchronized (lock) {
+			if (messagesCacheInstance == null)
+			{
+				messagesCacheInstance = new WPBLocalMessagesCache(); 
+			}
 		}
 		return messagesCacheInstance;
 	}
 	public WPBProjectCache getProjectCacheInstance()
 	{
-		if (projectCacheInstance == null)
-		{
-			projectCacheInstance = new WPBLocalProjectCache();
+		synchronized (lock) {
+			if (projectCacheInstance == null)
+			{
+				projectCacheInstance = new WPBLocalProjectCache();
+			}
 		}
 		return projectCacheInstance;
 	}

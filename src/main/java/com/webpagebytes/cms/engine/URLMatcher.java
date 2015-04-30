@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class URLMatcher {
 
-private Long fingerPrint;
+private String fingerPrint;
 private Set<String> patterns;
 private Set<String> simplePatterns; // patterns with no parameters
 private Map<String, URLDataStructure> patternsWithParams; // the patterns with parameters
@@ -37,7 +37,7 @@ public URLMatcher()
 {
 	
 }
-public void initialize(Set<String> patterns, Long fingerPrint)
+public void initialize(Set<String> patterns, String fingerPrint)
 {
 	Set<String> newPatters = new HashSet<String>(patterns);
 	
@@ -371,10 +371,10 @@ public Set<String> getPatterns() {
 public void setPatterns(Set<String> patterns) {
 	this.patterns = patterns;	
 }
-public Long getFingerPrint() {
+public String getFingerPrint() {
 	return fingerPrint;
 }
-public void setFingerPrint(Long fingerPrint) {
+public void setFingerPrint(String fingerPrint) {
 	this.fingerPrint = fingerPrint;
 }
 

@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.local;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,9 +45,6 @@ import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.engine.WPBDefaultCloudFileInfo;
 import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.CmsBase64Utility;
-import com.webpagebytes.cms.utility.CmsConfiguration;
-import com.webpagebytes.cms.utility.CmsConfigurationFactory;
-import com.webpagebytes.cms.utility.CmsConfiguration.WPBSECTION;
 
 public class WPBLocalFileStorage implements WPBFileStorage {
 	private static final String publicDataFolder = "public";

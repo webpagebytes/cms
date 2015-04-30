@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBParametersCache;
@@ -32,7 +33,7 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBParameter> cacheParameters;
 	private Map<String, List<WPBParameter>> cacheOwnerParameters;
-	
+	private String fingerPrint = "";
 	private static final Object lock = new Object();
 
 	public WPBLocalParametersCache()
@@ -91,6 +92,11 @@ public class WPBLocalParametersCache implements WPBParametersCache {
 			}
 			cacheParameters = localCache;
 			cacheOwnerParameters = ownersLocalCache;
+			fingerPrint = UUID.randomUUID().toString();
 		}
+	}
+	@Override
+	public String getFingerPrint() {
+		return fingerPrint;
 	}
 }

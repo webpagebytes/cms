@@ -17,11 +17,12 @@
 package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBMessagesCache;
@@ -30,9 +31,8 @@ import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
 import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalMessagesCache implements WPBMessagesCache {
-	long cacheFingerPrint = 0;
 	Map<String, Map<String, String>> cacheMessages;
-	
+	private String fingerPrint = "";
 	private WPBAdminDataStorage dataStorage;
 	private static final Object lock = new Object();
 
@@ -71,9 +71,9 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 		return new HashMap<String, String>();
 	}
 	
-	public Long getFingerPrint(Locale locale)
+	public String getFingerPrint(Locale locale)
 	{
-		return cacheFingerPrint;
+		return fingerPrint;
 	}
 	
 	public void Refresh() throws WPBIOException {
@@ -92,8 +92,7 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 				lcidRecords.put(item.getName(), item.getValue());
 			}
 			cacheMessages =  tempCache;
-			Random r = new Random();
-			cacheFingerPrint = r.nextLong();
+			fingerPrint = UUID.randomUUID().toString();
 		}
 		
 	}
@@ -101,5 +100,10 @@ public class WPBLocalMessagesCache implements WPBMessagesCache {
 	public Set<String> getSupportedLocales()
 	{
 		return cacheMessages.keySet();
+	}
+
+	@Override
+	public String getFingerPrint() {
+		return fingerPrint;
 	}
 }

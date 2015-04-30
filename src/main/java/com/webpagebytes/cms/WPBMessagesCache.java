@@ -50,11 +50,13 @@ public interface WPBMessagesCache extends WPBRefreshableCache {
 	 */
 	public Set<String> getSupportedLocales();
 	
-	/**
-	 * Everytime the cache is refreshed it will generate a new fingerprint. A client that had a fingerprint
-	 * can check if in the meantime the cache was refreshed.
-	 * @param locale Locale identifier
-	 * @return The cache current fingerprint.
-	 */
-	public Long getFingerPrint(Locale locale);
+    /**
+     * Everytime the cache is refreshed it will generate a new fingerprint. A client that have a fingerprint
+     * can check if in the meantime the cache was refreshed.
+     * @param locale Locale identifier
+     * @return The cache current fingerprint.
+     */	
+	public String getFingerPrint(Locale locale);
+	
+	
 }

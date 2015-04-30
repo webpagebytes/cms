@@ -29,13 +29,13 @@ import com.webpagebytes.cms.exception.WPBIOException;
 public class CmsResourceBundle extends ResourceBundle {
 
 	private WPBMessagesCache messageCache;
-	private Long fingerPrint;
+	private String fingerPrint;
 	private Map<String, String> messages;
 	
 	CmsResourceBundle(WPBMessagesCache messageCache, Locale locale)
 	{
 		this.messageCache = messageCache;
-		fingerPrint = 0L;
+		fingerPrint = "";
 		messages = new HashMap<String, String>();
 		Refresh(locale);
 	}
@@ -43,8 +43,8 @@ public class CmsResourceBundle extends ResourceBundle {
 	public void Refresh(Locale locale)
 	{
 		try {
-			Long aFingerPrint = messageCache.getFingerPrint(locale); 
-			if (aFingerPrint.equals(0L) || !aFingerPrint.equals(fingerPrint))
+			String aFingerPrint = messageCache.getFingerPrint(locale); 
+			if (aFingerPrint.equals("") || !aFingerPrint.equals(fingerPrint))
 			{
 				messages = messageCache.getAllMessages(locale);
 				aFingerPrint = messageCache.getFingerPrint(locale); 
@@ -52,7 +52,7 @@ public class CmsResourceBundle extends ResourceBundle {
 			}
 		} catch (WPBIOException e)
 		{
-			fingerPrint = 0L;
+			fingerPrint = "";
 		}
 	}
 	
@@ -67,11 +67,11 @@ public class CmsResourceBundle extends ResourceBundle {
 	}
 	
 	
-	public Long getFingerPrint() {
+	public String getFingerPrint() {
 		return fingerPrint;
 	}
 
-	public void setFingerPrint(Long fingerPrint) {
+	public void setFingerPrint(String fingerPrint) {
 		this.fingerPrint = fingerPrint;
 	}
 

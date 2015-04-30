@@ -19,6 +19,7 @@ package com.webpagebytes.cms.local;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBProjectCache;
@@ -33,7 +34,8 @@ public class WPBLocalProjectCache implements WPBProjectCache {
 	Set<String> supportedLanguages;
 	private WPBAdminDataStorage dataStorage;
 	private static final Object lock = new Object();
-
+	private String fingerPrint = "";
+	
 	public WPBLocalProjectCache()
 	{
 		dataStorage = WPBAdminDataStorageFactory.getInstance();
@@ -97,6 +99,12 @@ public class WPBLocalProjectCache implements WPBProjectCache {
 				throw new WPBIOException("Invalid default language");
 			
 			supportedLanguages = project.getSupportedLanguagesSet();
+			fingerPrint = UUID.randomUUID().toString();
 		}
+	}
+	
+	@Override
+	public String getFingerPrint() {
+		return fingerPrint;
 	}
 }

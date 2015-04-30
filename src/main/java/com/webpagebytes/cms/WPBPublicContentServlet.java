@@ -114,7 +114,7 @@ public void initUrls() throws WPBIOException
 	{
 		Set<String> uris = cacheInstances.getUriCache().getAllUris(i);
 		this.urlMatcherArray[i] = new URLMatcher();
-		this.urlMatcherArray[i].initialize(uris, cacheInstances.getUriCache().getCacheFingerPrint());
+		this.urlMatcherArray[i].initialize(uris, cacheInstances.getUriCache().getFingerPrint());
 	}	
 }
 
@@ -200,10 +200,10 @@ private URLMatcher getUrlMatcher(HttpServletRequest req) throws WPBIOException
 	int currentHttpIndex = cacheInstances.getUriCache().httpToOperationIndex(req.getMethod().toUpperCase());
 	URLMatcher urlMatcher = urlMatcherArray[currentHttpIndex];
 	//reinitialize the matchurlToPattern if needed
-	if (cacheInstances.getUriCache().getCacheFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
+	if (cacheInstances.getUriCache().getFingerPrint().compareTo(urlMatcher.getFingerPrint())!= 0)
 	{
 		Set<String> allUris = cacheInstances.getUriCache().getAllUris(currentHttpIndex);
-		urlMatcher.initialize(allUris, cacheInstances.getUriCache().getCacheFingerPrint());
+		urlMatcher.initialize(allUris, cacheInstances.getUriCache().getFingerPrint());
 	}
 	return urlMatcher;
 }

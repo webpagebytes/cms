@@ -17,10 +17,10 @@
 package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -34,11 +34,12 @@ public class WPBLocalFilesCache implements WPBFilesCache {
     private static final int MAX_DIR_DEPTH = 25;
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBFile> localCache;
-	
+	private String fingerPrint = "";
 	private Map<String, WPBFile> pathToFiles;
-	private Map<WPBFile, String> filesToPath;
+	//private Map<WPBFile, String> filesToPath;
     
 	private static final Object lock = new Object();
+	
 	public WPBLocalFilesCache()
 	{
 		dataStorage = WPBAdminDataStorageFactory.getInstance();
@@ -146,12 +147,15 @@ public class WPBLocalFilesCache implements WPBFilesCache {
 			{
 			    pathToFiles.put(filesToPath.get(file), file);
 			}
-			this.filesToPath = filesToPath;
 			this.pathToFiles = pathToFiles;
-			
-			localCache = tempMap;
+			this.localCache = tempMap;
+			fingerPrint = UUID.randomUUID().toString();
 		}
 		
+	}
+	@Override
+	public String getFingerPrint() {
+		return fingerPrint;
 	}
 	
 }

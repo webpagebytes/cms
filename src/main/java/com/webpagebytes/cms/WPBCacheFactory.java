@@ -17,7 +17,7 @@
 package com.webpagebytes.cms;
 
 /**
- * Factory interface that provides access to all type of cache istances to be used by the CMS engine.
+ * Factory interface that provides access to all type of cache instances to be used by the CMS engine.
  * The CMS engine will get multiple times a cache instance and it's up to the implementation to make sure 
  * that Refresh() will have an impact on all instances created. One way to achieve this is to using singleton pattern.
  *

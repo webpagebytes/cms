@@ -17,11 +17,12 @@
 package com.webpagebytes.cms.local;
 
 import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBUrisCache;
@@ -34,7 +35,7 @@ public class WPBLocalUrisCache extends WPBUrisCache {
 	private static final Object lock = new Object();
 	private WPBAdminDataStorage dataStorage;
 	Map<Integer, Map<String, WPBUri>> localCache;
-	long cacheFingerPrint;
+	String cacheFingerPrint;
 	
 	public WPBLocalUrisCache()
 	{
@@ -81,7 +82,7 @@ public class WPBLocalUrisCache extends WPBUrisCache {
 		return new HashSet<String>();
 	}
 	
-	public Long getCacheFingerPrint()
+	public String getFingerPrint()
 	{
 		return cacheFingerPrint;
 	}
@@ -107,8 +108,7 @@ public class WPBLocalUrisCache extends WPBUrisCache {
 				}			
 			}
 			localCache = tempMapUris;
-			Random r = new Random();
-			cacheFingerPrint = r.nextLong();
+			cacheFingerPrint = UUID.randomUUID().toString();
 		}
 
 		

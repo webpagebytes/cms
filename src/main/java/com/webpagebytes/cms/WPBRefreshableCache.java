@@ -29,4 +29,11 @@ public interface WPBRefreshableCache {
      */
 	public void Refresh() throws WPBIOException;
 
+    /**
+     * Everytime the cache is refreshed it will generate a new fingerprint. A client that have a fingerprint
+     * can check if in the meantime the cache was refreshed.
+     * @return The cache current fingerprint.
+     */
+	public abstract String getFingerPrint();
+
 }
