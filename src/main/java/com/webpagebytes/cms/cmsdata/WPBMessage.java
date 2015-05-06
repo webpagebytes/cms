@@ -23,6 +23,9 @@ public class WPBMessage {
 	@WPBAdminFieldStore
 	private String name;
 
+	@WPBAdminFieldStore
+	private String version;
+	
 	@WPBAdminFieldKey
 	private String externalKey;
 
@@ -86,5 +89,11 @@ public class WPBMessage {
 		this.lastModified = lastModified;
 	}
 	
-	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}	
 }

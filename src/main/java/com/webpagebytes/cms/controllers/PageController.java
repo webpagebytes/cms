@@ -17,17 +17,18 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.CRC32;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBPagesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -91,6 +92,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			webPage.setHash( WPBPage.crc32(webPage.getHtmlSource()));
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			webPage.setExternalKey(adminStorage.getUniqueId());
+			webPage.setVersion(UUID.randomUUID().toString());
 			WPBPage newWebPage = adminStorage.addWithKey(webPage);
 			
 			WPBResource resource = new WPBResource(newWebPage.getExternalKey(), newWebPage.getName(), WPBResource.PAGE_TYPE);
@@ -267,7 +269,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			CRC32 crc = new CRC32();
 			crc.update(webPage.getHtmlSource().getBytes());
 			webPage.setHash( crc.getValue() );
-
+			webPage.setVersion(UUID.randomUUID().toString());
 			webPage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			WPBPage newWebPage = adminStorage.update(webPage);
 			

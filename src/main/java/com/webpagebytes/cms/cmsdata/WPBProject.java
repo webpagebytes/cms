@@ -27,6 +27,9 @@ public class WPBProject {
 	private String externalKey;
 
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private Date lastModified;
 	
 	@WPBAdminFieldStore
@@ -83,6 +86,12 @@ public class WPBProject {
 		this.defaultLanguage = defaultLanguage;
 	}
 	
-	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 	
 }

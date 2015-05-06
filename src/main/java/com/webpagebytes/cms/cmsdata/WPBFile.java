@@ -27,6 +27,9 @@ public class WPBFile {
 	private String blobKey;
 	
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private Date lastModified;
 	
 	@WPBAdminFieldStore
@@ -150,6 +153,13 @@ public class WPBFile {
         this.ownerExtKey = ownerExtKey;
     }
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}    
 	
 
 }

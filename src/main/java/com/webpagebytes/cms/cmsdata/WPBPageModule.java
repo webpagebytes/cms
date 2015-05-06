@@ -24,6 +24,9 @@ public class WPBPageModule {
 	private String name;
 
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private Date lastModified;
 
 	@WPBAdminFieldTextStore
@@ -76,4 +79,11 @@ public class WPBPageModule {
 		this.externalKey = externalKey;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }

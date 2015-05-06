@@ -27,6 +27,9 @@ public class WPBParameter {
 	private String name;
 	
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private String value;
 
 	@WPBAdminFieldStore
@@ -100,6 +103,12 @@ public class WPBParameter {
 		this.localeType = localeType;
 	}
 
-	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 	
 }

@@ -17,13 +17,13 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +87,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			record.setLcid(record.getLcid().trim());
 			record.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			record.setExternalKey(adminStorage.getUniqueId());
+			record.setVersion(UUID.randomUUID().toString());
 			WPBMessage newRecord = adminStorage.addWithKey(record);
 			WPBResource resource = new WPBResource(newRecord.getName(), newRecord.getName(), WPBResource.MESSAGE_TYPE);
 			try
@@ -344,6 +345,7 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			WPBMessage existingMessage = adminStorage.get(key, WPBMessage.class);
 			existingMessage.setValue(record.getValue());
 			existingMessage.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+			existingMessage.setVersion(UUID.randomUUID().toString());
 			WPBMessage newRecord = adminStorage.update(existingMessage);
 			
 			WPBResource resource = new WPBResource(newRecord.getName(), newRecord.getName(), WPBResource.MESSAGE_TYPE);

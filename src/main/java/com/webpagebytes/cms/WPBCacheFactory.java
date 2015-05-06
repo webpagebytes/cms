@@ -16,6 +16,10 @@
 
 package com.webpagebytes.cms;
 
+import java.util.Map;
+
+import com.webpagebytes.cms.exception.WPBIOException;
+
 /**
  * Factory interface that provides access to all type of cache instances to be used by the CMS engine.
  * The CMS engine will get multiple times a cache instance and it's up to the implementation to make sure 
@@ -23,6 +27,13 @@ package com.webpagebytes.cms;
  *
  */
 public interface WPBCacheFactory {
+	/**
+	 * Initializes the cache factory with parameters from the CMS configuration xml file that corresponds to wpbcache section.
+	 * @param params Map of keys and values representing configuration parameters
+	 * @throws WPBIOException Exception
+	 */
+	public void initialize(Map<String, String> params) throws WPBIOException;
+
     /**
      * Access to WPBUrisCache instance
      * @return Returns WPBUrisCache instance

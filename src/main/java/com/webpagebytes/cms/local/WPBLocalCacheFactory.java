@@ -16,6 +16,8 @@
 
 package com.webpagebytes.cms.local;
 
+import java.util.Map;
+
 import com.webpagebytes.cms.WPBArticlesCache;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBFilesCache;
@@ -25,6 +27,7 @@ import com.webpagebytes.cms.WPBPagesCache;
 import com.webpagebytes.cms.WPBParametersCache;
 import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.WPBUrisCache;
+import com.webpagebytes.cms.exception.WPBIOException;
 
 public class WPBLocalCacheFactory implements WPBCacheFactory {
 	private Object lock = new Object();
@@ -37,6 +40,10 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 	private static WPBMessagesCache messagesCacheInstance;
 	private static WPBProjectCache projectCacheInstance;
 	
+	public void initialize(Map<String, String> params) throws WPBIOException
+	{
+		
+	}
 	public WPBUrisCache getUrisCacheInstance()
 	{
 		synchronized (lock) {			

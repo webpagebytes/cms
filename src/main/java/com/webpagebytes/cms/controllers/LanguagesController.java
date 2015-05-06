@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,11 +25,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBProject;
@@ -57,6 +59,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 			project.setDefaultLanguage("en");
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			project.setSupportedLanguages("en");
+			project.setVersion(UUID.randomUUID().toString());
 			project = adminStorage.addWithKey(project);
 		}
 		return project;
@@ -222,7 +225,8 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 			WPBProject project = getProject();
 			project.setDefaultLanguage(defaultLanguage);
 			project.setSupportedLanguages(selections);
-			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());			
+			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());	
+			project.setVersion(UUID.randomUUID().toString());
 			adminStorage.update(project);
 			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);
 			

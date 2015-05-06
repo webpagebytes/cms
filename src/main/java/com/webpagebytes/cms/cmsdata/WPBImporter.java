@@ -41,6 +41,13 @@ public class WPBImporter {
 		{
 			parameter.setOwnerExternalKey(properties.get("ownerExternalKey").toString().trim());
 		}
+		if (properties.get("version") != null)
+		{
+			parameter.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			parameter.setVersion("");
+		}
 
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;
@@ -90,6 +97,14 @@ public class WPBImporter {
 			uri.setUri(properties.get("uri").toString().trim());
 		}
 
+		if (properties.get("version") != null)
+		{
+			uri.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			uri.setVersion("");
+		}
+
 		if (properties.get("httpOperation") != null)
 		{
 			uri.setHttpOperation(properties.get("httpOperation").toString().trim());
@@ -135,6 +150,14 @@ public class WPBImporter {
 		if (properties.get("contentType") != null)
 		{
 			page.setContentType(properties.get("contentType").toString().trim());
+		}
+
+		if (properties.get("version") != null)
+		{
+			page.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			page.setVersion("");
 		}
 
 		if (properties.get("name") != null)
@@ -191,6 +214,14 @@ public class WPBImporter {
 		if (properties.get("contentType") != null)
 		{
 			file.setContentType(properties.get("contentType").toString().trim());
+		}
+
+		if (properties.get("version") != null)
+		{
+			file.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			file.setVersion("");
 		}
 
 		if (properties.get("adjustedContentType") != null)
@@ -250,6 +281,14 @@ public class WPBImporter {
 		{
 			pageModule.setName("");
 		}
+		
+		if (properties.get("version") != null)
+		{
+			pageModule.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			pageModule.setVersion("");
+		}
 
 		if (properties.get("htmlSource") != null)
 		{
@@ -290,6 +329,14 @@ public class WPBImporter {
 		else
 			project.setSupportedLanguages("");
 		
+		if (properties.get("version") != null)
+		{
+			project.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			project.setVersion("");
+		}
+
 		String lastModifiedStr = (String) properties.get("lastModified");
 		Long lastModified = 0L;
 		try
@@ -319,6 +366,14 @@ public class WPBImporter {
 		} else
 		{
 			article.setTitle("");
+		}
+
+		if (properties.get("version") != null)
+		{
+			article.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			article.setVersion("");
 		}
 
 		if (properties.get("htmlSource") != null)
@@ -355,6 +410,15 @@ public class WPBImporter {
 		{
 			message.setName(properties.get("name").toString().trim());
 		}
+		
+		if (properties.get("version") != null)
+		{
+			message.setVersion(properties.get("version").toString().trim());
+		} else
+		{
+			message.setVersion("");
+		}
+
 		if (properties.get("value") != null)
 		{
 			message.setValue(properties.get("value").toString().trim());

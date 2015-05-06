@@ -17,15 +17,16 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBParametersCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -172,6 +173,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				return;
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+			wbParameter.setVersion(UUID.randomUUID().toString());
 			WPBParameter newParameter = adminStorage.update(wbParameter);
 			
 			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
@@ -246,6 +248,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 			}
 			wbParameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbParameter.setExternalKey(adminStorage.getUniqueId());
+			wbParameter.setVersion(UUID.randomUUID().toString());
 			WPBParameter newParameter = adminStorage.addWithKey(wbParameter);
 			
 			if (newParameter.getOwnerExternalKey() == null || newParameter.getOwnerExternalKey().length()==0)
@@ -296,7 +299,7 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				parameter.setOwnerExternalKey(ownerExternalKey);
 				parameter.setExternalKey(adminStorage.getUniqueId());
 				parameter.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
-				
+				parameter.setVersion(UUID.randomUUID().toString());
 				WPBParameter newParam = adminStorage.addWithKey(parameter);
 				newParams.add(newParam);
 			}

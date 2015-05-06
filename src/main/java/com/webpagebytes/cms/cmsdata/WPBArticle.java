@@ -24,6 +24,9 @@ public class WPBArticle {
 	private Date lastModified;
 
 	@WPBAdminFieldStore
+	private String version;
+
+	@WPBAdminFieldStore
 	private String title;
 
 	@WPBAdminFieldTextStore
@@ -62,6 +65,14 @@ public class WPBArticle {
 
 	public void setExternalKey(String externalKey) {
 		this.externalKey = externalKey;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	

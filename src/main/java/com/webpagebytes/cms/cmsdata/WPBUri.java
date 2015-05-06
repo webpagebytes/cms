@@ -27,6 +27,9 @@ public class WPBUri {
 	private Integer enabled;
 
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private String uri;
 	
 	@WPBAdminFieldStore
@@ -111,5 +114,12 @@ public class WPBUri {
 		this.resourceExternalKey = resourceExternalKey;
 	}
 	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 	
 }

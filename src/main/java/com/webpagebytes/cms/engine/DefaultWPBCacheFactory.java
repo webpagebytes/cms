@@ -47,9 +47,9 @@ public class DefaultWPBCacheFactory {
 					try
 					{
 						instance = (WPBCacheFactory) Class.forName(factoryClass).newInstance();
+						instance.initialize(config.getSectionParams(WPBSECTION.SECTION_CACHE));
 						return instance;
-					} 
-					
+					} 					
 					catch (Exception e)
 					{
 						log.log(Level.SEVERE, "Cannot instantiate WBCacheFactory ", e);

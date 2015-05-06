@@ -17,14 +17,15 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBPageModulesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -167,6 +168,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 				return;
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+			wbmodule.setVersion(UUID.randomUUID().toString());
 			WPBPageModule newModule = adminStorage.update(wbmodule);
 			
 			WPBResource resource = new WPBResource(newModule.getExternalKey(), newModule.getName(), WPBResource.PAGE_MODULE_TYPE);
@@ -238,6 +240,7 @@ public class PageModuleController extends Controller implements WPBAdminDataStor
 			}
 			wbmodule.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbmodule.setExternalKey(adminStorage.getUniqueId());
+			wbmodule.setVersion(UUID.randomUUID().toString());
 			WPBPageModule newModule = adminStorage.addWithKey(wbmodule);
 			
 			WPBResource resource = new WPBResource(newModule.getExternalKey(), newModule.getName(), WPBResource.PAGE_MODULE_TYPE);

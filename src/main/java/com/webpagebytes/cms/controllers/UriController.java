@@ -18,6 +18,7 @@ package com.webpagebytes.cms.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBUrisCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -40,6 +41,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -105,6 +107,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			}
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			wbUri.setExternalKey(adminStorage.getUniqueId());
+			wbUri.setVersion(UUID.randomUUID().toString());
 			WPBUri newUri = adminStorage.addWithKey(wbUri);
 			
 			WPBResource resource = new WPBResource(newUri.getExternalKey(), newUri.getUri(), WPBResource.URI_TYPE);
@@ -320,6 +323,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				return;
 			}
 			wbUri.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+			wbUri.setVersion(UUID.randomUUID().toString());
 			WPBUri newUri = adminStorage.update(wbUri);
 			
 			WPBResource resource = new WPBResource(newUri.getUri(), newUri.getUri(), WPBResource.URI_TYPE);

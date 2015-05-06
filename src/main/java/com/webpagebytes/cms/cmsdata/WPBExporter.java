@@ -61,6 +61,11 @@ public class WPBExporter {
 			properties.put("lastModified", new Long(uri.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
+		
+		if (uri.getVersion() != null)
+			properties.put("version", uri.getVersion());
+		else
+			properties.put("version", "");
 	}
 
 	public void export(WPBProject project, Map<String, Object> properties)
@@ -80,6 +85,10 @@ public class WPBExporter {
 		else
 			properties.put("lastModified", "0");
 
+		if (project.getVersion() != null)
+			properties.put("version", project.getVersion());
+		else
+			properties.put("version", "");
 	}
 
 	public void export(WPBParameter parameter, Map<String, Object> properties)
@@ -118,8 +127,12 @@ public class WPBExporter {
 			properties.put("lastModified", new Long(parameter.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
-			
-		}
+	
+		if (parameter.getVersion() != null)
+			properties.put("version", parameter.getVersion());
+		else
+			properties.put("version", "");
+	}
 	
 	public void export(WPBPage page, Map<String, Object> properties)
 	{
@@ -153,6 +166,10 @@ public class WPBExporter {
 		else
 			properties.put("lastModified", "0");
 		
+		if (page.getVersion() != null)
+			properties.put("version", page.getVersion());
+		else
+			properties.put("version", "");
 	}
 
 	public void export(WPBArticle article, Map<String, Object> properties)
@@ -171,6 +188,11 @@ public class WPBExporter {
 			properties.put("lastModified", new Long(article.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
+		
+		if (article.getVersion() != null)
+			properties.put("version", article.getVersion());
+		else
+			properties.put("version", "");
 		
 	}
 
@@ -211,6 +233,10 @@ public class WPBExporter {
 		else
 		    properties.put("ownerExtKey", "");
 		
+		if (file.getVersion() != null)
+			properties.put("version", file.getVersion());
+		else
+			properties.put("version", "");
 	}
 
 	public void export(WPBPageModule module, Map<String, Object> properties)
@@ -235,6 +261,11 @@ public class WPBExporter {
 		else
 			properties.put("lastModified", "0");
 		
+		if (module.getVersion() != null)		
+			properties.put("version", module.getVersion());
+		 else
+			properties.put("version", "");
+		
 	}
 
 	public void export(WPBMessage message, Map<String, Object> properties)
@@ -258,6 +289,14 @@ public class WPBExporter {
 			properties.put("lastModified", new Long(message.getLastModified().getTime()).toString());
 		else
 			properties.put("lastModified", "0");
+		
+		if (message.getVersion() != null)
+		{
+			properties.put("version", message.getVersion());
+		} else
+		{
+			properties.put("version", "");
+		}	
 		
 	}
 

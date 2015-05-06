@@ -35,7 +35,7 @@ public class WPBLocalUrisCache extends WPBUrisCache {
 	private static final Object lock = new Object();
 	private WPBAdminDataStorage dataStorage;
 	Map<Integer, Map<String, WPBUri>> localCache;
-	String cacheFingerPrint;
+	protected String cacheFingerPrint;
 	
 	public WPBLocalUrisCache()
 	{

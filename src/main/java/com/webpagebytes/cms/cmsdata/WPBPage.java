@@ -25,6 +25,9 @@ public class WPBPage {
 	private String name;
 
 	@WPBAdminFieldStore
+	private String version;
+	
+	@WPBAdminFieldStore
 	private Date lastModified;
 
 	@WPBAdminFieldTextStore
@@ -123,4 +126,11 @@ public class WPBPage {
 		return crc.getValue();
 	}
 	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }

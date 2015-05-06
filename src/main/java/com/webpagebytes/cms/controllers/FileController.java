@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -234,6 +234,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	    {
 	        file.setOwnerExtKey(parentdirectory.getExternalKey());
 	    }
+	    file.setVersion(UUID.randomUUID().toString());
+	    
 	    file = adminStorage.addWithKey(file);
 	    
         WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
@@ -282,6 +284,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
          {
              file.setOwnerExtKey("");
          }
+         file.setVersion(UUID.randomUUID().toString());
          
          WPBResource resource = new WPBResource(file.getExternalKey(), file.getFileName(), WPBResource.FILE_TYPE);
 
@@ -493,6 +496,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	            wbFile.setSize(0L);
 	            wbFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 	            wbFile.setExternalKey(adminStorage.getUniqueId());
+	            wbFile.setVersion(UUID.randomUUID().toString());
 	            WPBFile newFile = adminStorage.addWithKey(wbFile);
 	            
 	            WPBResource resource = new WPBResource(newFile.getExternalKey(), newFile.getFileName(), WPBResource.FILE_TYPE);
@@ -533,6 +537,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			WPBFile existingFile = adminStorage.get(key, WPBFile.class);
 			existingFile.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 			existingFile.setAdjustedContentType(wbfile.getAdjustedContentType());
+			existingFile.setVersion(UUID.randomUUID().toString());
 			WPBFile newFile = adminStorage.update(existingFile);
 				
 			org.json.JSONObject returnJson = new org.json.JSONObject();
