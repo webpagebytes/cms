@@ -17,7 +17,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 
 public class WPBMemCacheArticlesCache implements WPBArticlesCache {
 	
-	private static final String CACHE_KEY = "wpbarticlescache";
+	public static final String CACHE_KEY = "wpbarticlescache";
 	private WPBMemCacheClient memcacheClient;
 	private String fingerPrint;
 	private WPBAdminDataStorage dataStorage;

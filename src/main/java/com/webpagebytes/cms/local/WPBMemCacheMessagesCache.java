@@ -18,7 +18,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 
 public class WPBMemCacheMessagesCache implements WPBMessagesCache {
 
-	private static final String CACHE_KEY = "wpbmessagescache";
+	public static final String CACHE_KEY = "wpbmessagescache";
 	WPBMemCacheClient memcacheClient;
 	Map<String, Map<String, String>> cacheMessages;
 	private String fingerPrint = "";

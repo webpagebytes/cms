@@ -162,7 +162,7 @@ public void test_init_exception()
 
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(urisCacheMock);
-	EasyMock.expect(cacheFactoryMock.getWebPagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.getPagesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getPageModulesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getArticlesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getMessagesCacheInstance()).andReturn(null);
@@ -202,7 +202,7 @@ public void test_init()
 	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(null);
-	EasyMock.expect(cacheFactoryMock.getWebPagesCacheInstance()).andReturn(null);
+	EasyMock.expect(cacheFactoryMock.getPagesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getPageModulesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getArticlesCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getMessagesCacheInstance()).andReturn(null);

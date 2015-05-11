@@ -105,7 +105,7 @@ public class FlatStorageImporterExporter {
 	{
 	    WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
 	    
-	    cacheFactory.getWebPagesCacheInstance().Refresh();
+	    cacheFactory.getPagesCacheInstance().Refresh();
 	    cacheFactory.getPageModulesCacheInstance().Refresh();
 	    cacheFactory.getArticlesCacheInstance().Refresh();
 	    cacheFactory.getMessagesCacheInstance().Refresh();

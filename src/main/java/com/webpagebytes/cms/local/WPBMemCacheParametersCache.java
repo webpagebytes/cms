@@ -18,7 +18,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 
 public class WPBMemCacheParametersCache implements WPBParametersCache {
 
-	private static final String CACHE_KEY = "wpbparameterscache";
+	public static final String CACHE_KEY = "wpbparameterscache";
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBParameter> cacheParameters;
 	private Map<String, List<WPBParameter>> cacheOwnerParameters;

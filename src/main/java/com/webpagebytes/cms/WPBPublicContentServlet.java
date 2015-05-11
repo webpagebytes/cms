@@ -148,7 +148,7 @@ public void init() throws ServletException
 	}
 	
 	cacheInstances = new WPBCacheInstances(cacheFactory.getUrisCacheInstance(), 
-			cacheFactory.getWebPagesCacheInstance(), 
+			cacheFactory.getPagesCacheInstance(), 
 			cacheFactory.getPageModulesCacheInstance(), 
 			cacheFactory.getParametersCacheInstance(),
 			cacheFactory.getFilesCacheInstance(),

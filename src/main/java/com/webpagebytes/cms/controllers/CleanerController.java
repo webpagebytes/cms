@@ -66,7 +66,7 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 			}
 			if (type.equals(WPBPage.class))
 			{
-				WPBPagesCache pagesCache = cacheFactory.getWebPagesCacheInstance();
+				WPBPagesCache pagesCache = cacheFactory.getPagesCacheInstance();
 				pagesCache.Refresh();
 			}
 			if (type.equals(WPBPageModule.class))

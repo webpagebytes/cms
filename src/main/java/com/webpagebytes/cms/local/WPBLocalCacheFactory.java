@@ -54,7 +54,7 @@ public class WPBLocalCacheFactory implements WPBCacheFactory {
 		}
 		return uriCacheInstance;
 	}
-	public WPBPagesCache getWebPagesCacheInstance()
+	public WPBPagesCache getPagesCacheInstance()
 	{
 		synchronized (lock) {		
 			if (null == pageCacheInstance)

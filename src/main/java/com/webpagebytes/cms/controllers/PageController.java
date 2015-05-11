@@ -56,7 +56,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	{
 		pageValidator = new PageValidator();
 		WPBCacheFactory wbCacheFactory = DefaultWPBCacheFactory.getInstance();
-		wbWebPageCache = wbCacheFactory.getWebPagesCacheInstance(); 
+		wbWebPageCache = wbCacheFactory.getPagesCacheInstance(); 
 		
 		adminStorage.addStorageListener(this);
 	}

@@ -41,10 +41,10 @@ public interface WPBCacheFactory {
 	public WPBUrisCache getUrisCacheInstance();
 	
 	/**
-	 * Access to WPBWebPagesCache instance
-	 * @return Returns WPBWebPagesCache instance
+	 * Access to WPBPagesCache instance
+	 * @return Returns WPBPagesCache instance
 	 */
-	public WPBPagesCache getWebPagesCacheInstance();
+	public WPBPagesCache getPagesCacheInstance();
 	
 	/**
 	 * Access to WPBPageModulesCache instance

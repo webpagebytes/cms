@@ -18,7 +18,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 public class WPBMemCachePagesCache implements WPBPagesCache {
 
 	private WPBMemCacheClient memcacheClient;
-	private static final String CACHE_KEY = "wpbpagescache";
+	public static final String CACHE_KEY = "wpbpagescache";
 	private String fingerPrint = ""; 
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBPage> localCacheByExternalId;

@@ -19,7 +19,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 
 public class WPBMemCacheUrisCache extends WPBUrisCache {
 
-	private static final String CACHE_KEY = "wpburiscache";
+	public static final String CACHE_KEY = "wpburiscache";
 	private WPBMemCacheClient memcacheClient; 
 	private String memCacheKey;	
 	private static final Object lock = new Object();

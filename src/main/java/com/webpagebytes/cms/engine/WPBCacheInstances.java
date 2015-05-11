@@ -56,7 +56,7 @@ public class WPBCacheInstances {
 	public WPBCacheInstances(WPBCacheFactory cacheFactory)
 	{
 		wpbUriCache = cacheFactory.getUrisCacheInstance();
-		wpbPageCache = cacheFactory.getWebPagesCacheInstance();
+		wpbPageCache = cacheFactory.getPagesCacheInstance();
 		wpbPageModuleCache = cacheFactory.getPageModulesCacheInstance();
 		wpbParameterCache = cacheFactory.getParametersCacheInstance();
 		wpbFilesCache = cacheFactory.getFilesCacheInstance();

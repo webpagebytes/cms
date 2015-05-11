@@ -19,7 +19,7 @@ import com.webpagebytes.cms.utility.CmsBase64Utility;
 public class WPBMemCacheFilesCache implements WPBFilesCache {
 
 	private WPBMemCacheClient memcacheClient;
-    private static final String CACHE_KEY = "wpbfilescache";
+    public static final String CACHE_KEY = "wpbfilescache";
 	private static final int MAX_DIR_DEPTH = 25;
 	private WPBAdminDataStorage dataStorage;
 	private Map<String, WPBFile> localCache;

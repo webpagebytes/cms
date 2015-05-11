@@ -40,6 +40,10 @@ public class WPBMemCacheFactory implements WPBCacheFactory {
 				address = params.get(CONFIG_MEMCACHE_SERVERS);
 			}
 			memcacheClient.initialize(address);
+			
+			WPBMemCacheSyncRunnable syncRunnable = new WPBMemCacheSyncRunnable(this, memcacheClient);
+			(new Thread(syncRunnable)).start();
+			
 		} catch (IOException e)
 		{
 			throw new WPBIOException("cannot create memcache client", e);
@@ -56,7 +60,7 @@ public class WPBMemCacheFactory implements WPBCacheFactory {
 		}
 		return uriCacheInstance;
 	}
-	public WPBPagesCache getWebPagesCacheInstance()
+	public WPBPagesCache getPagesCacheInstance()
 	{
 		synchronized (lock) {		
 			if (null == pageCacheInstance)

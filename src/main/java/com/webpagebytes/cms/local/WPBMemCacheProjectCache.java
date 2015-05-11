@@ -13,7 +13,7 @@ import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.Pair;
 
 public class WPBMemCacheProjectCache implements WPBProjectCache {
-	private static final String CACHE_KEY = "wpbprojectcache";
+	public static final String CACHE_KEY = "wpbprojectcache";
 	private WPBProject project;
 	private Pair<String, String> defaultLocale;
 	private Set<String> supportedLanguages;
