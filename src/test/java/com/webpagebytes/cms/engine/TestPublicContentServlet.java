@@ -159,7 +159,8 @@ public void test_doDelete()
 public void test_init_exception()
 {
 	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
-
+	suppress(method(WPBPublicContentServlet.class, "setCacheInstance"));
+	
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(urisCacheMock);
 	EasyMock.expect(cacheFactoryMock.getPagesCacheInstance()).andReturn(null);
@@ -200,6 +201,8 @@ public void test_init()
 {
 	suppress(method(WPBPublicContentServlet.class, "initUrls"));
 	suppress(method(WPBPublicContentServlet.class, "initBuilders"));
+	suppress(method(WPBPublicContentServlet.class, "setCacheInstance"));
+	
 	cacheFactoryMock = EasyMock.createMock(WPBCacheFactory.class);
 	EasyMock.expect(cacheFactoryMock.getUrisCacheInstance()).andReturn(null);
 	EasyMock.expect(cacheFactoryMock.getPagesCacheInstance()).andReturn(null);

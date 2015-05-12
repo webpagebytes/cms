@@ -97,7 +97,7 @@ public class WPBPublicContentServlet extends HttpServlet {
 	private PageContentBuilder pageContentBuilder;
 	private FileContentBuilder fileContentBuilder;
 	private UriContentBuilder uriContentBuilder;
-	WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
+	WPBCacheFactory cacheFactory;
 	private WPBCacheInstances cacheInstances;
 	private ModelBuilder modelBuilder;
 	private String cache_query_param = CACHE_QUERY_PARAM;
@@ -132,6 +132,10 @@ public void initBuilders() throws WPBException
 	uriContentBuilder.initialize();	
 }
 
+private void setCacheInstance()
+{
+	cacheFactory = DefaultWPBCacheFactory.getInstance();
+}
 
 public void init() throws ServletException
 {
@@ -146,7 +150,8 @@ public void init() throws ServletException
 	{
 		CmsConfigurationFactory.setConfigPath(configPath);
 	}
-	
+	setCacheInstance();
+			
 	cacheInstances = new WPBCacheInstances(cacheFactory.getUrisCacheInstance(), 
 			cacheFactory.getPagesCacheInstance(), 
 			cacheFactory.getPageModulesCacheInstance(), 
