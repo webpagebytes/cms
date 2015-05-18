@@ -17,6 +17,7 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +44,11 @@ import com.webpagebytes.cms.engine.WPBAdminDataStorageListener;
 import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.exception.WPBIOException;
-import com.webpagebytes.cms.local.WPBLocalAdminDataStorage;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class PageController extends Controller implements WPBAdminDataStorageListener {
 
-	private static final Logger log = Logger.getLogger(WPBLocalAdminDataStorage.class.getName());
+	private static final Logger log = Logger.getLogger(PageController.class.getName());
 	private PageValidator pageValidator;
 	private WPBPagesCache wbWebPageCache;
 	

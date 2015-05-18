@@ -1,4 +1,4 @@
-package com.webpagebytes.cms.local;
+package com.webpagebytes.cms.utility;
 import java.util.ArrayList;
 import java.util.Date;
 
