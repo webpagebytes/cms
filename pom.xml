@@ -120,7 +120,7 @@
             <version>2.10.1</version>
             <configuration>
                 <excludePackageNames>
-                    com.webpagebytes.cms.engine:com.webpagebytes.cms.controllers:com.webpagebytes.cms.local:com.webpagebytes.cms.template:com.webpagebytes.cms.utility
+                    com.webpagebytes.cms.engine:com.webpagebytes.cms.controllers:com.webpagebytes.cms.template:com.webpagebytes.cms.utility
                 </excludePackageNames>
             </configuration>
             <executions>
