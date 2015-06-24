@@ -237,7 +237,7 @@ $().ready( function () {
 	};
 	var displayHandlerFiles = function (fieldId, record) {
 		if ("more" in record) {
-			if (fieldId == "name") {
+			if (fieldId == "fileName") {
 				return '<a href="./webfiles.html">more...</a>';
 			}
 			return "";
