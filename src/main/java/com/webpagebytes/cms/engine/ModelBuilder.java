@@ -53,7 +53,10 @@ public class ModelBuilder {
 		configuration = CmsConfigurationFactory.getConfiguration();
 		Map<String, String> sectionParams = configuration.getSectionParams(WPBSECTION.SECTION_MODEL_CONFIGURATOR);
 		setupGlobalParams = configuration.getSectionParams(WPBSECTION.SECTION_GLOBALS);
-		
+		if (null == setupGlobalParams)
+		{
+			setupGlobalParams = new HashMap<String, String>();
+		}
 		if (sectionParams != null)
 		{
 			baseModelUrlPath = sectionParams.get("baseModelUrlPath");
