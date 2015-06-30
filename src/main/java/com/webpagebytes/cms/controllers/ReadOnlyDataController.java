@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBPage;
@@ -45,13 +45,21 @@ public class ReadOnlyDataController  extends Controller {
 	
 	public void getShortDataOnFilesAndPages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		List<WPBFile> files = adminStorage.getAllRecords(WPBFile.class);
 		List<WPBPage> pages = adminStorage.getAllRecords(WPBPage.class);
 
 		
 		try 
 		{
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			org.json.JSONArray jsonFilesArray = new org.json.JSONArray(); 
 			for(WPBFile file : files)
 			{
@@ -78,13 +86,21 @@ public class ReadOnlyDataController  extends Controller {
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);		
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors, authenticationResult);		
 		}
 		
 	}
 	
 	public void search(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			List allRecords = null;
@@ -106,9 +122,8 @@ public class ReadOnlyDataController  extends Controller {
 				allRecords = new ArrayList<WPBPage>();
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(allRecords));
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{

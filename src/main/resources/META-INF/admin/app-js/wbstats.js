@@ -159,6 +159,7 @@ var WBLanguages = {
 
 $().ready( function () {
 
+    
 	var textToLength = function (val) {
 		val = val || "";
 		var maxLen = 30;
@@ -344,7 +345,6 @@ $().ready( function () {
 			if ($('#wbtablefiles').wbSimpleTable().length() > 0) {
 				$('#wbtablefiles').wbSimpleTable().insertRow({'more':''});
 			}
-
 			populateCount(resp);
 			$('#spinnerTable').WBSpinner().hide();			
 		}
@@ -358,7 +358,8 @@ $().ready( function () {
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetStats,
-														 functionError: fErrorGetStats
+														 functionError: fErrorGetStats,
+														 functionAuth: authHandler
 														} );
 	}
 	populateStats();

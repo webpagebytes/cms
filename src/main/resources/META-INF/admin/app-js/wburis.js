@@ -109,7 +109,8 @@ $().ready( function () {
 															 payloadData:"",
 															 wbObjectManager : $('wburiduplicate').wbObjectManager(),
 															 functionSuccess: fSuccessDuplicateParams,
-															 functionError: fErrorDuplicateParams
+															 functionError: fErrorDuplicateParams,
+															 functionAuth: authHandler
 															 } );		
 	};
 
@@ -165,7 +166,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wburiduplicate').wbObjectManager(),
 															 functionSuccess: fSuccessDuplicate,
-															 functionError: fErrorDuplicate
+															 functionError: fErrorDuplicate,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -178,7 +180,8 @@ $().ready( function () {
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
-														 functionError: fErrorDelete
+														 functionError: fErrorDelete,
+														 functionAuth: authHandler
 													} );
 		
 	});
@@ -214,7 +217,8 @@ $().ready( function () {
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetUris,
-														 functionError: fErrorGetUris
+														 functionError: fErrorGetUris,
+														 functionAuth: authHandler
 														} );
 	}
 	populateUris();

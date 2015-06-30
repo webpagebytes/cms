@@ -224,7 +224,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbAddParamaterForm').wbObjectManager(),
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -249,7 +250,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateParameterForm').wbObjectManager(),
 															 functionSuccess: fSuccessUpdate,
-															 functionError: fErrorUpdate
+															 functionError: fErrorUpdate,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -272,7 +274,8 @@ $().ready( function () {
 															 payloadData:"",
 															 wbObjectManager : $('#wbDeleteParameterForm').wbObjectManager(),
 															 functionSuccess: fSuccessDelete,
-															 functionError: fErrorDelete
+															 functionError: fErrorDelete,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -316,7 +319,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetUri,
-												 functionError: fErrorGetUri
+												 functionError: fErrorGetUri,
+												 functionAuth: authHandler
 												} );
 	
 	var externalKeysArrays = { 'files':[], 'pages': [] }
@@ -394,7 +398,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wburiedit').wbObjectManager(),
 															 functionSuccess: fSuccessEdit,
-															 functionError: fErrorEdit
+															 functionError: fErrorEdit,
+															 functionAuth: authHandler
 															 } );
 		}
 	});

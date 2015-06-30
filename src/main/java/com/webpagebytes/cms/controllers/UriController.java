@@ -19,6 +19,7 @@ package com.webpagebytes.cms.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBUrisCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -94,6 +95,15 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 
 	public void createWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
@@ -119,9 +129,8 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				//just log error and do not consider the operation as failure
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 		} catch (Exception e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
@@ -132,6 +141,14 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	}
 	public void getAllWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
@@ -162,11 +179,10 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 			
 			List<WPBUri> result = filterPagination(request, allUri, additionalInfo);
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
 			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -178,11 +194,18 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	}
 	public void getWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
 			WPBUri wburi = adminStorage.get(key, WPBUri.class);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));
 			String includeLinks = request.getParameter("include_links");
 			if (includeLinks != null && includeLinks.equals("1"))
@@ -208,7 +231,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				}
 			}
 
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -220,6 +243,7 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	}
 	private org.json.JSONObject getWBUri(HttpServletRequest request, HttpServletResponse response, WPBUri wburi) throws WPBException
 	{
+		
 		try
 		{
 			org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -256,13 +280,21 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 	}
 	public void getWBUriExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
 			List<WPBUri> wburis = adminStorage.query(WPBUri.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
 			WPBUri wburi = (wburis.size()>0)? wburis.get(0): null;
-			org.json.JSONObject returnJson = getWBUri(request, response, wburi);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			returnJson = getWBUri(request, response, wburi);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 		} catch (Exception e)		
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);
@@ -274,6 +306,14 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 
 	public void deleteWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -294,9 +334,8 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 
 			WPBUri wburi = new WPBUri();
 			wburi.setExternalKey(key);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wburi));						
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -309,6 +348,14 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 
 	public void updateWBUri(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -335,9 +382,8 @@ public class UriController extends Controller implements WPBAdminDataStorageList
 				// do not propagate further
 			}
 
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newUri));						
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	
 		} catch (Exception e)		
 		{

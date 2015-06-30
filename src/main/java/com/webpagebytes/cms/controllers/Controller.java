@@ -17,14 +17,17 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
+
+import com.webpagebytes.cms.WPBAuthentication;
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
@@ -38,9 +41,11 @@ import com.webpagebytes.cms.cmsdata.WPBResource;
 import com.webpagebytes.cms.cmsdata.WPBUri;
 import com.webpagebytes.cms.engine.JSONToFromObjectConverter;
 import com.webpagebytes.cms.engine.WPBAdminDataStorageFactory;
+import com.webpagebytes.cms.engine.WPBAuthenticationFactory;
 import com.webpagebytes.cms.engine.WPBFileStorageFactory;
 import com.webpagebytes.cms.engine.WPBInternalAdminDataStorage;
 import com.webpagebytes.cms.exception.WPBException;
+import com.webpagebytes.cms.exception.WPBIOException;
 import com.webpagebytes.cms.utility.HttpServletToolbox;
 
 public class Controller {
@@ -53,6 +58,7 @@ public class Controller {
 	public static final String PAGINATION_TOTAL_COUNT = "total_count";
 	public static final String DATA = "data";
 	public static final String ADDTIONAL_DATA = "additional_data";
+	
 	public<T> List<T> filterPagination(HttpServletRequest request, List<T> records, Map<String, Object> additionalInfo)
 	{
 		String paginationStart = request.getParameter(PAGINATION_START);
@@ -163,7 +169,8 @@ public class Controller {
     
 	protected HttpServletToolbox httpServletToolbox;
 	protected JSONToFromObjectConverter jsonObjectConverter;
-
+	protected WPBAuthentication authentication;
+	
 	public String getAdminUriPart() {
 		return adminUriPart;
 	}
@@ -177,6 +184,7 @@ public class Controller {
 		jsonObjectConverter = new JSONToFromObjectConverter();
 		cloudFileStorage = WPBFileStorageFactory.getInstance();
 		adminStorage = WPBAdminDataStorageFactory.getInstance();
+		authentication = WPBAuthenticationFactory.getInstance();
 	}
 	
    protected void deleteFile(WPBFile file) throws IOException
@@ -208,7 +216,24 @@ public class Controller {
         }
         adminStorage.deleteAllRecords(WPBFile.class);
         adminStorage.deleteAllRecords(WPBResource.class);
-   
+    }
+    
+    protected WPBAuthenticationResult handleAuthentication(HttpServletRequest request) throws WPBIOException
+    {
+    	if (null == authentication)
+    	{
+    		// there is no authentication
+    		return null;
+    	}
+    	WPBAuthenticationResult result =  authentication.checkAuthentication(request);
+    	
+    	return result;
     }
 
+    protected boolean isRequestAuthenticated(WPBAuthenticationResult authenticationResult)
+    {
+    	if (authenticationResult == null) return true;
+    	return (authenticationResult.getUserIdentifier() != null) && (authenticationResult.getUserIdentifier().length() > 0);
+    }
+    
 }

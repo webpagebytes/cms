@@ -48,6 +48,8 @@ public class XMLConfigContentHandler extends DefaultHandler {
             currentSection = CmsConfiguration.WPBSECTION.SECTION_GENERAL;
         } else if (qName.equals("wpbglobals")) {
             currentSection = CmsConfiguration.WPBSECTION.SECTION_GLOBALS;
+        } else if (qName.equals("wpbauthentication")) {
+            currentSection = CmsConfiguration.WPBSECTION.SECTION_AUTHENTICATION;
         } 
 		
 		if (qName.equals("param"))

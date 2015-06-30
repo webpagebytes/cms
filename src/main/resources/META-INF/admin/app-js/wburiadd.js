@@ -160,7 +160,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wburiadd').wbObjectManager(),
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 	});

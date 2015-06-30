@@ -27,6 +27,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBParametersCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -69,11 +70,18 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
 			WPBParameter wbparameter = adminStorage.get(key, WPBParameter.class);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(wbparameter));			
 			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
 
@@ -81,12 +89,20 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
 			errors.put("", WPBErrors.WB_CANT_GET_RECORDS);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);			
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors, authenticationResult);			
 		}		
 	}
 	
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
@@ -144,10 +160,9 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				}				
 			}
 			List<WPBParameter> filteredParams = filterPagination(request, parameters, additionalInfo);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(filteredParams));	
 			returnJson.put(ADDTIONAL_DATA, additionalInfo);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 			
 		} catch (Exception e)		
 		{
@@ -159,6 +174,15 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 
 	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -187,9 +211,8 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 					// do nothing
 				}
 			}
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 
 		} catch (Exception e)		
 		{
@@ -201,6 +224,14 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -221,9 +252,8 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				}
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 			
 		} catch (Exception e)		
 		{
@@ -235,6 +265,14 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	
 	public void createSingle(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
@@ -263,9 +301,8 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				}
 			}
 
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newParameter));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	
 		} catch (Exception e)
 		{
@@ -277,6 +314,13 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 	
 	public void createFromOwner(String fromOwnerExternalKey, String ownerExternalKey, HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
 		try
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
@@ -304,9 +348,8 @@ public class ParameterController extends Controller implements WPBAdminDataStora
 				newParams.add(newParam);
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(newParams));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 			
 		} catch (Exception e)
 		{

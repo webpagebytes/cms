@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.utility;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -26,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+
+import com.webpagebytes.cms.WPBAuthentication;
+import com.webpagebytes.cms.WPBAuthenticationResult;
 
 import java.util.Map;
 
@@ -82,6 +84,69 @@ public class HttpServletToolbox {
 		
 	}
 	
+	public void writeBodyResponseAsJson(HttpServletResponse response, org.json.JSONObject data, Map<String, String> errors, WPBAuthenticationResult authenticationResult)
+	{
+		try
+		{
+			org.json.JSONObject jsonResponse = new org.json.JSONObject();
+			org.json.JSONObject jsonErrors = new org.json.JSONObject();
+			org.json.JSONObject jsonAuth = new org.json.JSONObject();
+			String status = "200";
+			if (errors != null && errors.keySet().size() > 0)
+			{
+				jsonResponse.put("status", "400");
+				for(String key: errors.keySet())
+				{			
+					jsonErrors.put(key, errors.get(key));
+				}
+			}
+			// leave the auth status the last
+			if (authenticationResult != null && (authenticationResult.getUserIdentifier() == null || authenticationResult.getUserIdentifier().length() == 0))
+			{
+				status = "401";
+				// make sure that if the request is not authenticated no data is returned
+				data = new org.json.JSONObject();
+			}
+			
+			if (authenticationResult != null)
+			{
+				jsonAuth.put(WPBAuthentication.CONFIG_LOGIN_PAGE_URL, authenticationResult.getLoginLink());
+				jsonAuth.put(WPBAuthentication.CONFIG_LOGOUT_URL, authenticationResult.getLogoutLink());
+				jsonAuth.put(WPBAuthentication.CONFIG_PROFILE_URL, authenticationResult.getUserProfileLink());
+				jsonAuth.put(WPBAuthentication.CONFIG_USER_IDENTIFIER, authenticationResult.getUserIdentifier());
+			}
+			jsonResponse.put("status", status);
+			jsonResponse.put("auth", jsonAuth);
+			jsonResponse.put("errors", jsonErrors);
+			jsonResponse.put("payload", data);
+			String jsonString = jsonResponse.toString();
+			response.setContentType("application/json");			
+			response.setCharacterEncoding("UTF-8");
+			ServletOutputStream writer = response.getOutputStream();
+			byte[] utf8bytes = jsonString.getBytes("UTF-8");
+			writer.write(utf8bytes);
+			response.setContentLength(utf8bytes.length);
+			writer.flush();
+			
+		} catch (Exception e)
+		{
+			try
+			{
+				String errorResponse = "{\"status\":\"FAIL\",\"payload\":\"{}\",\"errors\":{\"reason\":\"WB_UNKNOWN_ERROR\"}}";
+				ServletOutputStream writer = response.getOutputStream();
+				response.setContentType("application/json");				
+				byte[] utf8bytes = errorResponse.getBytes("UTF-8");
+				response.setContentLength(utf8bytes.length);
+				writer.write(utf8bytes);
+				writer.flush();
+			} catch (IOException ioe)
+			{
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		}
+		
+	}
+
 	public void writeBodyResponseAsJson(HttpServletResponse response, org.json.JSONObject data, Map<String, String> errors)
 	{
 

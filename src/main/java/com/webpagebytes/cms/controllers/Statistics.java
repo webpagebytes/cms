@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminSortOperator;
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.cmsdata.WPBArticle;
 import com.webpagebytes.cms.cmsdata.WPBFile;
 import com.webpagebytes.cms.cmsdata.WPBProject;
@@ -102,6 +103,14 @@ public class Statistics extends Controller {
 	
 	public void getStatistics(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		String [] entities = request.getParameterValues(PARAM_ENTITY);
 		org.json.JSONObject payloadJson = new org.json.JSONObject();
 		
@@ -139,9 +148,8 @@ public class Statistics extends Controller {
 					}
 				}
 			}
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, payloadJson);	
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 
 		} catch (Exception e)
 		{

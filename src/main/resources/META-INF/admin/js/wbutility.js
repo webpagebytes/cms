@@ -217,6 +217,18 @@ if (!Array.prototype.indexOf) {
     }
 }
 
+(function ($) {
+	authHandler = function (record) {
+		if (!record) return;
+		if (!('userIdentifier' in record) || (record.userIdentifier.length == 0)) {
+			window.location.href= record.loginPageUrl;
+			return;
+		}			
+		var html = ("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>{0} <b class='caret'></b> </a> " +
+		           "<ul class='dropdown-menu'><li><a href='{1}'>Profile</a></li><li><a href='{2}'>Logout</a></li></ul> </li>").format(escapehtml(record.userIdentifier), escapehtml(record.profileUrl), escapehtml(record.logoutUrl));
+		$("#authmenu").html(html);
+}
+}) (window.jQuery);
 
 (function ($) {
 
@@ -751,6 +763,7 @@ if (!Array.prototype.indexOf) {
 			url: "",
 			functionSuccess: undefined,
 			functionError: undefined,
+			functionAuth: undefined,
 			wbObjectManager: undefined,
 			clientData: undefined,
 			async: true
@@ -792,12 +805,17 @@ if (!Array.prototype.indexOf) {
 						}
 						data = data || "{}";
 						var retObject = JSON.parse(data);
-						if (retObject.status == "OK") {							
+						if ('auth' in retObject) {
+							if (options.functionAuth) {
+								options.functionAuth(retObject.auth);
+							}
+						} 						
+						if (retObject.status == "OK" || retObject.status == "200") {							
 							if (options.functionSuccess) {
 								options.functionSuccess(retObject.payload,options.clientData);
 							}
 						}
-						if (retObject.status == "FAIL") {
+						if (retObject.status == "FAIL" || retObject.status == "400") {
 							if (options.functionError) {
 								options.functionError(retObject.errors, retObject.payload, options.clientData);
 							}						
@@ -831,6 +849,7 @@ if (!Array.prototype.indexOf) {
 		if (params == undefined) return data;
 	}	
 }) (window.jQuery);
+
 
 (function ($) {
 
@@ -1576,5 +1595,5 @@ $().ready( function () {
 	
 	$('#cmssearchbox').wbSearchBox({searchFields:['name','rkey'], classSearchList:'wbsearchresultlist' ,afterDisplayHandler: afterDisplayFunction, displayHandler: displayHandlerFunction, selectHandler: selectHandlerFunction,
 					loadDataHandler: loadDataHandlerFunction, jQInputBox: $('#cmssearchbox'), jQSearchListContainer: $('#searchResultList')});
-
+	
 });

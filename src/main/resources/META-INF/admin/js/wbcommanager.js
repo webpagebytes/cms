@@ -13,6 +13,7 @@
 			url: "",
 			functionSuccess: undefined,
 			functionError: undefined,
+			functionAuth: undefined,
 			wbObjectManager: undefined,
 			clientData: undefined
 		},
@@ -56,12 +57,18 @@
 						}
 						data = data || "{}";
 						var retObject = JSON.parse(data);
-						if (retObject.status == "OK") {							
+						
+						if ('auth' in data) {
+							if (options.functionAuth) {
+								options.functionAuth(retObject.auth);
+							}
+						} 						
+						if (retObject.status == "OK" || retObject.status == "200") {							
 							if (options.functionSuccess) {
 								options.functionSuccess(retObject.payload,options.clientData);
 							}
 						}
-						if (retObject.status == "FAIL") {
+						if (retObject.status == "FAIL" || retObject.status == "400") {
 							if (options.functionError) {
 								options.functionError(retObject.errors, retObject.payload, options.clientData);
 							}						

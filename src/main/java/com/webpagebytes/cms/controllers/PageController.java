@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,7 @@ import java.util.zip.CRC32;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBPagesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -78,6 +78,14 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	
 	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
@@ -103,9 +111,8 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			{
 				// do not propagate further
 			}
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 		} catch (Exception e)
 		{
@@ -116,6 +123,14 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	}
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
@@ -145,10 +160,9 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 					
 			List<WPBPage> result = filterPagination(request, allRecords, additionalInfo);
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 			
 		} catch (Exception e)		
@@ -161,6 +175,7 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	
 	private org.json.JSONObject get(HttpServletRequest request, HttpServletResponse response, WPBPage webPage) throws WPBException
 	{
+		
 		try
 		{
 			org.json.JSONObject returnJson = new org.json.JSONObject();
@@ -187,12 +202,20 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 	
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
 			WPBPage webPage = adminStorage.get(key, WPBPage.class);
-			org.json.JSONObject returnJson = get(request, response, webPage);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			returnJson = get(request, response, webPage);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 		} catch (Exception e)		
 		{
@@ -204,13 +227,21 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 
 	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
 			List<WPBPage> webPages = adminStorage.query(WPBPage.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
 			WPBPage webPage = (webPages.size()>0) ? webPages.get(0) : null; 		
-			org.json.JSONObject returnJson = get(request, response, webPage);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			returnJson = get(request, response, webPage);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 		} catch (Exception e)		
 		{
@@ -222,6 +253,14 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -239,9 +278,8 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			}
 			WPBPage page = new WPBPage();
 			page.setExternalKey(key);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(page));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -253,6 +291,14 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 
 	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -281,9 +327,8 @@ public class PageController extends Controller implements WPBAdminDataStorageLis
 			{
 				// do not propate further
 			}
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newWebPage));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	
 		} catch (Exception e)		
 		{
