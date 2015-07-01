@@ -17,7 +17,6 @@
 package com.webpagebytes.cms.controllers;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,6 +31,8 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ExportImportController extends Controller {
@@ -44,6 +45,14 @@ public class ExportImportController extends Controller {
 
 	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 	    File tempFile = null;
 		try
 		{
@@ -73,9 +82,8 @@ public class ExportImportController extends Controller {
                   storageExporter.importFromZipStep2(is2);
                   is2.close();
 
-		         org.json.JSONObject returnJson = new org.json.JSONObject();
 		          returnJson.put(DATA, "");			
-		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 		        }
 		      }		
 		} catch (Exception e)
@@ -100,6 +108,13 @@ public class ExportImportController extends Controller {
 
 	public void exportContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		}
 		
 		try
 		{

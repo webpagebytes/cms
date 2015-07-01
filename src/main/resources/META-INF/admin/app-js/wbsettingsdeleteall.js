@@ -16,7 +16,8 @@ $().ready( function () {
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessClear,
-														 functionError: fErrorClear
+														 functionError: fErrorClear,
+														 functionAuth: authHandler
 													} );		
 	});
 

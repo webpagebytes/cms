@@ -96,7 +96,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbAddPageForm').wbObjectManager(),
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -117,7 +118,8 @@ $().ready( function () {
 															 payloadData:"",
 															 wbObjectManager : $('#wbDuplicatePageForm').wbObjectManager(),
 															 functionSuccess: fSuccessDuplicateParams,
-															 functionError: fErrorDuplicateParams
+															 functionError: fErrorDuplicateParams,
+															 functionAuth: authHandler
 															 } );		
 	};
 	var fErrorDuplicate = function (errors, data) {
@@ -136,7 +138,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbDuplicatePageForm').wbObjectManager(),
 															 functionSuccess: fSuccessDuplicate,
-															 functionError: fErrorDuplicate
+															 functionError: fErrorDuplicate,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -174,7 +177,8 @@ $().ready( function () {
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
-														 functionError: fErrorDelete
+														 functionError: fErrorDelete,
+														 functionAuth: authHandler
 													} );
 		
 	});
@@ -207,7 +211,8 @@ $().ready( function () {
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetPages,
-														 functionError: fErrorGetPages
+														 functionError: fErrorGetPages,
+														 functionAuth: authHandler
 														} );
 	}
 	populatePages();

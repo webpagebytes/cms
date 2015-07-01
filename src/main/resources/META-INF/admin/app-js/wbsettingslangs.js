@@ -102,7 +102,8 @@ $().ready( function () {
 													 httpOperation:"GET", 
 													 payloadData:"",
 													 functionSuccess: fSuccessGetLanguages,
-													 functionError: fErrorGetLanguages
+													 functionError: fErrorGetLanguages,
+													 functionAuth: authHandler
 													} );
 
 });

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.webpagebytes.cms.WPBArticlesCache;
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBFilesCache;
 import com.webpagebytes.cms.WPBMessagesCache;
@@ -108,13 +109,20 @@ public class CleanerController extends Controller implements WPBAdminDataStorage
 	
 	public void deleteAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+		
 		try
 		{
 			deleteAll();
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, "{}");			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 		}
 		catch (Exception e)

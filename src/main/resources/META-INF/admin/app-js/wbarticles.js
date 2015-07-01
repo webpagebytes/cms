@@ -93,7 +93,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbAddArticleForm').wbObjectManager(),
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -144,7 +145,8 @@ $().ready( function () {
 														 payloadData: jsonText,
 														 wbObjectManager : $('#wbDuplicateArticleForm').wbObjectManager(),
 														 functionSuccess: fSuccessDuplicate,
-														 functionError: fErrorDuplicate
+														 functionError: fErrorDuplicate,
+														 functionAuth: authHandler
 													} );
 		}
 	});
@@ -156,7 +158,8 @@ $().ready( function () {
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
-														 functionError: fErrorDelete
+														 functionError: fErrorDelete,
+														 functionAuth: authHandler
 													} );
 		
 	});
@@ -187,7 +190,8 @@ $().ready( function () {
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetAll,
-														 functionError: fErrorGetAll
+														 functionError: fErrorGetAll,
+														 functionAuth: authHandler
 														} );
 	}
 	populateArticles();

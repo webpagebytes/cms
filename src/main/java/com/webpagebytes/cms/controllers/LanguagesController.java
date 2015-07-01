@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBProjectCache;
 import com.webpagebytes.cms.cmsdata.WPBProject;
@@ -98,6 +99,14 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 
 	public void getAllLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		JSONArray result = new JSONArray();		
 		try
 		{
@@ -108,9 +117,8 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 				item.put("name", allLocales.get(str).getDisplayName());
 				result.put(item);
 			}
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, result);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);	
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);	
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
@@ -122,6 +130,14 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 	
 	public void getSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		WPBProject project = getProject();
 		Set<String> projectLanguages = project.getSupportedLanguagesSet();
 		Set<String> supportedlanguages = new HashSet<String>();
@@ -154,9 +170,8 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 				}
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, result);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);	
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);	
 		} catch (Exception e)
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
@@ -167,6 +182,14 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 	
 	public void setSupportedLanguages(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String requestBody = httpServletToolbox.getBodyText(request);
@@ -228,7 +251,7 @@ public class LanguagesController extends Controller implements WPBAdminDataStora
 			project.setLastModified(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());	
 			project.setVersion(UUID.randomUUID().toString());
 			adminStorage.update(project);
-			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors);
+			httpServletToolbox.writeBodyResponseAsJson(response, jsonObjectConverter.JSONObjectFromMap(null), errors, authenticationResult);
 			
 		} catch (Exception e)
 		{

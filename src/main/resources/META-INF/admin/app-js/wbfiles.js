@@ -207,7 +207,8 @@ $().ready( function () {
 															 httpOperation:"POST", 
 															 payloadData:jsonText,
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 
@@ -237,7 +238,8 @@ $().ready( function () {
 														 httpOperation:"DELETE", 
 														 payloadData:"",
 														 functionSuccess: fSuccessDelete,
-														 functionError: fErrorDelete
+														 functionError: fErrorDelete,
+														 functionAuth: authHandler
 													} );
 		
 	});
@@ -280,7 +282,8 @@ $().ready( function () {
 														 httpOperation:"GET", 
 														 payloadData:"",
 														 functionSuccess: fSuccessGetAll,
-														 functionError: fErrorGetAll
+														 functionError: fErrorGetAll,
+														 functionAuth: authHandler
 														} );
 	}
 	populateFiles();

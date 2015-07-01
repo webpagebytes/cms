@@ -77,7 +77,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetPage,
-												 functionError: fErrorGetPage
+												 functionError: fErrorGetPage,
+												 functionAuth: authHandler
 												} );
 	
 	var fSuccessEdit = function ( data ) {
@@ -98,7 +99,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbEditPageForm').wbObjectManager(),
 															 functionSuccess: fSuccessEdit,
-															 functionError: fErrorEdit
+															 functionError: fErrorEdit,
+															 functionAuth: authHandler
 															 } );
 		}
 	});

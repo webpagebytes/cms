@@ -58,7 +58,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetArticle,
-												 functionError: fErrorGetArticle
+												 functionError: fErrorGetArticle,
+												 functionAuth: authHandler
 												} );
 	
 	var fSuccessEdit = function ( data ) {
@@ -80,7 +81,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbArticleEditForm').wbObjectManager(),
 															 functionSuccess: fSuccessEdit,
-															 functionError: fErrorEdit
+															 functionError: fErrorEdit,
+															 functionAuth: authHandler
 															 } );
 		}
 	});

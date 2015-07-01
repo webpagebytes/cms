@@ -16,7 +16,8 @@ $().ready( function () {
 														 httpOperation:"POST", 
 														 payloadData:"",
 														 functionSuccess: fSuccessRefresh,
-														 functionError: fErrorRefresh
+														 functionError: fErrorRefresh,
+														 functionAuth: authHandler
 													} );		
 	});
 

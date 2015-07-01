@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBCacheFactory;
 import com.webpagebytes.cms.WPBMessagesCache;
 import com.webpagebytes.cms.WPBAdminDataStorage.AdminQueryOperator;
@@ -72,6 +73,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 
 	public void create(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String jsonRequest = httpServletToolbox.getBodyText(request);
@@ -98,9 +107,8 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 				// do not propagate further
 			}
 
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)
 		{
@@ -112,6 +120,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			
@@ -155,11 +171,10 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			
 			List<WPBMessage> result = filterPagination(request, allRecords, additionalInfo);
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));
 			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 		} catch (Exception e)		
 		{
@@ -183,6 +198,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	
 	public void getByCompare(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		Map<String, String> errors = new HashMap<String, String>();		
 		if (request.getParameter("lcid") == null || request.getParameter("dlcid") == null)
 		{
@@ -266,10 +289,9 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 			}
 			jsonArray = filterPagination(request, jsonArray, additionalInfo);
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonArray);
 			returnJson.put(ADDTIONAL_DATA, jsonObjectConverter.JSONObjectFromMap(additionalInfo));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -281,13 +303,20 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
 			WPBMessage record = adminStorage.get(key, WPBMessage.class);
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -298,6 +327,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 	}
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -315,9 +352,8 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 				// do not propagate further
 			}
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(record));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -329,6 +365,14 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 
 	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -357,9 +401,8 @@ public class MessageController extends Controller implements WPBAdminDataStorage
 				// do not propagate further
 			}
 
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newRecord));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	
 		} catch (Exception e)		
 		{

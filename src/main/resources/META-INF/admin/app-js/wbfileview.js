@@ -141,7 +141,8 @@ $().ready( function () {
 											 httpOperation:"GET", 
 											 payloadData:"",
 											 functionSuccess: fSuccessGetFile,
-											 functionError: fErrorGetFile
+											 functionError: fErrorGetFile,
+											 functionAuth: authHandler
 											} );	
 											
 	
@@ -167,7 +168,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbuFileDataUpdateForm').wbObjectManager(),
 															 functionSuccess: fSuccessFileUpdate,
-															 functionError: fErrorFileUpdate
+															 functionError: fErrorFileUpdate,
+															 functionAuth: authHandler
 															 } );
 		}
 			
@@ -186,7 +188,8 @@ $().ready( function () {
 										 httpOperation:"GET", 
 										 payloadData:"",
 										 functionSuccess: fSuccessGetFileForUpdate,
-										 functionError: fErrorGetFile
+										 functionError: fErrorGetFile,
+										 functionAuth: authHandler
 										} );	
 
 			});

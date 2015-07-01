@@ -141,7 +141,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetMessages,
-												 functionError: fErrorGetMessages
+												 functionError: fErrorGetMessages,
+												 functionAuth: authHandler
 												} );			
 
 	}
@@ -182,7 +183,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetSupportedLanguages,
-												 functionError: fErrorGetSupportedLanguages
+												 functionError: fErrorGetSupportedLanguages,
+												 functionAuth: authHandler
 												} );	
 	
 	$(".wbCreateMessageBtnClass").click (function (e) {
@@ -213,7 +215,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbAddMessageForm').wbObjectManager(),
 															 functionSuccess: fSuccessAdd,
-															 functionError: fErrorAdd
+															 functionError: fErrorAdd,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -239,7 +242,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbDuplicateMessageForm').wbObjectManager(),
 															 functionSuccess: fSuccessDuplicate,
-															 functionError: fErrorDuplicate
+															 functionError: fErrorDuplicate,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -263,7 +267,8 @@ $().ready( function () {
 															 payloadData:jsonText,
 															 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),
 															 functionSuccess: fSuccessUpdate,
-															 functionError: fErrorUpdate
+															 functionError: fErrorUpdate,
+															 functionAuth: authHandler
 															 } );
 		}
 	});
@@ -285,7 +290,8 @@ $().ready( function () {
 														 payloadData:"",
 														 wbObjectManager : $('#wbUpdateMessageForm').wbObjectManager(),
 														 functionSuccess: fSuccessDelete,
-														 functionError: fErrorDelete
+														 functionError: fErrorDelete,
+														 functionAuth: authHandler
 														 } );
 	});
 

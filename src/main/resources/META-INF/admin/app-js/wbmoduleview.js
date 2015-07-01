@@ -74,7 +74,8 @@ $().ready( function () {
 												 httpOperation:"GET", 
 												 payloadData:"",
 												 functionSuccess: fSuccessGetModule,
-												 functionError: fErrorGetModule
+												 functionError: fErrorGetModule,
+												 functionAuth: authHandler
 												} );
 	
 												

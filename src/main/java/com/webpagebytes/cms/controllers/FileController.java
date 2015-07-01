@@ -38,6 +38,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.IOUtils;
 
+import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.WPBFilePath;
 import com.webpagebytes.cms.WPBAdminDataStorage;
 import com.webpagebytes.cms.WPBCacheFactory;
@@ -356,6 +357,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	}
 	   public void uploadFolder(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	    {
+			org.json.JSONObject returnJson = new org.json.JSONObject();
+			WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+			if (! isRequestAuthenticated(authenticationResult))
+			{
+				httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+				return ;
+			}
+
 	        try
 	        {
 	              ServletFileUpload upload = new ServletFileUpload();
@@ -400,9 +409,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	                }
 	              } 
 	              
-	              org.json.JSONObject returnJson = new org.json.JSONObject();
-                  returnJson.put(DATA, jsonObjectConverter.JSONFromObject(null));           
-                  httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	              returnJson.put(DATA, jsonObjectConverter.JSONFromObject(null));           
+                  httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	        } catch (Exception e)
 	        {
 	            Map<String, String> errors = new HashMap<String, String>();     
@@ -413,6 +421,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
    public void upload(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
    {
+	org.json.JSONObject returnJson = new org.json.JSONObject();
+	WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+	if (! isRequestAuthenticated(authenticationResult))
+	{
+		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+		return ;
+	}
+
 	try
 	{
 	    ServletFileUpload upload = new ServletFileUpload();
@@ -463,9 +479,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
           		          
 	        }
 	    }	
-	    org.json.JSONObject returnJson = new org.json.JSONObject();
 	    returnJson.put(DATA, jsonObjectConverter.JSONFromObject(null));           
-	    httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	    httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	} catch (Exception e)
 	{
 	Map<String, String> errors = new HashMap<String, String>();		
@@ -476,6 +491,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void createDir(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 	       try
 	        {
 	            String jsonRequest = httpServletToolbox.getBodyText(request);
@@ -507,9 +530,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	            {
 	                // do not propagate further
 	            }
-	            org.json.JSONObject returnJson = new org.json.JSONObject();
 	            returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));           
-	            httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+	            httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 
 	        } catch (Exception e)
 	        {
@@ -521,6 +543,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	
 	public void update(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -540,9 +570,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			existingFile.setVersion(UUID.randomUUID().toString());
 			WPBFile newFile = adminStorage.update(existingFile);
 				
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(newFile));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 	
 		} catch (Exception e)		
 		{
@@ -554,6 +583,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	
 	public void delete(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -564,9 +601,8 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			WPBFile param = new WPBFile();
 			param.setExternalKey(key);
 			
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONFromObject(param));			
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -578,6 +614,14 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void getAll(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			Map<String, Object> additionalInfo = new HashMap<String, Object> ();			
@@ -633,7 +677,6 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 			        ownerFile =  queryRes.get(0);
 			    }
 			} 
-			org.json.JSONObject returnJson = new org.json.JSONObject();
 			returnJson.put(DATA, jsonObjectConverter.JSONArrayFromListObjects(result));
 			org.json.JSONObject additionalDataJson = jsonObjectConverter.JSONObjectFromMap(additionalInfo);
 			additionalDataJson.put("owner", jsonObjectConverter.JSONFromObject(ownerFile));
@@ -646,7 +689,7 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
             additionalDataJson.put("ownerFullDirectoryPath", dirPath);
 
 			returnJson.put(ADDTIONAL_DATA, additionalDataJson);
-		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -696,12 +739,20 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	}
 	public void get(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
 			WPBFile wbFile = adminStorage.get(key, WPBFile.class);			
-			org.json.JSONObject returnJson = get(request, wbFile);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);
+		    returnJson = get(request, wbFile);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
 			
 		} catch (Exception e)		
 		{
@@ -713,13 +764,21 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void getExt(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
+			return ;
+		}
+
 		try
 		{
 			String extKey = (String)request.getAttribute("key");
 			List<WPBFile> wbFiles = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, extKey);			
 			WPBFile wbFile = (wbFiles.size()>0) ? wbFiles.get(0) : null; 
-			org.json.JSONObject returnJson = get(request, wbFile);
-			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null);			
+			returnJson = get(request, wbFile);
+			httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
 		} catch (Exception e)		
 		{
 			Map<String, String> errors = new HashMap<String, String>();		
@@ -730,6 +789,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void downloadResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+
 		try
 		{
 			String key = (String)request.getAttribute("key");
@@ -753,6 +819,13 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 
 	public void serveResource(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		if (! isRequestAuthenticated(authenticationResult))
+		{
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		
 	    InputStream is = null;
 	    OutputStream os = null;
 		try

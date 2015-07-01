@@ -110,7 +110,8 @@ $().ready( function () {
 		 httpOperation:"GET", 
 		 payloadData:"",
 		 functionSuccess: fSuccessSupportedLanguages,
-		 functionError: fErrorSupportedLanguages
+		 functionError: fErrorSupportedLanguages,
+		 functionAuth: authHandler
 		} );
 
 	var fSuccessSetSupportedLanguages = function(data){
@@ -146,7 +147,8 @@ $().ready( function () {
 			 httpOperation:"PUT", 
 			 payloadData: payload,
 			 functionSuccess: fSuccessSetSupportedLanguages,
-			 functionError: fErrorSetSupportedLanguages
+			 functionError: fErrorSetSupportedLanguages,
+			 functionAuth: authHandler
 			} );
 
 		
