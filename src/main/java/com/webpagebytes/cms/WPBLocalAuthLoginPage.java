@@ -38,6 +38,8 @@ private static final String login_page = " " +
 "</body></html>";
 		
 private static final String ERROR_NO_USER = "User name cannot be empty";
+private static final String ERROR_INVALID = "Invalid characters for user name";
+
 private String uri_login = "";
 private String uri_login_redirect = "";
 public static final String URL_LOGIN_POST_CONFIG = "url-login-post"; 
@@ -98,6 +100,13 @@ public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	if (userName == null || userName.length() == 0)
 	{
 		String html = login_page.replaceAll("STR_ACTION", uri_login).replaceAll("STR_ERROR", ERROR_NO_USER);
+		resp.getOutputStream().write(html.getBytes());
+		resp.flushBuffer();		
+		return;
+	}
+	if (!userName.matches("[0-9a-zA-Z@_.-]*"))
+	{
+		String html = login_page.replaceAll("STR_ACTION", uri_login).replaceAll("STR_ERROR", ERROR_INVALID);
 		resp.getOutputStream().write(html.getBytes());
 		resp.flushBuffer();		
 		return;
