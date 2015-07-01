@@ -18,6 +18,7 @@ package com.webpagebytes.cms.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -236,4 +237,11 @@ public class Controller {
     	return (authenticationResult.getUserIdentifier() != null) && (authenticationResult.getUserIdentifier().length() > 0);
     }
     
+    public void ping(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
+	{
+		org.json.JSONObject returnJson = new org.json.JSONObject();
+		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
+		httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);			
+		
+	}
 }

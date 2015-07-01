@@ -20,6 +20,11 @@ $().ready( function () {
 														 functionAuth: authHandler
 													} );		
 	});
-
+		
+	$('.wbClearProjectBtn').wbCommunicationManager().ajax ( { url: "./ping",
+														 httpOperation:"GET", 
+														 payloadData:"",													
+														 functionAuth: authHandler
+													} );
 	$('#spinnerTable').WBSpinner().hide();			
 });
