@@ -40,19 +40,26 @@ public class WPBAuthenticationFactory {
 				{
 					factoryClass = config.getSectionClassFactory(WPBSECTION.SECTION_AUTHENTICATION);
 				}
-				try
+				if (factoryClass != null && factoryClass.length() > 0)
 				{
-					WPBAuthentication tempInstance = (WPBAuthentication) Class.forName(factoryClass).newInstance();
-					tempInstance.initialize(config.getSectionParams(WPBSECTION.SECTION_AUTHENTICATION));
-					instance = tempInstance;
-					return instance;
-				} 			
-				catch (Exception e)
-				{
-					// if there is an exception on authentication then we stop the server
-					System.exit(1);
-					log.log(Level.SEVERE, e.getMessage(), e);
-					return null;
+					try
+					{
+						
+						WPBAuthentication tempInstance = (WPBAuthentication) Class.forName(factoryClass).newInstance();
+						tempInstance.initialize(config.getSectionParams(WPBSECTION.SECTION_AUTHENTICATION));
+						instance = tempInstance;
+						return instance;
+					} 			
+					catch (Exception e)
+					{
+						// if there is an exception on authentication then we stop the server
+						
+						log.log(Level.SEVERE, e.getMessage(), e);
+						
+						log.log(Level.SEVERE, "Shutting down the process because authentication has exceptions");
+						System.exit(1);
+						return null;
+					}
 				}
 			}
 		}

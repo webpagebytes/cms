@@ -20,6 +20,19 @@ if (!String.prototype.trim) {
 	}
 };
 
+if (!Object.keys) {
+    Object.keys = function (obj) {
+        var keys = [],
+            k;
+        for (k in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, k)) {
+                keys.push(k);
+            }
+        }
+        return keys;
+     };
+}
+
 if (!String.prototype.startsWith) {
   Object.defineProperty(String.prototype, 'startsWith', {
     enumerable: false,
@@ -219,7 +232,7 @@ if (!Array.prototype.indexOf) {
 
 (function ($) {
 	authHandler = function (record) {
-		if (!record) return;
+		if (!record || Object.keys(record).length == 0) return;
 		if (!('userIdentifier' in record) || (record.userIdentifier.length == 0)) {
 			window.location.href= record.loginPageUrl;
 			return;
