@@ -223,9 +223,18 @@ if (!Array.prototype.indexOf) {
 		if (!('userIdentifier' in record) || (record.userIdentifier.length == 0)) {
 			window.location.href= record.loginPageUrl;
 			return;
-		}			
+		}		
+		var htmlProfile = "";
+		var htmlLogout = "";
+		if ('profileUrl' in record && record.profileUrl.length>0) {
+			htmlProfile = "<li><a target='_blank' href='{0}'>Profile</a></li>".format(escapehtml(record.profileUrl));
+		}	
+		if ('logoutUrl' in record && record.logoutUrl.length>0) {
+			htmlLogout = "<li><a href='{0}'>Logout</a></li>".format(escapehtml(record.logoutUrl));
+		}	
+		
 		var html = ("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>{0} <b class='caret'></b> </a> " +
-		           "<ul class='dropdown-menu'><li><a href='{1}'>Profile</a></li><li><a href='{2}'>Logout</a></li></ul> </li>").format(escapehtml(record.userIdentifier), escapehtml(record.profileUrl), escapehtml(record.logoutUrl));
+		           "<ul class='dropdown-menu'>{1}{2}</ul> </li>").format(htmlProfile, htmlLogout);
 		$("#authmenu").html(html);
 }
 }) (window.jQuery);
