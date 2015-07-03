@@ -27,6 +27,11 @@ private static final String login_page = " " +
 "margin: 0px auto;" +
 "width: 90%;" +
 "text-align:center;} \n" +
+".error {" +
+"margin: 0px auto;" +
+"width: 90%;" +
+"color: #FF0000" +
+"text-align:center;} \n" +
 "</style></head>" +
 "<body><form method='POST' action='STR_ACTION'>" +
 "<div class='box'>" +
