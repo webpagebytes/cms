@@ -49,6 +49,8 @@ public class WPBAuthenticationFactory {
 				} 			
 				catch (Exception e)
 				{
+					// if there is an exception on authentication then we stop the server
+					System.exit(1);
 					log.log(Level.SEVERE, e.getMessage(), e);
 					return null;
 				}

@@ -234,7 +234,7 @@ if (!Array.prototype.indexOf) {
 		}	
 		
 		var html = ("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>{0} <b class='caret'></b> </a> " +
-		           "<ul class='dropdown-menu'>{1}{2}</ul> </li>").format(htmlProfile, htmlLogout);
+		           "<ul class='dropdown-menu'>{1}{2}</ul> </li>").format(escapehtml(record.userIdentifier), htmlProfile, htmlLogout);
 		$("#authmenu").html(html);
 }
 }) (window.jQuery);

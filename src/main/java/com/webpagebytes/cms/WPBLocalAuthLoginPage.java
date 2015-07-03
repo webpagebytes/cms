@@ -30,7 +30,7 @@ private static final String login_page = " " +
 ".error {" +
 "margin: 0px auto;" +
 "width: 90%;" +
-"color: #FF0000" +
+"color: #FF0000;" +
 "text-align:center;} \n" +
 "</style></head>" +
 "<body><form method='POST' action='STR_ACTION'>" +
@@ -59,7 +59,7 @@ public void init() throws ServletException
 		uri_login =  this.getServletContext().getInitParameter(URL_LOGIN_POST_CONFIG);
 		if (uri_login == null || uri_login.length() == 0)
 		{
-			throw new ServletException("No parameter uri-login specified");
+			throw new ServletException("No parameter url-login-post specified");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public void init() throws ServletException
 		uri_login_redirect = this.getServletContext().getInitParameter(URL_LOGIN_REDIRECT_CONFIG);
 		if (uri_login_redirect == null || uri_login_redirect.length() == 0)
 		{
-			throw new ServletException("No parameter uri_login_redirect specified");
+			throw new ServletException("No parameter url-login-redirect-success specified");
 		}
 	}
 }
