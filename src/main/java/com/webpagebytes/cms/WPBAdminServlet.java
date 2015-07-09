@@ -23,6 +23,7 @@ import com.webpagebytes.cms.engine.AdminRequestProcessorFactory;
 import com.webpagebytes.cms.engine.AjaxRequestProcessor;
 import com.webpagebytes.cms.engine.BaseRequestProcessorFactory;
 import com.webpagebytes.cms.engine.ResourceRequestProcessor;
+import com.webpagebytes.cms.engine.WPBAuthenticationFactory;
 import com.webpagebytes.cms.engine.WPBServletUtility;
 import com.webpagebytes.cms.exception.WPBException;
 import com.webpagebytes.cms.utility.CmsConfigurationFactory;
@@ -140,6 +141,10 @@ public class WPBAdminServlet extends HttpServlet {
 		{
 			CmsConfigurationFactory.setConfigPath(configPath);
 		}
+		
+		//obtain a reference to the auth instance
+		// this will make sure it is initialized
+		WPBAuthenticationFactory.getInstance();
 		
 		try
 		{
