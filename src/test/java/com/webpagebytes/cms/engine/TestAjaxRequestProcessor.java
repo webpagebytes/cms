@@ -1,6 +1,7 @@
 package com.webpagebytes.cms.engine;
 
 import com.webpagebytes.cms.WPBAdminDataStorage;
+import com.webpagebytes.cms.WPBAuthentication;
 import com.webpagebytes.cms.WPBFileStorage;
 import com.webpagebytes.cms.engine.AdminServletOperationsReader;
 import com.webpagebytes.cms.engine.AjaxRequestProcessor;
@@ -30,6 +31,8 @@ public class TestAjaxRequestProcessor {
 	
 	WPBFileStorage fileStorageMock;
 	WPBAdminDataStorage adminDataStorageMock;
+	WPBAuthentication authenticationMock;
+	
 	@Before
 	public void setUp()
 	{
@@ -39,10 +42,11 @@ public class TestAjaxRequestProcessor {
 		
 		fileStorageMock = EasyMock.createMock(WPBFileStorage.class);
 		adminDataStorageMock = EasyMock.createMock(WPBInternalAdminDataStorage.class);
+		authenticationMock = EasyMock.createMock(WPBAuthentication.class);
 		
 		Whitebox.setInternalState(WPBFileStorageFactory.class, "instance", fileStorageMock);
 		Whitebox.setInternalState(WPBAdminDataStorageFactory.class, "instance", adminDataStorageMock);
-        
+        Whitebox.setInternalState(WPBAuthenticationFactory.class, "instance", authenticationMock);
 	}
 
 	@After
