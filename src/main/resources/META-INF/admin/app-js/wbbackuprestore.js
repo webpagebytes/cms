@@ -38,8 +38,13 @@ $().ready( function () {
 	var date = new Date();
 	var link = './wbproject{0}.zip'.format(date.toFormatString(date,'ddmmyyyy_hhmm'));
 	$('#backuplink').attr('href', link);
-		
-											
+					
+	$('.restoreBtnClass').click ( function (e) {
+		e.preventDefault();
+		$('#wbModalRestoreUploadForm').wbObjectManager().resetFields();
+		$('#wbModalRestoreUpload').modal('show');
+	});	
+								
 	$('.wbModalRestoreUploadForm').wbCommunicationManager().ajax ( { url: "./ping",
 														 httpOperation:"GET", 
 														 payloadData:"",													
