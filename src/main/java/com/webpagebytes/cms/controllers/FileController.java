@@ -126,7 +126,47 @@ public class FileController extends Controller implements WPBAdminDataStorageLis
 	        throw new WPBException("Cannot calculate full dir path");
 	    }
 	}
-	
+
+	public static String getDirectoryFullPath(String externalKey, Map<String, WPBFile> files) throws WPBException 
+	{
+	    if (externalKey == null || externalKey.length() == 0)
+	    {
+	        return "";
+	    }
+	    String result = "";
+	    String parentExtKey = externalKey;
+	    boolean completed = false;
+	    for(int i = 0; i< MAX_DIR_DEPTH; i++)
+	    {
+	        if (parentExtKey != null && parentExtKey.length()>0)
+	        {
+		        WPBFile parent = files.get(parentExtKey); 
+	            if (parent != null && parent.getDirectoryFlag() != null && parent.getDirectoryFlag() == 1)
+	            {
+	                result = parent.getFileName() + "/" + result;
+	                parentExtKey = parent.getOwnerExtKey();
+	            } else
+	            {
+	                throw new WPBException("WPBFile should not be null");
+	            }
+	        } else
+	        {
+	            completed = true;
+	            break;
+	        }
+	    }
+	    if (completed)
+	    {
+	        if (result.startsWith("/")) result = result.substring(1);
+	        if (result.endsWith("/")) result = result.substring(0, result.length()-1);
+	        
+	        return result;
+	    } else
+	    {
+	        throw new WPBException("Cannot calculate full dir path");
+	    }
+	}
+
 	public static WPBFile getDirectory(String externalKey, WPBAdminDataStorage adminStorage) throws WPBException
 	{
 	    List<WPBFile> result = adminStorage.query(WPBFile.class, "externalKey", AdminQueryOperator.EQUAL, externalKey);

@@ -36,11 +36,11 @@ import com.webpagebytes.cms.WPBAuthenticationResult;
 import com.webpagebytes.cms.exception.WPBException;
 
 public class ExportImportController extends Controller {
-	private FlatStorageImporterExporter storageExporter;
+	private FlatStorageImporterExporterEx storageExporter;
 	
 	public ExportImportController()
 	{
-		storageExporter = new FlatStorageImporterExporter();
+		storageExporter = new FlatStorageImporterExporterEx();
 	}
 
 	public void importContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
@@ -81,6 +81,7 @@ public class ExportImportController extends Controller {
                   InputStream is2 = new FileInputStream(tempFile);
                   storageExporter.importFromZipStep2(is2);
                   is2.close();
+                  storageExporter.importFromZipStep3();
 
 		          returnJson.put(DATA, "");			
 		          httpServletToolbox.writeBodyResponseAsJson(response, returnJson, null, authenticationResult);
@@ -109,7 +110,6 @@ public class ExportImportController extends Controller {
 	public void exportContent(HttpServletRequest request, HttpServletResponse response, String requestUri) throws WPBException
 	{
 		
-		org.json.JSONObject returnJson = new org.json.JSONObject();
 		WPBAuthenticationResult authenticationResult = this.handleAuthentication(request);
 		if (! isRequestAuthenticated(authenticationResult))
 		{

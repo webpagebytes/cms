@@ -428,16 +428,7 @@ public class FlatStorageImporterExporter {
 			Map<Object, Object> props = importFromXMLFormat(zis);
 			WPBProject project = importer.buildProject(props);
 			
-			WPBProject tempProject = dataStorage.get(WPBProject.PROJECT_KEY, WPBProject.class);
-			if (tempProject == null)
-			{
-			    project.setExternalKey(WPBProject.PROJECT_KEY);
-				dataStorage.addWithKey(project);
-			} else
-			{
-				dataStorage.update(project);				
-			}
-		} catch (IOException e)
+                                                                    		} catch (IOException e)
 		{
 			log.log(Level.SEVERE, e.getMessage(), e);			
 		}
