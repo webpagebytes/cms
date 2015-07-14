@@ -115,7 +115,7 @@ public class FlatStorageImporterExporterEx {
 	private void resetCache() throws WPBIOException
 	{
 	    WPBCacheFactory cacheFactory = DefaultWPBCacheFactory.getInstance();
-	    
+	    log.log(Level.INFO, "Begin reset cache for import");
 	    cacheFactory.getPagesCacheInstance().Refresh();
 	    cacheFactory.getPageModulesCacheInstance().Refresh();
 	    cacheFactory.getArticlesCacheInstance().Refresh();
@@ -124,11 +124,13 @@ public class FlatStorageImporterExporterEx {
 	    cacheFactory.getFilesCacheInstance().Refresh();
 	    cacheFactory.getProjectCacheInstance().Refresh();
 	    cacheFactory.getUrisCacheInstance().Refresh();
+	    log.log(Level.INFO, "End reset cache for import");
         
 	}
 
 	public void importFromZipStep1(InputStream is) throws WPBIOException
 	{
+		log.log(Level.INFO, "Begin import from zip step 1");
 		ZipInputStream zis = new ZipInputStream(is);
 		// we need to stop the notifications during import
 		dataStorage.stopNotifications();
@@ -219,10 +221,15 @@ public class FlatStorageImporterExporterEx {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new WPBIOException("cannot import from  zip step 1", e);
 		}
+		finally
+		{
+			log.log(Level.INFO, "End import from zip step 1");
+		}
 	}
 
    public void importFromZipStep2(InputStream is) throws WPBIOException
     {
+	    log.log(Level.INFO, "Begin import from zip step 2");
         ZipInputStream zis = new ZipInputStream(is);
         // we need to stop the notifications during import
         dataStorage.stopNotifications();
@@ -269,13 +276,13 @@ public class FlatStorageImporterExporterEx {
         }
         finally
         {
-            dataStorage.startNotifications();
+            log.log(Level.INFO, "End import from zip step 2");
         }
-        resetCache();
     }
 
     public void importFromZipStep3() throws WPBIOException
     {
+    	log.log(Level.INFO, "Begin import from zip step 3");
     	dataStorage.stopNotifications();
     	//write all type of records
     	try                                                        
@@ -326,6 +333,7 @@ public class FlatStorageImporterExporterEx {
     	finally
     	{
     		dataStorage.startNotifications();
+    		log.log(Level.INFO, "End import from zip step 3");
     	}
     	resetCache();
     }
