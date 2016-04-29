@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 public class CacheServletOutputStream extends ServletOutputStream
 implements Serializable
@@ -45,4 +46,14 @@ public void write( byte buf[], int offset, int len)
   sos.write(buf, offset, len);
   cache.write(buf, offset, len);
 } 
+
+public void setWriteListener(WriteListener listener)
+{
+	sos.setWriteListener(listener);
+}
+
+public boolean isReady() {
+	return sos.isReady();
+}
+
 }
